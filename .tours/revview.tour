@@ -1,0 +1,11 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "revview",
+  "steps": [
+    {
+      "file": "Assets/Scripts/BattleBoard.cs",
+      "description": "I want to put blue-column-row as a string (better if I use struct for the key), but I don't kow how getcomponentsinCHildrenwork.\r\n\r\nDon't answer",
+      "line": 17
+    }
+  ]
+}

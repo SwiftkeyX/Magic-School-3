@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Root" picking-mode="Ignore" style="flex-grow: 1; flex-direction: column;">
+        <ui:VisualElement name="Top" style="flex-grow: 1; height: 40%; flex-direction: row; align-items: center; justify-content: space-between;">
+            <ui:VisualElement name="TraitPanel" style="flex-grow: 1;"/>
+            <ui:VisualElement name="BoardArea" picking-mode="Ignore" style="flex-grow: 1;"/>
+            <ui:VisualElement name="HeroPanel" style="flex-grow: 1;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-direction: column; align-items: auto; justify-content: space-between; align-self: stretch;">
+            <ui:VisualElement name="BenchPanel" style="flex-shrink: 1; flex-grow: 1; flex-direction: row; align-items: auto; justify-content: flex-start; align-self: stretch; flex-wrap: nowrap; align-content: auto;"/>
+            <ui:VisualElement name="ShopPanel" style="flex-grow: 1; flex-direction: row; align-self: stretch; align-items: auto;"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

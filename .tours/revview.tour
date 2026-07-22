@@ -6,6 +6,11 @@
       "file": "Assets/Scripts/BattleBoard.cs",
       "description": "I want to put blue-column-row as a string (better if I use struct for the key), but I don't kow how getcomponentsinCHildrenwork.\r\n\r\nDon't answer",
       "line": 17
+    },
+    {
+      "file": "Assets/Scripts/Hero.cs",
+      "description": "I don't think we should use hex to measure distance.\r\nI think it better to use THE enemy to measure.\r\n\r\nIs that make sense?",
+      "line": 79
     }
   ]
 }

@@ -8,21 +8,42 @@ public class Hex : MonoBehaviour
 
     // ========================== getter & setter ==========================
     public string Name => gameObject.name;
+    public List<Hex> Neighbors => _neighbors;
+    public Hero Occupant { get; private set; }
+    public bool IsOccupied => Occupant != null;
 
-    // Hex is a "worker" for BattleBoard. So Hex need reference to him.
+    #region Life Cycle
+    void Start()
+    {
+        InitializeNeighbors();
+    }
+
+    #endregion
+
+    #region Setup
+    // Hex is a "worker" for BattleBoard. So Hex need reference to BattleBoard.
     public void SetBoard(BattleBoard board)
     {
         _board = board;
         _neighbors = null;
     }
+    #endregion
 
-    // find neighbors hex - the hex that is adjacent to the current hex
+    /// <summary>
+    /// Neighbors are the hex adjacent to current hex.
+    /// </summary>
+    #region Neighbors
+    // called by Hero - so hero know which hex is valid to move
     public List<Hex> GetNeighbors()
     {
-        // return neighbors if exist
-        if (_neighbors != null)
-            return _neighbors;
+        if (_neighbors != null) InitializeNeighbors();
 
+        return _neighbors;
+    }
+
+    // Neighbors don't create itself, we need to calculate it ourself
+    private void InitializeNeighbors()
+    {
         var hexs = _board.Hexs.Values;
 
         // find distance between current hex and every hex
@@ -44,8 +65,25 @@ public class Hex : MonoBehaviour
             if (Vector3.Distance(transform.position, hex.transform.position) <= threshold)
                 _neighbors.Add(hex);
         }
-
-        // lastly, return neighbors
-        return _neighbors;
     }
+    #endregion
+
+    /// <summary>
+    /// Occupant used to tell which hex is already occupied by the hero.
+    /// Since 1 hex can have only 1 hero stand on it, we need a variable to 
+    /// state which hex is already occupied by a hero to prevent 2 hero standing on the same hex.
+    /// </summary>
+    #region Occupant
+    // A hero standing on / walking toward this hex, reserves the hex for that hero.
+    // So only one hero can occupy a hex at a time.
+    public void SetOccupant(Hero hero)
+    {
+        Occupant = hero;
+    }
+
+    public void ClearOccupant()
+    {
+        Occupant = null;
+    }
+    #endregion
 }

@@ -143,6 +143,26 @@ PrefabInstance:
       propertyPath: '_heroPlacement.Array.data[1]'
       value: blue-column2-row2
       objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroPlacement.Array.data[0].row
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroPlacement.Array.data[1].row
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroPlacement.Array.data[1].team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroPlacement.Array.data[0].column
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroPlacement.Array.data[1].column
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3452028721238980969, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: m_Name
       value: BattleBoard

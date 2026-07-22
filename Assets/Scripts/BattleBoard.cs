@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class BattleBoard : MonoBehaviour
 {
-    private Dictionary<HexPlacement, Hex> _hexs;
+    // track every hex
+    private Dictionary<HexPlacement, Hex> _hexs = new Dictionary<HexPlacement, Hex>();
+
+    // track every hero on the battle board
+    private List<Hero> _heroesOnBoard = new List<Hero>();
+
     [SerializeField] private GameObject _heroPrefab;
     [SerializeField] private List<HexPlacement> _heroPlacement;
 
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
+    public IReadOnlyList<Hero> HeroesOnBoard => _heroesOnBoard;
 
     void Awake()
     {
@@ -19,7 +25,6 @@ public class BattleBoard : MonoBehaviour
     void InitializeHex()
     {
         var allHexes = new List<Hex>(GetComponentsInChildren<Hex>(true));
-        _hexs = new Dictionary<HexPlacement, Hex>();
 
         foreach (var sideGroup in allHexes.GroupBy(h => h.transform.parent.name))
         {
@@ -50,23 +55,20 @@ public class BattleBoard : MonoBehaviour
     void Start()
     {
         foreach (var placement in _heroPlacement)
-            SpawnHero(_heroPrefab, _hexs[placement]);
+            SpawnHero(_heroPrefab, _hexs[placement], placement.team);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public Hero SpawnHero(GameObject heroPrefab, Hex targetHex)
+    public Hero SpawnHero(GameObject heroPrefab, Hex targetHex, Team team)
     {
         // spawn hero prefab
         GameObject heroInstance = Instantiate(heroPrefab, transform);
         Hero hero = heroInstance.GetComponent<Hero>();
 
         // move hero to initial hex
-        hero.Init(targetHex);
+        hero.SetBoard(this);
+        hero.Init(targetHex, team);
+
+        _heroesOnBoard.Add(hero);
 
         return hero;
     }

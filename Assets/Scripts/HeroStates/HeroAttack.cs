@@ -13,10 +13,16 @@ public class HeroAttack : HeroState
         Hero nearestEnemy = Hero.FindNearestEnemy();
         if (nearestEnemy == null || !Hero.CurrentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex))
         {
-            Hero.StateMachine.ChangeState(Hero.StateMachine.Idle);
+            Hero.StateMachine.ChangeState(HeroStateType.Idle);
             return;
         }
 
         // TODO: real combat - damage, attack speed, mana gain.
     }
+
+    protected override void CheckSwitchState()
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

@@ -42,17 +42,8 @@ public class Hero : MonoBehaviour
     internal float MoveSpeed => _moveSpeed;
     internal AnimationCurve WalkCurve => _walkCurve;
     internal HeroStateMachine StateMachine => _stateMachine;
-
-    internal void SetCurrentHex(Hex hex) => _currentHex = hex;
-
-    // Commits to a step: reserves the destination the instant it's decided (before the
-    // walk animation even starts), then hands off to HeroWalk.
-    internal void BeginWalkTo(Hex targetHex)
-    {
-        _reservedHex = targetHex;
-        _stateMachine.Walk.SetTarget(targetHex);
-        _stateMachine.ChangeState(_stateMachine.Walk);
-    }
+    internal void SetCurrentHex(Hex targetHex) => _currentHex = targetHex;
+    internal void SetReservedHex(Hex targetHex) => _reservedHex = targetHex;
 
     #region Setup
     public void SetBoard(BattleBoard board)
@@ -91,7 +82,7 @@ public class Hero : MonoBehaviour
 
     void Start()
     {
-        _stateMachine.Start(_stateMachine.Idle);
+        _stateMachine.Start(HeroStateType.Idle);
     }
 
     void Update()
@@ -100,6 +91,11 @@ public class Hero : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// A helper function, it is fine here for now.
+    /// But I want to move it somewhere in the future. Let's see if it got messy.
+    /// </summary>
+    #region Helper
     // How close two enemies' distances have to be to count as tied. Needed because two
     // geometrically-equal distances can still differ by a hair of floating-point error.
     private const float NearestEnemyTieEpsilon = 0.01f;
@@ -124,4 +120,6 @@ public class Hero : MonoBehaviour
         _nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
         return _nearestEnemy;
     }
+    #endregion
+
 }

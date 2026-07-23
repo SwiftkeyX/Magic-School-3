@@ -15,13 +15,9 @@ public class HeroWalk : HeroState
 
     public HeroWalk(Hero hero) : base(hero) { }
 
-    public void SetTarget(Hex targetHex)
-    {
-        _targetHex = targetHex;
-    }
-
     public override void OnEnter()
     {
+        _targetHex = Hero.ReservedHex;
         _start = Hero.transform.position;
         _end = _targetHex.transform.position;
         _duration = 1f / Hero.MoveSpeed;
@@ -30,15 +26,24 @@ public class HeroWalk : HeroState
 
     public override void OnUpdate()
     {
+        // walk according the movement's curve 
         _elapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_elapsed / _duration);
         Hero.transform.position = Vector3.Lerp(_start, _end, Hero.WalkCurve.Evaluate(t));
 
-        if (_elapsed >= _duration)
+        CheckSwitchState();
+    }
+
+    protected override void CheckSwitchState()
+    {
+        bool isWalkingFinished = _elapsed >= _duration;
+
+        if (isWalkingFinished)
         {
             Hero.transform.position = _end;
             Hero.SetCurrentHex(_targetHex);
-            Hero.StateMachine.ChangeState(Hero.StateMachine.Idle);
+            Hero.StateMachine.ChangeState(HeroStateType.Idle);
         }
     }
+
 }

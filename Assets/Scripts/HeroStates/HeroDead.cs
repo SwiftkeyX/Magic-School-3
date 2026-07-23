@@ -7,4 +7,6 @@ public class HeroDead : HeroState
     public HeroDead(Hero hero) : base(hero) { }
 
     public override void OnUpdate() { }
+
+    protected override void CheckSwitchState() { }
 }

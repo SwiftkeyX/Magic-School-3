@@ -114,8 +114,9 @@ public class Hero : MonoBehaviour
             return STATE.ATTACK;
         }
 
-        // If there is enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
-        if (_currentHex.GetNeighbors().Contains(nearestEnemy.ReservedHex)) return STATE.IDLE;
+        // If there is ANY enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
+        bool enemyArrivingNextToMe = _board.HeroesOnBoard.Any(h => h.Team != _team && _currentHex.GetNeighbors().Contains(h.ReservedHex));
+        if (enemyArrivingNextToMe) return STATE.IDLE;
 
         // Every other hero's reserved hex is off-limits to path through.
         var reservedHexes = new HashSet<Hex>(_board.HeroesOnBoard.Where(h => h != this).Select(h => h.ReservedHex));
@@ -134,9 +135,9 @@ public class Hero : MonoBehaviour
         // looks like backing off. But don't hold forever: if the block hasn't cleared by
         // the time we'd normally finish a step, commit anyway - it may be a permanently
         // blocked route (e.g. an ally stuck in melee) that genuinely needs the detour.
-        float distFromCurrent = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        float distFromTarget = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        if (distFromTarget >= distFromCurrent)
+        float distFromMeToEnemy = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        if (distFromTargetHexToEnemy >= distFromMeToEnemy)
         {
             if (_holdSince < 0f) _holdSince = Time.time;
             if (Time.time - _holdSince < 1f / _moveSpeed) return STATE.IDLE;

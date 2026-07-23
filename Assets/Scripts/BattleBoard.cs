@@ -11,7 +11,7 @@ public class BattleBoard : MonoBehaviour
     private List<Hero> _heroesOnBoard = new List<Hero>();
 
     [SerializeField] private GameObject _heroPrefab;
-    [SerializeField] private List<HeroPlacement> _heroesPlacement;
+    [SerializeField] private BattlePlacementSO _placementSO;
 
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
     public IReadOnlyList<Hero> HeroesOnBoard => _heroesOnBoard;
@@ -54,8 +54,9 @@ public class BattleBoard : MonoBehaviour
 
     void Start()
     {
-        // Spawn every hero to the board at the start of the combat 
-        foreach (var heroPlacement in _heroesPlacement)
+        // Spawn every hero to the board at the start of the combat
+        if (_placementSO == null) return;
+        foreach (var heroPlacement in _placementSO.HeroesPlacement)
         {
             HeroDataSO data = heroPlacement.dataSO;
             HexPlacement placement = heroPlacement.hexPlacement;

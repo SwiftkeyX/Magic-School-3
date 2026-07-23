@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
@@ -19,6 +21,7 @@ public class Hero : MonoBehaviour
 
     // ==================== Runtime data ========================
     [SerializeField] private Hex _currentHex;
+    private Hex _reservedHex;
     private Coroutine _walkRoutine;
     private Hero _nearestEnemy;
     private int _currentHP;
@@ -26,6 +29,11 @@ public class Hero : MonoBehaviour
 
     // ==================== setter & getter ====================
     public Hex CurrentHex => _currentHex;
+    // The hex this hero has claimed - same as CurrentHex while idle, but already pointing
+    // at the destination the instant a step is committed, well before the walk animation
+    // finishes and CurrentHex catches up. This is the single source of truth for "who's
+    // standing where" - Hex itself doesn't track occupancy, heroes do.
+    public Hex ReservedHex => _reservedHex;
     public Team Team => _team;
     public HeroDataSO Stat => _data;
     public int CurrentHP => _currentHP;
@@ -42,7 +50,7 @@ public class Hero : MonoBehaviour
     {
         // move hero to target hex, occupy that hex
         _currentHex = startingHex;
-        _currentHex.SetOccupant(this);
+        _reservedHex = startingHex;
         transform.position = _currentHex.transform.position;
 
         // set sprite's color for each team
@@ -96,45 +104,23 @@ public class Hero : MonoBehaviour
         // If there is enemy in the neighbors (adjacent), stop moving, and attacking instead
         if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex)) return STATE.ATTACK;
 
-        Hex targetHex = ClosestNeighborToTarget(nearestEnemy.CurrentHex);
-        if (targetHex == null) return STATE.IDLE;
+        // If there is enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
+        if (_currentHex.GetNeighbors().Contains(nearestEnemy.ReservedHex)) return STATE.IDLE;
 
-        // If every unoccupied neighbor is farther from the target than where we already are
-        // (the direct routes got claimed by allies this same frame), stay put instead of
-        // committing to a step backward - retry next frame once occupancy clears.
-        float distFromCurrent = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        float distFromTarget = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        if (distFromTarget >= distFromCurrent) return STATE.IDLE;
+        // Every other hero's reserved hex is off-limits to path through.
+        var reservedHexes = new HashSet<Hex>(_board.HeroesOnBoard.Where(h => h != this).Select(h => h.ReservedHex));
 
-        // Clear this hex, Occupy the next hex
-        _currentHex.ClearOccupant();
-        targetHex.SetOccupant(this);
+        // Find next hex that could lead this hero to nearest enemy
+        Hex targetHex = HexPathfinder.FindValidHexToTarget(_currentHex, nearestEnemy.CurrentHex, reservedHexes);
+        if (targetHex == null || targetHex == _currentHex) return STATE.IDLE;
+
+        // Reserve the next hex
+        _reservedHex = targetHex;
 
         // Start walking to target hex (adjacent hex)
         _walkRoutine = StartCoroutine(Walk(targetHex));
 
         return STATE.MOVE;
-    }
-
-    // Find which neighbors is closest to the target
-    private Hex ClosestNeighborToTarget(Hex target)
-    {
-        Hex closest = null;
-        float closestDist = float.MaxValue;
-
-        foreach (var neighbor in _currentHex.GetNeighbors())
-        {
-            if (neighbor.IsOccupied) continue;
-
-            float dist = Vector3.Distance(neighbor.transform.position, target.transform.position);
-            if (dist < closestDist)
-            {
-                closestDist = dist;
-                closest = neighbor;
-            }
-        }
-
-        return closest;
     }
 
     // hero walk to target hex

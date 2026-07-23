@@ -4,13 +4,12 @@ using UnityEngine;
 public class Hex : MonoBehaviour
 {
     private BattleBoard _board;
-    private List<Hex> _neighbors;       // neighbors hex of this hex - to give the hex available for pathfinding logic
+    // neighbors hex of this hex - to give the hex available for pathfinding logic
+    private List<Hex> _neighbors;
 
     // ========================== getter & setter ==========================
     public string Name => gameObject.name;
     public List<Hex> Neighbors => _neighbors;
-    public Hero Occupant { get; private set; }
-    public bool IsOccupied => Occupant != null;
 
     #region Life Cycle
     void Start()
@@ -65,25 +64,6 @@ public class Hex : MonoBehaviour
             if (Vector3.Distance(transform.position, hex.transform.position) <= threshold)
                 _neighbors.Add(hex);
         }
-    }
-    #endregion
-
-    /// <summary>
-    /// Occupant used to tell which hex is already occupied by the hero.
-    /// Since 1 hex can have only 1 hero stand on it, we need a variable to 
-    /// state which hex is already occupied by a hero to prevent 2 hero standing on the same hex.
-    /// </summary>
-    #region Occupant
-    // A hero standing on / walking toward this hex, reserves the hex for that hero.
-    // So only one hero can occupy a hex at a time.
-    public void SetOccupant(Hero hero)
-    {
-        Occupant = hero;
-    }
-
-    public void ClearOccupant()
-    {
-        Occupant = null;
     }
     #endregion
 }

@@ -1,11 +1,5 @@
 using System;
 
-public enum Team
-{
-    Blue,
-    Red
-}
-
 [Serializable]
 public struct HexPlacement
 {

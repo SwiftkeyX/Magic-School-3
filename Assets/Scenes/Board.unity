@@ -136,6 +136,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: '_heroPlacement.Array.data[0]'
       value: blue-column2-row4
       objectReference: {fileID: 0}
@@ -222,6 +226,70 @@ PrefabInstance:
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _heroPlacement.Array.data[6].column
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[0].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: adf80ad0a967efc419020cf4f1a3ad9b, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[1].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[2].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[3].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[4].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[5].dataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[1].hexPlacement.row
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[3].hexPlacement.row
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[4].hexPlacement.row
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[5].hexPlacement.row
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[2].hexPlacement.team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[3].hexPlacement.team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[4].hexPlacement.team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[5].hexPlacement.team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[2].hexPlacement.column
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _heroesPlacement.Array.data[3].hexPlacement.column
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3452028721238980969, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: m_Name

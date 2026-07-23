@@ -17,7 +17,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _moveSpeed = 1f;
     [SerializeField] private AnimationCurve _walkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private Team _team;
-    private enum STATE { IDLE, MOVE, ATTACK, DEAD }
+    public enum STATE { IDLE, MOVE, ATTACK, DEAD }
 
     // ==================== Runtime data ========================
     [SerializeField] private Hex _currentHex;
@@ -26,11 +26,14 @@ public class Hero : MonoBehaviour
     private Hero _nearestEnemy;
     private int _currentHP;
     private int _currentMana;
+    // Last state MoveTowardEnemy() settled on, so other heroes can check "is this ally
+    // actually going to move" instead of guessing off a timer. See WorthWaitingForBlocker.
+    private STATE _state = STATE.IDLE;
     // Timestamp a "this step doesn't look like progress" hold started, or -1f when not
-    // holding. Gives momentary contention (allies about to move out of the way) a short
-    // grace period before committing to a step that looks like backing off - but only a
-    // grace period, so a permanently blocked route (e.g. an ally stuck in melee forever)
-    // still eventually gets routed around instead of freezing the hero in place forever.
+    // holding. Gives an undecided ally (not yet locked in melee) a short grace period to
+    // move out of the way before committing to a step that looks like backing off.
+    // Skipped entirely when the blocker is already ATTACK-ing (see WorthWaitingForBlocker)
+    // - it won't vacate within this window, so there's nothing to gain by waiting.
     private float _holdSince = -1f;
 
     // ==================== setter & getter ====================
@@ -44,6 +47,7 @@ public class Hero : MonoBehaviour
     public HeroDataSO Stat => _data;
     public int CurrentHP => _currentHP;
     public int CurrentMana => _currentMana;
+    public STATE State => _state;
 
     #region Setup
     public void SetBoard(BattleBoard board)
@@ -101,22 +105,26 @@ public class Hero : MonoBehaviour
     // Walks toward the nearest enemy, one hex at a time. Stops once already adjacent to a enemy.
     private STATE MoveTowardEnemy()
     {
-        if (_walkRoutine != null) return STATE.IDLE;
+        if (_walkRoutine != null)
+        {
+            _state = STATE.MOVE;
+            return STATE.IDLE;
+        }
 
         // Find nearest enemy whereabout
         Hero nearestEnemy = FindNearestEnemy();
-        if (nearestEnemy == null) return STATE.IDLE;
+        if (nearestEnemy == null) return _state = STATE.IDLE;
 
         // If there is enemy in the neighbors (adjacent), stop moving, and attacking instead
         if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex))
         {
             _holdSince = -1f;
-            return STATE.ATTACK;
+            return _state = STATE.ATTACK;
         }
 
         // If there is ANY enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
         bool enemyArrivingNextToMe = _board.HeroesOnBoard.Any(h => h.Team != _team && _currentHex.GetNeighbors().Contains(h.ReservedHex));
-        if (enemyArrivingNextToMe) return STATE.IDLE;
+        if (enemyArrivingNextToMe) return _state = STATE.IDLE;
 
         // Every other hero's reserved hex is off-limits to path through.
         var reservedHexes = new HashSet<Hex>(_board.HeroesOnBoard.Where(h => h != this).Select(h => h.ReservedHex));
@@ -126,21 +134,22 @@ public class Hero : MonoBehaviour
         if (targetHex == null)
         {
             _holdSince = -1f;
-            return STATE.IDLE;
+            return _state = STATE.IDLE;
         }
 
         // If this step doesn't actually get us closer, it's likely because a direct
-        // neighbor is only momentarily blocked by an ally who's about to move out of the
-        // way - give that a short grace period rather than immediately taking a step that
-        // looks like backing off. But don't hold forever: if the block hasn't cleared by
-        // the time we'd normally finish a step, commit anyway - it may be a permanently
-        // blocked route (e.g. an ally stuck in melee) that genuinely needs the detour.
+        // neighbor is currently occupied by an ally who hasn't decided to move yet - give
+        // that a short grace period rather than immediately taking a step that looks like
+        // backing off. But only if that ally could plausibly still move: one already
+        // locked in melee (ATTACK) won't vacate on its own within this window - today
+        // because Attack() never resolves, later because a real fight outlasts a single
+        // grace period anyway - so waiting on it would be guaranteed wasted time.
         float distFromMeToEnemy = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
         float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        if (distFromTargetHexToEnemy >= distFromMeToEnemy)
+        if (distFromTargetHexToEnemy >= distFromMeToEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
         {
             if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / _moveSpeed) return STATE.IDLE;
+            if (Time.time - _holdSince < 1f / _moveSpeed) return _state = STATE.IDLE;
         }
 
         _holdSince = -1f;
@@ -151,7 +160,26 @@ public class Hero : MonoBehaviour
         // Start walking to target hex (adjacent hex)
         _walkRoutine = StartCoroutine(Walk(targetHex));
 
-        return STATE.MOVE;
+        return _state = STATE.MOVE;
+    }
+
+    // True if at least one hex closer to nearestEnemy than my current spot is occupied by
+    // a hero that hasn't given up on moving (anything but ATTACK) - worth a short wait on
+    // the chance it steps aside. False if every closer neighbor is either unoccupied
+    // (nothing to wait for) or held only by heroes already locked in melee, who won't
+    // vacate within a single grace window regardless.
+    private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
+    {
+        foreach (var neighbor in _currentHex.GetNeighbors())
+        {
+            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
+            if (neighborDist >= distFromMeToEnemy) continue;
+
+            var occupant = _board.HeroesOnBoard.FirstOrDefault(h => h != this && h.ReservedHex == neighbor);
+            if (occupant != null && occupant.State != STATE.ATTACK) return true;
+        }
+
+        return false;
     }
 
     // hero walk to target hex

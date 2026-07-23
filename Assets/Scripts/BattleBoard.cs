@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class BattleBoard : MonoBehaviour
 {
+    // ============================ Dependency ============================
+    [SerializeField] private GameObject _heroPrefab;
+    [SerializeField] private BattlePlacementSO _placementSO;
+    // ======================== Runtime data ============================
     // track every hex
     private Dictionary<HexPlacement, Hex> _hexs = new Dictionary<HexPlacement, Hex>();
 
     // track every hero on the battle board
     private List<Hero> _heroesOnBoard = new List<Hero>();
-
-    [SerializeField] private GameObject _heroPrefab;
-    [SerializeField] private BattlePlacementSO _placementSO;
+    
 
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
     public IReadOnlyList<Hero> HeroesOnBoard => _heroesOnBoard;

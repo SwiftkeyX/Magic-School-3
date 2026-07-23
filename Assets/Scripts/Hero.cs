@@ -26,22 +26,11 @@ public class Hero : MonoBehaviour
     private Hero _nearestEnemy;
     private int _currentHP;
     private int _currentMana;
-    // Last state MoveTowardEnemy() settled on, so other heroes can check "is this ally
-    // actually going to move" instead of guessing off a timer. See WorthWaitingForBlocker.
     private STATE _state = STATE.IDLE;
-    // Timestamp a "this step doesn't look like progress" hold started, or -1f when not
-    // holding. Gives an undecided ally (not yet locked in melee) a short grace period to
-    // move out of the way before committing to a step that looks like backing off.
-    // Skipped entirely when the blocker is already ATTACK-ing (see WorthWaitingForBlocker)
-    // - it won't vacate within this window, so there's nothing to gain by waiting.
     private float _holdSince = -1f;
 
     // ==================== setter & getter ====================
     public Hex CurrentHex => _currentHex;
-    // The hex this hero has claimed - same as CurrentHex while idle, but already pointing
-    // at the destination the instant a step is committed, well before the walk animation
-    // finishes and CurrentHex catches up. This is the single source of truth for "who's
-    // standing where" - Hex itself doesn't track occupancy, heroes do.
     public Hex ReservedHex => _reservedHex;
     public Team Team => _team;
     public HeroDataSO Stat => _data;
@@ -137,20 +126,8 @@ public class Hero : MonoBehaviour
             return _state = STATE.IDLE;
         }
 
-        // If this step doesn't actually get us closer, it's likely because a direct
-        // neighbor is currently occupied by an ally who hasn't decided to move yet - give
-        // that a short grace period rather than immediately taking a step that looks like
-        // backing off. But only if that ally could plausibly still move: one already
-        // locked in melee (ATTACK) won't vacate on its own within this window - today
-        // because Attack() never resolves, later because a real fight outlasts a single
-        // grace period anyway - so waiting on it would be guaranteed wasted time.
-        float distFromMeToEnemy = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        if (distFromTargetHexToEnemy >= distFromMeToEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
-        {
-            if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / _moveSpeed) return _state = STATE.IDLE;
-        }
+        // Read the function comment
+        if (IsTargetHexMakeMeGoFurtherFromEnemy(nearestEnemy, targetHex)) return _state = STATE.IDLE;
 
         _holdSince = -1f;
 
@@ -163,11 +140,7 @@ public class Hero : MonoBehaviour
         return _state = STATE.MOVE;
     }
 
-    // True if at least one hex closer to nearestEnemy than my current spot is occupied by
-    // a hero that hasn't given up on moving (anything but ATTACK) - worth a short wait on
-    // the chance it steps aside. False if every closer neighbor is either unoccupied
-    // (nothing to wait for) or held only by heroes already locked in melee, who won't
-    // vacate within a single grace window regardless.
+    // If my blocker is not in attack state, it's worth waiting a moment, since it's likely that ally will step aside soon.
     private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
     {
         foreach (var neighbor in _currentHex.GetNeighbors())
@@ -177,6 +150,30 @@ public class Hero : MonoBehaviour
 
             var occupant = _board.HeroesOnBoard.FirstOrDefault(h => h != this && h.ReservedHex == neighbor);
             if (occupant != null && occupant.State != STATE.ATTACK) return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    // If the next hex I CAN walk right now, ACTUALLY make me go further from that nearest enemy. It mean:
+    // 1) There is a shortest path to that enemy BUT I can't take that path right now because something is blocking me (usually a ally).
+    // So the PathFinding algo told me the longer path that I can also used.  
+    // 2) Instead of immediately take a longer path, I'll wait a moment in case my ally step out of the way
+    // So I can take a shortest path.
+    // 2.1) BUT it's not worth waiting for me, if ally that's blocking me is in Attack state, Because he surely won't move soon. 
+    /// </summary>
+    /// <returns value=TRUE> I'll wait a moment </returns>
+    /// <returns value=TRUE> No wait, I'll take a long path </returns>
+    private bool IsTargetHexMakeMeGoFurtherFromEnemy(Hero nearestEnemy, Hex targetHex)
+    {
+        float distFromMeToEnemy = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
+        if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
+        {
+            if (_holdSince < 0f) _holdSince = Time.time;
+            if (Time.time - _holdSince < 1f / _moveSpeed) return true;
         }
 
         return false;
@@ -204,26 +201,29 @@ public class Hero : MonoBehaviour
     }
     #endregion
 
+    // How close two enemies' distances have to be to count as tied. Needed because two
+    // geometrically-equal distances can still differ by a hair of floating-point error.
+    private const float NearestEnemyTieEpsilon = 0.01f;
+
+    // Picks nearest enemy (If there is several nearest enemy, random it).
     private Hero FindNearestEnemy()
     {
-        Hero nearest = null;
-        float nearestDist = float.MaxValue;
+        var enemyDistances = _board.HeroesOnBoard
+            .Where(target => target != this && target.Team != _team)
+            .Select(target => new { target, dist = Vector3.Distance(_currentHex.transform.position, target.CurrentHex.transform.position) })
+            .ToList();
 
-        foreach (var target in _board.HeroesOnBoard)
-        {
-            if (target == this || target.Team == _team) continue;
+        if (enemyDistances.Count == 0) return null;
 
-            float dist = Vector3.Distance(_currentHex.transform.position, target.CurrentHex.transform.position);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                nearest = target;
-            }
-        }
+        float nearestDist = enemyDistances.Min(e => e.dist);
+        var tiedNearest = enemyDistances.Where(e => e.dist <= nearestDist + NearestEnemyTieEpsilon).Select(e => e.target).ToList();
 
-        return nearest;
+        if (_nearestEnemy != null && tiedNearest.Contains(_nearestEnemy)) return _nearestEnemy;
+
+        _nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
+        return _nearestEnemy;
     }
-
+ 
     void Attack()
     {
         Hero target = FindNearestEnemy();

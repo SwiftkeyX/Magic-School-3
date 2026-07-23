@@ -11,6 +11,16 @@
       "file": "Assets/Scripts/Hero.cs",
       "description": "From this comment, the problem I think of is:\r\n\"The hero now are guessing\", they are guessing if my ally will block me or not, that's fine and all until you found that in practical the hero are pause way too long until he move again.\r\n\r\nSo to make the hero stop pausing for too long, let make him stop guessing. \r\nMake him read his ally's state, is my ally \"STAND, MOVE, ATTACK\"? \r\nIf it was Move, then the ally will surely move out of the way. \r\nBUT if it doesn't, then ally won't move.\r\n\r\nIs that make sense?",
       "line": 131
+    },
+    {
+      "file": "Assets/Scripts/Hero.cs",
+      "description": "The comment are quite confusing.\r\nCould you explain more? in simple term.",
+      "line": 169
+    },
+    {
+      "file": "Assets/Scripts/Hero.cs",
+      "description": "Explain more in simple term.",
+      "line": 138
     }
   ]
 }

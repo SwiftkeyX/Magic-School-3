@@ -26,6 +26,12 @@ public class Hero : MonoBehaviour
     private Hero _nearestEnemy;
     private int _currentHP;
     private int _currentMana;
+    // Timestamp a "this step doesn't look like progress" hold started, or -1f when not
+    // holding. Gives momentary contention (allies about to move out of the way) a short
+    // grace period before committing to a step that looks like backing off - but only a
+    // grace period, so a permanently blocked route (e.g. an ally stuck in melee forever)
+    // still eventually gets routed around instead of freezing the hero in place forever.
+    private float _holdSince = -1f;
 
     // ==================== setter & getter ====================
     public Hex CurrentHex => _currentHex;
@@ -102,7 +108,11 @@ public class Hero : MonoBehaviour
         if (nearestEnemy == null) return STATE.IDLE;
 
         // If there is enemy in the neighbors (adjacent), stop moving, and attacking instead
-        if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex)) return STATE.ATTACK;
+        if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex))
+        {
+            _holdSince = -1f;
+            return STATE.ATTACK;
+        }
 
         // If there is enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
         if (_currentHex.GetNeighbors().Contains(nearestEnemy.ReservedHex)) return STATE.IDLE;
@@ -112,7 +122,27 @@ public class Hero : MonoBehaviour
 
         // Find next hex that could lead this hero to nearest enemy
         Hex targetHex = HexPathfinder.FindValidHexToTarget(_currentHex, nearestEnemy.CurrentHex, reservedHexes);
-        if (targetHex == null || targetHex == _currentHex) return STATE.IDLE;
+        if (targetHex == null)
+        {
+            _holdSince = -1f;
+            return STATE.IDLE;
+        }
+
+        // If this step doesn't actually get us closer, it's likely because a direct
+        // neighbor is only momentarily blocked by an ally who's about to move out of the
+        // way - give that a short grace period rather than immediately taking a step that
+        // looks like backing off. But don't hold forever: if the block hasn't cleared by
+        // the time we'd normally finish a step, commit anyway - it may be a permanently
+        // blocked route (e.g. an ally stuck in melee) that genuinely needs the detour.
+        float distFromCurrent = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        float distFromTarget = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        if (distFromTarget >= distFromCurrent)
+        {
+            if (_holdSince < 0f) _holdSince = Time.time;
+            if (Time.time - _holdSince < 1f / _moveSpeed) return STATE.IDLE;
+        }
+
+        _holdSince = -1f;
 
         // Reserve the next hex
         _reservedHex = targetHex;

@@ -17,11 +17,13 @@ public static class HexPathfinder
     // to be discovered first - which could otherwise be a same-length detour that doubles
     // back through the mover's own territory when the direct hexes are occupied.
     //
-    // Staying at startHex is itself a valid outcome: if every currently-open neighbor is
-    // no closer to the goal than startHex already is - typically because the genuinely
-    // useful neighbors are all momentarily occupied by allies who are themselves mid-move -
-    // this returns startHex rather than forcing a real step that's likely to just reverse
-    // itself once that occupancy clears next turn.
+    // Always returns the real next step along the shortest route, even when that step
+    // doesn't look like local progress (e.g. a necessary detour around a permanently
+    // blocked hex has to start by moving sideways or backward before curving toward the
+    // goal). Whether that step is worth taking immediately versus waiting a moment for
+    // contention to clear is a timing judgment call, not a pathfinding one - callers that
+    // want a grace period before committing to a non-improving step should apply it
+    // themselves.
     //
     // reservedHexes is the set of hexes currently claimed by other heroes (Hex itself
     // doesn't track occupancy - the caller supplies it from Hero.ReservedHex).
@@ -51,7 +53,7 @@ public static class HexPathfinder
                 // Walk the backtrack chain to the step right after startHex.
                 Hex step = current;
                 while (cameFrom[step] != startHex) step = cameFrom[step];
-                return Heuristic(step) < Heuristic(startHex) ? step : startHex;
+                return step;
             }
 
             closed.Add(current);

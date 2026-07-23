@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,33 +8,51 @@ public class Hero : MonoBehaviour
     private BattleBoard _board;
     private SpriteRenderer _sprite;
     private HeroDataSO _data;
-    // private HeroDataRuntime _runtimeData;
-
 
     // ==================== Etc ====================
     [SerializeField] private float _moveSpeed = 1f;
     [SerializeField] private AnimationCurve _walkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private Team _team;
-    public enum STATE { IDLE, MOVE, ATTACK, DEAD }
 
     // ==================== Runtime data ========================
     [SerializeField] private Hex _currentHex;
     private Hex _reservedHex;
-    private Coroutine _walkRoutine;
     private Hero _nearestEnemy;
     private int _currentHP;
     private int _currentMana;
-    private STATE _state = STATE.IDLE;
-    private float _holdSince = -1f;
+    private HeroStateMachine _stateMachine;
 
     // ==================== setter & getter ====================
     public Hex CurrentHex => _currentHex;
+    // The hex this hero has claimed - same as CurrentHex while idle, but already pointing
+    // at the destination the instant a step is committed, well before the walk animation
+    // finishes and CurrentHex catches up. This is the single source of truth for "who's
+    // standing where" - Hex itself doesn't track occupancy, heroes do.
     public Hex ReservedHex => _reservedHex;
     public Team Team => _team;
     public HeroDataSO Stat => _data;
     public int CurrentHP => _currentHP;
     public int CurrentMana => _currentMana;
-    public STATE State => _state;
+    public HeroStateType State => _stateMachine.CurrentType;
+
+    // ==================== state machine plumbing ====================
+    // Exposed so the HeroState family (HeroIdle, HeroWalk, HeroAttack, HeroDead) can read
+    // board/movement data and drive transitions - not meant for use outside of it.
+    internal BattleBoard Board => _board;
+    internal float MoveSpeed => _moveSpeed;
+    internal AnimationCurve WalkCurve => _walkCurve;
+    internal HeroStateMachine StateMachine => _stateMachine;
+
+    internal void SetCurrentHex(Hex hex) => _currentHex = hex;
+
+    // Commits to a step: reserves the destination the instant it's decided (before the
+    // walk animation even starts), then hands off to HeroWalk.
+    internal void BeginWalkTo(Hex targetHex)
+    {
+        _reservedHex = targetHex;
+        _stateMachine.Walk.SetTarget(targetHex);
+        _stateMachine.ChangeState(_stateMachine.Walk);
+    }
 
     #region Setup
     public void SetBoard(BattleBoard board)
@@ -70,134 +86,17 @@ public class Hero : MonoBehaviour
     void Awake()
     {
         _sprite = GetComponent<SpriteRenderer>();
+        _stateMachine = new HeroStateMachine(this);
     }
 
     void Start()
     {
+        _stateMachine.Start(_stateMachine.Idle);
     }
 
     void Update()
     {
-        // Find nearest enemy whereabout
-        Hero nearestEnemy = FindNearestEnemy();
-
-        STATE state = MoveTowardEnemy();
-        if (state == STATE.ATTACK) Attack();
-    }
-    #endregion
-
-    /// <summary>
-    /// Movement in this game, hero can only move to adjacent hex at a time.
-    /// Hero want to move toward nearest enemy, stop moving once enemy is in attack range.
-    /// </summary>
-    #region Movement
-    // Walks toward the nearest enemy, one hex at a time. Stops once already adjacent to a enemy.
-    private STATE MoveTowardEnemy()
-    {
-        if (_walkRoutine != null)
-        {
-            _state = STATE.MOVE;
-            return STATE.IDLE;
-        }
-
-        // Find nearest enemy whereabout
-        Hero nearestEnemy = FindNearestEnemy();
-        if (nearestEnemy == null) return _state = STATE.IDLE;
-
-        // If there is enemy in the neighbors (adjacent), stop moving, and attacking instead
-        if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex))
-        {
-            _holdSince = -1f;
-            return _state = STATE.ATTACK;
-        }
-
-        // If there is ANY enemy that'll walk into my neighbors (adjacent), stop moving, and waiting for him instead
-        bool enemyArrivingNextToMe = _board.HeroesOnBoard.Any(h => h.Team != _team && _currentHex.GetNeighbors().Contains(h.ReservedHex));
-        if (enemyArrivingNextToMe) return _state = STATE.IDLE;
-
-        // Every other hero's reserved hex is off-limits to path through.
-        var reservedHexes = new HashSet<Hex>(_board.HeroesOnBoard.Where(h => h != this).Select(h => h.ReservedHex));
-
-        // Find next hex that could lead this hero to nearest enemy
-        Hex targetHex = HexPathfinder.FindValidHexToTarget(_currentHex, nearestEnemy.CurrentHex, reservedHexes);
-        if (targetHex == null)
-        {
-            _holdSince = -1f;
-            return _state = STATE.IDLE;
-        }
-
-        // Read the function comment
-        if (IsTargetHexMakeMeGoFurtherFromEnemy(nearestEnemy, targetHex)) return _state = STATE.IDLE;
-
-        _holdSince = -1f;
-
-        // Reserve the next hex
-        _reservedHex = targetHex;
-
-        // Start walking to target hex (adjacent hex)
-        _walkRoutine = StartCoroutine(Walk(targetHex));
-
-        return _state = STATE.MOVE;
-    }
-
-    // If my blocker is not in attack state, it's worth waiting a moment, since it's likely that ally will step aside soon.
-    private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
-    {
-        foreach (var neighbor in _currentHex.GetNeighbors())
-        {
-            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
-            if (neighborDist >= distFromMeToEnemy) continue;
-
-            var occupant = _board.HeroesOnBoard.FirstOrDefault(h => h != this && h.ReservedHex == neighbor);
-            if (occupant != null && occupant.State != STATE.ATTACK) return true;
-        }
-
-        return false;
-    }
-
-    /// <summary>
-    // If the next hex I CAN walk right now, ACTUALLY make me go further from that nearest enemy. It mean:
-    // 1) There is a shortest path to that enemy BUT I can't take that path right now because something is blocking me (usually a ally).
-    // So the PathFinding algo told me the longer path that I can also used.  
-    // 2) Instead of immediately take a longer path, I'll wait a moment in case my ally step out of the way
-    // So I can take a shortest path.
-    // 2.1) BUT it's not worth waiting for me, if ally that's blocking me is in Attack state, Because he surely won't move soon. 
-    /// </summary>
-    /// <returns value=TRUE> I'll wait a moment </returns>
-    /// <returns value=TRUE> No wait, I'll take a long path </returns>
-    private bool IsTargetHexMakeMeGoFurtherFromEnemy(Hero nearestEnemy, Hex targetHex)
-    {
-        float distFromMeToEnemy = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
-        if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
-        {
-            if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / _moveSpeed) return true;
-        }
-
-        return false;
-    }
-
-    // hero walk to target hex
-    private IEnumerator Walk(Hex targetHex)
-    {
-        Vector3 start = transform.position;
-        Vector3 end = targetHex.transform.position;
-        float duration = 1f / _moveSpeed;
-        float t = 0f;
-
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            float easedT = _walkCurve.Evaluate(t / duration);
-            transform.position = Vector3.Lerp(start, end, easedT);
-            yield return null;
-        }
-
-        transform.position = end;
-        _currentHex = targetHex;
-        _walkRoutine = null;
+        _stateMachine.Update();
     }
     #endregion
 
@@ -205,8 +104,10 @@ public class Hero : MonoBehaviour
     // geometrically-equal distances can still differ by a hair of floating-point error.
     private const float NearestEnemyTieEpsilon = 0.01f;
 
-    // Picks nearest enemy (If there is several nearest enemy, random it).
-    private Hero FindNearestEnemy()
+    // Picks nearest enemy (if there are several nearest enemies, random it). Sticks with
+    // the previous pick across calls as long as it's still tied for nearest, so the target
+    // doesn't flicker between equally-near enemies frame to frame.
+    internal Hero FindNearestEnemy()
     {
         var enemyDistances = _board.HeroesOnBoard
             .Where(target => target != this && target.Team != _team)
@@ -222,11 +123,5 @@ public class Hero : MonoBehaviour
 
         _nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
         return _nearestEnemy;
-    }
- 
-    void Attack()
-    {
-        Hero target = FindNearestEnemy();
-
     }
 }

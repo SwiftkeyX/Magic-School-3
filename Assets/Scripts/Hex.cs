@@ -36,7 +36,7 @@ public class Hex : MonoBehaviour
     // called by Hero - so hero know which hex is valid to move
     public List<Hex> GetNeighbors()
     {
-        if (_neighbors != null) InitializeNeighbors();
+        if (_neighbors == null) InitializeNeighbors();
 
         return _neighbors;
     }

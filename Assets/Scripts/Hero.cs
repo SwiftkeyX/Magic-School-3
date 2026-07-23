@@ -6,18 +6,30 @@ public class Hero : MonoBehaviour
     // ==================== Dependency ====================
     // Hero need to have board ref, in order to move toward the enemy, without it hero don't know enemy whereabout
     private BattleBoard _board;
+    private SpriteRenderer _sprite;
+    private HeroDataSO _data;
+    // private HeroDataRuntime _runtimeData;
 
-    // ==================== SerializeField ====================
-    [SerializeField] private float _moveSpeed = 1f; 
-    [SerializeField] private Hex _currentHex;
-    [SerializeField] private AnimationCurve _walkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     // ==================== Etc ====================
+    [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private AnimationCurve _walkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private Team _team;
+    private enum STATE { IDLE, MOVE, ATTACK, DEAD }
+
+    // ==================== Runtime data ========================
+    [SerializeField] private Hex _currentHex;
     private Coroutine _walkRoutine;
+    private Hero _nearestEnemy;
+    private int _currentHP;
+    private int _currentMana;
+
     // ==================== setter & getter ====================
     public Hex CurrentHex => _currentHex;
     public Team Team => _team;
+    public HeroDataSO Stat => _data;
+    public int CurrentHP => _currentHP;
+    public int CurrentMana => _currentMana;
 
     #region Setup
     public void SetBoard(BattleBoard board)
@@ -25,27 +37,45 @@ public class Hero : MonoBehaviour
         _board = board;
     }
 
-    // Init when hero spawn, because he need to teleport to his hex
-    public void Init(Hex startingHex, Team team)
+    // To make hero teleport to their hex and occupy it
+    public void Init(Hex startingHex, Team team, HeroDataSO stat)
     {
+        // move hero to target hex, occupy that hex
         _currentHex = startingHex;
+        _currentHex.SetOccupant(this);
+        transform.position = _currentHex.transform.position;
+
+        // set sprite's color for each team
         _team = team;
-        startingHex.SetOccupant(this);
-        transform.position = startingHex.transform.position;
+        if (_team == Team.Blue) _sprite.color = Color.blue;
+        else if (_team == Team.Red) _sprite.color = Color.red;
+
+        // initialzie stat
+        _data = stat;
+
+        // set up runtime stat from this hero's own data
+        _currentHP = _data.HP;
+        _currentMana = _data.StartMana;
     }
     #endregion
 
     #region Life Cycle
+    void Awake()
+    {
+        _sprite = GetComponent<SpriteRenderer>();
+    }
+
     void Start()
     {
-        if (_currentHex != null)
-            transform.position = _currentHex.transform.position;
     }
 
     void Update()
     {
-        Debug.Log("currentHex: " + _currentHex);
-        MoveTowardEnemy();
+        // Find nearest enemy whereabout
+        Hero nearestEnemy = FindNearestEnemy();
+
+        STATE state = MoveTowardEnemy();
+        if (state == STATE.ATTACK) Attack();
     }
     #endregion
 
@@ -55,47 +85,35 @@ public class Hero : MonoBehaviour
     /// </summary>
     #region Movement
     // Walks toward the nearest enemy, one hex at a time. Stops once already adjacent to a enemy.
-    private void MoveTowardEnemy()
+    private STATE MoveTowardEnemy()
     {
-        if (_walkRoutine != null) return;
+        if (_walkRoutine != null) return STATE.IDLE;
 
         // Find nearest enemy whereabout
         Hero nearestEnemy = FindNearestEnemy();
-        if (nearestEnemy == null) return;
+        if (nearestEnemy == null) return STATE.IDLE;
 
-        // If there is enemy in the neighbors (adjacent), stop moving
-        if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex))
-            return;
+        // If there is enemy in the neighbors (adjacent), stop moving, and attacking instead
+        if (_currentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex)) return STATE.ATTACK;
 
         Hex targetHex = ClosestNeighborToTarget(nearestEnemy.CurrentHex);
-        if (targetHex == null) return;
+        if (targetHex == null) return STATE.IDLE;
 
-        // Reserve the destination and release the current hex now, since we're committing to leave -
-        // otherwise another hero deciding this same frame could also target the same free hex.
+        // If every unoccupied neighbor is farther from the target than where we already are
+        // (the direct routes got claimed by allies this same frame), stay put instead of
+        // committing to a step backward - retry next frame once occupancy clears.
+        float distFromCurrent = Vector3.Distance(_currentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        float distFromTarget = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        if (distFromTarget >= distFromCurrent) return STATE.IDLE;
+
+        // Clear this hex, Occupy the next hex
         _currentHex.ClearOccupant();
         targetHex.SetOccupant(this);
 
+        // Start walking to target hex (adjacent hex)
         _walkRoutine = StartCoroutine(Walk(targetHex));
-    }
 
-    private Hero FindNearestEnemy()
-    {
-        Hero nearest = null;
-        float nearestDist = float.MaxValue;
-
-        foreach (var target in _board.HeroesOnBoard)
-        {
-            if (target == this || target.Team == _team) continue;
-
-            float dist = Vector3.Distance(_currentHex.transform.position, target.CurrentHex.transform.position);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                nearest = target;
-            }
-        }
-
-        return nearest;
+        return STATE.MOVE;
     }
 
     // Find which neighbors is closest to the target
@@ -141,4 +159,29 @@ public class Hero : MonoBehaviour
     }
     #endregion
 
+    private Hero FindNearestEnemy()
+    {
+        Hero nearest = null;
+        float nearestDist = float.MaxValue;
+
+        foreach (var target in _board.HeroesOnBoard)
+        {
+            if (target == this || target.Team == _team) continue;
+
+            float dist = Vector3.Distance(_currentHex.transform.position, target.CurrentHex.transform.position);
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                nearest = target;
+            }
+        }
+
+        return nearest;
+    }
+
+    void Attack()
+    {
+        Hero target = FindNearestEnemy();
+
+    }
 }

@@ -16,6 +16,9 @@ public class BenchPanelController : MonoBehaviour
     // ================= VisualElement ======================
     private VisualElement _benchPanel;
     private VisualElement _mainPanel;
+    private VisualElement _ghost;
+    // ================== etc =======================
+    private bool _isDragging = false;
 
     // ================= setter & getter ===================
     // ...
@@ -47,10 +50,25 @@ public class BenchPanelController : MonoBehaviour
         // get the reference for later use
         _benchPanel = benchPanel.Q<VisualElement>("BenchPanel");
 
+        InitializeGhost();
+
         // Make hero slot draggable
         MakeHeroDraggable();
     }
 
+    // temporarily ghost sprite
+    private void InitializeGhost()
+    {
+        _ghost = new VisualElement();
+        _ghost.style.position = Position.Absolute;
+        _ghost.style.width = 40;
+        _ghost.style.height = 40;
+        _ghost.style.backgroundColor = new Color(1f, 1f, 1f, 0.6f);
+    }
+
+    /// <summary>
+    /// A lot of comment since I never use those event before
+    /// </summary>
     private void MakeHeroDraggable()
     {
         List<VisualElement> heroSlots = _benchPanel.Query<VisualElement>("HeroSlot").ToList();
@@ -58,16 +76,54 @@ public class BenchPanelController : MonoBehaviour
         // register event to every hero slot.
         foreach (var heroSlot in heroSlots)
         {
-            // PointerDownEvent = when you click and hold on "h"
-            heroSlot.RegisterCallback<PointerDownEvent>(h =>
+            // when your mouse hold inside heroslot bound
+            // pointer = the point you start clicking
+            heroSlot.RegisterCallback<PointerDownEvent>(pointer =>
             {
-                // CapturePointer = This element keep getting PointerMove/PointerUp event which is essential for dragging
-                // (I don't know how it work)
-                heroSlot.CapturePointer(h.pointerId);
+                _isDragging = true;
 
-                // testing
-                Debug.Log($"Started dragging from slot: {heroSlot.name}");
+                // CapturePointer = All event from "heroslot" will continue working even though the "pointer" move out of bound
+                heroSlot.CapturePointer(pointer.pointerId);
+
+                // add ghost to main UI, this make ghost visible 
+                // ghost = the element that visually got drag together with your mouse e.g. hero sprite.
+                // technically, ghost is element that copy your mouse pointer's position.
+                _mainPanel.Add(_ghost);
+
+                // move ghost to the point you just click
+                MoveGhostTo(pointer.position);
+            });
+
+            // when you move your mouse inside heroslot bound
+            // if your mouse exit heroslot bound, the event won't fired, BUT we use CapturePointer so we can actually move out of bound
+            // pointer = the point you holding your mouse, so this pointer can move
+            heroSlot.RegisterCallback<PointerMoveEvent>(pointer =>
+            {
+                if (!_isDragging) return;
+
+                // move ghost using pointer
+                MoveGhostTo(pointer.position);
+            });
+
+            // when your mouse release from holding
+            // pointer = the point you release your mouse
+            heroSlot.RegisterCallback<PointerUpEvent>(pointer =>
+            {
+                _isDragging = false;
+
+                // opposite to CapturePointer
+                heroSlot.ReleasePointer(pointer.pointerId);
+
+                // release ghost from main UI, this make ghost go invisible
+                _ghost?.RemoveFromHierarchy();
             });
         }
+    }
+
+    // ghost copying the mouse position using "screen position method"
+    private void MoveGhostTo(Vector2 panelPosition)
+    {
+        _ghost.style.left = panelPosition.x - _ghost.resolvedStyle.width / 2f;
+        _ghost.style.top = panelPosition.y - _ghost.resolvedStyle.height / 2f;
     }
 }

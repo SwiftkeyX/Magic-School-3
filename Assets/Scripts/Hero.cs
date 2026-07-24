@@ -77,12 +77,6 @@ public class Hero : MonoBehaviour
     }
     #endregion
 
-    /// <summary>
-    /// A helper function, it is fine here for now.
-    /// But I want to move it somewhere in the future. Let's see if it got messy.
-    /// </summary>
-
-
     #region Statemachine
     // ====================================== stat getter ======================================
     public int GetAtk() => _combatData.Atk;
@@ -107,7 +101,7 @@ public class Hero : MonoBehaviour
         _combatData.SetCurrentHP(newHP);
     }
 
-    // Called by HeroDead.OnEnter() - kept here instead of exposing _sprite so SpriteRenderer stays private.
+    // When hero die, set his sprite transparent to indicate that he is dead.
     public void SetDeadVisual()
     {
         Color c = _sprite.color;
@@ -147,6 +141,21 @@ public class Hero : MonoBehaviour
         nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
         _combatData.SetNearestEnemy(nearestEnemy);
         return nearestEnemy;
+    }
+    #endregion
+
+    #region Gizmo
+    // draw gize between attacker and receiver to show which hero is attacking.
+    void OnDrawGizmos()
+    {
+        if (!Application.isPlaying || !IsInitialized) return;
+        if (State != HeroStateType.Attack) return;
+
+        Hero target = _combatData.NearestEnemy;
+        if (target == null) return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, target.transform.position);
     }
     #endregion
 }

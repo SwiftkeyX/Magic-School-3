@@ -138,7 +138,7 @@ PrefabInstance:
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _placementSO
       value: 
-      objectReference: {fileID: 11400000, guid: d463f91ef8273b745990eb447b643c28, type: 2}
+      objectReference: {fileID: 11400000, guid: 00ce476d9a8d9df8e40b0dda4eda3e30, type: 2}
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _heroPlacement.Array.size
       value: 7
@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b9bbbd74908bd48a00594846926532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BenchPanelController
-  benchPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
+  _benchPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -39,6 +39,10 @@ public class HeroDataInCombat
     public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);
     public void GainMana(int amount) => _stat.GainMana(amount);
 
+    // Applies the active skill's +50% damage to baseAtk if a skill cast is armed (mana hit
+    // full since the last attack), consuming the buff so it only affects this one hit.
+    public int ConsumeAttackDamage(int baseAtk) => _stat.ConsumeAttackDamage(baseAtk);
+
     public HeroDataInCombat(HeroDataSO dataSO)
     {
         _name = dataSO.Name;
@@ -59,6 +63,8 @@ public class Stat
     private int _startMana;
     private int _maxMana;
     private int _currentMana;
+    // Active skill: set once mana caps out, consumed by the next landed attack.
+    private bool _skillReady;
 
     // ===================== getter =====================
     public int HP => _maxHP;
@@ -79,6 +85,23 @@ public class Stat
     {
         int newMana = _currentMana + amount;
         _currentMana = newMana > _maxMana ? _maxMana : newMana;
+
+        // Full mana casts the active skill immediately - it empowers whichever attack lands next.
+        if (_currentMana >= _maxMana)
+        {
+            _skillReady = true;
+            _currentMana = 0;
+        }
+    }
+
+    // This logic kinda bullshit and ruin readability 
+    // But it was fine now I guess
+    public int ConsumeAttackDamage(int baseAtk)
+    {
+        if (!_skillReady) return baseAtk;
+
+        _skillReady = false;
+        return baseAtk * 5;
     }
 
     public Stat(HeroDataSO stat)

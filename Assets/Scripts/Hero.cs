@@ -80,10 +80,14 @@ public class Hero : MonoBehaviour
     #region Statemachine
     // ====================================== stat getter ======================================
     public int GetAtk() => _combatData.Atk;
+    // Raw Atk, with the active skill's +50% applied (and consumed) if a cast is armed.
+    public int GetAttackDamage() => _combatData.ConsumeAttackDamage(_combatData.Atk);
     public float GetAttackSpeed() => _combatData.AttackSpeed;
     public int GetRange() => _combatData.Range;
     public int GetCurrentHP() => _combatData.CurrentHP;
     public int GetMaxHP() => _combatData.HP;
+    public int GetCurrentMana() => _combatData.CurrentMana;
+    public int GetMaxMana() => _combatData.MaxMana;
 
     
     // ====================================== stat setter ======================================

@@ -50,8 +50,8 @@ public class HeroAttack : HeroState
         bool isAaReset = (_aaCooldown <= 0f);
         if (isAaReset)
         {
-            // apply damage to target
-            _nearestEnemy.TakeDamage(_me.GetAtk());
+            // apply damage to target (includes the active skill's +50% if a cast is armed)
+            _nearestEnemy.TakeDamage(_me.GetAttackDamage());
 
             // gain mana
             _me.GainMana(ManaPerAttack);

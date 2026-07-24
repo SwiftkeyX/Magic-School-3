@@ -38,8 +38,8 @@ public class HeroIdle : HeroState
         Hero nearestEnemy = _me.FindNearestEnemy();
         if (nearestEnemy == null) return;
 
-        // If there is enemy in the neighbors (adjacent), stop moving, and transition to attack state
-        if (IsEnemyMyNeighbors(nearestEnemy))
+        // If enemy is within attack range, stop moving, and transition to attack state
+        if (IsEnemyInAttackRange(nearestEnemy))
         {
             _me.StateMachine.ChangeState(HeroStateType.Attack);
             return;
@@ -67,9 +67,9 @@ public class HeroIdle : HeroState
     }
 
 
-    private bool IsEnemyMyNeighbors(Hero nearestEnemy)
+    private bool IsEnemyInAttackRange(Hero nearestEnemy)
     {
-        return _me.GetCurrentHex().IsAdjacentTo(nearestEnemy.GetCurrentHex());
+        return _me.GetCurrentHex().IsWithinRange(nearestEnemy.GetCurrentHex(), _me.GetRange());
     }
 
     private bool IsEnemyArrivingNextToMe()

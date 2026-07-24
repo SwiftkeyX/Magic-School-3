@@ -21,6 +21,7 @@ public class HeroDataInCombat
     public int MG => _stat.MG;
     public int MR => _stat.MR;
     public float AttackSpeed => _stat.AttackSpeed;
+    public int Range => _stat.Range;
     public int StartMana => _stat.StartMana;
     public int MaxMana => _stat.MaxMana;
     // current hex = hex that this hero is currently standing on
@@ -54,6 +55,7 @@ public class Stat
     private int _magic;
     private int _magicResist;
     private float _attackSpeed;
+    private int _range;
     private int _startMana;
     private int _maxMana;
     private int _currentMana;
@@ -65,6 +67,7 @@ public class Stat
     public int MG => _magic;
     public int MR => _magicResist;
     public float AttackSpeed => _attackSpeed;
+    public int Range => _range;
     public int StartMana => _startMana;
     public int MaxMana => _maxMana;
     public int CurrentHP => _currentHP;
@@ -86,6 +89,7 @@ public class Stat
         _magic = stat.MG;
         _magicResist = stat.MR;
         _attackSpeed = stat.AttackSpeed;
+        _range = stat.Range;
         _startMana = stat.StartMana;
         _maxMana = stat.MaxMana;
 

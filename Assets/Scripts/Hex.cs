@@ -42,6 +42,35 @@ public class Hex : MonoBehaviour
 
     public bool IsAdjacentTo(Hex other) => GetNeighbors().Contains(other);
 
+    // Generalizes IsAdjacentTo to N hex-hops via BFS, for heroes whose attack range is > 1.
+    // BFS over the neighbor graph rather than raw world-space distance, since hex spacing
+    // isn't uniform (same-column neighbors are ~1.0 apart, diagonal ~1.118 apart) - a
+    // distance-based cutoff would drift as range grows, hop-counting can't.
+    public bool IsWithinRange(Hex other, int range)
+    {
+        if (other == this) return true;
+
+        var visited = new HashSet<Hex> { this };
+        var frontier = new List<Hex> { this };
+
+        for (int step = 0; step < range; step++)
+        {
+            var nextFrontier = new List<Hex>();
+            foreach (var hex in frontier)
+            {
+                foreach (var neighbor in hex.GetNeighbors())
+                {
+                    if (!visited.Add(neighbor)) continue;
+                    if (neighbor == other) return true;
+                    nextFrontier.Add(neighbor);
+                }
+            }
+            frontier = nextFrontier;
+        }
+
+        return false;
+    }
+
     // Neighbors don't create itself, we need to calculate it ourself
     private void InitializeNeighbors()
     {

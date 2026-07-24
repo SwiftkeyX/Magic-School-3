@@ -87,6 +87,7 @@ public class Hero : MonoBehaviour
     // ====================================== stat getter ======================================
     public int GetAtk() => _combatData.Atk;
     public float GetAttackSpeed() => _combatData.AttackSpeed;
+    public int GetRange() => _combatData.Range;
     public int GetCurrentHP() => _combatData.CurrentHP;
     public int GetMaxHP() => _combatData.HP;
 

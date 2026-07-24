@@ -2,8 +2,7 @@
 // damage, grants ManaPerAttack mana, and plays a short dash-toward-and-back animation - same
 // Lerp + AnimationCurve approach as HeroWalk, but AttackCurve is a 0 -> 1 -> 0 hump so it
 // returns to the start instead of ending at the target. Re-checks every frame whether the
-// nearest enemy is still adjacent, so a hero resumes moving as soon as that stops being true.
-// Going to 0 HP has no special handling yet - death (HeroDead state) isn't wired up in this pass.
+// nearest enemy is still within Range, so a hero resumes moving as soon as that stops being true.
 using UnityEngine;
 
 public class HeroAttack : HeroState
@@ -11,8 +10,7 @@ public class HeroAttack : HeroState
     public override HeroStateType StateType => HeroStateType.Attack;
     private const int ManaPerAttack = 10;
     private const float DashDuration = 0.2f;
-    // How far toward the enemy hex the dash lunges, as a fraction of the distance between them.
-    private const float DashDistanceFraction = 0.5f;
+    private const float DashDistance = 0.5f;
 
     private Hero _nearestEnemy;
     private float _aaCooldown = 0f;
@@ -39,8 +37,11 @@ public class HeroAttack : HeroState
     {
         _nearestEnemy = _me.FindNearestEnemy();
 
-        // check if I have target adjacent to me. if no, exit attack state
+        // check if I have a target within range. if no, exit attack state
         CheckSwitchState();
+
+        bool isInRange = _nearestEnemy != null && _me.GetCurrentHex().IsWithinRange(_nearestEnemy.GetCurrentHex(), _me.GetRange());
+        if (!isInRange) return;
 
         // update aa timer
         _aaCooldown -= Time.deltaTime;
@@ -76,9 +77,9 @@ public class HeroAttack : HeroState
             return;
         }
 
-        // If there isn't a single enemy in the neighbors, transition to idle
-        bool isEnemyMyNeighbor = _nearestEnemy != null && _me.GetCurrentHex().IsAdjacentTo(_nearestEnemy.GetCurrentHex());
-        if (!isEnemyMyNeighbor)
+        // If the enemy is no longer within attack range, transition to idle
+        bool isEnemyInRange = _nearestEnemy != null && _me.GetCurrentHex().IsWithinRange(_nearestEnemy.GetCurrentHex(), _me.GetRange());
+        if (!isEnemyInRange)
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);
             return;
@@ -89,7 +90,9 @@ public class HeroAttack : HeroState
     {
         // attack animation: dash toward the enemy, then back to where we started
         _dashStart = _me.transform.position;
-        _dashPeak = Vector3.Lerp(_dashStart, _nearestEnemy.transform.position, DashDistanceFraction);
+        Vector3 toEnemy = _nearestEnemy.transform.position - _dashStart;
+        Vector3 direction = toEnemy.sqrMagnitude > 0f ? toEnemy.normalized : Vector3.zero;
+        _dashPeak = _dashStart + direction * DashDistance;
         _dashElapsed = 0f;
     }
 

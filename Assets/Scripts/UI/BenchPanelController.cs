@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -111,19 +112,41 @@ public class BenchPanelController : MonoBehaviour
             {
                 _isDragging = false;
 
-                // opposite to CapturePointer
+                // undo the CapturePointer
                 heroSlot.ReleasePointer(pointer.pointerId);
 
                 // release ghost from main UI, this make ghost go invisible
                 _ghost?.RemoveFromHierarchy();
+
+                // placing hero on the release point
+                PlaceHero();
             });
         }
     }
 
-    // ghost copying the mouse position using "screen position method"
+    // ghost copying the mouse position using "screen panel method"
     private void MoveGhostTo(Vector2 panelPosition)
     {
         _ghost.style.left = panelPosition.x - _ghost.resolvedStyle.width / 2f;
         _ghost.style.top = panelPosition.y - _ghost.resolvedStyle.height / 2f;
+    }
+
+    private void PlaceHero()
+    {
+        // This project has Active Input Handling set to the new Input System package
+        // (see Packages/manifest.json: com.unity.inputsystem) - the legacy Input class is
+        // disabled project-wide, so Input.mousePosition throws. Mouse.current is the
+        // equivalent read in the new system.
+        Vector3 screenPosition = Mouse.current.position.ReadValue();
+
+        // screenPosition is in real screen pixels - Physics2D.OverlapPoint needs a WORLD
+        // position, so convert through the camera first (see Step 3 of
+        // .claude/docs/drag-hero-to-board.cs for why the .z line below is needed).
+        screenPosition.z = -Camera.main.transform.position.z;
+        Vector3 placementPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+
+        bool isThePlacementHitSomething = Physics2D.OverlapPoint(placementPosition);
+
+        if (isThePlacementHitSomething) Debug.Log("aaaa");
     }
 }

@@ -85,39 +85,24 @@ public class Step2_DragGhost
 // scale mode/reference resolution). Input.mousePosition is always real screen pixels,
 // so using that for the world-space conversion sidesteps the whole question.
 //
-// Hex itself still has no collider, so we can't Physics2D.Raycast against hex tiles -
-// convert to world space, then find the nearest Hex the same way Hex.cs itself measures
-// neighbors: by raw distance, with a cutoff so a drop far from any hex correctly
-// resolves to "no valid target."
-//
-// Note: Hero IS getting a Collider2D + Kinematic Rigidbody2D later, for projectile
-// hitbox detection (see .claude memory: project_combat_hitbox_design). That doesn't
-// change anything here - this is a one-shot pointer query against board tiles, not
-// object-vs-object collision, so it stays a plain distance search regardless.
+// Hex has a Collider2D now (decided 2026-07-24, see .claude memory:
+// project_combat_hitbox_design) - purely for consistency with the projectile hitboxes
+// Hero is getting, so board-tile picking goes through Physics2D like everything else
+// instead of a manual nearest-distance search. Hex is static, so it needs no
+// Rigidbody2D - Physics2D.OverlapPoint detects Rigidbody2D-less colliders just fine
+// (that requirement only applies to trigger *callbacks* like OnTriggerEnter2D, not
+// overlap queries like this one). Mark the collider isTrigger = true so it never
+// produces physics collision response.
 public class Step3_FindDropHex
 {
-    private const float DropDistanceThreshold = 0.6f; // tune to your hex size
-
-    public Hex FindHexUnderPointer(BattleBoard board, Camera cam)
+    public Hex FindHexUnderPointer(Camera cam)
     {
         Vector3 screenPos = Input.mousePosition; // real screen pixels, NOT the UI event's panel position
         screenPos.z = -cam.transform.position.z; // distance from an orthographic camera to the board's z=0 plane
         Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
 
-        Hex closest = null;
-        float closestDist = float.MaxValue;
-
-        foreach (var hex in board.Hexs.Values)
-        {
-            float dist = Vector3.Distance(worldPos, hex.transform.position);
-            if (dist < closestDist)
-            {
-                closestDist = dist;
-                closest = hex;
-            }
-        }
-
-        return closestDist <= DropDistanceThreshold ? closest : null;
+        Collider2D hit = Physics2D.OverlapPoint(worldPos);
+        return hit != null ? hit.GetComponent<Hex>() : null;
     }
 }
 

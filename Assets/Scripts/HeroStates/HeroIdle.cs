@@ -27,13 +27,13 @@ public class HeroIdle : HeroState
 
     protected override void CheckSwitchState()
     {
-        Hero nearestEnemy = Hero.FindNearestEnemy();
+        Hero nearestEnemy = _me.FindNearestEnemy();
         if (nearestEnemy == null) return;
 
         // If there is enemy in the neighbors (adjacent), stop moving, and attack instead
         if (IsEnemyMyNeighbors(nearestEnemy))
         {
-            Hero.StateMachine.ChangeState(HeroStateType.Attack);
+            _me.StateMachine.ChangeState(HeroStateType.Attack);
             return;
         }
 
@@ -44,7 +44,7 @@ public class HeroIdle : HeroState
         }
 
         // Find next hex that could lead this hero to nearest enemy
-        Hex targetHex = HexPathfinder.FindValidHexToTarget(Hero.CurrentHex, nearestEnemy.CurrentHex, ReservedHexes());
+        Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.GetCurrentHex(), nearestEnemy.GetCurrentHex(), ReservedHexes());
         if (targetHex == null) return;
 
         // Do I wait for the blocker to move? (Read function's comment)
@@ -54,24 +54,24 @@ public class HeroIdle : HeroState
         }
 
         // Finally, I'll decide to walk
-        Hero.SetReservedHex(targetHex);
-        Hero.StateMachine.ChangeState(HeroStateType.Walk);
+        _me.SetReservedHex(targetHex);
+        _me.StateMachine.ChangeState(HeroStateType.Walk);
     }
 
 
     private bool IsEnemyMyNeighbors(Hero nearestEnemy)
     {
-        return Hero.CurrentHex.GetNeighbors().Contains(nearestEnemy.CurrentHex);
+        return _me.GetCurrentHex().IsAdjacentTo(nearestEnemy.GetCurrentHex());
     }
 
     private bool IsEnemyArrivingNextToMe()
     {
-        return Hero.Board.HeroesOnBoard.Any(h => h.Team != Hero.Team && Hero.CurrentHex.GetNeighbors().Contains(h.ReservedHex));
+        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && _me.GetCurrentHex().IsAdjacentTo(h.GetReservedHex()));
     }
 
     private HashSet<Hex> ReservedHexes()
     {
-        return new HashSet<Hex>(Hero.Board.HeroesOnBoard.Where(h => h != Hero).Select(h => h.ReservedHex));
+        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me).Select(h => h.GetReservedHex()));
     }
 
     /// <summary>
@@ -85,14 +85,14 @@ public class HeroIdle : HeroState
     /// <returns = FALSE> I'll take a longer path </returns>
     private bool IsTargetHexMakeMeGoFurtherFromEnemy(Hero nearestEnemy, Hex targetHex)
     {
-        float distFromMeToEnemy = Vector3.Distance(Hero.CurrentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+        float distFromMeToEnemy = Vector3.Distance(_me.GetCurrentHex().transform.position, nearestEnemy.GetCurrentHex().transform.position);
+        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.GetCurrentHex().transform.position);
         bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
 
         if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
         {
             if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / Hero.MoveSpeed) return true;
+            if (Time.time - _holdSince < 1f / _me.MoveSpeed) return true;
         }
 
         return false;
@@ -102,12 +102,12 @@ public class HeroIdle : HeroState
     // that ally will step aside soon.
     private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
     {
-        foreach (var neighbor in Hero.CurrentHex.GetNeighbors())
+        foreach (var neighbor in _me.GetCurrentHex().GetNeighbors())
         {
-            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
+            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.GetCurrentHex().transform.position);
             if (neighborDist >= distFromMeToEnemy) continue;
 
-            var occupant = Hero.Board.HeroesOnBoard.FirstOrDefault(h => h != Hero && h.ReservedHex == neighbor);
+            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.GetReservedHex() == neighbor);
             if (occupant != null && occupant.State != HeroStateType.Attack) return true;
         }
 

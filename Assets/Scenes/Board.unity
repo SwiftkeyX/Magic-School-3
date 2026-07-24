@@ -130,11 +130,15 @@ PrefabInstance:
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _placement
       value: 
-      objectReference: {fileID: 11400000, guid: 61d12ba4e5f676148819e81a91869919, type: 2}
+      objectReference: {fileID: 11400000, guid: 1c57823a222d29547a891c2d671466b5, type: 2}
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _heroPrefab
       value: 
       objectReference: {fileID: 8729075628341993162, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
+    - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: _placementSO
+      value: 
+      objectReference: {fileID: 11400000, guid: d463f91ef8273b745990eb447b643c28, type: 2}
     - target: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: _heroPlacement.Array.size
       value: 7

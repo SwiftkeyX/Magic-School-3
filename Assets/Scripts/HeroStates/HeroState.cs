@@ -4,11 +4,11 @@
 // conditions each frame - that dispatcher is exactly the if-else pile this pattern replaces.
 public abstract class HeroState
 {
-    protected readonly Hero Hero;
+    protected readonly Hero _me;
 
     protected HeroState(Hero hero)
     {
-        Hero = hero;
+        _me = hero;
     }
 
     public abstract HeroStateType StateType { get; }

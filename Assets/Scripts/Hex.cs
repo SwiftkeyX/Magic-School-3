@@ -40,6 +40,8 @@ public class Hex : MonoBehaviour
         return _neighbors;
     }
 
+    public bool IsAdjacentTo(Hex other) => GetNeighbors().Contains(other);
+
     // Neighbors don't create itself, we need to calculate it ourself
     private void InitializeNeighbors()
     {

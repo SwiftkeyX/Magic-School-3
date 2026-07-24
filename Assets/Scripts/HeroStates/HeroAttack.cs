@@ -42,31 +42,28 @@ public class HeroAttack : HeroState
         // check if I have target adjacent to me. if no, exit attack state
         CheckSwitchState();
 
+        // update aa timer
         _aaCooldown -= Time.deltaTime;
-        if (_aaCooldown <= 0f)
+
+        // attack again if aa is reset
+        bool isAaReset = (_aaCooldown <= 0f);
+        if (isAaReset)
         {
+            // apply damage to target
             _nearestEnemy.TakeDamage(_me.GetAtk());
+            
+            // gain mana
             _me.GainMana(ManaPerAttack);
+            
+            // aa is cooldown
             _aaCooldown += 1f / _me.GetAttackSpeed();
 
             // attack animation: dash toward the enemy, then back to where we started
-            _dashStart = _me.transform.position;
-            _dashPeak = Vector3.Lerp(_dashStart, _nearestEnemy.transform.position, DashDistanceFraction);
-            _dashElapsed = 0f;
+            AttackAnimation();
         }
 
-        UpdateDash();
-    }
-
-    private void UpdateDash()
-    {
-        if (_dashElapsed < 0f) return;
-
-        _dashElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(_dashElapsed / DashDuration);
-        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.AttackCurve.Evaluate(t));
-
-        if (t >= 1f) _dashElapsed = -1f;
+        // update attack animation
+        UpdateAttackAnimation();
     }
 
     protected override void CheckSwitchState()
@@ -79,4 +76,22 @@ public class HeroAttack : HeroState
         }
     }
 
+    private void AttackAnimation()
+    {
+        // attack animation: dash toward the enemy, then back to where we started
+        _dashStart = _me.transform.position;
+        _dashPeak = Vector3.Lerp(_dashStart, _nearestEnemy.transform.position, DashDistanceFraction);
+        _dashElapsed = 0f;
+    }
+
+    private void UpdateAttackAnimation()
+    {
+        if (_dashElapsed < 0f) return;
+
+        _dashElapsed += Time.deltaTime;
+        float t = Mathf.Clamp01(_dashElapsed / DashDuration);
+        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.AttackCurve.Evaluate(t));
+
+        if (t >= 1f) _dashElapsed = -1f;
+    }
 }

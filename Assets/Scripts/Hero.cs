@@ -106,6 +106,14 @@ public class Hero : MonoBehaviour
         _combatData.SetCurrentHP(newHP);
     }
 
+    // Called by HeroDead.OnEnter() - kept here instead of exposing _sprite so SpriteRenderer stays private.
+    public void SetDeadVisual()
+    {
+        Color c = _sprite.color;
+        c.a = 0.3f;
+        _sprite.color = c;
+    }
+
 
     // ====================================== position ======================================
     public Hex GetCurrentHex() => _combatData.CurrentHex;
@@ -121,7 +129,7 @@ public class Hero : MonoBehaviour
     public Hero FindNearestEnemy()
     {
         var enemyDistances = _board.HeroesOnBoard
-            .Where(target => target != this && target.Team != _team)
+            .Where(target => target != this && target.Team != _team && target.State != HeroStateType.Dead)
             .Select(target => new { target, dist = Vector3.Distance(GetCurrentHex().transform.position, target.GetCurrentHex().transform.position) })
             .ToList();
 

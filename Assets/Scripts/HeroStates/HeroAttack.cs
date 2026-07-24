@@ -51,10 +51,10 @@ public class HeroAttack : HeroState
         {
             // apply damage to target
             _nearestEnemy.TakeDamage(_me.GetAtk());
-            
+
             // gain mana
             _me.GainMana(ManaPerAttack);
-            
+
             // aa is cooldown
             _aaCooldown += 1f / _me.GetAttackSpeed();
 
@@ -68,11 +68,20 @@ public class HeroAttack : HeroState
 
     protected override void CheckSwitchState()
     {
-        bool isEnemyMyNeighbor = _nearestEnemy != null && _me.GetCurrentHex().IsAdjacentTo(_nearestEnemy.GetCurrentHex());
+        // If hp is below 0, transition to dead, WOW
+        bool isMeDead = (_me.GetCurrentHP() <= 0);
+        if (isMeDead)
+        {
+            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            return;
+        }
 
+        // If there isn't a single enemy in the neighbors, transition to idle
+        bool isEnemyMyNeighbor = _nearestEnemy != null && _me.GetCurrentHex().IsAdjacentTo(_nearestEnemy.GetCurrentHex());
         if (!isEnemyMyNeighbor)
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);
+            return;
         }
     }
 

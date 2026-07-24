@@ -27,10 +27,18 @@ public class HeroIdle : HeroState
 
     protected override void CheckSwitchState()
     {
+        // If hp is below 0, transition to dead, WOW
+        bool isMeDead = (_me.GetCurrentHP() <= 0);
+        if (isMeDead)
+        {
+            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            return;
+        }
+
         Hero nearestEnemy = _me.FindNearestEnemy();
         if (nearestEnemy == null) return;
 
-        // If there is enemy in the neighbors (adjacent), stop moving, and attack instead
+        // If there is enemy in the neighbors (adjacent), stop moving, and transition to attack state
         if (IsEnemyMyNeighbors(nearestEnemy))
         {
             _me.StateMachine.ChangeState(HeroStateType.Attack);
@@ -66,12 +74,13 @@ public class HeroIdle : HeroState
 
     private bool IsEnemyArrivingNextToMe()
     {
-        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && _me.GetCurrentHex().IsAdjacentTo(h.GetReservedHex()));
+        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.State != HeroStateType.Dead && _me.GetCurrentHex().IsAdjacentTo(h.GetReservedHex()));
     }
 
     private HashSet<Hex> ReservedHexes()
     {
-        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me).Select(h => h.GetReservedHex()));
+        // Dead heroes don't hold their hex - otherwise a corpse would block that hex forever.
+        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me && h.State != HeroStateType.Dead).Select(h => h.GetReservedHex()));
     }
 
     /// <summary>
@@ -107,7 +116,7 @@ public class HeroIdle : HeroState
             float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.GetCurrentHex().transform.position);
             if (neighborDist >= distFromMeToEnemy) continue;
 
-            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.GetReservedHex() == neighbor);
+            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.State != HeroStateType.Dead && h.GetReservedHex() == neighbor);
             if (occupant != null && occupant.State != HeroStateType.Attack) return true;
         }
 

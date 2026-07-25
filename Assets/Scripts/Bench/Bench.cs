@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Bench : MonoBehaviour
 {
+    [SerializeField] private Camera _cam;
     [SerializeField] private List<BenchSlot> _benchSlots;
+
+    private bool _isHeroHolded = false;
+    private Hero _heroHolded;
 
     /// <summary>
     /// Spawn hero on the bench
@@ -21,6 +25,8 @@ public class Bench : MonoBehaviour
 
         // spawn hero prefab, move it to that slot, reserve the slot
         GameObject heroPrefab = Instantiate(data.Prefab);
+        Hero hero = heroPrefab.GetComponent<Hero>();
+        hero.SetTeam(Team.Blue);
         heroPrefab.transform.position = freeSlot.transform.position;
         freeSlot.SetReserved(true);
     }

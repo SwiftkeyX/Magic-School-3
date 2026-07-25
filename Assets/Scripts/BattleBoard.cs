@@ -15,7 +15,7 @@ public class BattleBoard : MonoBehaviour
     private List<Hero> _heroesOnBoard = new List<Hero>();
 
     // ========================= etc =============================
-    [SerializeField] private bool _seedMode;  
+    [SerializeField] private bool _seedMode;
 
     // ======================== Setter & Getter ========================
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
@@ -62,7 +62,7 @@ public class BattleBoard : MonoBehaviour
         // If seedmode activate, spawn every hero to the board at the start of the combat
         SpawnHeroWithSeed();
 
-        
+
     }
 
     // Spawn every hero to the board at the start of the combat.
@@ -75,20 +75,24 @@ public class BattleBoard : MonoBehaviour
         {
             HeroDataSO data = heroPlacement.dataSO;
             HexPlacement placement = heroPlacement.hexPlacement;
-            SpawnHero(_hexs[placement], placement.team, data);
+            SpawnHeroOnBoardDirectly(_hexs[placement], placement.team, data);
         }
     }
 
-    // Spawn hero on the specific hex
-    private Hero SpawnHero(Hex targetHex, Team team, HeroDataSO dataSO)
+    // "Spawn hero on board directly" will skip the bench logic part.
+    // player normally go through bench logic first: buy hero => hero spawn on bench => drag hero to the board.
+    // but for enemy side, their heroes just spawn on board directly. 
+    // player side can also use this though, because sometime we need to test the combat quickly, and want to skip the bench part.
+    private Hero SpawnHeroOnBoardDirectly(Hex targetHex, Team team, HeroDataSO dataSO)
     {
         // spawn hero prefab
         GameObject heroInstance = Instantiate(dataSO.Prefab, transform);
         Hero hero = heroInstance.GetComponent<Hero>();
 
-        // init hero: move hero to initial hex, assign team, assign stat
+        // init hero: move hero to initial hex, assign team
         hero.SetBoard(this);
-        hero.Init(targetHex, team, dataSO);
+        hero.SetTeam(team);
+        hero.MoveHeroInPreparationState(targetHex);
 
         // track that hero via _heroesOnBoard
         _heroesOnBoard.Add(hero);

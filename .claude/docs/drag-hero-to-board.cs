@@ -1,138 +1,139 @@
 // REFERENCE ONLY - lives outside Assets/, so Unity never compiles this file.
-// Four illustrative snippets, one per step of "drag a hero from the Bench onto the board."
+// Five illustrative snippets, one per step of "drag a hero from the Bench onto the board."
 // None of this is wired into the real game - copy the ideas into your own scripts under
-// Assets/Scripts, adjusting names/paths to match your actual BenchPanelController setup.
-
-using UnityEngine;
-using UnityEngine.UIElements;
-
-// =====================================================================================
-// STEP 1 - Detect the drag start on a HeroSlot (UI Toolkit side)
-// =====================================================================================
-// Attach this kind of logic wherever you currently build/reference each "HeroSlot"
-// VisualElement (e.g. inside BenchPanelController, once slots are wired to real data).
-public class Step1_DragStart
-{
-    public void RegisterSlot(VisualElement heroSlot)
-    {
-        heroSlot.RegisterCallback<PointerDownEvent>(evt =>
-        {
-            // CapturePointer means THIS element keeps getting PointerMove/PointerUp events
-            // even after the cursor moves outside its bounds - essential for dragging.
-            heroSlot.CapturePointer(evt.pointerId);
-
-            Debug.Log($"Started dragging from slot: {heroSlot.name}");
-        });
-    }
-}
-
-// =====================================================================================
-// STEP 2 - Track the drag: a floating element that follows the pointer
-// =====================================================================================
-// A minimal "ghost" that mirrors cursor position while the slot has pointer capture.
-// In a real version you'd show a hero icon/sprite here instead of a plain box.
-public class Step2_DragGhost
-{
-    private VisualElement _ghost;
-    private VisualElement _root; // e.g. BenchPanelController's UIDocument.rootVisualElement
-
-    public void RegisterSlot(VisualElement heroSlot, VisualElement rootVisualElement)
-    {
-        _root = rootVisualElement;
-
-        heroSlot.RegisterCallback<PointerDownEvent>(evt =>
-        {
-            heroSlot.CapturePointer(evt.pointerId);
-
-            _ghost = new VisualElement();
-            _ghost.style.position = Position.Absolute;
-            _ghost.style.width = 40;
-            _ghost.style.height = 40;
-            _ghost.style.backgroundColor = new Color(1f, 1f, 1f, 0.6f);
-            _root.Add(_ghost);
-
-            MoveGhostTo(evt.position);
-        });
-
-        heroSlot.RegisterCallback<PointerMoveEvent>(evt =>
-        {
-            if (_ghost == null) return; // not currently dragging
-            MoveGhostTo(evt.position);
-        });
-
-        heroSlot.RegisterCallback<PointerUpEvent>(evt =>
-        {
-            heroSlot.ReleasePointer(evt.pointerId);
-            _ghost?.RemoveFromHierarchy();
-            _ghost = null;
-        });
-    }
-
-    private void MoveGhostTo(Vector2 panelPosition)
-    {
-        // panelPosition is in PANEL space here (fine for positioning a UI Toolkit element -
-        // see Step 3 for why this is NOT the same thing as screen space).
-        _ghost.style.left = panelPosition.x - _ghost.resolvedStyle.width / 2f;
-        _ghost.style.top = panelPosition.y - _ghost.resolvedStyle.height / 2f;
-    }
-}
-
-// =====================================================================================
-// STEP 3 - The bridge: figure out which Hex (if any) is under the drop point
-// =====================================================================================
-// This is the part that trips people up: UI Toolkit events give you PANEL-space
-// coordinates, not necessarily the same as screen pixels (depends on PanelSettings'
-// scale mode/reference resolution). Input.mousePosition is always real screen pixels,
-// so using that for the world-space conversion sidesteps the whole question.
+// Assets/Scripts, adjusting names/paths to match your actual Bench/BenchSlot/Hero setup.
 //
-// Hex has a Collider2D now (decided 2026-07-24, see .claude memory:
-// project_combat_hitbox_design) - purely for consistency with the projectile hitboxes
-// Hero is getting, so board-tile picking goes through Physics2D like everything else
-// instead of a manual nearest-distance search. Hex is static, so it needs no
-// Rigidbody2D - Physics2D.OverlapPoint detects Rigidbody2D-less colliders just fine
-// (that requirement only applies to trigger *callbacks* like OnTriggerEnter2D, not
-// overlap queries like this one). Mark the collider isTrigger = true so it never
-// produces physics collision response.
-public class Step3_FindDropHex
+// SUPERSEDES an earlier version of this doc that assumed the Bench was a UI Toolkit panel
+// (BenchPanelController + HeroSlot VisualElements, PointerDownEvent/PointerUpEvent). That's
+// no longer the plan - the Bench is now real world-space Hero GameObjects standing on
+// Bench/BenchSlot prefabs (see Assets/Scripts/Bench/), because UI Toolkit can only show a
+// flat icon, not an actual animated Hero. So this version drags the real Hero GameObject
+// directly, the same way the board itself works, instead of a UI ghost element.
+// The Shop panel (buying heroes) is still UI Toolkit, drag-to-buy - see
+// Assets/Scripts/UI/ShopPanelController.cs. This doc is only about Bench -> Board.
+
+using System.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+// This project has Active Input Handling set to "Input System Package (New)" exclusively
+// (confirmed 2026-07-25 via a runtime InvalidOperationException) - UnityEngine.Input throws
+// at runtime the moment anything reads it, even though it still compiles fine. Always use
+// Mouse.current from UnityEngine.InputSystem instead, everywhere below.
+
+// =====================================================================================
+// STEP 1 - Give Hero and Hex a Collider2D
+// =====================================================================================
+// Neither has one yet (checked 2026-07-25: zero Collider2D components anywhere in
+// Board.unity). Physics2D.OverlapPoint needs a collider to hit. Mark both isTrigger =
+// true so they never produce physics collision response - they're purely for point-picking.
+// Hex is static, so it needs no Rigidbody2D (that requirement only applies to trigger
+// *callbacks* like OnTriggerEnter2D, not overlap queries like OverlapPoint).
+public class Step1_Colliders
 {
-    public Hex FindHexUnderPointer(Camera cam)
+    // Add via Inspector or add_component on both the Hero and Hex prefabs:
+    //   Hero prefab -> CircleCollider2D or BoxCollider2D, isTrigger = true
+    //   Hex prefab  -> matches its tile shape, isTrigger = true
+}
+
+// =====================================================================================
+// STEP 2 - Pick up: mouse down on a benched Hero
+// =====================================================================================
+public class Step2_PickUp
+{
+    private Hero _draggingHero;
+    private BenchSlot _sourceSlot;
+
+    public void TryStartDrag(Camera cam, Bench bench)
     {
-        Vector3 screenPos = Input.mousePosition; // real screen pixels, NOT the UI event's panel position
-        screenPos.z = -cam.transform.position.z; // distance from an orthographic camera to the board's z=0 plane
+        Vector3 screenPos = Mouse.current.position.ReadValue();
+        screenPos.z = -cam.transform.position.z;
         Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
 
         Collider2D hit = Physics2D.OverlapPoint(worldPos);
-        return hit != null ? hit.GetComponent<Hex>() : null;
+        Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
+        if (hero == null) return;
+
+        // TODO: Bench/BenchSlot need a way to answer "which slot (if any) is this hero
+        // sitting in right now?" - e.g. BenchSlot could track an Occupant reference
+        // (mirroring how Hex conceptually tracks Occupant on the board side), or Bench
+        // itself could expose a lookup. Neither exists yet.
+        BenchSlot slot = bench.FindSlotFor(hero); // <- illustrative, not real yet
+        if (slot == null) return; // hero isn't on the bench (already placed, or mid-drag)
+
+        _draggingHero = hero;
+        _sourceSlot = slot;
     }
 }
 
 // =====================================================================================
-// STEP 4 - What a valid drop actually does
+// STEP 3 - Drag: follow the mouse every frame
 // =====================================================================================
-// This is a DESIGN decision, not just a mechanical one - sketched here, not prescribed.
-// Open questions you'll need to answer before this is real (nothing in the codebase
-// currently tracks "which HeroDataSO is sitting in which bench slot" - Bench.uxml's
-// HeroSlots are still just placeholder Labels):
-//   - Which HeroDataSO does this particular slot represent?
-//   - Is dropping only legal on hexes belonging to the player's own team?
-//   - Is the target hex already occupied by another hero?
-//   - Does a successful drop remove the hero from the bench (so it can't be placed twice)?
-public class Step4_HandleDrop
+// No ghost element needed here, unlike the Shop's UI Toolkit drag - this IS the real
+// Hero GameObject, so just move it directly.
+public class Step3_FollowPointer
 {
-    public void OnDroppedOnHex(BattleBoard board, GameObject heroPrefab, HeroDataSO heroData, Hex targetHex, Team team)
+    public void UpdateDrag(Camera cam, Hero draggingHero)
     {
-        if (targetHex == null)
+        if (draggingHero == null) return;
+
+        Vector3 screenPos = Mouse.current.position.ReadValue();
+        screenPos.z = -cam.transform.position.z;
+        draggingHero.transform.position = cam.ScreenToWorldPoint(screenPos);
+    }
+}
+
+// =====================================================================================
+// STEP 4 - Drop resolution: mouse up
+// =====================================================================================
+public class Step4_ResolveDrop
+{
+    public void OnRelease(Camera cam, BattleBoard board, Hero draggingHero, BenchSlot sourceSlot)
+    {
+        Vector3 screenPos = Mouse.current.position.ReadValue();
+        screenPos.z = -cam.transform.position.z;
+        Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+
+        Collider2D hit = Physics2D.OverlapPoint(worldPos);
+        Hex targetHex = hit != null ? hit.GetComponent<Hex>() : null;
+
+        // "Is this hex occupied?" isn't a direct O(1) lookup yet - Hex has no Occupant
+        // field despite the architecture note in CLAUDE.md. Cheapest check available today:
+        bool isOccupied = targetHex != null && board.HeroesOnBoard.Any(h => h.GetCurrentHex() == targetHex);
+
+        if (targetHex == null || isOccupied)
         {
-            Debug.Log("Dropped outside the board - cancel, snap the ghost back to the bench slot.");
+            // Cancel - snap back to the bench slot, same "drop back = cancel" idea as the Shop.
+            draggingHero.transform.position = sourceSlot.transform.position;
             return;
         }
 
-        // TODO: reject if targetHex is already occupied, or belongs to the wrong team.
+        // Valid drop - reuse the existing prep-phase placement method (sets CurrentHex/
+        // ReservedHex and snaps transform.position, same as BattleBoard.SpawnHero does).
+        draggingHero.MoveHeroInPreparation(targetHex);
+        sourceSlot.SetReserved(false);
 
-        board.SpawnHero(heroPrefab, targetHex, team, heroData);
-
-        // TODO: mark the bench slot empty / remove the hero from the roster now that it's placed.
+        // See Step 5 - BattleBoard has no public entry point for "register a hero that
+        // already exists" yet, only SpawnHero which instantiates a brand new prefab.
     }
 }
 
-
+// =====================================================================================
+// STEP 5 - Gap: BattleBoard can't register an already-existing Hero
+// =====================================================================================
+// BattleBoard.SpawnHero(Hex, Team, HeroDataSO) always does Instantiate(dataSO.Prefab, ...)
+// internally - it has no path for "here's a Hero GameObject that already exists (it was
+// sitting on the bench), just start tracking it." Dragging needs the latter: the hero
+// was already instantiated once, by Bench.SpawnHeroOnBench when it was bought.
+public class Step5_RegisterExistingHero
+{
+    // Illustrative addition to BattleBoard.cs:
+    //
+    // public void RegisterHeroOnBoard(Hero hero)
+    // {
+    //     hero.SetBoard(this);
+    //     _heroesOnBoard.Add(hero);
+    // }
+    //
+    // Call this from Step4 instead of SpawnHero once a drop is valid.
+}

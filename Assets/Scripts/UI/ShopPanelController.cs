@@ -191,8 +191,11 @@ public class ShopPanelController : MonoBehaviour
     }
     #endregion
 
+    #region etc
     private void BuyHero(HeroDataSO data)
     {
         _bench.SpawnHeroOnBench(data);
     }
+    #endregion
+
 }

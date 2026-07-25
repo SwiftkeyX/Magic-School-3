@@ -40,27 +40,12 @@ public class Hero : MonoBehaviour
         _board = board;
     }
 
-    // To make hero teleport to their hex and occupy it
-    public void Init(Hex startingHex, Team team, HeroDataSO stat = null)
+    public void SetTeam(Team team)
     {
-        if (_SOData == null && stat != null) _SOData = stat;
-        if (_SOData == null && stat == null) Debug.LogError(this.name + " didn't have SO data initialize");
-
-        // initialzie combat data
-        _combatData = new HeroDataInCombat(stat);
-
-        // set team
         _team = team;
-
-        // // set sprite's color for each team
-        // if (_team == Team.Blue) _sprite.color = Color.blue;
-        // else if (_team == Team.Red) _sprite.color = Color.red;
-
-        // move hero to target hex, occupy that hex
-        MoveHeroInPreparation(startingHex);
     }
 
-    public void MoveHeroInPreparation(Hex hex)
+    public void MoveHeroInPreparationState(Hex hex)
     {
         // move hero to target hex, set hex owner, set hex occuping
         _combatData.SetCurrentHex(hex);
@@ -74,6 +59,9 @@ public class Hero : MonoBehaviour
     {
         _sprite = GetComponent<SpriteRenderer>();
         _stateMachine = new HeroStateMachine(this);
+
+        // initialzie combat data
+        _combatData = new HeroDataInCombat(_SOData);
     }
 
     void Start()

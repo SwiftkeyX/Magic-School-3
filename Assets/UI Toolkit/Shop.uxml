@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="BenchPanel" style="height: auto; flex-grow: 1; flex-direction: row; align-items: center; padding-left: 10px; padding-right: 10px; background-color: rgba(0, 0, 0, 0.6); justify-content: space-between; align-self: stretch;">
-        <ui:VisualElement name="BenchSlotsContainer" style="flex-grow: 1; flex-direction: row; justify-content: space-between; align-self: center; align-items: center; position: relative;">
+    <ui:VisualElement name="ShopPanel" style="height: auto; flex-grow: 1; flex-direction: row; align-items: center; padding-left: 10px; padding-right: 10px; background-color: rgba(0, 0, 0, 0.6); justify-content: space-between; align-self: stretch;">
+        <ui:VisualElement name="ShopSlotsContainer" style="flex-grow: 1; flex-direction: row; justify-content: space-between; align-self: center; align-items: center; position: relative;">
             <ui:VisualElement name="HeroSlot" style="flex-grow: 1; align-items: center; justify-content: space-around; align-self: auto; width: 10px;">
                 <ui:Label text="Label"/>
             </ui:VisualElement>

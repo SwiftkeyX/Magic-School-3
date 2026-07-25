@@ -701,8 +701,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50b9bbbd74908bd48a00594846926532, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BenchPanelController
-  _benchPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::ShopPanelController
+  _shopPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
   _heroDataSOs: []
 --- !u!114 &1120158067 stripped
 MonoBehaviour:

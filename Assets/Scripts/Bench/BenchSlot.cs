@@ -9,4 +9,7 @@ public class BenchSlot : MonoBehaviour, Placement
 
     // ==================== setter ===================
     public void SetReserved(bool value) => _reserved = value;
+
+    // A hero placed on a bench slot has no hex - nothing to do.
+    public void OnHeroPlaced(Hero hero) { }
 }

@@ -44,9 +44,8 @@ public class Hero : MonoBehaviour
     // move this hero when game are in preparation state
     public void MoveThisHeroInPreParationState(Placement placement)
     {
-        _combatData.SetCurrentHex((Hex)placement);
-        _combatData.SetReservedHex((Hex)placement);
         transform.position = placement.transform.position;
+        placement.OnHeroPlaced(this);
     }
     #endregion
 

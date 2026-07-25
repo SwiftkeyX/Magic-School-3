@@ -26,6 +26,13 @@ public class Hex : MonoBehaviour, Placement
         _board = board;
         _neighbors = null;
     }
+
+    // A hero placed on a hex occupies it, both as its current and reserved hex.
+    public void OnHeroPlaced(Hero hero)
+    {
+        hero.SetCurrentHex(this);
+        hero.SetReservedHex(this);
+    }
     #endregion
 
     /// <summary>

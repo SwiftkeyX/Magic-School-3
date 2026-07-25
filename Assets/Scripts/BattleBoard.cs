@@ -15,7 +15,7 @@ public class BattleBoard : MonoBehaviour
     private List<Hero> _heroesOnBoard = new List<Hero>();
 
     // ========================= etc =============================
-    private bool _seedMode;
+    [SerializeField] private bool _seedMode;  
 
     // ======================== Setter & Getter ========================
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;

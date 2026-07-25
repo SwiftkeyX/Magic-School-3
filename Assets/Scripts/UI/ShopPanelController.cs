@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-    using UnityEngine.UIElements;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Use a empty main screen panel, then add each panel later:
@@ -13,11 +13,13 @@ public class ShopPanelController : MonoBehaviour
     // ================= SerializeField ======================
     [SerializeField] private VisualTreeAsset _shopPanelAsset;
     [SerializeField] private List<HeroDataSO> _heroDataSOs;
+    [SerializeField] private Bench _bench;
 
     // ================= VisualElement ======================
     private VisualElement _shopPanel;
     private VisualElement _mainPanel;
     private VisualElement _ghost;
+    private Dictionary<VisualElement, HeroDataSO> _heroSlots = new Dictionary<VisualElement, HeroDataSO>();
 
     // ================== etc =======================
     private bool _isDragging = false;
@@ -42,7 +44,7 @@ public class ShopPanelController : MonoBehaviour
         InitializeGhost();
 
         // Make hero slot draggable
-        MakeHeroDraggable();
+        MakeShopUIDraggable();
     }
 
     private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
@@ -72,21 +74,29 @@ public class ShopPanelController : MonoBehaviour
     /// Main function for dragging
     /// A lot of comment since I never use those event before
     /// </summary>
-    private void MakeHeroDraggable()
+    private void MakeShopUIDraggable()
     {
-        List<VisualElement> heroSlots = _shopPanel.Query<VisualElement>("HeroSlot").ToList();
+        // get all slots exist from the shop panel
+        List<VisualElement> slots = _shopPanel.Query<VisualElement>("HeroSlot").ToList();
 
-        // register event to every hero slot.
-        foreach (var heroSlot in heroSlots)
+        // assign hero data to each slots
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (i >= _heroDataSOs.Count) { Debug.LogError("HeroDataSO is not enough for all slot in shop panel"); return; }
+            _heroSlots[slots[i]] = _heroDataSOs[i];
+        }
+
+        // register event to every slot.
+        foreach (var slot in slots)
         {
             // when click on heroslot, spawn ghost, move ghost to click point
-            HeroSlotOnClick(heroSlot);
+            HeroSlotOnClick(slot);
 
             // when hold on heroslot, move ghost to hold point, create dragging logic visually
-            HeroSlotOnMove(heroSlot);
+            HeroSlotOnMove(slot);
 
             // when your mouse release from holding, resolve buy/cancel based on the release point
-            HeroSlotOnRelease(heroSlot);
+            HeroSlotOnRelease(slot);
         }
     }
 
@@ -164,7 +174,7 @@ public class ShopPanelController : MonoBehaviour
     }
 
     // =========================== Buy / cancel on release ===============================
-    private void ResolveDrop(VisualElement heroSlot, Vector2 releasePosition)
+    private void ResolveDrop(VisualElement slot, Vector2 releasePosition)
     {
         // pointer.position and worldBound are both in the same panel coordinate space, no screen/world conversion needed
         bool releasedInsideShop = _shopPanel.worldBound.Contains(releasePosition);
@@ -174,9 +184,15 @@ public class ShopPanelController : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Bought hero from slot '{heroSlot.name}'.");
+        Debug.Log($"Bought hero from slot '{_heroSlots[slot]}'.");
+
         // TODO: spend gold / add hero to bench once those systems exist.
+        BuyHero(_heroSlots[slot]);
     }
     #endregion
 
+    private void BuyHero(HeroDataSO data)
+    {
+        _bench.SpawnHeroOnBench(data);
+    }
 }

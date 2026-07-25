@@ -49,10 +49,12 @@ public class Hero : MonoBehaviour
         // initialzie combat data
         _combatData = new HeroDataInCombat(stat);
 
-        // set sprite's color for each team
+        // set team
         _team = team;
-        if (_team == Team.Blue) _sprite.color = Color.blue;
-        else if (_team == Team.Red) _sprite.color = Color.red;
+
+        // // set sprite's color for each team
+        // if (_team == Team.Blue) _sprite.color = Color.blue;
+        // else if (_team == Team.Red) _sprite.color = Color.red;
 
         // move hero to target hex, occupy that hex
         MoveHeroInPreparation(startingHex);

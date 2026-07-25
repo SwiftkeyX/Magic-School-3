@@ -5,15 +5,17 @@ using UnityEngine;
 public class BattleBoard : MonoBehaviour
 {
     // ============================ Dependency ============================
-    [SerializeField] private GameObject _heroPrefab;
     [SerializeField] private BattlePlacementSO _placementSO;
-    
+
     // ======================== Runtime data ============================
     // track every hex
     private Dictionary<HexPlacement, Hex> _hexs = new Dictionary<HexPlacement, Hex>();
 
     // track every hero on the battle board
     private List<Hero> _heroesOnBoard = new List<Hero>();
+
+    // ========================= etc =============================
+    private bool _seedMode;
 
     // ======================== Setter & Getter ========================
     public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
@@ -57,21 +59,31 @@ public class BattleBoard : MonoBehaviour
 
     void Start()
     {
-        // Spawn every hero to the board at the start of the combat
-        if (_placementSO == null) return;
+        // If seedmode activate, spawn every hero to the board at the start of the combat
+        SpawnHeroWithSeed();
+
+        
+    }
+
+    // Spawn every hero to the board at the start of the combat.
+    // This is used when you want to skip the dragging part, and to get start the battle quickly.
+    private void SpawnHeroWithSeed()
+    {
+        if (!_seedMode) return;
+        if (_placementSO == null) { Debug.LogError("Can't enter seed mode. Hero Placement is null"); return; }
         foreach (var heroPlacement in _placementSO.HeroesPlacement)
         {
             HeroDataSO data = heroPlacement.dataSO;
             HexPlacement placement = heroPlacement.hexPlacement;
-            SpawnHero(_heroPrefab, _hexs[placement], placement.team, data);
+            SpawnHero(_hexs[placement], placement.team, data);
         }
     }
 
     // Spawn hero on the specific hex
-    public Hero SpawnHero(GameObject heroPrefab, Hex targetHex, Team team, HeroDataSO dataSO)
+    private Hero SpawnHero(Hex targetHex, Team team, HeroDataSO dataSO)
     {
         // spawn hero prefab
-        GameObject heroInstance = Instantiate(heroPrefab, transform);
+        GameObject heroInstance = Instantiate(dataSO.Prefab, transform);
         Hero hero = heroInstance.GetComponent<Hero>();
 
         // init hero: move hero to initial hex, assign team, assign stat

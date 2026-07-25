@@ -7,7 +7,7 @@ public class Hero : MonoBehaviour
     // Hero need to have board ref, in order to move toward the enemy, without it hero don't know enemy whereabout
     private BattleBoard _board;
     private SpriteRenderer _sprite;
-    private HeroDataSO _data;
+    [SerializeField] private HeroDataSO _SOData;
     private HeroStateMachine _stateMachine;
 
     // ==================== Etc ====================
@@ -25,7 +25,7 @@ public class Hero : MonoBehaviour
     // _combatData only exists once Init() has run, regardless of whether Play mode is active.
     public bool IsInitialized => _combatData != null;
     public Team Team => _team;
-    public HeroDataSO Stat => _data;
+    public HeroDataSO Stat => _SOData;
     public HeroStateType State => _stateMachine.CurrentType;
     public BattleBoard Board => _board;
     public float MoveSpeed => _moveSpeed;
@@ -34,28 +34,36 @@ public class Hero : MonoBehaviour
     public HeroStateMachine StateMachine => _stateMachine;
 
 
-    #region Setup
+    #region Preparation
     public void SetBoard(BattleBoard board)
     {
         _board = board;
     }
 
     // To make hero teleport to their hex and occupy it
-    public void Init(Hex startingHex, Team team, HeroDataSO stat)
+    public void Init(Hex startingHex, Team team, HeroDataSO stat = null)
     {
-        // initialzie stat & runtime combat data
-        _data = stat;
-        _combatData = new HeroDataInCombat(stat);
+        if (_SOData == null && stat != null) _SOData = stat;
+        if (_SOData == null && stat == null) Debug.LogError(this.name + " didn't have SO data initialize");
 
-        // move hero to target hex, occupy that hex
-        _combatData.SetCurrentHex(startingHex);
-        _combatData.SetReservedHex(startingHex);
-        transform.position = startingHex.transform.position;
+        // initialzie combat data
+        _combatData = new HeroDataInCombat(stat);
 
         // set sprite's color for each team
         _team = team;
         if (_team == Team.Blue) _sprite.color = Color.blue;
         else if (_team == Team.Red) _sprite.color = Color.red;
+
+        // move hero to target hex, occupy that hex
+        MoveHeroInPreparation(startingHex);
+    }
+
+    public void MoveHeroInPreparation(Hex hex)
+    {
+        // move hero to target hex, set hex owner, set hex occuping
+        _combatData.SetCurrentHex(hex);
+        _combatData.SetReservedHex(hex);
+        transform.position = hex.transform.position;
     }
     #endregion
 
@@ -73,6 +81,7 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhase.Combat) return;
         _stateMachine.Update();
     }
     #endregion
@@ -89,7 +98,7 @@ public class Hero : MonoBehaviour
     public int GetCurrentMana() => _combatData.CurrentMana;
     public int GetMaxMana() => _combatData.MaxMana;
 
-    
+
     // ====================================== stat setter ======================================
     public void GainMana(int amount) => _combatData.GainMana(amount);
 

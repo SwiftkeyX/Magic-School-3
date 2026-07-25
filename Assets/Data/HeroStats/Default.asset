@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: Assembly-CSharp::HeroStat
+  _prefab: {fileID: 8729075628341993162, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
   _name: Hero A
   _hp: 500
   _attack: 90

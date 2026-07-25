@@ -11,8 +11,11 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class BenchPanelController : MonoBehaviour
 {
+    // Each HeroDataSO now carries its own Prefab, so this list is the only roster reference needed:
+    // spawn hero in bench => drag on board => hero move to board
     // ================= SerializeField ======================
     [SerializeField] private VisualTreeAsset _benchPanelAsset;
+    [SerializeField] private List<HeroDataSO> _heroDataSOs;
 
     // ================= VisualElement ======================
     private VisualElement _benchPanel;

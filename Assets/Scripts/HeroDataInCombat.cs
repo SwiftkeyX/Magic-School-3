@@ -39,8 +39,7 @@ public class HeroDataInCombat
     public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);
     public void GainMana(int amount) => _stat.GainMana(amount);
 
-    // Applies the active skill's +50% damage to baseAtk if a skill cast is armed (mana hit
-    // full since the last attack), consuming the buff so it only affects this one hit.
+    // ==================== etc ========================
     public int ConsumeAttackDamage(int baseAtk) => _stat.ConsumeAttackDamage(baseAtk);
 
     public HeroDataInCombat(HeroDataSO dataSO)
@@ -94,6 +93,7 @@ public class Stat
         }
     }
 
+    // ==================== etc ============================
     // This logic kinda bullshit and ruin readability 
     // But it was fine now I guess
     public int ConsumeAttackDamage(int baseAtk)

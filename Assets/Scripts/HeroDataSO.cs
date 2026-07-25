@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HeroStat", menuName = "Magic School 3/Hero Stat")]
 public class HeroDataSO : ScriptableObject
 {
+    [SerializeField] private GameObject _prefab;
     [SerializeField] private string _name = "Hero A";
     [SerializeField] private int _hp = 500;
     [SerializeField] private int _attack = 40;
@@ -17,6 +18,7 @@ public class HeroDataSO : ScriptableObject
 
 
     // ===================== setter & getter =====================
+    public GameObject Prefab => _prefab;
     public string Name => _name;
     public int HP => _hp;
     public int Atk => _attack;

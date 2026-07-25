@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class Bench : MonoBehaviour
 {
-    private List<BenchSlot> _benchSlots;
-
-    void Awake()
-    {
-        _benchSlots = GetComponentsInChildren<BenchSlot>().ToList();
-    }
+    [SerializeField] private List<BenchSlot> _benchSlots;
 
     /// <summary>
     /// Spawn hero on the bench

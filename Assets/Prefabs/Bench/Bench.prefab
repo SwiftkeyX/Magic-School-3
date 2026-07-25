@@ -31,12 +31,12 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2478274188049080406}
-  - {fileID: 845470562054319566}
-  - {fileID: 801263822141091679}
-  - {fileID: 1059586088807801635}
   - {fileID: 4901468253590969257}
+  - {fileID: 845470562054319566}
   - {fileID: 5979374846752020208}
+  - {fileID: 801263822141091679}
   - {fileID: 8466989305755011050}
+  - {fileID: 1059586088807801635}
   - {fileID: 9118205089343476809}
   - {fileID: 3656644780243048558}
   m_Father: {fileID: 0}
@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c171b8ebb453fc4419575d8b4a44106e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bench
+  _benchSlots: []
 --- !u!1001 &728849593407657895
 PrefabInstance:
   m_ObjectHideFlags: 0

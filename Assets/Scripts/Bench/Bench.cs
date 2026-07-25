@@ -23,11 +23,10 @@ public class Bench : MonoBehaviour
             return;
         }
 
-        // spawn hero prefab, move it to that slot, reserve the slot
-        GameObject heroPrefab = Instantiate(data.Prefab);
-        Hero hero = heroPrefab.GetComponent<Hero>();
-        hero.SetTeam(Team.Blue);
-        heroPrefab.transform.position = freeSlot.transform.position;
+        // spawn hero prefab, move it to that slot
+        Preparation.Instance.SpawnHero(data, Team.Blue, freeSlot);
+
+        // reserve the slot
         freeSlot.SetReserved(true);
     }
 }

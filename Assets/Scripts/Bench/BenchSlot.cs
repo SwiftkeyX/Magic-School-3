@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BenchSlot : MonoBehaviour
+public class BenchSlot : MonoBehaviour, Placement
 {
     private bool _reserved = false;
 

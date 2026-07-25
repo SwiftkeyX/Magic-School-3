@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hex : MonoBehaviour
+public class Hex : MonoBehaviour, Placement
 {
     private BattleBoard _board;
     // neighbors hex of this hex - to give the hex available for pathfinding logic

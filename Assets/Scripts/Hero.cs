@@ -35,22 +35,18 @@ public class Hero : MonoBehaviour
 
 
     #region Preparation
-    public void SetBoard(BattleBoard board)
+    public void Init(BattleBoard board, Team team)
     {
         _board = board;
-    }
-
-    public void SetTeam(Team team)
-    {
         _team = team;
     }
 
-    public void MoveHeroInPreparationState(Hex hex)
+    // move this hero when game are in preparation state
+    public void MoveThisHeroInPreParationState(Placement placement)
     {
-        // move hero to target hex, set hex owner, set hex occuping
-        _combatData.SetCurrentHex(hex);
-        _combatData.SetReservedHex(hex);
-        transform.position = hex.transform.position;
+        _combatData.SetCurrentHex((Hex)placement);
+        _combatData.SetReservedHex((Hex)placement);
+        transform.position = placement.transform.position;
     }
     #endregion
 

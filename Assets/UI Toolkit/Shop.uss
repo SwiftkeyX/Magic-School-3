@@ -21,7 +21,14 @@
 }
 
 .hero-slot {
+    /* flex-grow alone distributes *extra* space equally as an add-on to each item's own
+       content-driven starting size (flex-basis: auto) - a longer label still ends up wider.
+       flex-basis: 0 makes every slot start from the same baseline so equal growth produces
+       equal final widths; min-width: 0 additionally lets a slot shrink below its label's
+       content size if the row is ever squeezed tighter than 5 slots' worth of text. */
     flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;

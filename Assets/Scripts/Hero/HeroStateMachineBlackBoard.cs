@@ -8,9 +8,8 @@ public class HeroStateMachineBlackBoard
 {
     // ================================================ dependency ================================================
     private readonly Hero _me;
-    private readonly HeroDataInCombat _combatData;
+    private readonly HeroDataRuntime _runtimeData;
     private BattleBoard _board;
-    private Placement _currentPlacement;
 
     // ================================================ movement ================================================
     private float _moveSpeed;
@@ -29,21 +28,21 @@ public class HeroStateMachineBlackBoard
     public Team Team => _team;
     // CurrentHex is a derived view of CurrentPlacement, not separately stored - it's the
     // hex the hero is on if CurrentPlacement is a Hex, or null if it's a BenchSlot (or unset).
-    public Hex GetCurrentHex() => _currentPlacement as Hex;
-    public Hex GetReservedHex() => _combatData.ReservedHex;
-    public bool IsInCombat() => _currentPlacement is Hex;
-    public Placement CurrentPlacement => _currentPlacement;
+    public Hex GetCurrentHex() => _runtimeData.CurrentPlacement as Hex;
+    public Hex GetReservedHex() => _runtimeData.ReservedHex;
+    public bool IsInCombat() => _runtimeData.CurrentPlacement is Hex;
+    public Placement CurrentPlacement => _runtimeData.CurrentPlacement;
 
     // ================================================ setter ================================================
     public void SetBoard(BattleBoard board) => _board = board;
     public void SetTeam(Team team) => _team = team;
-    public void SetReservedHex(Hex targetHex) => _combatData.SetReservedHex(targetHex);
-    public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
+    public void SetReservedHex(Hex targetHex) => _runtimeData.SetReservedHex(targetHex);
+    public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
-    public HeroStateMachineBlackBoard(Hero hero, HeroDataInCombat combatData, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
+    public HeroStateMachineBlackBoard(Hero hero, HeroDataRuntime runtimeData, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
     {
         _me = hero;
-        _combatData = combatData;
+        _runtimeData = runtimeData;
         _moveSpeed = moveSpeed;
         _walkCurve = walkCurve;
         _attackCurve = attackCurve;
@@ -52,17 +51,17 @@ public class HeroStateMachineBlackBoard
     // Hero have several stat. So we have dedicate section for this.
     #region Stat
     // ====================================== stat getter ======================================
-    public int GetAtk() => _combatData.Atk;
-    public int GetAttackDamage() => _combatData.ConsumeAttackDamage(_combatData.Atk);
-    public float GetAttackSpeed() => _combatData.AttackSpeed;
-    public int GetRange() => _combatData.Range;
-    public int GetCurrentHP() => _combatData.CurrentHP;
-    public int GetMaxHP() => _combatData.HP;
-    public int GetCurrentMana() => _combatData.CurrentMana;
-    public int GetMaxMana() => _combatData.MaxMana;
+    public int GetAtk() => _runtimeData.Atk;
+    public int GetAttackDamage() => _runtimeData.ConsumeAttackDamage(_runtimeData.Atk);
+    public float GetAttackSpeed() => _runtimeData.AttackSpeed;
+    public int GetRange() => _runtimeData.Range;
+    public int GetCurrentHP() => _runtimeData.CurrentHP;
+    public int GetMaxHP() => _runtimeData.HP;
+    public int GetCurrentMana() => _runtimeData.CurrentMana;
+    public int GetMaxMana() => _runtimeData.MaxMana;
 
     // ====================================== stat setter ======================================
-    public void GainMana(int amount) => _combatData.GainMana(amount);
+    public void GainMana(int amount) => _runtimeData.GainMana(amount);
 
     /// <summary>
     /// Take damage. Calculate damge using effective health pool formula.
@@ -71,9 +70,9 @@ public class HeroStateMachineBlackBoard
     {
         // EHP = HP * (1 + DF / 100) -> raw damage is worth less HP the more DF you have,
         // so divide by that same factor to get how much HP the hit actually removes.
-        float mitigatedDamage = damage / (1f + _combatData.DF / 100f);
+        float mitigatedDamage = damage / (1f + _runtimeData.DF / 100f);
         int newHP = Mathf.Max(0, GetCurrentHP() - Mathf.RoundToInt(mitigatedDamage));
-        _combatData.SetCurrentHP(newHP);
+        _runtimeData.SetCurrentHP(newHP);
     }
     #endregion
 
@@ -100,11 +99,11 @@ public class HeroStateMachineBlackBoard
 
         // Sticks with the previous pick across calls as long as it's still tied for nearest, so the target
         // doesn't flicker between equally-near enemies frame to frame.
-        Hero nearestEnemy = _combatData.NearestEnemy;
+        Hero nearestEnemy = _runtimeData.NearestEnemy;
         if (nearestEnemy != null && tiedNearest.Contains(nearestEnemy)) return nearestEnemy;
 
         nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
-        _combatData.SetNearestEnemy(nearestEnemy);
+        _runtimeData.SetNearestEnemy(nearestEnemy);
         return nearestEnemy;
     }
     #endregion

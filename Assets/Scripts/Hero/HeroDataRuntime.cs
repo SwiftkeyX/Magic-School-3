@@ -1,6 +1,6 @@
-// Not use yet, but at some point in the project
-// we'll have to separate SO and runtime data apart.
-public class HeroDataInCombat
+// Holds every piece of runtime data for a hero
+// separate from HeroDataSO
+public class HeroDataRuntime
 {
     // ================== Description (name, skill desc, etc...) =================
     private string _name;
@@ -9,7 +9,8 @@ public class HeroDataInCombat
     private Stat _stat;
 
     // ===================== Position ========================
-    private Hex _reservedHex;
+    private Placement _currentPlacement;    // placement hero stand on e.g. hex, benchslot
+    private Hex _reservedHex;               // hex that hero reserved. use while battle
     private Hero _nearestEnemy;
 
     // ===================== getter =====================
@@ -23,6 +24,7 @@ public class HeroDataInCombat
     public int Range => _stat.Range;
     public int StartMana => _stat.StartMana;
     public int MaxMana => _stat.MaxMana;
+    public Placement CurrentPlacement => _currentPlacement;
     // reserved hex = hex that this hero want to walk into, so he reserved it, to prevent other hero to walk into the same hex
     public Hex ReservedHex => _reservedHex;
     public int CurrentHP => _stat.CurrentHP;
@@ -30,6 +32,7 @@ public class HeroDataInCombat
     public Hero NearestEnemy => _nearestEnemy;
 
     // =================== setter =====================
+    public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
     public void SetReservedHex(Hex hex) => _reservedHex = hex;
     public void SetNearestEnemy(Hero hero) => _nearestEnemy = hero;
     public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);
@@ -38,7 +41,7 @@ public class HeroDataInCombat
     // ==================== etc ========================
     public int ConsumeAttackDamage(int baseAtk) => _stat.ConsumeAttackDamage(baseAtk);
 
-    public HeroDataInCombat(HeroDataSO dataSO)
+    public HeroDataRuntime(HeroDataSO dataSO)
     {
         _name = dataSO.Name;
         _stat = new Stat(dataSO);

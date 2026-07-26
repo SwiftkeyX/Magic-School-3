@@ -22,10 +22,10 @@ public class Hero : MonoBehaviour
     [SerializeField] private AnimationCurve _attackCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
 
     // ==================== Runtime data ========================
-    private HeroDataInCombat _combatData;
+    private HeroDataRuntime _runtimeData;
 
     // ==================== getter ====================
-    public bool IsInitialized => _combatData != null;
+    public bool IsInitialized => _runtimeData != null;
     public Team Team => _blackboard.Team;
     public HeroDataSO Stat => _SOData;
     public HeroStateType State => _stateMachine.CurrentType;
@@ -40,8 +40,8 @@ public class Hero : MonoBehaviour
     void Awake()
     {
         _sprite = GetComponent<SpriteRenderer>();
-        _combatData = new HeroDataInCombat(_SOData);
-        _blackboard = new HeroStateMachineBlackBoard(this, _combatData, _moveSpeed, _walkCurve, _attackCurve);
+        _runtimeData = new HeroDataRuntime(_SOData);
+        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, _moveSpeed, _walkCurve, _attackCurve);
         _stateMachine = new HeroStateMachine(this);
     }
 
@@ -81,7 +81,7 @@ public class Hero : MonoBehaviour
         if (!Application.isPlaying || !IsInitialized) return;
         if (State != HeroStateType.Attack) return;
 
-        Hero target = _combatData.NearestEnemy;
+        Hero target = _runtimeData.NearestEnemy;
         if (target == null) return;
 
         Gizmos.color = Color.red;

@@ -21,6 +21,11 @@
       "file": "Assets/Scripts/Core/GameManager.cs",
       "description": "Use new input system, specifically the playerinputsystem we have.",
       "line": 22
+    },
+    {
+      "file": "Assets/Scripts/UI/ShopPanelController.cs",
+      "description": "Make Ghost a prefab instead.",
+      "line": 177
     }
   ]
 }

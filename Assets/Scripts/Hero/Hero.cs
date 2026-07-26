@@ -53,6 +53,11 @@ public class Hero : MonoBehaviour
     void Update()
     {
         if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhase.Combat) return;
+
+        // A hero still sitting on the bench (bought but never dragged onto the board) has no
+        // hex yet - running its state machine would crash the moment it tries to path/attack.
+        if (!_blackboard.IsInCombat()) return;
+
         _stateMachine.Update();
     }
     #endregion

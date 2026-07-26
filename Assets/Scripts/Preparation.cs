@@ -33,9 +33,6 @@ public class Preparation : MonoBehaviour
 
         // move them
         MoveThisHeroInPreParationState(hero, placement);
-
-        // give hero reference to battleboard
-        _board.TrackThisHero(hero);
     }
 
     // This will skip the bench logic part.

@@ -27,11 +27,14 @@ public class Hex : MonoBehaviour, Placement
         _neighbors = null;
     }
 
-    // A hero placed on a hex occupies it, both as its current and reserved hex.
+    // A hero placed on a hex occupies it, both as its current and reserved hex, and is now
+    // actually on the battlefield - only here (not BenchSlot.OnHeroPlaced) do we track it,
+    // so a bought-but-still-benched hero can't be picked as a combat target with no hex.
     public void OnHeroPlaced(Hero hero)
     {
         hero.Blackboard.SetCurrentHex(this);
         hero.Blackboard.SetReservedHex(this);
+        _board.TrackThisHero(hero);
     }
 
     public Team GetTeam()

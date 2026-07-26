@@ -52,6 +52,9 @@ public class BattleBoard : MonoBehaviour
     }
 
     // Every hero need to be tracked on the board
-    // If they didn't get tracked, those heroes will be invisible to other hero
-    public void TrackThisHero(Hero hero) => _heroesOnBoard.Add(hero);
+    // If they didn't get tracked, those heroes will be invisible to other hero.
+    public void TrackThisHero(Hero hero)
+    {
+        if (!_heroesOnBoard.Contains(hero)) _heroesOnBoard.Add(hero);
+    }
 }

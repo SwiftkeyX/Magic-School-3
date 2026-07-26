@@ -29,6 +29,7 @@ public class HeroStateMachineBlackBoard
     public Team Team => _team;
     public Hex GetCurrentHex() => _combatData.CurrentHex;
     public Hex GetReservedHex() => _combatData.ReservedHex;
+    public bool IsInCombat() => _combatData.CurrentHex != null;
 
     // ================================================ setter ================================================
     public void SetBoard(BattleBoard board) => _board = board;
@@ -78,7 +79,14 @@ public class HeroStateMachineBlackBoard
     public Hero FindNearestEnemy()
     {
         var enemyDistances = _board.HeroesOnBoard
-            .Where(target => target != _me && target.Team != _me.Team && target.State != HeroStateType.Dead)
+            .Where(target =>
+            {
+                bool notTargetMyself = target != _me;
+                bool notTargetFriend = target.Team != _me.Team;
+                bool notTargetDead = target.State != HeroStateType.Dead;
+                bool notTargetGuyNotInCombat = target.Blackboard.IsInCombat();
+                return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
+            })
             .Select(target => new { target, dist = Vector3.Distance(GetCurrentHex().transform.position, target.Blackboard.GetCurrentHex().transform.position) })
             .ToList();
 

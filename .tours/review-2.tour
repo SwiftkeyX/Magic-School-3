@@ -1,0 +1,11 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "review 2",
+  "steps": [
+    {
+      "file": "Assets/Scripts/Board/Hex.cs",
+      "description": "Make OnHeroUnplaced() too. Activate when the player move the hero out.\r\nIt should contain logic for untracking the hero on the board.\r\n\r\nIs that make sense?",
+      "line": 33
+    }
+  ]
+}

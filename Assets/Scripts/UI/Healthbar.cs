@@ -8,12 +8,20 @@ public class Healthbar : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 1f, 0f);
-
+    private Image _image;
     private Hero _hero;
 
     void Awake()
     {
         _hero = GetComponentInParent<Hero>();
+        _image = _slider.fillRect.GetComponent<Image>();
+    }
+
+    void Start()
+    {
+        if (_hero.Team == Team.Blue) _image.color = Color.green;
+        
+        else if (_hero.Team == Team.Red) _image.color = Color.red;
     }
 
     void LateUpdate()

@@ -83,7 +83,13 @@ public class ShopPanelController : MonoBehaviour
         for (int i = 0; i < slots.Count; i++)
         {
             if (i >= _heroDataSOs.Count) { Debug.LogError("HeroDataSO is not enough for all slot in shop panel"); return; }
+            
+            // put data in
             _heroSlots[slots[i]] = _heroDataSOs[i];
+            
+            // rename the slot to hero's name
+            Label nameLabel = slots[i].Q<Label>();
+            if (nameLabel != null) nameLabel.text = _heroDataSOs[i].Name;
         }
 
         // register event to every slot.

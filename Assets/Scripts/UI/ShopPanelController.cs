@@ -19,7 +19,8 @@ public class ShopPanelController : MonoBehaviour
     private VisualElement _shopPanel;
     private VisualElement _mainPanel;
     private VisualElement _ghost;
-    private Dictionary<VisualElement, HeroDataSO> _heroSlots = new Dictionary<VisualElement, HeroDataSO>();
+    private Dictionary<VisualElement, HeroDataSO> _heroSlotsDict = new Dictionary<VisualElement, HeroDataSO>();
+    private List<VisualElement> _heroSlots;
 
     // ================== etc =======================
     private bool _isDragging = false;
@@ -45,6 +46,9 @@ public class ShopPanelController : MonoBehaviour
 
         // Make hero slot draggable
         MakeShopUIDraggable();
+
+        // Wire up the "Refresh" button to re-roll all hero slots
+        MakeRefreshButtonWork();
     }
 
     private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
@@ -88,23 +92,17 @@ public class ShopPanelController : MonoBehaviour
     private void MakeShopUIDraggable()
     {
         // get all slots exist from the shop panel
-        List<VisualElement> slots = _shopPanel.Query<VisualElement>("HeroSlot").ToList();
+        _heroSlots = _shopPanel.Query<VisualElement>("HeroSlot").ToList();
 
-        // assign hero data to each slots
-        for (int i = 0; i < slots.Count; i++)
+        // assign hero data to each slots, in order, for the initial roll
+        for (int i = 0; i < _heroSlots.Count; i++)
         {
             if (i >= _heroDataSOs.Count) { Debug.LogError("HeroDataSO is not enough for all slot in shop panel"); return; }
-            
-            // put data in
-            _heroSlots[slots[i]] = _heroDataSOs[i];
-            
-            // rename the slot to hero's name
-            Label nameLabel = slots[i].Q<Label>();
-            if (nameLabel != null) nameLabel.text = _heroDataSOs[i].Name;
+            AssignHeroToSlot(_heroSlots[i], _heroDataSOs[i]);
         }
 
         // register event to every slot.
-        foreach (var slot in slots)
+        foreach (var slot in _heroSlots)
         {
             // when click on heroslot, spawn ghost, move ghost to click point
             HeroSlotOnClick(slot);
@@ -115,6 +113,19 @@ public class ShopPanelController : MonoBehaviour
             // when your mouse release from holding, resolve buy/cancel based on the release point
             HeroSlotOnRelease(slot);
         }
+    }
+
+    // put a hero's data into a slot: what dragging/buying reads, and what's shown as its label.
+    // A null data means "empty" (e.g. just bought) - the slot's visibility is always derived
+    // from this, never toggled independently, so there's nothing to keep in sync by hand.
+    private void AssignHeroToSlot(VisualElement slot, HeroDataSO data)
+    {
+        _heroSlotsDict[slot] = data;
+
+        slot.style.display = data == null ? DisplayStyle.None : DisplayStyle.Flex;
+
+        Label nameLabel = slot.Q<Label>();
+        if (nameLabel != null) nameLabel.text = data != null ? data.Name : string.Empty;
     }
 
     // ============================== Pointer Event ====================================
@@ -216,14 +227,14 @@ public class ShopPanelController : MonoBehaviour
         }
 
         // TODO: spend gold once that system exists.
-        bool bought = BuyHero(_heroSlots[slot]);
+        bool bought = BuyHero(_heroSlotsDict[slot]);
         if (!bought) return;
 
-        Debug.Log($"Bought hero from slot '{_heroSlots[slot]}'.");
+        Debug.Log($"Bought hero from slot '{_heroSlotsDict[slot]}'.");
 
-        // slot's hero is gone - hide it so it can't be bought again, and let its
-        // flex-grow siblings reflow into the space it leaves behind.
-        slot.style.display = DisplayStyle.None;
+        // slot's hero is gone - clearing its data hides it (see AssignHeroToSlot) so it
+        // can't be bought again, and lets its flex-grow siblings reflow into its space.
+        AssignHeroToSlot(slot, null);
     }
     #endregion
 
@@ -231,6 +242,36 @@ public class ShopPanelController : MonoBehaviour
     private bool BuyHero(HeroDataSO data)
     {
         return _bench.SpawnHeroOnBench(data);
+    }
+    #endregion
+
+    #region Refresh
+    private void MakeRefreshButtonWork()
+    {
+        // "Refresh" is one of the two refresh-slot boxes on the left (the other is "Lock", not wired up yet)
+        VisualElement randomSlot = _shopPanel.Q<VisualElement>("RandomSlot");
+        if (randomSlot == null) return;
+
+        foreach (var child in randomSlot.Children())
+        {
+            Label label = child.Q<Label>();
+            if (label == null || label.text != "Refresh") continue;
+
+            child.RegisterCallback<PointerUpEvent>(pointer => RerollShop());
+            break;
+        }
+    }
+
+    // Re-roll every hero slot with a random hero from the full roster (repeats allowed,
+    // kept simple) - AssignHeroToSlot un-hides any slot that had been bought previously,
+    // since its visibility is always derived from having data, never toggled separately.
+    private void RerollShop()
+    {
+        foreach (var slot in _heroSlots)
+        {
+            HeroDataSO randomHero = _heroDataSOs[Random.Range(0, _heroDataSOs.Count)];
+            AssignHeroToSlot(slot, randomHero);
+        }
     }
     #endregion
 

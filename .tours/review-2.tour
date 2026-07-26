@@ -3,19 +3,9 @@
   "title": "review 2",
   "steps": [
     {
-      "file": "Assets/Scripts/Board/Hex.cs",
-      "description": "Make OnHeroUnplaced() too. Activate when the player move the hero out.\r\nIt should contain logic for untracking the hero on the board.\r\n\r\nIs that make sense?\r\n\r\n---\r\n**Reply:** Yes - implemented as Placement.OnHeroUnplaced(Hero) so both Hex and BenchSlot get a counterpart, wired into Preparation.MoveThisHeroInPreParationState before the new placement takes over.",
-      "line": 33
-    },
-    {
-      "file": "Assets/Scripts/Board/Hex.cs",
-      "description": "what about setcurrenthex = null?\r\nIt use to exist, right?\r\n\r\n---\r\n**Reply:** It used to exist back when CurrentHex was its own independently-stored field. Now GetCurrentHex() is derived from CurrentPlacement, and OnHeroUnplaced is always immediately followed by the new placement's OnHeroPlaced (which overwrites CurrentPlacement) - so there's no window where a stale value would be observed. Nothing left to null.",
-      "line": 40
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroDataInCombat.cs",
-      "description": "I want to change the name to \"HeroDataRuntime\".\r\nAnd contain every run time data for each hero.\r\n\r\nSo this data should also have _currentPlacement;\r\n\r\nIs that make sense?\r\n\r\n---\r\n**Reply:** Yes - ReservedHex (where the hero wants to go) already lived here, so CurrentPlacement (where it currently is) belongs alongside it instead of one level up in the Blackboard. Renamed the file/class to HeroDataRuntime and moved CurrentPlacement in.",
-      "line": 3
+      "file": "Assets/Scripts/UI/ShopPanelController.cs",
+      "description": "Don't use None, because the slot disspear, and making other slot longer since the space increase.\r\nThis shouldn't happen, the slot should stay exact same length after other slot got buy.\r\n\r\nIs taht make sense?",
+      "line": 233
     },
     {
       "file": "Assets/Scripts/Core/GameManager.cs",

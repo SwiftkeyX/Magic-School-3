@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
             bool isHexHit = (targetHex != null);
             if (isRelease && isHexHit && ValidateHex(targetHex))
             {
-                _heroHolded.MoveThisHeroInPreParationState(targetHex);
+                Preparation.Instance.MoveThisHeroInPreParationState(_heroHolded, targetHex);
             }
         }
     }

@@ -23,16 +23,16 @@ public class Preparation : MonoBehaviour
     }
 
     // basically spawn hero
-    public void SpawnHero(HeroDataSO data, Team team, Placement p)
+    public void SpawnHero(HeroDataSO data, Team team, Placement placement)
     {
         GameObject heroPrefab = Instantiate(data.Prefab);
         Hero hero = heroPrefab.GetComponent<Hero>();
 
         // init hero by assigning their team, and give correct board reference to them
-        hero.Init(_board, team);
+        HeroInit(hero, team);
 
         // move them
-        hero.MoveThisHeroInPreParationState(p);
+        MoveThisHeroInPreParationState(hero, placement);
 
         // give hero reference to battleboard
         _board.TrackThisHero(hero);
@@ -45,12 +45,24 @@ public class Preparation : MonoBehaviour
     private void SpawnHeroWithSeed()
     {
         if (!_seedMode) return;
-        if (_placementSO == null) { Debug.LogError("Can't enter seed mode. Hero Placement is null"); return; }
+        if (_placementSO == null) { Debug.LogError("Can't seed the hero. Hero Placement is null"); return; }
         foreach (var heroPlacement in _placementSO.HeroesPlacement)
         {
             HeroDataSO data = heroPlacement.dataSO;
             HexPlacement placement = heroPlacement.hexPlacement;
             SpawnHero(data, placement.team, _board.Hexs[placement]);
         }
+    }
+
+    private void HeroInit(Hero hero, Team team)
+    {
+        hero.SetBoard(_board);
+        hero.SetTeam(team);
+    }
+
+    public void MoveThisHeroInPreParationState(Hero hero, Placement placement)
+    {
+        placement.OnHeroPlaced(hero);
+        hero.transform.position = placement.transform.position;
     }
 }

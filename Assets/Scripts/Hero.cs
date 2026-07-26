@@ -20,7 +20,7 @@ public class Hero : MonoBehaviour
     // ==================== Runtime data ========================
     private HeroDataInCombat _combatData;
 
-    // ==================== setter & getter ====================
+    // ==================== getter ====================
     // False for a Hero sitting in Prefab Mode / not yet spawned via BattleBoard.SpawnHero() -
     // _combatData only exists once Init() has run, regardless of whether Play mode is active.
     public bool IsInitialized => _combatData != null;
@@ -33,21 +33,9 @@ public class Hero : MonoBehaviour
     public AnimationCurve AttackCurve => _attackCurve;
     public HeroStateMachine StateMachine => _stateMachine;
 
-
-    #region Preparation
-    public void Init(BattleBoard board, Team team)
-    {
-        _board = board;
-        _team = team;
-    }
-
-    // move this hero when game are in preparation state
-    public void MoveThisHeroInPreParationState(Placement placement)
-    {
-        placement.OnHeroPlaced(this);
-        transform.position = placement.transform.position;
-    }
-    #endregion
+    // ==================== setter ====================
+    public void SetBoard(BattleBoard battleBoard) => _board = battleBoard;
+    public void SetTeam(Team team) => _team = team;
 
     #region Life Cycle
     void Awake()
@@ -74,7 +62,6 @@ public class Hero : MonoBehaviour
     #region Statemachine
     // ====================================== stat getter ======================================
     public int GetAtk() => _combatData.Atk;
-    // Raw Atk, with the active skill's +50% applied (and consumed) if a cast is armed.
     public int GetAttackDamage() => _combatData.ConsumeAttackDamage(_combatData.Atk);
     public float GetAttackSpeed() => _combatData.AttackSpeed;
     public int GetRange() => _combatData.Range;
@@ -97,14 +84,6 @@ public class Hero : MonoBehaviour
         float mitigatedDamage = damage / (1f + _combatData.DF / 100f);
         int newHP = Mathf.Max(0, GetCurrentHP() - Mathf.RoundToInt(mitigatedDamage));
         _combatData.SetCurrentHP(newHP);
-    }
-
-    // When hero die, set his sprite transparent to indicate that he is dead.
-    public void SetDeadVisual()
-    {
-        Color c = _sprite.color;
-        c.a = 0.3f;
-        _sprite.color = c;
     }
 
 
@@ -139,6 +118,16 @@ public class Hero : MonoBehaviour
         nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
         _combatData.SetNearestEnemy(nearestEnemy);
         return nearestEnemy;
+    }
+
+
+    // ==================================== etc ==================================== 
+    // When hero die, set his sprite transparent to indicate that he is dead.
+    public void SetDeadVisual()
+    {
+        Color c = _sprite.color;
+        c.a = 0.3f;
+        _sprite.color = c;
     }
     #endregion
 

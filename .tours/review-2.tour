@@ -4,7 +4,7 @@
   "steps": [
     {
       "file": "Assets/Scripts/UI/ShopPanelController.cs",
-      "description": "Don't use None, because the slot disspear, and making other slot longer since the space increase.\r\nThis shouldn't happen, the slot should stay exact same length after other slot got buy.\r\n\r\nIs taht make sense?",
+      "description": "Don't use None, because the slot disspear, and making other slot longer since the space increase.\r\nThis shouldn't happen, the slot should stay exact same length after other slot got buy.\r\n\r\nIs taht make sense?\r\n\r\n---\r\n**Reply:** Yes - swapped display toggling for opacity. The slot stays in the flex layout at full size either way (never removed), it just dims to 0.35 opacity and clears its label when empty, and dragging an empty slot is a no-op. Verified live: width stayed exactly 102 before and after buying, no reflow.",
       "line": 233
     },
     {

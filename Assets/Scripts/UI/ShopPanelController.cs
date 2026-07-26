@@ -116,13 +116,14 @@ public class ShopPanelController : MonoBehaviour
     }
 
     // put a hero's data into a slot: what dragging/buying reads, and what's shown as its label.
-    // A null data means "empty" (e.g. just bought) - the slot's visibility is always derived
-    // from this, never toggled independently, so there's nothing to keep in sync by hand.
+    // A null data means "empty" (e.g. just bought). The slot stays in the layout at full size
+    // either way (display is never toggled) so buying one doesn't reflow its siblings - it just
+    // goes dim and unlabeled, which is derived here in one place rather than a separate flag.
     private void AssignHeroToSlot(VisualElement slot, HeroDataSO data)
     {
         _heroSlotsDict[slot] = data;
 
-        slot.style.display = data == null ? DisplayStyle.None : DisplayStyle.Flex;
+        slot.style.opacity = data == null ? 0.35f : 1f;
 
         Label nameLabel = slot.Q<Label>();
         if (nameLabel != null) nameLabel.text = data != null ? data.Name : string.Empty;
@@ -135,6 +136,9 @@ public class ShopPanelController : MonoBehaviour
         // pointer = the point you start clicking
         heroSlot.RegisterCallback<PointerDownEvent>(pointer =>
         {
+            // empty slot (already bought) has nothing to drag
+            if (_heroSlotsDict[heroSlot] == null) return;
+
             _isDragging = true;
 
             // CapturePointer = All event from "heroslot" will continue working even though the "pointer" move out of bound

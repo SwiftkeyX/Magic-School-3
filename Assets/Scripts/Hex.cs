@@ -6,10 +6,10 @@ public class Hex : MonoBehaviour, Placement
     private BattleBoard _board;
     // neighbors hex of this hex - to give the hex available for pathfinding logic
     private List<Hex> _neighbors;
+    private HexPlacement _hexPlacement;
 
     // ========================== getter & setter ==========================
     public string Name => gameObject.name;
-    public List<Hex> Neighbors => _neighbors;
 
     #region Life Cycle
     void Start()
@@ -20,10 +20,10 @@ public class Hex : MonoBehaviour, Placement
     #endregion
 
     #region Setup
-    // Hex is a "worker" for BattleBoard. So Hex need reference to BattleBoard.
-    public void SetBoard(BattleBoard board)
+    public void Init(BattleBoard board, HexPlacement hexPlacement)
     {
         _board = board;
+        _hexPlacement = hexPlacement;
         _neighbors = null;
     }
 
@@ -32,6 +32,11 @@ public class Hex : MonoBehaviour, Placement
     {
         hero.SetCurrentHex(this);
         hero.SetReservedHex(this);
+    }
+
+    public Team GetTeam()
+    {
+        return _hexPlacement.team;
     }
     #endregion
 

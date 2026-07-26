@@ -43,7 +43,7 @@ public class BattleBoard : MonoBehaviour
                 {
                     HexPlacement hexKey = new HexPlacement(side, columnIndex, rowIndex);
                     _hexs[hexKey] = hex;
-                    hex.SetBoard(this);
+                    hex.Init(this, hexKey);
                     rowIndex++;
                 }
                 columnIndex++;

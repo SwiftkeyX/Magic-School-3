@@ -5,7 +5,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _cam;
     private bool _isHeroHolded = false;
     private Hero _heroHolded;
+    private Team _team;
 
+    void Awake()
+    {
+        _team = Team.Blue;
+    }
 
     void Update()
     {
@@ -42,11 +47,20 @@ public class PlayerController : MonoBehaviour
             Hex targetHex = hit.GetComponent<Hex>();
             bool isRelease = PlayerInputSystem.PointerReleasedThisFrame;
             bool isHexHit = (targetHex != null);
-            if (isRelease && isHexHit)
+            if (isRelease && isHexHit && ValidateHex(targetHex))
             {
                 _heroHolded.MoveThisHeroInPreParationState(targetHex);
             }
         }
+    }
+
+    // If team of that hex is the same to hero's team, allow the placement
+    // p.s. Hex could only belong to either Red or Blue team
+    private bool ValidateHex(Hex targetHex)
+    {
+        bool correctTeam = targetHex.GetTeam() == this._team;
+        if (!correctTeam) Debug.LogWarning("Player place hero in the wrong hex!");
+        return correctTeam;
     }
 
 

@@ -59,6 +59,11 @@ public class Preparation : MonoBehaviour
 
     public void MoveThisHeroInPreParationState(Hero hero, Placement placement)
     {
+        // Leaving its old hex (if it had one) before landing on the new placement -
+        // a freshly-spawned hero has no hex yet, so this is a no-op for it.
+        Placement oldPlacement = hero.Blackboard.GetCurrentHex();
+        if (oldPlacement != null) oldPlacement.OnHeroUnplaced(hero);
+
         placement.OnHeroPlaced(hero);
         hero.transform.position = placement.transform.position;
     }

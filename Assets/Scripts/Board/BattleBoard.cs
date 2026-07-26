@@ -57,4 +57,8 @@ public class BattleBoard : MonoBehaviour
     {
         if (!_heroesOnBoard.Contains(hero)) _heroesOnBoard.Add(hero);
     }
+
+    // Counterpart to TrackThisHero - a hero leaving its hex for a non-hex placement
+    // (e.g. back to the bench) is no longer on the battlefield.
+    public void UntrackThisHero(Hero hero) => _heroesOnBoard.Remove(hero);
 }

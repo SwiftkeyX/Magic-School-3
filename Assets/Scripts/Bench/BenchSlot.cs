@@ -12,4 +12,9 @@ public class BenchSlot : MonoBehaviour, Placement
 
     // A hero placed on a bench slot has no hex - nothing to do.
     public void OnHeroPlaced(Hero hero) { }
+
+    // TODO: once BenchSlot tracks which hero occupies it, free the slot here
+    // (SetReserved(false)) so a hero dragged off the bench doesn't permanently
+    // consume its slot.
+    public void OnHeroUnplaced(Hero hero) { }
 }

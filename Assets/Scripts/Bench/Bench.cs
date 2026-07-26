@@ -23,11 +23,8 @@ public class Bench : MonoBehaviour
             return;
         }
 
-        // spawn hero prefab, move it to that slot
+        // spawn hero prefab, move it to that slot - freeSlot.OnHeroPlaced() reserves it
         Preparation.Instance.SpawnHero(data, Team.Blue, freeSlot);
-
-        // reserve the slot
-        freeSlot.SetReserved(true);
     }
 }
 

@@ -14,3 +14,14 @@ public interface Placement
     // Called just before a hero already on this placement moves to a different one
     void OnHeroUnplaced(Hero hero);
 }
+
+// need somewhere to put the redundant code of each Placement logic, so we move it into dedicated Extension class
+public static class PlacementExtensions
+{
+    // basically, set placement for the hero
+    public static void EnterPlacementExtension(this Placement placement, Hero hero)
+    {
+        hero.Blackboard.SetCurrentPlacement(placement);
+        hero.transform.position = placement.transform.position;
+    }
+}

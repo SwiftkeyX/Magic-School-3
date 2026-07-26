@@ -10,6 +10,7 @@ public class HeroStateMachineBlackBoard
     private readonly Hero _me;
     private readonly HeroDataInCombat _combatData;
     private BattleBoard _board;
+    private Placement _currentPlacement;
 
     // ================================================ movement ================================================
     private float _moveSpeed;
@@ -20,22 +21,24 @@ public class HeroStateMachineBlackBoard
     private Team _team;
     private AnimationCurve _attackCurve;
 
-
     // ================================================ getter ================================================
     public BattleBoard Board => _board;
     public float MoveSpeed => _moveSpeed;
     public AnimationCurve WalkCurve => _walkCurve;
     public AnimationCurve AttackCurve => _attackCurve;
     public Team Team => _team;
-    public Hex GetCurrentHex() => _combatData.CurrentHex;
+    // CurrentHex is a derived view of CurrentPlacement, not separately stored - it's the
+    // hex the hero is on if CurrentPlacement is a Hex, or null if it's a BenchSlot (or unset).
+    public Hex GetCurrentHex() => _currentPlacement as Hex;
     public Hex GetReservedHex() => _combatData.ReservedHex;
-    public bool IsInCombat() => _combatData.CurrentHex != null;
+    public bool IsInCombat() => _currentPlacement is Hex;
+    public Placement CurrentPlacement => _currentPlacement;
 
     // ================================================ setter ================================================
     public void SetBoard(BattleBoard board) => _board = board;
     public void SetTeam(Team team) => _team = team;
-    public void SetCurrentHex(Hex targetHex) => _combatData.SetCurrentHex(targetHex);
     public void SetReservedHex(Hex targetHex) => _combatData.SetReservedHex(targetHex);
+    public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
 
     public HeroStateMachineBlackBoard(Hero hero, HeroDataInCombat combatData, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
     {

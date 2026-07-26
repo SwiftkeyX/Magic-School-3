@@ -9,7 +9,6 @@ public class HeroDataInCombat
     private Stat _stat;
 
     // ===================== Position ========================
-    private Hex _currentHex;
     private Hex _reservedHex;
     private Hero _nearestEnemy;
 
@@ -24,8 +23,6 @@ public class HeroDataInCombat
     public int Range => _stat.Range;
     public int StartMana => _stat.StartMana;
     public int MaxMana => _stat.MaxMana;
-    // current hex = hex that this hero is currently standing on
-    public Hex CurrentHex => _currentHex;
     // reserved hex = hex that this hero want to walk into, so he reserved it, to prevent other hero to walk into the same hex
     public Hex ReservedHex => _reservedHex;
     public int CurrentHP => _stat.CurrentHP;
@@ -33,7 +30,6 @@ public class HeroDataInCombat
     public Hero NearestEnemy => _nearestEnemy;
 
     // =================== setter =====================
-    public void SetCurrentHex(Hex hex) => _currentHex = hex;
     public void SetReservedHex(Hex hex) => _reservedHex = hex;
     public void SetNearestEnemy(Hero hero) => _nearestEnemy = hero;
     public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);

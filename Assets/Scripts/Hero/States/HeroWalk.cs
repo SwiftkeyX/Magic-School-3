@@ -50,7 +50,7 @@ public class HeroWalk : HeroState
         if (isWalkingFinished)
         {
             _me.transform.position = _end;
-            _me.Blackboard.SetCurrentHex(_targetHex);
+            _me.Blackboard.SetCurrentPlacement(_targetHex);
             _me.StateMachine.ChangeState(HeroStateType.Idle);
             return;
         }

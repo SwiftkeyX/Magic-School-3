@@ -6,6 +6,16 @@
       "file": "Assets/Scripts/Board/Hex.cs",
       "description": "Make OnHeroUnplaced() too. Activate when the player move the hero out.\r\nIt should contain logic for untracking the hero on the board.\r\n\r\nIs that make sense?",
       "line": 33
+    },
+    {
+      "file": "Assets/Scripts/Board/Hex.cs",
+      "description": "what about setcurrenthex = null?\r\nIt use to exist, right?",
+      "line": 40
+    },
+    {
+      "file": "Assets/Scripts/Hero/HeroDataInCombat.cs",
+      "description": "I want to change the name to \"HeroDataRuntime\".\r\nAnd contain every run time data for each hero.\r\n\r\nSo this data should also have _currentPlacement;\r\n\r\nIs that make sense?",
+      "line": 3
     }
   ]
 }

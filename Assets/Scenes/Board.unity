@@ -844,12 +844,14 @@ MonoBehaviour:
   _heroDataSOs:
   - {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
   - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
+  - {fileID: 11400000, guid: 367ab696d925a9134a1f6bfdf10f6b50, type: 2}
+  - {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
+  - {fileID: 11400000, guid: 4b7285bd300163eaa8d8dd984c5cacb2, type: 2}
+  - {fileID: 11400000, guid: 446edbdd551757d88e4e4c4ea7bdebc9, type: 2}
+  - {fileID: 11400000, guid: ab15275bd47554d322ad78240bb196d8, type: 2}
+  - {fileID: 11400000, guid: 9a18ccd8aec210310f8e7f37debc48ef, type: 2}
+  - {fileID: 11400000, guid: cda4db8584c549232c664341b6f5c95c, type: 2}
+  - {fileID: 11400000, guid: fa8483a49acf499773dd412838a74521, type: 2}
   _bench: {fileID: 477776518}
 --- !u!114 &1120158067 stripped
 MonoBehaviour:
@@ -1002,8 +1004,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 1091040812}
   - {fileID: 344829187}
+  - {fileID: 1091040812}
+  - {fileID: 318911244}
   - {fileID: 52110551}
   - {fileID: 2034168831}
-  - {fileID: 318911244}

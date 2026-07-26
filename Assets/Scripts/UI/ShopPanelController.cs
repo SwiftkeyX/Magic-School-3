@@ -215,17 +215,22 @@ public class ShopPanelController : MonoBehaviour
             return;
         }
 
+        // TODO: spend gold once that system exists.
+        bool bought = BuyHero(_heroSlots[slot]);
+        if (!bought) return;
+
         Debug.Log($"Bought hero from slot '{_heroSlots[slot]}'.");
 
-        // TODO: spend gold / add hero to bench once those systems exist.
-        BuyHero(_heroSlots[slot]);
+        // slot's hero is gone - hide it so it can't be bought again, and let its
+        // flex-grow siblings reflow into the space it leaves behind.
+        slot.style.display = DisplayStyle.None;
     }
     #endregion
 
     #region etc
-    private void BuyHero(HeroDataSO data)
+    private bool BuyHero(HeroDataSO data)
     {
-        _bench.SpawnHeroOnBench(data);
+        return _bench.SpawnHeroOnBench(data);
     }
     #endregion
 

@@ -1,6 +1,5 @@
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,7 +18,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Temporary manual trigger for testing until a "Start Battle" UI button exists.
-        if (Phase == GamePhase.Preparation && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Phase == GamePhase.Preparation && PlayerInputSystem.SpacePressedThisFrame)
         {
             StartCombat();
         }

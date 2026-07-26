@@ -6,10 +6,7 @@ public class HeroStateMachine
     private readonly HeroIdle _idle;
     private readonly HeroAttack _attack;
     private readonly HeroDead _dead;
-
-    // Public because HeroIdle needs to call SetTarget() on the concrete instance before
-    // switching into it - every other transition goes purely through HeroStateType.
-    public HeroWalk Walk { get; }
+    private readonly HeroWalk _walk;
 
     public HeroState Current { get; private set; }
     public HeroStateType CurrentType => Current.StateType;
@@ -17,7 +14,7 @@ public class HeroStateMachine
     public HeroStateMachine(Hero hero)
     {
         _idle = new HeroIdle(hero);
-        Walk = new HeroWalk(hero);
+        _walk = new HeroWalk(hero);
         _attack = new HeroAttack(hero);
         _dead = new HeroDead(hero);
     }
@@ -44,7 +41,7 @@ public class HeroStateMachine
         switch (type)
         {
             case HeroStateType.Idle: return _idle;
-            case HeroStateType.Walk: return Walk;
+            case HeroStateType.Walk: return _walk;
             case HeroStateType.Attack: return _attack;
             case HeroStateType.Dead: return _dead;
             default: return null;

@@ -28,14 +28,14 @@ public class HeroIdle : HeroState
     protected override void CheckSwitchState()
     {
         // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.Blackboard.GetCurrentHP() <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
             return;
         }
 
-        Hero nearestEnemy = _me.FindNearestEnemy();
+        Hero nearestEnemy = _me.Blackboard.FindNearestEnemy();
         if (nearestEnemy == null) return;
 
         // If enemy is within attack range, stop moving, and transition to attack state
@@ -52,7 +52,7 @@ public class HeroIdle : HeroState
         }
 
         // Find next hex that could lead this hero to nearest enemy
-        Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.GetCurrentHex(), nearestEnemy.GetCurrentHex(), ReservedHexes());
+        Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.Blackboard.GetCurrentHex(), nearestEnemy.Blackboard.GetCurrentHex(), ReservedHexes());
         if (targetHex == null) return;
 
         // Do I wait for the blocker to move? (Read function's comment)
@@ -62,25 +62,25 @@ public class HeroIdle : HeroState
         }
 
         // Finally, I'll decide to walk
-        _me.SetReservedHex(targetHex);
+        _me.Blackboard.SetReservedHex(targetHex);
         _me.StateMachine.ChangeState(HeroStateType.Walk);
     }
 
 
     private bool IsEnemyInAttackRange(Hero nearestEnemy)
     {
-        return _me.GetCurrentHex().IsWithinRange(nearestEnemy.GetCurrentHex(), _me.GetRange());
+        return _me.Blackboard.GetCurrentHex().IsWithinRange(nearestEnemy.Blackboard.GetCurrentHex(), _me.Blackboard.GetRange());
     }
 
     private bool IsEnemyArrivingNextToMe()
     {
-        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.State != HeroStateType.Dead && _me.GetCurrentHex().IsAdjacentTo(h.GetReservedHex()));
+        return _me.Blackboard.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.State != HeroStateType.Dead && _me.Blackboard.GetCurrentHex().IsAdjacentTo(h.Blackboard.GetReservedHex()));
     }
 
     private HashSet<Hex> ReservedHexes()
     {
         // Dead heroes don't hold their hex - otherwise a corpse would block that hex forever.
-        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me && h.State != HeroStateType.Dead).Select(h => h.GetReservedHex()));
+        return new HashSet<Hex>(_me.Blackboard.Board.HeroesOnBoard.Where(h => h != _me && h.State != HeroStateType.Dead).Select(h => h.Blackboard.GetReservedHex()));
     }
 
     /// <summary>
@@ -94,14 +94,14 @@ public class HeroIdle : HeroState
     /// <returns = FALSE> I'll take a longer path </returns>
     private bool IsTargetHexMakeMeGoFurtherFromEnemy(Hero nearestEnemy, Hex targetHex)
     {
-        float distFromMeToEnemy = Vector3.Distance(_me.GetCurrentHex().transform.position, nearestEnemy.GetCurrentHex().transform.position);
-        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.GetCurrentHex().transform.position);
+        float distFromMeToEnemy = Vector3.Distance(_me.Blackboard.GetCurrentHex().transform.position, nearestEnemy.Blackboard.GetCurrentHex().transform.position);
+        float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.Blackboard.GetCurrentHex().transform.position);
         bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
 
         if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
         {
             if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / _me.MoveSpeed) return true;
+            if (Time.time - _holdSince < 1f / _me.Blackboard.MoveSpeed) return true;
         }
 
         return false;
@@ -111,12 +111,12 @@ public class HeroIdle : HeroState
     // that ally will step aside soon.
     private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
     {
-        foreach (var neighbor in _me.GetCurrentHex().GetNeighbors())
+        foreach (var neighbor in _me.Blackboard.GetCurrentHex().GetNeighbors())
         {
-            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.GetCurrentHex().transform.position);
+            float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.Blackboard.GetCurrentHex().transform.position);
             if (neighborDist >= distFromMeToEnemy) continue;
 
-            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.State != HeroStateType.Dead && h.GetReservedHex() == neighbor);
+            var occupant = _me.Blackboard.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.State != HeroStateType.Dead && h.Blackboard.GetReservedHex() == neighbor);
             if (occupant != null && occupant.State != HeroStateType.Attack) return true;
         }
 

@@ -30,17 +30,17 @@ public class HeroAttack : HeroState
     public override void OnExit()
     {
         // Snap back in case we leave Attack mid-dash, so the hero doesn't get left off-hex-center.
-        _me.transform.position = _me.GetCurrentHex().transform.position;
+        _me.transform.position = _me.Blackboard.GetCurrentHex().transform.position;
     }
 
     public override void OnUpdate()
     {
-        _nearestEnemy = _me.FindNearestEnemy();
+        _nearestEnemy = _me.Blackboard.FindNearestEnemy();
 
         // check if I have a target within range. if no, exit attack state
         CheckSwitchState();
 
-        bool isInRange = _nearestEnemy != null && _me.GetCurrentHex().IsWithinRange(_nearestEnemy.GetCurrentHex(), _me.GetRange());
+        bool isInRange = _nearestEnemy != null && _me.Blackboard.GetCurrentHex().IsWithinRange(_nearestEnemy.Blackboard.GetCurrentHex(), _me.Blackboard.GetRange());
         if (!isInRange) return;
 
         // update aa timer
@@ -51,13 +51,13 @@ public class HeroAttack : HeroState
         if (isAaReset)
         {
             // apply damage to target (includes the active skill's +50% if a cast is armed)
-            _nearestEnemy.TakeDamage(_me.GetAttackDamage());
+            _nearestEnemy.Blackboard.TakeDamage(_me.Blackboard.GetAttackDamage());
 
             // gain mana
-            _me.GainMana(ManaPerAttack);
+            _me.Blackboard.GainMana(ManaPerAttack);
 
             // aa is cooldown
-            _aaCooldown += 1f / _me.GetAttackSpeed();
+            _aaCooldown += 1f / _me.Blackboard.GetAttackSpeed();
 
             // attack animation: dash toward the enemy, then back to where we started
             AttackAnimation();
@@ -70,7 +70,7 @@ public class HeroAttack : HeroState
     protected override void CheckSwitchState()
     {
         // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.Blackboard.GetCurrentHP() <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
@@ -78,7 +78,7 @@ public class HeroAttack : HeroState
         }
 
         // If the enemy is no longer within attack range, transition to idle
-        bool isEnemyInRange = _nearestEnemy != null && _me.GetCurrentHex().IsWithinRange(_nearestEnemy.GetCurrentHex(), _me.GetRange());
+        bool isEnemyInRange = _nearestEnemy != null && _me.Blackboard.GetCurrentHex().IsWithinRange(_nearestEnemy.Blackboard.GetCurrentHex(), _me.Blackboard.GetRange());
         if (!isEnemyInRange)
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);
@@ -102,7 +102,7 @@ public class HeroAttack : HeroState
 
         _dashElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_dashElapsed / DashDuration);
-        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.AttackCurve.Evaluate(t));
+        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.Blackboard.AttackCurve.Evaluate(t));
 
         if (t >= 1f) _dashElapsed = -1f;
     }

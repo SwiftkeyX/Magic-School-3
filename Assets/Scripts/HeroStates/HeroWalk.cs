@@ -17,19 +17,19 @@ public class HeroWalk : HeroState
 
     public override void OnEnter()
     {
-        _targetHex = _me.GetReservedHex();
+        _targetHex = _me.Blackboard.GetReservedHex();
         _start = _me.transform.position;
         _end = _targetHex.transform.position;
-        _duration = 1f / _me.MoveSpeed;
+        _duration = 1f / _me.Blackboard.MoveSpeed;
         _elapsed = 0f;
     }
 
     public override void OnUpdate()
     {
-        // walk according the movement's curve 
+        // walk according the movement's curve
         _elapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_elapsed / _duration);
-        _me.transform.position = Vector3.Lerp(_start, _end, _me.WalkCurve.Evaluate(t));
+        _me.transform.position = Vector3.Lerp(_start, _end, _me.Blackboard.WalkCurve.Evaluate(t));
 
         CheckSwitchState();
     }
@@ -37,7 +37,7 @@ public class HeroWalk : HeroState
     protected override void CheckSwitchState()
     {
         // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.Blackboard.GetCurrentHP() <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
@@ -50,7 +50,7 @@ public class HeroWalk : HeroState
         if (isWalkingFinished)
         {
             _me.transform.position = _end;
-            _me.SetCurrentHex(_targetHex);
+            _me.Blackboard.SetCurrentHex(_targetHex);
             _me.StateMachine.ChangeState(HeroStateType.Idle);
             return;
         }

@@ -30,8 +30,8 @@ public class Hex : MonoBehaviour, Placement
     // A hero placed on a hex occupies it, both as its current and reserved hex.
     public void OnHeroPlaced(Hero hero)
     {
-        hero.SetCurrentHex(this);
-        hero.SetReservedHex(this);
+        hero.Blackboard.SetCurrentHex(this);
+        hero.Blackboard.SetReservedHex(this);
     }
 
     public Team GetTeam()

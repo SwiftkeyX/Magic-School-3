@@ -52,6 +52,7 @@ public class Hero : MonoBehaviour
 
     void Update()
     {
+        // if combat not start, return
         if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhase.Combat) return;
 
         // A hero still sitting on the bench (bought but never dragged onto the board) has no

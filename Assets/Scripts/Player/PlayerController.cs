@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMoveHero()
     {
+        // if not in preparation, return;
+        if (GameManager.Instance.Phase != GamePhase.Preparation) return;
+
         // get world position from current pointer position (mouse)
         Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
         Collider2D hit = Physics2D.OverlapPoint(worldPos);

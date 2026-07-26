@@ -16,6 +16,11 @@
       "file": "Assets/Scripts/Hero/HeroDataInCombat.cs",
       "description": "I want to change the name to \"HeroDataRuntime\".\r\nAnd contain every run time data for each hero.\r\n\r\nSo this data should also have _currentPlacement;\r\n\r\nIs that make sense?\r\n\r\n---\r\n**Reply:** Yes - ReservedHex (where the hero wants to go) already lived here, so CurrentPlacement (where it currently is) belongs alongside it instead of one level up in the Blackboard. Renamed the file/class to HeroDataRuntime and moved CurrentPlacement in.",
       "line": 3
+    },
+    {
+      "file": "Assets/Scripts/Core/GameManager.cs",
+      "description": "Use new input system, specifically the playerinputsystem we have.",
+      "line": 22
     }
   ]
 }

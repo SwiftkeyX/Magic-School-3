@@ -49,8 +49,19 @@ public class ShopPanelController : MonoBehaviour
 
     private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
     {
-        // find this panel's name
-        VisualElement panel = panelTree.CloneTree()[0];
+        // wrapper is the part where style is attached to
+        VisualElement wrapper = panelTree.CloneTree();
+        
+        // panel is the actual container
+        VisualElement panel = wrapper[0];
+        
+        // add style to the panel
+        for (int i = 0; i < wrapper.styleSheets.count; i++)
+        {
+            panel.styleSheets.Add(wrapper.styleSheets[i]);
+        }
+
+        // remove the container out, so we could add it again later
         panel.RemoveFromHierarchy();
 
         // use this panel's name - to find where it should be put inside the "main panel"
@@ -170,6 +181,20 @@ public class ShopPanelController : MonoBehaviour
         _ghost.style.width = 40;
         _ghost.style.height = 40;
         _ghost.style.backgroundColor = new Color(1f, 1f, 1f, 0.6f);
+        _ghost.style.borderTopLeftRadius = 8;
+        _ghost.style.borderTopRightRadius = 8;
+        _ghost.style.borderBottomLeftRadius = 8;
+        _ghost.style.borderBottomRightRadius = 8;
+
+        Color borderColor = new Color(1f, 1f, 1f, 0.85f);
+        _ghost.style.borderTopWidth = 1;
+        _ghost.style.borderBottomWidth = 1;
+        _ghost.style.borderLeftWidth = 1;
+        _ghost.style.borderRightWidth = 1;
+        _ghost.style.borderTopColor = borderColor;
+        _ghost.style.borderBottomColor = borderColor;
+        _ghost.style.borderLeftColor = borderColor;
+        _ghost.style.borderRightColor = borderColor;
     }
 
     // ghost copying the mouse position using "screen panel method"

@@ -12,6 +12,7 @@ public class ShopPanelController : MonoBehaviour
 {
     // ================= SerializeField ======================
     [SerializeField] private VisualTreeAsset _shopPanelAsset;
+    [SerializeField] private VisualTreeAsset _ghostAsset;
     [SerializeField] private List<HeroDataSO> _heroDataSOs;
     [SerializeField] private Bench _bench;
 
@@ -51,22 +52,26 @@ public class ShopPanelController : MonoBehaviour
         MakeRefreshButtonWork();
     }
 
-    private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
+    // CloneTree() wraps a template's root in a TemplateContainer, and any <Style src="...">
+    // referenced in its UXML attaches to that wrapper - not to the root itself. Copy it over
+    // before discarding the wrapper, or the clone silently loses its stylesheet.
+    private VisualElement CloneTemplateRoot(VisualTreeAsset asset)
     {
-        // wrapper is the part where style is attached to
-        VisualElement wrapper = panelTree.CloneTree();
-        
-        // panel is the actual container
-        VisualElement panel = wrapper[0];
-        
-        // add style to the panel
+        VisualElement wrapper = asset.CloneTree();
+        VisualElement root = wrapper[0];
+
         for (int i = 0; i < wrapper.styleSheets.count; i++)
         {
-            panel.styleSheets.Add(wrapper.styleSheets[i]);
+            root.styleSheets.Add(wrapper.styleSheets[i]);
         }
 
-        // remove the container out, so we could add it again later
-        panel.RemoveFromHierarchy();
+        root.RemoveFromHierarchy();
+        return root;
+    }
+
+    private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
+    {
+        VisualElement panel = CloneTemplateRoot(panelTree);
 
         // use this panel's name - to find where it should be put inside the "main panel"
         VisualElement thisPanelWhereAboutInMainPanel = _mainPanel.Q<VisualElement>(panel.name);
@@ -188,28 +193,11 @@ public class ShopPanelController : MonoBehaviour
     }
 
     // ============================== Ghost ====================================
-    // temporarily ghost sprite
+    // dragged-hero preview that follows the pointer - cloned from Ghost.uxml/.ghost in
+    // Shop.uss instead of being hand-built in C#, same pattern as the shop panel itself.
     private void InitializeGhost()
     {
-        _ghost = new VisualElement();
-        _ghost.style.position = Position.Absolute;
-        _ghost.style.width = 40;
-        _ghost.style.height = 40;
-        _ghost.style.backgroundColor = new Color(1f, 1f, 1f, 0.6f);
-        _ghost.style.borderTopLeftRadius = 8;
-        _ghost.style.borderTopRightRadius = 8;
-        _ghost.style.borderBottomLeftRadius = 8;
-        _ghost.style.borderBottomRightRadius = 8;
-
-        Color borderColor = new Color(1f, 1f, 1f, 0.85f);
-        _ghost.style.borderTopWidth = 1;
-        _ghost.style.borderBottomWidth = 1;
-        _ghost.style.borderLeftWidth = 1;
-        _ghost.style.borderRightWidth = 1;
-        _ghost.style.borderTopColor = borderColor;
-        _ghost.style.borderBottomColor = borderColor;
-        _ghost.style.borderLeftColor = borderColor;
-        _ghost.style.borderRightColor = borderColor;
+        _ghost = CloneTemplateRoot(_ghostAsset);
     }
 
     // ghost copying the mouse position using "screen panel method"
@@ -236,8 +224,7 @@ public class ShopPanelController : MonoBehaviour
 
         Debug.Log($"Bought hero from slot '{_heroSlotsDict[slot]}'.");
 
-        // slot's hero is gone - clearing its data hides it (see AssignHeroToSlot) so it
-        // can't be bought again, and lets its flex-grow siblings reflow into its space.
+        // slot's hero is gone - clearing its data dims it and blocks re-buying (see AssignHeroToSlot)
         AssignHeroToSlot(slot, null);
     }
     #endregion

@@ -841,6 +841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopPanelController
   _shopPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
+  _ghostAsset: {fileID: 9197481963319205126, guid: f2b0855b1d9174942833f355aba69429, type: 3}
   _heroDataSOs:
   - {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
   - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}

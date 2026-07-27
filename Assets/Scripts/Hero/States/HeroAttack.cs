@@ -50,17 +50,12 @@ public class HeroAttack : HeroState
         bool isAaReset = (_aaCooldown <= 0f);
         if (isAaReset)
         {
-            // apply damage to target (includes the active skill's +50% if a cast is armed)
+            // apply damage to target
             _nearestEnemy.Blackboard.TakeDamage(_me.Blackboard.GetAttackDamage());
 
-            // gain mana - a capped call is the mana-full moment, which fires the hero's own
-            // skill (Trigger.OnCast) instead of the old hardcoded "empowered next attack" stub.
-            bool manaCapped = _me.Blackboard.GainMana(ManaPerAttack);
-            if (manaCapped && _me.Blackboard.HasSkill())
-            {
-                _me.Blackboard.FireSkillTrigger(TriggerType.OnCast);
-                _me.Blackboard.Temp.PlaySkillCastEffect(_me.Blackboard.SkillName);
-            }
+            // gain mana - skill system was removed and is being rebuilt, so a capped call
+            // doesn't do anything yet.
+            _me.Blackboard.GainMana(ManaPerAttack);
 
             // aa is cooldown
             _aaCooldown += 1f / _me.Blackboard.GetAttackSpeed();

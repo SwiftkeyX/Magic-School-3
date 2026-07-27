@@ -85,12 +85,6 @@ public class HeroStateMachineBlackBoard
     }
     #endregion
 
-    #region Skill
-    public bool HasSkill() => _me.SkillRuntime.HasSkill;
-    public string SkillName => _me.SkillRuntime.SkillName;
-    public void FireSkillTrigger(TriggerType trigger) => _me.SkillRuntime.FireTrigger(trigger);
-    #endregion
-
     #region Find Enemy
     // Picks nearest enemy (if there are several nearest enemies, random it).
     public Hero FindNearestEnemy()

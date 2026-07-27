@@ -13,12 +13,6 @@ Check items off as they're addressed.
 
    Find logic enemy would need its own class. So we can get rid of this inconsistency.
 
-- [ ] **`Assets/Scripts/Hero/Hero.cs:67`**
-   I still don't sure what skillRuntime does?
-   I think it kinda smelled for no reason?
-
-   I'll come back later.
-
 - [x] **`Assets/Scripts/Hero/HeroDataRuntime.cs:37`**
    I don't think Stun or Wound should stay in Stat, no?
    From what I make sense, stat should only contain stuff like ad, as, df, mana, etc...
@@ -60,18 +54,6 @@ Check items off as they're addressed.
 
 - [ ] **`Assets/Scripts/Hero/States/HeroStunned.cs:15`**
    I want to test this out.
-
-- [ ] **`Assets/Scripts/Skill/ActionModel.cs:1`**
-    I will test this later.
-
-- [ ] **`Assets/Scripts/Skill/ActiveEffect.cs:1`**
-    test later.
-
-- [ ] **`Assets/Scripts/Skill/SkillDefinitionSO.cs:1`**
-    test later.
-
-- [ ] **`Assets/Scripts/Skill/SkillRuntime.cs:1`**
-    test later.
 
 - [x] **`Assets/Scripts/Hero/Hero.cs:94`**
     I will wire this correctly later.

@@ -1,6 +1,6 @@
 // Entered whenever a Status/Stun StatModifier is active (see Blackboard.IsStunned()). Does
 // nothing on OnUpdate, same shape as HeroDead, but it isn't terminal - the modifier's own
-// Remaining timer (ticked by SkillRuntime) expires it, and this state notices and leaves.
+// Remaining timer (ticked by Hero.Update()) expires it, and this state notices and leaves.
 using UnityEngine;
 
 public class HeroStunned : HeroState

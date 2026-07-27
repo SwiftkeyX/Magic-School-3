@@ -13,7 +13,6 @@ public class Hero : MonoBehaviour
     [SerializeField] private HeroDataSO _SOData;
     private HeroStateMachine _stateMachine;
     private HeroStateMachineBlackBoard _blackboard;
-    private SkillRuntime _skillRuntime;
 
     // ==================== Etc ====================
     [SerializeField] private float _moveSpeed = 1f;
@@ -31,7 +30,6 @@ public class Hero : MonoBehaviour
     public HeroStateType State => _stateMachine.CurrentType;
     public HeroStateMachine StateMachine => _stateMachine;
     public HeroStateMachineBlackBoard Blackboard => _blackboard;
-    public SkillRuntime SkillRuntime => _skillRuntime;
 
     // ==================== setter ====================
     public void SetBoard(BattleBoard battleBoard) => _blackboard.SetBoard(battleBoard);
@@ -43,7 +41,6 @@ public class Hero : MonoBehaviour
         _runtimeData = new HeroDataRuntime(_SOData);
         _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
         _stateMachine = new HeroStateMachine(this);
-        _skillRuntime = new SkillRuntime(this, _SOData.Skill);
     }
 
     void Start()
@@ -60,10 +57,9 @@ public class Hero : MonoBehaviour
         // hex yet - running its state machine would crash the moment it tries to path/attack.
         if (!_blackboard.IsInCombat()) return;
 
-        // GameStart fires exactly once, the first Update() this hero is actually in combat on a
-        // hex - not in Awake()/Start(), which also run for a hero still sitting on the bench.
-        _skillRuntime.EnsureGameStartFired();
-        _skillRuntime.Tick(Time.deltaTime);
+        // Decays this hero's StatModifiers (stuns/debuffs/buffs, however they got applied) -
+        // used to happen inside SkillRuntime.Tick(), kept alive here while skills are rebuilt.
+        _blackboard.TickModifiers(Time.deltaTime, null);
 
         _stateMachine.Update();
     }

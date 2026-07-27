@@ -15,8 +15,6 @@ public class HeroDataSO : ScriptableObject
     [SerializeField] private int _range = 1;
     [SerializeField] private int _startMana = 0;
     [SerializeField] private int _maxMana = 50;
-    [SerializeField] private SkillDefinitionSO _skill;
-
 
     // ===================== setter & getter =====================
     public GameObject Prefab => _prefab;
@@ -30,5 +28,4 @@ public class HeroDataSO : ScriptableObject
     public int Range => _range;
     public int StartMana => _startMana;
     public int MaxMana => _maxMana;
-    public SkillDefinitionSO Skill => _skill;
 }

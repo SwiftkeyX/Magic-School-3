@@ -19,17 +19,17 @@ Check items off as they're addressed.
 
    I'll come back later.
 
-- [ ] **`Assets/Scripts/Hero/HeroDataRuntime.cs:37`**
+- [x] **`Assets/Scripts/Hero/HeroDataRuntime.cs:37`**
    I don't think Stun or Wound should stay in Stat, no?
    From what I make sense, stat should only contain stuff like ad, as, df, mana, etc...
 
    But it could work, I'll come back later.
 
-- [ ] **`Assets/Scripts/Hero/HeroDataRuntime.cs:48`**
+- [x] **`Assets/Scripts/Hero/HeroDataRuntime.cs:48`**
    Could we make DamageReductionPercent become another modifier?
    Since modifier represent buff right?
 
-- [ ] **`Assets/Scripts/Hero/HeroDataRuntime.cs:132`**
+- [x] **`Assets/Scripts/Hero/HeroDataRuntime.cs:132`**
    Stat's SRP = contain sta data for the hero and possibly getter and setter for those stat BUT not logic for calculating thing e.g. Heal().
 
    We could have setter for increaseHP BUT not Heal() which calculate is target is wound or not.
@@ -45,7 +45,7 @@ Check items off as they're addressed.
 
    Is that make sense?
 
-- [ ] **`Assets/Scripts/Hero/HeroStateMachineBlackBoard.cs:80`**
+- [x] **`Assets/Scripts/Hero/HeroStateMachineBlackBoard.cs:80`**
    This seem weird to me.
    Time to make a class for calculate damage espectially, so this TakeDamage() don't have to calculate damage itself.
 

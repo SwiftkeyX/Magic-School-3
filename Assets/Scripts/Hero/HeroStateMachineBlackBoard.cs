@@ -64,21 +64,17 @@ public class HeroStateMachineBlackBoard
 
     // ====================================== stat setter ======================================
     public bool GainMana(int amount) => _runtimeData.GainMana(amount);      // return true if mana if capped
-    public void Heal(float amount) => _runtimeData.Heal(amount);
     public void AddModifier(StatModifier modifier) => _runtimeData.AddModifier(modifier);
     public void TickModifiers(float deltaTime, System.Action<StatModifier> onExpired) => _runtimeData.TickModifiers(deltaTime, onExpired);
+    public void Heal(float amount)
+    {
+        int healed = CombatMath.Heal(amount, GetCurrentHP(), _runtimeData.IsWounded);
+        _runtimeData.SetCurrentHP(healed);
+    }
 
-    /// <summary>
-    /// Take damage. Calculate damge using effective health pool formula.
-    /// </summary>
     public void TakeDamage(int damage)
     {
-        // EHP = HP * (1 + DF / 100) -> raw damage is worth less HP the more DF you have,
-        // so divide by that same factor to get how much HP the hit actually removes.
-        float mitigatedDamage = damage / (1f + _runtimeData.DF / 100f);
-        // A skill's Damage Reduction buff shaves a further percentage off, after armor mitigation.
-        mitigatedDamage *= 1f - _runtimeData.DamageReductionPercent / 100f;
-        int newHP = Mathf.Max(0, GetCurrentHP() - Mathf.RoundToInt(mitigatedDamage));
+        int newHP = CombatMath.TakeDamage(damage, _runtimeData.DF, _runtimeData.DamageReductionPercent, GetCurrentHP());
         _runtimeData.SetCurrentHP(newHP);
     }
     #endregion

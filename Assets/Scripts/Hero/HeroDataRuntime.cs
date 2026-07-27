@@ -43,7 +43,6 @@ public class HeroDataRuntime
     public void SetNearestEnemy(Hero hero) => _nearestEnemy = hero;
     public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);
     public bool GainMana(int amount) => _stat.AddMana(amount);
-    public void Heal(float amount) => _stat.Heal(amount);
     public void AddModifier(StatModifier modifier) => _stat.AddModifier(modifier);
     public float DamageReductionPercent => _stat.DamageReductionPercent;
 
@@ -126,14 +125,6 @@ public class Stat
     }
 
     public void AddModifier(StatModifier modifier) => _modifiers.Add(modifier);
-
-    // Wound halves incoming healing (simplified from "reduce healing" per effect-types.csv,
-    // since this game has no finer-grained heal-reduction percentage authored yet).
-    public void Heal(float amount)
-    {
-        float healed = IsWounded ? amount * 0.5f : amount;
-        _currentHP = Mathf.Clamp(_currentHP + Mathf.RoundToInt(healed), 0, HP);
-    }
 
     public void TickModifiers(float deltaTime, Action<StatModifier> onExpired)
     {

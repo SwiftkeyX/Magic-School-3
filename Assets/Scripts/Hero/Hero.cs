@@ -96,7 +96,7 @@ public class Hero : MonoBehaviour
 
         GameObject instance = Instantiate(_skillCastTextPrefab);
         Color color = Team == Team.Blue ? BlueSkillTextColor : RedSkillTextColor;
-        instance.GetComponent<FloatingText>().Show(skillName, color, transform.position + new Vector3(0f, 1.5f, 0f));
+        instance.GetComponent<FloatingText>().Show(skillName, color, transform.position);
     }
     #endregion
 

@@ -1,10 +1,10 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 // Spawns above a hero, drifts upward, and fades out over its lifetime, then self-destroys.
 public class FloatingText : MonoBehaviour
 {
-    [SerializeField] private Text _text;
+    [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private float _floatDistance = 1f;
     [SerializeField] private float _duration = 1.2f;
     [SerializeField] private AnimationCurve _fadeCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0f));

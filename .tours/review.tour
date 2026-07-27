@@ -33,6 +33,11 @@
       "line": 138
     },
     {
+      "file": ".claude/docs/review-comments.md",
+      "description": "My plan now is to ensure every hero from TFT now work correctly here.\r\nMaybe, I will add some VFX for those skill?\r\n\r\nNext, deal with .tours comment:\r\n1. Lets start with a smaller one.",
+      "line": 1
+    },
+    {
       "file": "Assets/Scripts/Hero/HeroStateMachineBlackBoard.cs",
       "description": "This seem weird to me.\r\nTime to make a class for calculate damage espectially, so this TakeDamage() don't have to calculate damage itself.\r\n\r\nIs that make sense too?",
       "line": 80

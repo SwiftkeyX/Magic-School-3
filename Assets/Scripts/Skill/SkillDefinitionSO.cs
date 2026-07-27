@@ -19,6 +19,9 @@ public class SkillDefinitionSO : ScriptableObject
     public void SetSteps(List<SkillStep> steps) => _steps = steps;
 }
 
+/// <summary>
+/// SkillStep = step in google sheet. 
+/// </summary>
 [Serializable]
 public class SkillStep
 {
@@ -67,6 +70,9 @@ public class SkillStep
     }
 }
 
+/// <summary>
+/// SkillEffect = Effect in google sheet. 
+/// </summary>
 [Serializable]
 public class SkillEffect
 {

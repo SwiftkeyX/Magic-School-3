@@ -1,10 +1,5 @@
 using System.Collections.Generic;
 
-// Fixed per-action axes - Apply/Spawn/Collision never vary per-hero, they're a property of the
-// action's NAME (see action-model.csv's own reasoning: these lived as per-row Hero columns for
-// one day and moved out because every hero using an action agreed on them). SkillRuntime looks
-// this up once per action execution instead of authoring it again on every SkillStep.
-
 public enum ApplyType { DirectApply, Hitbox }
 public enum SpawnType { None, AtUser, AtTarget }
 public enum CollisionType { None, TargetOnly, Area, PierceAll, FirstHit, Self, FlankPair }
@@ -23,6 +18,12 @@ public readonly struct ActionModelEntry
     }
 }
 
+/// <summary>
+/// What? ActionModel are contain list of "action".
+/// What is action? action is a pre-built skill that contain Apply/SpawnType/Collision. Several action could be used to construct a skill for hero.
+/// Why? We make a skill for hero this way Because hero's skill from TFT are modular, which mean several skill are a smaller part assemble together
+/// So we want to replicate a modular skill system like that. 
+/// </summary>
 public static class ActionModel
 {
     private static readonly Dictionary<ActionKey, ActionModelEntry> _entries = new Dictionary<ActionKey, ActionModelEntry>

@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2629c4df8ff720147aaf6c7bd613b7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroSpawner
-  _placementSO: {fileID: 11400000, guid: 0cd12e6f93eb05a45a040a9f74bbd9d7, type: 2}
+  _placementSO: {fileID: 11400000, guid: 05b5fc8433815bb44ae4a7ee455992a9, type: 2}
   _seedMode: 1
   _board: {fileID: 1120158067}
 --- !u!114 &477776518 stripped

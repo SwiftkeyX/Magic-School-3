@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Per-hero executor for a SkillDefinitionSO - the piece that actually turns the sheet's
-// Trigger/Condition/Action/Aim Target/Effect data into gameplay. Owned by Hero exactly like
-// HeroStateMachineBlackBoard, constructed once in Hero.Awake(). Every hero gets one even
-// without an authored skill (_skill == null), because Tick() also decays StatModifiers an
-// ENEMY's skill applied to this hero (a stun doesn't care whether its target has a skill).
+// Per-hero executor for a SkillDefinitionSO
+// the piece that actually turns the sheet's Trigger/Condition/Action/Aim Target/Effect data into gameplay. 
 public class SkillRuntime
 {
     private readonly Hero _me;
@@ -33,21 +30,23 @@ public class SkillRuntime
     // re-applies this hero's own periodic effects (Zone AOE ticks, channel heals, laser DoTs).
     public void Tick(float deltaTime)
     {
+        // update modifier
         _me.Blackboard.TickModifiers(deltaTime, OnModifierExpired);
+
 
         for (int i = _activeEffects.Count - 1; i >= 0; i--)
         {
             ActiveEffect ae = _activeEffects[i];
-            ae.Elapsed += deltaTime;
-            ae.SinceLastTick += deltaTime;
+            ae.DurationStarted += deltaTime;
+            ae.CadenceLastTick += deltaTime;
 
-            if (ae.Effect.Cadence == EffectCadence.Periodic && ae.SinceLastTick >= ae.Effect.CadenceSeconds)
+            if (ae.Effect.Cadence == EffectCadence.Periodic && ae.CadenceLastTick >= ae.Effect.CadenceSeconds)
             {
-                ae.SinceLastTick -= ae.Effect.CadenceSeconds;
+                ae.CadenceLastTick -= ae.Effect.CadenceSeconds;
                 ApplyEffectPayload(ae.Effect, ae.ResolveRecipients());
             }
 
-            if (ae.Effect.Duration > 0f && ae.Elapsed >= ae.Effect.Duration)
+            if (ae.Effect.Duration > 0f && ae.DurationStarted >= ae.Effect.Duration)
             {
                 _activeEffects.RemoveAt(i);
             }

@@ -36,7 +36,7 @@ Check items off as they're addressed.
 
    Is that make sense?
 
-- [ ] **`Assets/Scripts/Hero/HeroDataRuntime.cs:138`**
+- [x] **`Assets/Scripts/Hero/HeroDataRuntime.cs:138`**
    Same to Heal().
    We have a class for modifier already, I think we should move all method that calculate logic for modifier inside it.
    e.g. TickModifiers(), ModifierSum(), HasModifier().

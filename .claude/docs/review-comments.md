@@ -6,7 +6,7 @@ Line numbers are a snapshot at review time - use file + quoted content to reloca
 
 Check items off as they're addressed.
 
-- [ ] **`Assets/Scripts/Board/BattleBoard.cs:69`**
+- [x] **`Assets/Scripts/Board/BattleBoard.cs:69`**
    Find logic enemy now was in 2 place:
    1. HeroStateMachineBlackBoard
    2. BattleBoard

@@ -51,7 +51,7 @@ Check items off as they're addressed.
 
    Is that make sense too?
 
-- [ ] **`Assets/Scripts/Hero/States/HeroAttack.cs:59`**
+- [x] **`Assets/Scripts/Hero/States/HeroAttack.cs:59`**
    It was fine. BUT I don't like _me.SkillRunTime.().
 
    StateMachine should only call blackboard only since I add blackboard new's SRP.
@@ -73,12 +73,12 @@ Check items off as they're addressed.
 - [ ] **`Assets/Scripts/Skill/SkillRuntime.cs:1`**
     test later.
 
-- [ ] **`Assets/Scripts/Hero/Hero.cs:94`**
+- [x] **`Assets/Scripts/Hero/Hero.cs:94`**
     I will wire this correctly later.
 
     e.g. wire using the inspector, not wire here.
 
-- [ ] **`Assets/Scripts/Hero/States/HeroAttack.cs:62`**
+- [x] **`Assets/Scripts/Hero/States/HeroAttack.cs:62`**
     Okay before everything becoming more messy.
     Let dump all data we don't know in _me.BlackBoard.Temp.Method();
 

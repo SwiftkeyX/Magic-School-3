@@ -9,7 +9,7 @@ public class HeroDead : HeroState
 
     public override void OnEnter()
     {
-        _me.SetDeadVisual();
+        _me.Blackboard.Temp.SetDeadVisual();
     }
 
     public override void OnUpdate() { }

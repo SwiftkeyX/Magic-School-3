@@ -56,10 +56,10 @@ public class HeroAttack : HeroState
             // gain mana - a capped call is the mana-full moment, which fires the hero's own
             // skill (Trigger.OnCast) instead of the old hardcoded "empowered next attack" stub.
             bool manaCapped = _me.Blackboard.GainMana(ManaPerAttack);
-            if (manaCapped && _me.SkillRuntime.HasSkill)
+            if (manaCapped && _me.Blackboard.HasSkill())
             {
-                _me.SkillRuntime.FireTrigger(TriggerType.OnCast);
-                _me.PlaySkillCastEffect(_me.SkillRuntime.SkillName);
+                _me.Blackboard.FireSkillTrigger(TriggerType.OnCast);
+                _me.Blackboard.Temp.PlaySkillCastEffect(_me.Blackboard.SkillName);
             }
 
             // aa is cooldown

@@ -10,7 +10,6 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     // ==================== Dependency ====================
-    private SpriteRenderer _sprite;
     [SerializeField] private HeroDataSO _SOData;
     private HeroStateMachine _stateMachine;
     private HeroStateMachineBlackBoard _blackboard;
@@ -41,9 +40,8 @@ public class Hero : MonoBehaviour
     #region Life Cycle
     void Awake()
     {
-        _sprite = GetComponent<SpriteRenderer>();
         _runtimeData = new HeroDataRuntime(_SOData);
-        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, _moveSpeed, _walkCurve, _attackCurve);
+        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
         _stateMachine = new HeroStateMachine(this);
         _skillRuntime = new SkillRuntime(this, _SOData.Skill);
     }
@@ -68,35 +66,6 @@ public class Hero : MonoBehaviour
         _skillRuntime.Tick(Time.deltaTime);
 
         _stateMachine.Update();
-    }
-    #endregion
-
-    // This is conflict with Hero.cs responsibility BUT I don't know where to put this yet.
-    // I'll move it later.
-    #region etc
-    // When hero die, set his sprite transparent to indicate that he is dead.
-    public void SetDeadVisual()
-    {
-        Color c = _sprite.color;
-        c.a = 0.3f;
-        _sprite.color = c;
-    }
-
-    private static GameObject _skillCastTextPrefab;
-    private static readonly Color BlueSkillTextColor = new Color(0.4f, 0.85f, 1f);
-    private static readonly Color RedSkillTextColor = new Color(1f, 0.55f, 0.3f);
-
-    // Floating skill-name text above the hero when its skill actually casts - called from
-    // HeroAttack right where it fires Trigger.OnCast. Lazily loads the shared prefab once from
-    // Resources so no per-prefab wiring is needed on every Hero variant.
-    public void PlaySkillCastEffect(string skillName)
-    {
-        if (_skillCastTextPrefab == null) _skillCastTextPrefab = Resources.Load<GameObject>("VFX/SkillCastText");
-        if (_skillCastTextPrefab == null) return;
-
-        GameObject instance = Instantiate(_skillCastTextPrefab);
-        Color color = Team == Team.Blue ? BlueSkillTextColor : RedSkillTextColor;
-        instance.GetComponent<FloatingText>().Show(skillName, color, transform.position);
     }
     #endregion
 

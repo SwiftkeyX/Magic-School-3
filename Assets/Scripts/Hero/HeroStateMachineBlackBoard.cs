@@ -20,12 +20,17 @@ public class HeroStateMachineBlackBoard
     private Team _team;
     private AnimationCurve _attackCurve;
 
+    // ================================================ etc ================================================
+    private readonly BlackboardTemp _temp;
+
     // ================================================ getter ================================================
     public BattleBoard Board => _board;
     public float MoveSpeed => _moveSpeed;
     public AnimationCurve WalkCurve => _walkCurve;
     public AnimationCurve AttackCurve => _attackCurve;
     public Team Team => _team;
+    // Grab-bag for logic that doesn't have an obvious home yet - see BlackboardTemp for why.
+    public BlackboardTemp Temp => _temp;
     // CurrentHex is a derived view of CurrentPlacement, not separately stored - it's the
     // hex the hero is on if CurrentPlacement is a Hex, or null if it's a BenchSlot (or unset).
     public Hex GetCurrentHex() => _runtimeData.CurrentPlacement as Hex;
@@ -39,13 +44,14 @@ public class HeroStateMachineBlackBoard
     public void SetReservedHex(Hex targetHex) => _runtimeData.SetReservedHex(targetHex);
     public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
-    public HeroStateMachineBlackBoard(Hero hero, HeroDataRuntime runtimeData, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
+    public HeroStateMachineBlackBoard(Hero hero, HeroDataRuntime runtimeData, SpriteRenderer sprite, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
     {
         _me = hero;
         _runtimeData = runtimeData;
         _moveSpeed = moveSpeed;
         _walkCurve = walkCurve;
         _attackCurve = attackCurve;
+        _temp = new BlackboardTemp(hero, sprite);
     }
 
     // Hero have several stat. So we have dedicate section for this.
@@ -77,6 +83,12 @@ public class HeroStateMachineBlackBoard
         int newHP = CombatMath.TakeDamage(damage, _runtimeData.DF, _runtimeData.DamageReductionPercent, GetCurrentHP());
         _runtimeData.SetCurrentHP(newHP);
     }
+    #endregion
+
+    #region Skill
+    public bool HasSkill() => _me.SkillRuntime.HasSkill;
+    public string SkillName => _me.SkillRuntime.SkillName;
+    public void FireSkillTrigger(TriggerType trigger) => _me.SkillRuntime.FireTrigger(trigger);
     #endregion
 
     #region Find Enemy

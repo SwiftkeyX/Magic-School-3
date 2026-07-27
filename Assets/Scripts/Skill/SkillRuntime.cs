@@ -19,6 +19,9 @@ public class SkillRuntime
     private bool _transformed;
     private bool _gameStartFired;
 
+    public bool HasSkill => _skill != null;
+    public string SkillName => _skill != null ? _skill.SkillName : "Skill";
+
     public SkillRuntime(Hero hero, SkillDefinitionSO skill)
     {
         _me = hero;

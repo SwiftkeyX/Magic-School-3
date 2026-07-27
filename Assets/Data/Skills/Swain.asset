@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb8de5ce3577ec42a5d401bf2026334, type: 3}
   m_Name: Swain
   m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
+  _skillName: Ravenous Flock
   _steps:
   - _step: 1
     _skillType: 0

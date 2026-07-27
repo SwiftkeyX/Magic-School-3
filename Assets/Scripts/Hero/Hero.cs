@@ -81,6 +81,23 @@ public class Hero : MonoBehaviour
         c.a = 0.3f;
         _sprite.color = c;
     }
+
+    private static GameObject _skillCastTextPrefab;
+    private static readonly Color BlueSkillTextColor = new Color(0.4f, 0.85f, 1f);
+    private static readonly Color RedSkillTextColor = new Color(1f, 0.55f, 0.3f);
+
+    // Floating skill-name text above the hero when its skill actually casts - called from
+    // HeroAttack right where it fires Trigger.OnCast. Lazily loads the shared prefab once from
+    // Resources so no per-prefab wiring is needed on every Hero variant.
+    public void PlaySkillCastEffect(string skillName)
+    {
+        if (_skillCastTextPrefab == null) _skillCastTextPrefab = Resources.Load<GameObject>("VFX/SkillCastText");
+        if (_skillCastTextPrefab == null) return;
+
+        GameObject instance = Instantiate(_skillCastTextPrefab);
+        Color color = Team == Team.Blue ? BlueSkillTextColor : RedSkillTextColor;
+        instance.GetComponent<FloatingText>().Show(skillName, color, transform.position + new Vector3(0f, 1.5f, 0f));
+    }
     #endregion
 
     #region Gizmo

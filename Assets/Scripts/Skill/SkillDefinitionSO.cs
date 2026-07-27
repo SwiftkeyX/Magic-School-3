@@ -8,8 +8,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Skill", menuName = "Magic School 3/Skill Definition")]
 public class SkillDefinitionSO : ScriptableObject
 {
+    [SerializeField] private string _skillName = "Skill";
     [SerializeField] private List<SkillStep> _steps = new List<SkillStep>();
 
+    public string SkillName => _skillName;
     public IReadOnlyList<SkillStep> Steps => _steps;
 
     // Authoring-time only (editor tooling that builds these assets from the sheet's champion

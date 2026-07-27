@@ -1,9 +1,9 @@
 using System.Linq;
 using UnityEngine;
 
-// Movement/targeting data and queries shared by a Hero's state machine (Idle/Walk/Attack).
-// Lives off Hero itself since nothing outside HeroStates/*.cs (and Hex.OnHeroPlaced, which
-// writes the hex a hero is standing on/reserving) needs any of this.
+// BlackBoard's SRP is contain the data every statemachine use. And BlackBoard itself shouldn't have any real logic, it should act like getter & setter for other class.
+// BlackBoard is similar to Hero in the sense that we dump all data here when we don't know where to put it & both shouldn't contain any real logic.
+// But most of the time, we are going to violated its SRP, since we really like dump data into them.
 public class HeroStateMachineBlackBoard
 {
     // ================================================ dependency ================================================
@@ -59,9 +59,14 @@ public class HeroStateMachineBlackBoard
     public int GetMaxHP() => _runtimeData.HP;
     public int GetCurrentMana() => _runtimeData.CurrentMana;
     public int GetMaxMana() => _runtimeData.MaxMana;
+    public bool IsStunned() => _runtimeData.IsStunned;
+    public bool IsWounded() => _runtimeData.IsWounded;
 
     // ====================================== stat setter ======================================
-    public void GainMana(int amount) => _runtimeData.GainMana(amount);
+    public bool GainMana(int amount) => _runtimeData.GainMana(amount);      // return true if mana if capped
+    public void Heal(float amount) => _runtimeData.Heal(amount);
+    public void AddModifier(StatModifier modifier) => _runtimeData.AddModifier(modifier);
+    public void TickModifiers(float deltaTime, System.Action<StatModifier> onExpired) => _runtimeData.TickModifiers(deltaTime, onExpired);
 
     /// <summary>
     /// Take damage. Calculate damge using effective health pool formula.
@@ -71,6 +76,8 @@ public class HeroStateMachineBlackBoard
         // EHP = HP * (1 + DF / 100) -> raw damage is worth less HP the more DF you have,
         // so divide by that same factor to get how much HP the hit actually removes.
         float mitigatedDamage = damage / (1f + _runtimeData.DF / 100f);
+        // A skill's Damage Reduction buff shaves a further percentage off, after armor mitigation.
+        mitigatedDamage *= 1f - _runtimeData.DamageReductionPercent / 100f;
         int newHP = Mathf.Max(0, GetCurrentHP() - Mathf.RoundToInt(mitigatedDamage));
         _runtimeData.SetCurrentHP(newHP);
     }

@@ -44,6 +44,12 @@ public class HeroWalk : HeroState
             return;
         }
 
+        if (_me.Blackboard.IsStunned())
+        {
+            _me.StateMachine.ChangeState(HeroStateType.Stunned);
+            return;
+        }
+
         // If walking animation finishes, transition to idle
         // This is weird, so it will be changed later
         bool isWalkingFinished = _elapsed >= _duration;

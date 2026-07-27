@@ -1,1 +1,1 @@
-public enum HeroStateType { Idle, Walk, Attack, Dead }
+public enum HeroStateType { Idle, Walk, Attack, Dead, Stunned }

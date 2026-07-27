@@ -35,6 +35,12 @@ public class HeroIdle : HeroState
             return;
         }
 
+        if (_me.Blackboard.IsStunned())
+        {
+            _me.StateMachine.ChangeState(HeroStateType.Stunned);
+            return;
+        }
+
         Hero nearestEnemy = _me.Blackboard.FindNearestEnemy();
         if (nearestEnemy == null) return;
 

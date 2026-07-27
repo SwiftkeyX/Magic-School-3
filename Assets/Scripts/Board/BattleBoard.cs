@@ -61,4 +61,29 @@ public class BattleBoard : MonoBehaviour
     // Counterpart to TrackThisHero - a hero leaving its hex for a non-hex placement
     // (e.g. back to the bench) is no longer on the battlefield.
     public void UntrackThisHero(Hero hero) => _heroesOnBoard.Remove(hero);
+
+    // The "Clustered" aim target (Jarvan IV's leap, Katarina's blink-in): the enemy standing at
+    // the densest point of the enemy team, i.e. the one with the most OTHER enemies within
+    // `radius` hexes of it. Reuses Hex.IsWithinRange's BFS rather than raw distance, same
+    // reasoning as everywhere else hex-hops are counted instead of world-space distance.
+    public Hero FindClusteredEnemy(Team myTeam, int radius = 2)
+    {
+        var enemies = _heroesOnBoard.Where(h => h.Team != myTeam && h.State != HeroStateType.Dead).ToList();
+        if (enemies.Count == 0) return null;
+
+        Hero best = null;
+        int bestCount = -1;
+        foreach (var candidate in enemies)
+        {
+            Hex candidateHex = candidate.Blackboard.GetCurrentHex();
+            int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.Blackboard.GetCurrentHex(), radius));
+            if (count > bestCount)
+            {
+                bestCount = count;
+                best = candidate;
+            }
+        }
+
+        return best;
+    }
 }

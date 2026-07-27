@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb8de5ce3577ec42a5d401bf2026334, type: 3}
+  m_Name: Swain
+  m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
+  _steps:
+  - _step: 1
+    _skillType: 0
+    _trigger: 1
+    _condition: 2
+    _actionSource: 0
+    _action: 18
+    _aimTarget: 0
+    _aoeRadius: 0
+    _skillRange: 2
+    _castSeconds: 0
+    _effects:
+    - _recipient: 1
+      _category: 2
+      _detail: 5
+      _amount: 250
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+  - _step: 1
+    _skillType: 0
+    _trigger: 1
+    _condition: 1
+    _actionSource: 0
+    _action: 7
+    _aimTarget: 0
+    _aoeRadius: 2
+    _skillRange: 2
+    _castSeconds: 0
+    _effects:
+    - _recipient: 1
+      _category: 2
+      _detail: 5
+      _amount: 180
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+    - _recipient: 2
+      _category: 0
+      _detail: 0
+      _amount: 90
+      _scaling: 6
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+  - _step: 1
+    _skillType: 1
+    _trigger: 10
+    _condition: 0
+    _actionSource: 0
+    _action: 27
+    _aimTarget: 0
+    _aoeRadius: 2
+    _skillRange: 0
+    _castSeconds: 0
+    _effects:
+    - _recipient: 2
+      _category: 0
+      _detail: 0
+      _amount: 20
+      _scaling: 5
+      _cadence: 1
+      _cadenceSeconds: 0.5
+      _duration: 0

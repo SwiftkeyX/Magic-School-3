@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb8de5ce3577ec42a5d401bf2026334, type: 3}
+  m_Name: Katarina
+  m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
+  _steps:
+  - _step: 1
+    _skillType: 0
+    _trigger: 1
+    _condition: 0
+    _actionSource: 0
+    _action: 19
+    _aimTarget: 3
+    _aoeRadius: 0
+    _skillRange: 1
+    _castSeconds: 0
+    _effects:
+    - _recipient: 1
+      _category: 4
+      _detail: 11
+      _amount: 0
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+  - _step: 2
+    _skillType: 0
+    _trigger: 2
+    _condition: 0
+    _actionSource: 0
+    _action: 19
+    _aimTarget: 3
+    _aoeRadius: 0
+    _skillRange: 1
+    _castSeconds: 0
+    _effects:
+    - _recipient: 1
+      _category: 4
+      _detail: 10
+      _amount: 0
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+  - _step: 3
+    _skillType: 0
+    _trigger: 3
+    _condition: 0
+    _actionSource: 0
+    _action: 7
+    _aimTarget: 0
+    _aoeRadius: 1
+    _skillRange: 1
+    _castSeconds: 0
+    _effects:
+    - _recipient: 2
+      _category: 0
+      _detail: 0
+      _amount: 145
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 0
+    - _recipient: 2
+      _category: 1
+      _detail: 3
+      _amount: 0
+      _scaling: 0
+      _cadence: 0
+      _cadenceSeconds: 0
+      _duration: 6

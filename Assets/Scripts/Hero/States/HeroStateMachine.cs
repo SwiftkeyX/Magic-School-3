@@ -7,6 +7,7 @@ public class HeroStateMachine
     private readonly HeroAttack _attack;
     private readonly HeroDead _dead;
     private readonly HeroWalk _walk;
+    private readonly HeroStunned _stunned;
 
     public HeroState Current { get; private set; }
     public HeroStateType CurrentType => Current.StateType;
@@ -17,6 +18,7 @@ public class HeroStateMachine
         _walk = new HeroWalk(hero);
         _attack = new HeroAttack(hero);
         _dead = new HeroDead(hero);
+        _stunned = new HeroStunned(hero);
     }
 
     public void Start(HeroStateType initial)
@@ -44,6 +46,7 @@ public class HeroStateMachine
             case HeroStateType.Walk: return _walk;
             case HeroStateType.Attack: return _attack;
             case HeroStateType.Dead: return _dead;
+            case HeroStateType.Stunned: return _stunned;
             default: return null;
         }
     }

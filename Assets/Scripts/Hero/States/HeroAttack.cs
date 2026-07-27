@@ -53,8 +53,10 @@ public class HeroAttack : HeroState
             // apply damage to target (includes the active skill's +50% if a cast is armed)
             _nearestEnemy.Blackboard.TakeDamage(_me.Blackboard.GetAttackDamage());
 
-            // gain mana
-            _me.Blackboard.GainMana(ManaPerAttack);
+            // gain mana - a capped call is the mana-full moment, which fires the hero's own
+            // skill (Trigger.OnCast) instead of the old hardcoded "empowered next attack" stub.
+            bool manaCapped = _me.Blackboard.GainMana(ManaPerAttack);
+            if (manaCapped) _me.SkillRuntime.FireTrigger(TriggerType.OnCast);
 
             // aa is cooldown
             _aaCooldown += 1f / _me.Blackboard.GetAttackSpeed();
@@ -74,6 +76,12 @@ public class HeroAttack : HeroState
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
+            return;
+        }
+
+        if (_me.Blackboard.IsStunned())
+        {
+            _me.StateMachine.ChangeState(HeroStateType.Stunned);
             return;
         }
 

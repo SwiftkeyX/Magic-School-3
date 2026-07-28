@@ -5,7 +5,7 @@ public class HeroDead : HeroState
 {
     public override HeroStateType StateType => HeroStateType.Dead;
 
-    public HeroDead(Hero hero) : base(hero) { }
+    public HeroDead(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnEnter()
     {

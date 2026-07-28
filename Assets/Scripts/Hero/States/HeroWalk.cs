@@ -13,7 +13,7 @@ public class HeroWalk : HeroState
     private float _duration;
     private float _elapsed;
 
-    public HeroWalk(Hero hero) : base(hero) { }
+    public HeroWalk(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnEnter()
     {

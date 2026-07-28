@@ -39,8 +39,8 @@ public class Hero : MonoBehaviour
     {
         _runtimeData = new HeroDataRuntime(_SOData);
         _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
-        _stateMachine = new HeroStateMachine(this);
         _skill = _SOData.Skill;
+        _stateMachine = new HeroStateMachine(this, _skill);
     }
 
     void Start()

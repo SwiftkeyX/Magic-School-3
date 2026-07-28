@@ -19,7 +19,7 @@ public class HeroAttack : HeroState
     private Vector3 _dashPeak;
     private float _dashElapsed = -1f;
 
-    public HeroAttack(Hero hero) : base(hero) { }
+    public HeroAttack(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnEnter()
     {

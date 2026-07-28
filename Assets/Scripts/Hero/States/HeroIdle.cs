@@ -13,7 +13,7 @@ public class HeroIdle : HeroState
     // Timestamp a "this step doesn't look like progress" hold started, or -1f when not holding.
     private float _holdSince = -1f;
 
-    public HeroIdle(Hero hero) : base(hero) { }
+    public HeroIdle(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnEnter()
     {

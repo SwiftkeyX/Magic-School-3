@@ -7,7 +7,7 @@ public class HeroStunned : HeroState
 {
     public override HeroStateType StateType => HeroStateType.Stunned;
 
-    public HeroStunned(Hero hero) : base(hero) { }
+    public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnExit()
     {

@@ -1,13 +1,13 @@
 public enum ActionSource
 {
-    Self, 
+    Self,
     Ally,
     Summon,
 
     // ...
 }
 
-public enum ActionName
+public enum LegacyActionEnum
 {
     // ====================== AOE ======================
     ZoneAOE,
@@ -28,6 +28,6 @@ public enum AimTarget
     Current,
     Furthest,
     Clustered,
-    
+
     // ...
 }

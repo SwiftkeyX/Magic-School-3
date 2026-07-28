@@ -42,7 +42,7 @@ public class BlackboardTemp
     public bool TriggerSkill(SkillStep currentStep, bool isManaCapped)
     {
         bool success = false;
-        if (currentStep.Trigger == TriggerEnum.OnCast) success = SkillTrigger.OnCast(isManaCapped, currentStep);
+        if (currentStep.Trigger == TriggerEnum.OnCast) success = SkillTrigger.OnCast(isManaCapped, currentStep, _me);
         return success;
     }
 }

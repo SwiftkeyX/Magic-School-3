@@ -2,17 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public abstract class SkillEffect
 {
     [SerializeField] private EffectRecipientEnum _recipient;
 
     // ================================== getter ==================================
     public EffectRecipientEnum Recipient => _recipient;
-
-    protected SkillEffect(EffectRecipientEnum recipient, int aoeRadius = 1)
-    {
-        _recipient = recipient;
-    }
 
     public abstract void ApplyEffect(List<Hero> recipients);
 }
@@ -24,11 +20,6 @@ public class AttackSkillEffect : SkillEffect
     // FLAG: I mark this here as to tell that I have think throughly about AttackSkillEffect shouldn't have duration
     // [SerializeField] private float _skillDuration;
 
-    public AttackSkillEffect(EffectRecipientEnum recipient, int aoeRadius, float damageAmount) : base(recipient, aoeRadius)
-    {
-        _damageAmount = damageAmount;
-    }
-
     public override void ApplyEffect(List<Hero> recipients)
     {
         foreach (Hero recipient in recipients)
@@ -37,9 +28,6 @@ public class AttackSkillEffect : SkillEffect
 
             // apply damage
             recipient.Blackboard.TakeDamage(Mathf.RoundToInt(_damageAmount));
-
-            // On kill, trigger related skill
-            SkillTrigger.OnKill();
         }
     }
 }
@@ -50,13 +38,6 @@ public class BuffSkillEffect : SkillEffect, Modifier
     [SerializeField] private ModifierEnum _modifier;
     [SerializeField] private float _buffAmount;
     [SerializeField] private float _buffDuration;
-
-    public BuffSkillEffect(EffectRecipientEnum recipient, int aoeRadius, ModifierEnum detail, float buffAmount, float buffDuration) : base(recipient, aoeRadius)
-    {
-        _modifier = detail;
-        _buffAmount = buffAmount;
-        _buffDuration = buffDuration;
-    }
 
     public override void ApplyEffect(List<Hero> recipients)
     {
@@ -92,13 +73,6 @@ public class DebuffSkillEffect : SkillEffect, Modifier
     [SerializeField] private float _debuffAmount;
     [SerializeField] private float _deBuffDuration;
 
-    public DebuffSkillEffect(EffectRecipientEnum recipient, int aoeRadius, ModifierEnum detail, float deBuffAmount, float deBuffDuration) : base(recipient, aoeRadius)
-    {
-        _modifier = detail;
-        _debuffAmount = deBuffAmount;
-        _deBuffDuration = deBuffDuration;
-    }
-
     public override void ApplyEffect(List<Hero> recipients)
     {
         throw new NotImplementedException();
@@ -126,13 +100,6 @@ public class StatusSkillEffect : SkillEffect, Modifier
     [SerializeField] private ModifierEnum _modifier;
     [SerializeField] private float _statusAmount;
     [SerializeField] private float _statusDuration;
-
-    public StatusSkillEffect(EffectRecipientEnum recipient, int aoeRadius, ModifierEnum detail, float statusDuration) : base(recipient, aoeRadius)
-    {
-        _modifier = detail;
-        _statusDuration = statusDuration;
-        // initiate _statusAmount using dictionary e.g. wound => fix 50%, stun => fix 0%, etc...
-    }
 
     public override void ApplyEffect(List<Hero> recipients)
     {

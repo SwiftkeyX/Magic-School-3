@@ -8,12 +8,12 @@ public class SkillActionGroup
     [SerializeField] private ActionSource _source;
     [SerializeField] private LegacyAction _legacyAction;
     [SerializeField] private AimTarget _target;
-    [SerializeField] private AOE _aoe;
+    [SerializeReference] private AOE _aoe;
 
     // public Offset _offset;
     // ...
 
-    [SerializeField] private List<SkillEffect> _effects;    // 1 action = have several effect
+    [SerializeReference] private List<SkillEffect> _effects;    // 1 action = have several effect
 
     // ============================================ Getter ============================================
     public ActionSource Source => _source;

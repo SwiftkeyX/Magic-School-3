@@ -13,4 +13,25 @@ MonoBehaviour:
   m_Name: Garen
   m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
   _skillName: Skill
-  _steps: []
+  _steps:
+  - _trigger: 0
+    _actionGroups:
+    - _source: 0
+      _legacyAction:
+        _actionName: 0
+        _effect: {fileID: 0}
+      _target: 0
+      _aoe:
+        rid: -2
+      _effects:
+      - rid: 6645218026192633927
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6645218026192633927
+      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 1
+        _damageAmount: 80

@@ -15,10 +15,19 @@ MonoBehaviour:
   _skillName: Judgment
   _steps:
   - _trigger: 0
-    _effects:
-    - _category: 0
-      _detail: 0
-      _recipient: 1
-      _amount: 200
-      _duration: 0
-      _aoeRadius: 1
+    _actionGroups:
+    - _source: 0
+      _legacyAction:
+        _actionName: 0
+        _effect: {fileID: 0}
+      _target: 0
+      _aoe:
+        rid: -2
+      _effects:
+      - rid: -2
+      - rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

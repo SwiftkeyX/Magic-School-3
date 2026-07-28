@@ -31,45 +31,60 @@ public class SkillEffectDrawer : PropertyDrawer
         catch (System.Reflection.ReflectionTypeLoadException e) { return e.Types.Where(t => t != null); }
     }
 
+    // Unity shrinks the label column as indent eats into the row's width, so labels vanish
+    // entirely once nesting gets deep (Steps > Element > Action Groups > Element > Effects >
+    // Element > field). Pinning a floor here keeps the field name visible regardless of depth.
+    private const float MinLabelWidth = 110f;
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        Type[] types = ConcreteTypes();
-        string[] popupOptions = new string[types.Length + 1];
-        popupOptions[0] = "<None>";
-        for (int i = 0; i < types.Length; i++) popupOptions[i + 1] = types[i].Name;
+        float previousLabelWidth = EditorGUIUtility.labelWidth;
+        EditorGUIUtility.labelWidth = Mathf.Max(MinLabelWidth, EditorGUIUtility.labelWidth);
 
-        Type currentType = property.managedReferenceValue?.GetType();
-        int currentIndex = currentType == null ? 0 : Array.IndexOf(types, currentType) + 1;
-
-        Rect dropdownRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-
-        EditorGUI.BeginChangeCheck();
-        int newIndex = EditorGUI.Popup(dropdownRect, label.text, currentIndex, popupOptions);
-        if (EditorGUI.EndChangeCheck())
+        try
         {
-            property.managedReferenceValue = newIndex <= 0 ? null : Activator.CreateInstance(types[newIndex - 1]);
-        }
+            Type[] types = ConcreteTypes();
+            string[] popupOptions = new string[types.Length + 1];
+            popupOptions[0] = "<None>";
+            for (int i = 0; i < types.Length; i++) popupOptions[i + 1] = types[i].Name;
 
-        if (property.managedReferenceValue != null)
-        {
-            EditorGUI.indentLevel++;
-            float y = dropdownRect.yMax + EditorGUIUtility.standardVerticalSpacing;
+            Type currentType = property.managedReferenceValue?.GetType();
+            int currentIndex = currentType == null ? 0 : Array.IndexOf(types, currentType) + 1;
 
-            SerializedProperty endProperty = property.GetEndProperty();
-            SerializedProperty childProp = property.Copy();
-            bool enterChildren = true;
-            while (childProp.NextVisible(enterChildren) && !SerializedProperty.EqualContents(childProp, endProperty))
+            Rect dropdownRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+
+            EditorGUI.BeginChangeCheck();
+            int newIndex = EditorGUI.Popup(dropdownRect, label.text, currentIndex, popupOptions);
+            if (EditorGUI.EndChangeCheck())
             {
-                enterChildren = false;
-                float h = EditorGUI.GetPropertyHeight(childProp, true);
-                Rect r = new Rect(position.x, y, position.width, h);
-                EditorGUI.PropertyField(r, childProp, true);
-                y += h + EditorGUIUtility.standardVerticalSpacing;
+                property.managedReferenceValue = newIndex <= 0 ? null : Activator.CreateInstance(types[newIndex - 1]);
             }
 
-            EditorGUI.indentLevel--;
+            if (property.managedReferenceValue != null)
+            {
+                EditorGUI.indentLevel++;
+                float y = dropdownRect.yMax + EditorGUIUtility.standardVerticalSpacing;
+
+                SerializedProperty endProperty = property.GetEndProperty();
+                SerializedProperty childProp = property.Copy();
+                bool enterChildren = true;
+                while (childProp.NextVisible(enterChildren) && !SerializedProperty.EqualContents(childProp, endProperty))
+                {
+                    enterChildren = false;
+                    float h = EditorGUI.GetPropertyHeight(childProp, true);
+                    Rect r = new Rect(position.x, y, position.width, h);
+                    EditorGUI.PropertyField(r, childProp, true);
+                    y += h + EditorGUIUtility.standardVerticalSpacing;
+                }
+
+                EditorGUI.indentLevel--;
+            }
+        }
+        finally
+        {
+            EditorGUIUtility.labelWidth = previousLabelWidth;
         }
 
         EditorGUI.EndProperty();

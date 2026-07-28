@@ -1,0 +1,16 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Flag",
+  "steps": [
+    {
+      "file": "Assets/Scripts/Skill/SkillSO.cs",
+      "description": "In SkillEffect:\r\nrecepient and aoe are really smelled, I thought of using interface or inheritance BUT I don't sure about that too. \r\nI still not confidence since I not know is it going to work or not DUE to not how currently small the system we are.\r\nOnce the system get bigger, I should see the direction easier",
+      "line": 56
+    },
+    {
+      "file": "Assets/Scripts/Hero/Data/StatModifier.cs",
+      "description": "I don't want magic number. But it won't let me use global const. fix this one.",
+      "line": 99
+    }
+  ]
+}

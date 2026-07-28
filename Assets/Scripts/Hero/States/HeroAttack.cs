@@ -53,9 +53,13 @@ public class HeroAttack : HeroState
             // apply damage to target
             _nearestEnemy.Blackboard.TakeDamage(_me.Blackboard.GetAttackDamage());
 
-            // gain mana - skill system was removed and is being rebuilt, so a capped call
-            // doesn't do anything yet.
-            _me.Blackboard.GainMana(ManaPerAttack);
+            // gain mana - a capped call is the mana-full moment, which fires the hero's own skill.
+            bool manaCapped = _me.Blackboard.GainMana(ManaPerAttack);
+            if (manaCapped)
+            {
+                SkillTrigger.OnCast(manaCapped);
+                _me.Blackboard.Temp.PlaySkillCastEffect("Skill Activated!");
+            }
 
             // aa is cooldown
             _aaCooldown += 1f / _me.Blackboard.GetAttackSpeed();

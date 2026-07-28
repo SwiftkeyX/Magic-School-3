@@ -14,22 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
   _skillName: Judgment
   _steps:
-  - _step: 1
-    _skillType: 0
-    _trigger: 1
-    _condition: 0
-    _actionSource: 0
-    _action: 27
-    _aimTarget: 0
-    _aoeRadius: 1
-    _skillRange: 1
-    _castSeconds: 4
+  - _trigger: 0
     _effects:
-    - _recipient: 2
-      _category: 0
+    - _category: 0
       _detail: 0
-      _amount: 40
-      _scaling: 5
-      _cadence: 1
-      _cadenceSeconds: 1
-      _duration: 4
+      _recipient: 1
+      _amount: 200
+      _duration: 0
+      _aoeRadius: 1

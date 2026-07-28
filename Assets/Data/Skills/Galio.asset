@@ -14,49 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillDefinitionSO
   _skillName: Idol of Durand
   _steps:
-  - _step: 1
-    _skillType: 0
-    _trigger: 1
-    _condition: 0
-    _actionSource: 0
-    _action: 18
-    _aimTarget: 0
-    _aoeRadius: 0
-    _skillRange: 1
-    _castSeconds: 2
+  - _trigger: 0
     _effects:
-    - _recipient: 0
-      _category: 2
-      _detail: 4
-      _amount: 60
-      _scaling: 0
-      _cadence: 1
-      _cadenceSeconds: 0.5
-      _duration: 2
-    - _recipient: 0
-      _category: 2
-      _detail: 6
-      _amount: 25
-      _scaling: 0
-      _cadence: 0
-      _cadenceSeconds: 0
-      _duration: 2
-  - _step: 2
-    _skillType: 0
-    _trigger: 2
-    _condition: 0
-    _actionSource: 0
-    _action: 7
-    _aimTarget: 0
-    _aoeRadius: 2
-    _skillRange: 1
-    _castSeconds: 0
-    _effects:
-    - _recipient: 2
-      _category: 0
+    - _category: 1
       _detail: 0
-      _amount: 200
-      _scaling: 0
-      _cadence: 0
-      _cadenceSeconds: 0
-      _duration: 0
+      _recipient: 1
+      _amount: 0
+      _duration: 1.5
+      _aoeRadius: 1
+    - _category: 2
+      _detail: 2
+      _recipient: 0
+      _amount: 300
+      _duration: 5
+      _aoeRadius: 1

@@ -1,8 +1,12 @@
 using System.Linq;
 using UnityEngine;
 
-// BlackBoard's SRP is contain the data every statemachine use. And BlackBoard itself shouldn't have any real logic, it should act like getter & setter for other class.
-// BlackBoard is similar to Hero in the sense that we dump all data here when we don't know where to put it & both shouldn't contain any real logic.
+// BlackBoard's SRP is contain the data every statemachine use. 
+// And BlackBoard itself shouldn't have any real logic, it should act like getter & setter for other class.
+//
+// BlackBoard is similar to Hero in the sense that we dump all data here 
+// when we don't know where to put it & both shouldn't contain any real logic.
+//
 // But most of the time, we are going to violated its SRP, since we really like dump data into them.
 public class HeroStateMachineBlackBoard
 {
@@ -85,6 +89,7 @@ public class HeroStateMachineBlackBoard
     }
     #endregion
 
+    // ====================================== temp ======================================
     #region Find Enemy
     // Picks nearest enemy (if there are several nearest enemies, random it).
     public Hero FindNearestEnemy()

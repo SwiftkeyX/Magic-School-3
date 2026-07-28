@@ -1,7 +1,7 @@
 using System;
 
-// Holds every piece of runtime data for a hero
-// separate from HeroDataSO
+// Holds every runtime data for a hero e.g. stat, buff/debuff, status, placement.
+// Runtime data = data that was can be changed in game dynamically. There MUST NOT have static variable here.
 public class HeroDataRuntime
 {
     // ================== Description (name, skill desc, etc...) =================
@@ -17,15 +17,15 @@ public class HeroDataRuntime
 
     // ===================== getter =====================
     public string Name => _name;
-    public int HP => _stat.HP;
-    public int Atk => _stat.Atk;
-    public int DF => _stat.DF;
-    public int MG => _stat.MG;
-    public int MR => _stat.MR;
-    public float AttackSpeed => _stat.AttackSpeed;
-    public int Range => _stat.Range;
-    public int StartMana => _stat.StartMana;
-    public int MaxMana => _stat.MaxMana;
+    public int HP => _stat.BaseHP;
+    public int Atk => _stat.BaseAtk;
+    public int DF => _stat.BaseDF;
+    public int MG => _stat.BaseMG;
+    public int MR => _stat.BaseMR;
+    public float AttackSpeed => _stat.BaseAttackSpeed;
+    public int Range => _stat.BaseRange;
+    public int StartMana => _stat.BaseStartMana;
+    public int MaxMana => _stat.BaseMaxMana;
     public Placement CurrentPlacement => _currentPlacement;
     // reserved hex = hex that this hero want to walk into, so he reserved it, to prevent other hero to walk into the same hex
     public Hex ReservedHex => _reservedHex;

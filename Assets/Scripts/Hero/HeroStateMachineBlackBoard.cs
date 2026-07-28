@@ -1,13 +1,13 @@
 using System.Linq;
 using UnityEngine;
 
-// BlackBoard's SRP is contain the data every statemachine use. 
+// 1) BlackBoard's SRP is contain the data every statemachine use. 
 // And BlackBoard itself shouldn't have any real logic, it should act like getter & setter for other class.
 //
-// BlackBoard is similar to Hero in the sense that we dump all data here 
+// 2) BlackBoard is similar to Hero in the sense that we dump all data here 
 // when we don't know where to put it & both shouldn't contain any real logic.
 //
-// But most of the time, we are going to violated its SRP, since we really like dump data into them.
+// 3) But most of the time, we are going to violated its SRP, since we really like dump data into them.
 public class HeroStateMachineBlackBoard
 {
     // ================================================ dependency ================================================
@@ -62,7 +62,7 @@ public class HeroStateMachineBlackBoard
     #region Stat
     // ====================================== stat getter ======================================
     public int GetAtk() => _runtimeData.Atk;
-    public int GetAttackDamage() => _runtimeData.ConsumeAttackDamage(_runtimeData.Atk);
+    public int GetAttackDamage() => _runtimeData.Atk;
     public float GetAttackSpeed() => _runtimeData.AttackSpeed;
     public int GetRange() => _runtimeData.Range;
     public int GetCurrentHP() => _runtimeData.CurrentHP;
@@ -74,8 +74,8 @@ public class HeroStateMachineBlackBoard
 
     // ====================================== stat setter ======================================
     public bool GainMana(int amount) => _runtimeData.GainMana(amount);      // return true if mana if capped
-    public void AddModifier(StatModifier modifier) => _runtimeData.AddModifier(modifier);
-    public void TickModifiers(float deltaTime, System.Action<StatModifier> onExpired) => _runtimeData.TickModifiers(deltaTime, onExpired);
+    public void AddModifier(Modifier modifier) => _runtimeData.AddModifier(modifier);
+    public void TickModifiers(float deltaTime) => _runtimeData.TickModifiers(deltaTime);
     public void Heal(float amount)
     {
         int healed = CombatMath.Heal(amount, GetCurrentHP(), _runtimeData.IsWounded);

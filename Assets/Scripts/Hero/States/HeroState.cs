@@ -5,10 +5,12 @@
 public abstract class HeroState
 {
     protected readonly Hero _me;
+    protected readonly SkillSO _skill;
 
-    protected HeroState(Hero hero)
+    protected HeroState(Hero hero, SkillSO skill)
     {
         _me = hero;
+        _skill = skill;
     }
 
     public abstract HeroStateType StateType { get; }

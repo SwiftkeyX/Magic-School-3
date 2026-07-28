@@ -73,6 +73,36 @@ public class StatModifier
         return _stat.BaseDF;
     }
 
+    public int ModifiedMG()
+    {
+        return _stat.BaseMG;
+    }
+
+    public int ModifiedMR()
+    {
+        return _stat.BaseMR;
+    }
+
+    public float ModifiedAttackSpeed()
+    {
+        return _stat.BaseAttackSpeed;
+    }
+
+    public int ModifiedRange()
+    {
+        return _stat.BaseRange;
+    }
+
+    public int ModifiedStartMana()
+    {
+        return _stat.BaseStartMana;
+    }
+
+    public int ModifiedMaxMana()
+    {
+        return _stat.BaseMaxMana;
+    }
+
     public bool HasModifier(ModifierEnum type)
     {
         foreach (var modifier in _modifiers)

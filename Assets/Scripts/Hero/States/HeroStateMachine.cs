@@ -36,7 +36,7 @@ public class HeroStateMachine
         Current.OnEnter();
     }
 
-    public void Update() => Current?.OnUpdate();
+    public void Tick() => Current?.OnUpdate();
 
     private HeroState GetState(HeroStateType type)
     {

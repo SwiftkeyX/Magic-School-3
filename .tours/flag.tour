@@ -8,9 +8,9 @@
       "line": 56
     },
     {
-      "file": "Assets/Scripts/Hero/Data/StatModifier.cs",
-      "description": "I don't want magic number. But it won't let me use global const. fix this one.",
-      "line": 99
+      "file": "Assets/Scripts/Hero/Data/HeroDataRuntime.cs",
+      "description": "Chagne all this stat getter in HeroDataRuntime to new modify stat e.g. _stat.Atk\r\n\r\nIs that make sense?",
+      "line": 21
     }
   ]
 }

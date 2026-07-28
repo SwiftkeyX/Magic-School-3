@@ -1,6 +1,9 @@
 using UnityEngine;
 
-// For simplicity, we will use default stat for every hero
+/// <summary>
+/// SO for hero.
+/// ONLY use to populated HeroDataRuntime AND SkillSO.
+/// </summary>
 [CreateAssetMenu(fileName = "HeroStat", menuName = "Magic School 3/Hero Stat")]
 public class HeroDataSO : ScriptableObject
 {

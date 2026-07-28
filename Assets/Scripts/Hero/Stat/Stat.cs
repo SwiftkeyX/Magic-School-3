@@ -37,6 +37,12 @@ public class Stat
     public int HP => _statModifier.ModifiedHP();
     public int Atk => _statModifier.ModifiedAtk();
     public int DF => _statModifier.ModifiedDF();
+    public int MG => _statModifier.ModifiedMG();
+    public int MR => _statModifier.ModifiedMR();
+    public float AttackSpeed => _statModifier.ModifiedAttackSpeed();
+    public int Range => _statModifier.ModifiedRange();
+    public int StartMana => _statModifier.ModifiedStartMana();
+    public int MaxMana => _statModifier.ModifiedMaxMana();
     public bool IsStunned => _statModifier.HasModifier(ModifierEnum.Stun);
     public bool IsWounded => _statModifier.HasModifier(ModifierEnum.Wound);
     public float DamageReductionPercent => _statModifier.SumModifier(ModifierEnum.DamageReduction);

@@ -43,11 +43,6 @@
       "line": 80
     },
     {
-      "file": "Assets/Scripts/Hero/States/HeroAttack.cs",
-      "description": "It was fine. BUT I don't like _me.SkillRunTime.().\r\n\r\nStateMachine should only call blackboard only since I add blackboard new's SRP.\r\n\r\nWe'll do this later, my idea is to let each state hold ref to blackboard instead of hero.",
-      "line": 59
-    },
-    {
       "file": "Assets/Scripts/Hero/States/HeroStunned.cs",
       "description": "I want to test this out.",
       "line": 15
@@ -76,11 +71,6 @@
       "file": "Assets/Scripts/Hero/Hero.cs",
       "description": "I will wire this correctly later.\r\n\r\ne.g. wire using the inspector, not wire here.",
       "line": 94
-    },
-    {
-      "file": "Assets/Scripts/Hero/States/HeroAttack.cs",
-      "description": "Okay before everything becoming more messy.\r\nLet dump all data we don't know in _me.BlackBoard.Temp.Method();\r\n\r\nIs that make sense? So we don't make other part beccome too messy.",
-      "line": 62
     }
   ]
 }

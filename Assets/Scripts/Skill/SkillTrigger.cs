@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// 
+/// SkillTrigger are universal condition checker. 
+/// MUST only be use by other skill system.
 /// </summary>
 public static class SkillTrigger
 {
@@ -14,9 +15,15 @@ public static class SkillTrigger
     }
 
     // ============================================== Trigger ==============================================
-    public static void OnCast(bool isManaFull, SkillStep step)
+    public static bool OnCast(bool isManaFull, SkillStep step)
     {
-        if (isManaFull) FireAction(step);
+        if (isManaFull)
+        {
+            FireAction(step);
+            return true;
+        }
+        
+        return false;
     }
 
     public static void OnKill(int hp, SkillStep step)

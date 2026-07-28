@@ -5,16 +5,13 @@ using UnityEngine;
 public abstract class SkillEffect
 {
     [SerializeField] private EffectRecipientEnum _recipient;
-    [SerializeField] private int _aoeRadius;
 
     // ================================== getter ==================================
     public EffectRecipientEnum Recipient => _recipient;
-    public int AoeRadius => _aoeRadius;
 
     protected SkillEffect(EffectRecipientEnum recipient, int aoeRadius = 1)
     {
         _recipient = recipient;
-        _aoeRadius = aoeRadius;
     }
 
     public abstract void ApplyEffect(List<Hero> recipients);

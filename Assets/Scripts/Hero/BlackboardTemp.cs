@@ -37,4 +37,12 @@ public class BlackboardTemp
         Color color = _me.Team == Team.Blue ? BlueSkillTextColor : RedSkillTextColor;
         instance.GetComponent<FloatingText>().Show(skillName, color, _me.transform.position);
     }
+
+    // ============================================ skill ============================================
+    public bool TriggerSkill(SkillStep currentStep, bool isManaCapped)
+    {
+        bool success = false;
+        if (currentStep.Trigger == TriggerEnum.OnCast) success = SkillTrigger.OnCast(isManaCapped, currentStep);
+        return success;
+    }
 }

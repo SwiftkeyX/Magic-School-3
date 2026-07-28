@@ -6,11 +6,13 @@ public abstract class HeroState
 {
     protected readonly Hero _me;
     protected readonly SkillSO _skill;
+    protected SkillStep _currentStep;
 
     protected HeroState(Hero hero, SkillSO skill)
     {
         _me = hero;
         _skill = skill;
+        _currentStep = skill.Steps[0];
     }
 
     public abstract HeroStateType StateType { get; }

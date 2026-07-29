@@ -19,7 +19,6 @@ public class LegacyAction
         // play animation based on legacy action
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
-            // Spawn AOE
             SpawnAoeZone(caster, effects);
         }
     }
@@ -28,13 +27,10 @@ public class LegacyAction
     {
         if (_effect == null) return;
 
-        List<SkillEffect> areaEffects = effects?.Where(e => e.Recipient == EffectRecipientEnum.EnemiesInArea).ToList();
-        if (areaEffects == null || areaEffects.Count == 0) return;
-
         GameObject instance = Object.Instantiate(_effect, _aimTargetPosition, Quaternion.identity);
+        // assign prefab data at runtime
         AoeZone zone = instance.GetComponent<AoeZone>(); 
-        // assign AOE 
-        if (zone != null) zone.Init(caster, areaEffects);
+        if (zone != null) zone.Init(caster, effects);
     }
 
     private void ResolveAimTarget(AimTarget aimTarget, Hero caster)

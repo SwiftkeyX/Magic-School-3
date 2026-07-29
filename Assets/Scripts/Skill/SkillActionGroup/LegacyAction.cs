@@ -25,6 +25,10 @@ public class LegacyAction : ScriptableObject
         {
             SpawnAoeZone(caster, effects, aimTargetPosition);
         }
+        else if (_actionName == LegacyActionEnum.CircleAOE)
+        {
+            SpawnCircleAoe(caster, effects, aimTargetPosition);
+        }
     }
 
     private void SpawnAoeZone(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
@@ -35,6 +39,15 @@ public class LegacyAction : ScriptableObject
         // assign prefab data at runtime
         ZoneAOE zone = instance.GetComponent<ZoneAOE>();
         if (zone != null) zone.Init(caster, effects, _castTime);
+    }
+
+    private void SpawnCircleAoe(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    {
+        if (_effect == null) return;
+
+        GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
+        CircleAOE circle = instance.GetComponent<CircleAOE>();
+        if (circle != null) circle.Init(caster, effects, _castTime);
     }
 
     private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)

@@ -22,12 +22,22 @@ public class AoeZone : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Hero hero = other.GetComponent<Hero>();
+
+        // not apply effect to myself, my team, the dead hero  
         if (hero == null || hero.Team == _caster.Team || hero.State == HeroStateType.Dead) return;
 
+        // apply effect to all hit hero
         List<Hero> recipients = new List<Hero> { hero };
         foreach (SkillEffect effect in _effects)
         {
-            effect.ApplyEffect(recipients);
+            ApplyEffectToRecipients(effect, recipients);
         }
+    }
+
+    private void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
+    {
+        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _caster });
+
+        else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
     }
 }

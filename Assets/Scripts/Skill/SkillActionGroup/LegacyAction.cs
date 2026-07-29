@@ -19,23 +19,11 @@ public class LegacyAction
         // play animation based on legacy action
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
-            ApplySelfEffects(caster, effects);
+            // Spawn AOE
             SpawnAoeZone(caster, effects);
         }
     }
 
-    // Self-targeted effects don't need a spatial check - apply them straight to the caster.
-    private void ApplySelfEffects(Hero caster, List<SkillEffect> effects)
-    {
-        if (effects == null) return;
-
-        foreach (SkillEffect effect in effects)
-        {
-            if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { caster });
-        }
-    }
-
-    // EnemiesInArea effects are resolved by AoeZone via its trigger collider once the prefab spawns.
     private void SpawnAoeZone(Hero caster, List<SkillEffect> effects)
     {
         if (_effect == null) return;
@@ -44,7 +32,8 @@ public class LegacyAction
         if (areaEffects == null || areaEffects.Count == 0) return;
 
         GameObject instance = Object.Instantiate(_effect, _aimTargetPosition, Quaternion.identity);
-        AoeZone zone = instance.GetComponent<AoeZone>();
+        AoeZone zone = instance.GetComponent<AoeZone>(); 
+        // assign AOE 
         if (zone != null) zone.Init(caster, areaEffects);
     }
 

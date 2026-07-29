@@ -17,6 +17,11 @@ public class LegacyAction
         ResolveAimTarget(aimTarget, caster);
 
         // play animation based on legacy action
+        PlayLegacyAction(caster, effects);
+    }
+
+    private void PlayLegacyAction(Hero caster, List<SkillEffect> effects)
+    {
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
             SpawnAoeZone(caster, effects);
@@ -29,7 +34,7 @@ public class LegacyAction
 
         GameObject instance = Object.Instantiate(_effect, _aimTargetPosition, Quaternion.identity);
         // assign prefab data at runtime
-        AoeZone zone = instance.GetComponent<AoeZone>(); 
+        AoeZone zone = instance.GetComponent<AoeZone>();
         if (zone != null) zone.Init(caster, effects);
     }
 

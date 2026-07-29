@@ -2,10 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Not cadence => apply effect when hitbox collide (OnTriggerEnter())
+/// cadence but start only initial collision => e.g. teemo's mushroom (after OnTriggerEnter(), start coroutine for the poison damage)
+/// cadence but not need initial collision => e.g. garen's E (OnTriggerEnter() trigger every interval)
+/// </summary>
 [Serializable]
 public class Cadence
 {
     public bool isCadence = false;
+    public bool startOnInitialCollisionOnly = false;    // teemo's mushroom (true) vs garen's E (false)
     public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
 }
 

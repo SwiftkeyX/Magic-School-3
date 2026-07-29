@@ -51,7 +51,7 @@ public class StatModifier
     // =================================== modified stat getter ===================================
     public int ModifiedHP()
     {
-        int newHP = _stat.CurrentHP;
+        int newHP = _stat.BaseHP;
         foreach (var modifier in _modifiers)
         {
             if (modifier.Source.GetModifier() == ModifierEnum.BonusHP)

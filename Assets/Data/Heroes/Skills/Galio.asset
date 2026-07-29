@@ -17,20 +17,54 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 11400000, guid: 0e7c91da6ba07f248be0c8d9fc2bb4db, type: 2}
+      _legacyAction: {fileID: 11400000, guid: 09235870edac18d469257f7c23533dc8, type: 2}
       _target: 0
       _size:
-        size: 1.5
+        size: 0
         shape:
           rid: -2
       _effects:
-      - rid: 6645218046250844233
+      - rid: 6645218046250844234
+      - rid: 6645218046250844235
+  - _trigger: 2
+    _actionGroups:
+    - _source: 0
+      _legacyAction: {fileID: 11400000, guid: 0e7c91da6ba07f248be0c8d9fc2bb4db, type: 2}
+      _target: 0
+      _size:
+        size: 0
+        shape:
+          rid: -2
+      _effects:
+      - rid: 6645218046250844236
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 6645218046250844233
+    - rid: 6645218046250844234
+      type: {class: BuffSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 0
+        _cadence:
+          isCadence: 0
+          startOnInitialCollisionOnly: 0
+          cadenceInterval: 0.5
+        _modifier: 0
+        _buffAmount: 150
+        _buffDuration: 2
+    - rid: 6645218046250844235
+      type: {class: BuffSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 0
+        _cadence:
+          isCadence: 0
+          startOnInitialCollisionOnly: 0
+          cadenceInterval: 0.5
+        _modifier: 1
+        _buffAmount: 25
+        _buffDuration: 2
+    - rid: 6645218046250844236
       type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
       data:
         _recipient: 1

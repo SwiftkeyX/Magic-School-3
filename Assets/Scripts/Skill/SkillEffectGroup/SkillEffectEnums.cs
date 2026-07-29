@@ -7,6 +7,7 @@ public enum TriggerEnum
 {
     OnCast,
     OnKill,
+    OnExpired,
 }
 
 // ================================================ Recipient ================================================

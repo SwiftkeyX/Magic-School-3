@@ -58,7 +58,7 @@ public class HeroAttack : HeroState
 
             // if mana is full, trigger OnCast skill
             bool success = false;
-            if (_currentStep != null) _me.Blackboard.Temp.TriggerSkill(_currentStep, isManaCapped);
+            if (_currentStep != null) _me.Blackboard.Temp.TriggerSkill(_skill, _currentStep, isManaCapped);
 
             // if skill cast is success, pop skill effect 
             if (success) _me.Blackboard.Temp.PlaySkillCastEffect("Skill Activated!");

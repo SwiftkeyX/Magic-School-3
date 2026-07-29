@@ -15,17 +15,18 @@ public class LegacyAction : ScriptableObject
     // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public void TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
     {
         // find position using aim target
         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
 
         // play animation based on legacy action
-        PlayLegacyAction(caster, effects, aimTargetPosition);
+        // return cast duration
+        return PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
     // ==================================== LegacyAction ====================================
-    private void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    private float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
@@ -36,6 +37,13 @@ public class LegacyAction : ScriptableObject
         {
             SpawnCircleAOE(caster, effects, aimTargetPosition);
         }
+
+        else if (_actionName == LegacyActionEnum.Cast)
+        {
+            Cast(caster, effects);
+        }
+
+        return _castTime;
     }
 
     private void SpawnZoneAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
@@ -55,6 +63,18 @@ public class LegacyAction : ScriptableObject
         GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
         CircleAOE circle = instance.GetComponent<CircleAOE>();
         if (circle != null) circle.Init(caster, effects, _castTime);
+    }
+
+    // Cast are basically the custom legacy action
+    // it does variety of thing. 
+    // NOtE that now it only use to buff.
+    private void Cast(Hero caster, List<SkillEffect> effects)
+    {
+        List<Hero> self = new List<Hero> { caster };
+        foreach (SkillEffect effect in effects)
+        {
+            if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(self);
+        }
     }
 
     // ==================================== etc ====================================

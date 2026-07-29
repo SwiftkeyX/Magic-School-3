@@ -8,6 +8,7 @@ public class BlackboardTemp
 {
     private readonly Hero _me;
     private readonly SpriteRenderer _sprite;
+    private readonly SkillTrigger _skillTrigger = new SkillTrigger();
 
     private static GameObject _skillCastTextPrefab;
     private static readonly Color BlueSkillTextColor = new Color(0.4f, 0.85f, 1f);
@@ -39,10 +40,10 @@ public class BlackboardTemp
     }
 
     // ============================================ skill ============================================
-    public bool TriggerSkill(SkillStep currentStep, bool isManaCapped)
+    public bool TriggerSkill(SkillSO skill, SkillStep currentStep, bool isManaCapped)
     {
         bool success = false;
-        if (currentStep.Trigger == TriggerEnum.OnCast) success = SkillTrigger.OnCast(isManaCapped, currentStep, _me);
+        if (currentStep.Trigger == TriggerEnum.OnCast) success = _skillTrigger.OnCast(isManaCapped, skill, currentStep, _me);
         return success;
     }
 }

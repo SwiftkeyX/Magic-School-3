@@ -323,6 +323,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleBoard
       objectReference: {fileID: 0}
+    - target: {fileID: 3452028721238980969, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4804648233000712264, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -493,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2629c4df8ff720147aaf6c7bd613b7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroSpawner
-  _placementSO: {fileID: 11400000, guid: 05b5fc8433815bb44ae4a7ee455992a9, type: 2}
+  _placementSO: {fileID: 11400000, guid: 63c98bc2ee23124428f84d5d17f348d5, type: 2}
   _seedMode: 1
   _board: {fileID: 1120158067}
 --- !u!114 &477776518 stripped

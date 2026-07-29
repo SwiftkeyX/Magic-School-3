@@ -17,9 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction:
-        _actionName: 0
-        _effect: {fileID: 0}
+      _legacyAction: {fileID: 11400000, guid: 9f2e841143607f34098cff4af721b824, type: 2}
       _target: 0
       _aoe:
         rid: -2
@@ -34,4 +32,7 @@ MonoBehaviour:
       type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
       data:
         _recipient: 1
-        _damageAmount: 80
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0
+        _damageAmount: 500

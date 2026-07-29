@@ -33,3 +33,10 @@ This is the example when we combine all of the axes:
 Step 1 = OnCast(trigger), Yasuo(user) slash(action) aim on Enemy(target), the same target(recipient) get damaged(effect) and shred(effect).
 Step 2 = OnExpired(trigger), Yasuo(user) buff(action) aim on Yasuo(target), the same target(recipient) get buff(effect).
 
+// problem
+1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 
+Maybe we should get rid of one of them? 
+OH, okay it actually not the same. This was really complicated. For example:
+ZoneAOE could also hit ally IF "Recipient = Ally in Area" instead.
+There is more case of this that convince me Recipient is different and was absolutely needed here.
+

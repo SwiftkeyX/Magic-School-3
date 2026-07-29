@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LegacyAction
   _actionName: 0
   _effect: {fileID: 4910936322477073377, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
-  _castTime: 0.5
+  _castTime: 4

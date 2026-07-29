@@ -23,3 +23,53 @@ MonoBehaviour:
       team: 1
       column: 0
       row: 0
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 1
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 2
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 3
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 4
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 5
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 0
+      row: 6
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 1
+      row: 0
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 1
+      row: 1
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 1
+      row: 2
+  - dataSO: {fileID: 11400000, guid: c3237b4146516bf40a06b803ad07500f, type: 2}
+    hexPlacement:
+      team: 1
+      column: 1
+      row: 3

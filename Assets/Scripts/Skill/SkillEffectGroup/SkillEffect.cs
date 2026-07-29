@@ -5,8 +5,8 @@ using UnityEngine;
 [Serializable]
 public class Cadence
 {
-    public bool isCadence;
-    public float cadenceInterval;    // the interval of time effect is re-apply
+    public bool isCadence = false;
+    public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
 }
 
 [Serializable]

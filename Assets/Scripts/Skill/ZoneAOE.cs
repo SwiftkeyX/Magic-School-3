@@ -6,7 +6,7 @@ using UnityEngine;
 // and applies each area effect to them. Requires a Rigidbody2D on this object since Hero's own
 // collider carries none - Unity's 2D trigger events need at least one side of the pair to have one.
 [RequireComponent(typeof(Rigidbody2D))]
-public class AOEZone : MonoBehaviour
+public class ZoneAOE : MonoBehaviour
 {
     [SerializeField] private float _lifetime = 0.5f;
     private Hero _caster;

@@ -8,7 +8,7 @@ public class SkillActionGroup
     [SerializeField] private ActionSource _source;
     [SerializeField] private LegacyAction _legacyAction;
     [SerializeField] private AimTarget _target;
-    [SerializeReference] private AOE _aoe;
+    [SerializeField] private HitboxSize _size = new HitboxSize();
 
     // public Offset _offset;
     // ...
@@ -19,7 +19,7 @@ public class SkillActionGroup
     public ActionSource Source => _source;
     public LegacyAction LegacyAction => _legacyAction;
     public AimTarget Target => _target;
-    public AOE Aoe => _aoe;
+    public HitboxSize Size => _size;
     public List<SkillEffect> Effects => _effects;
 }
 

@@ -16,7 +16,7 @@ public static class SkillTrigger
         foreach (SkillActionGroup actionGroup in step.ActionGroups)
         {
             // play legacy action (action name)
-            actionGroup.LegacyAction.PlayLegacyAction(actionGroup.Target, caster);
+            actionGroup.LegacyAction.PlayLegacyAction(actionGroup.Target, caster, actionGroup.Effects);
         }
     }
 

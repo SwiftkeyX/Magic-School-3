@@ -20,5 +20,6 @@ public class SkillActionGroup
     public LegacyAction LegacyAction => _legacyAction;
     public AimTarget Target => _target;
     public AOE Aoe => _aoe;
+    public List<SkillEffect> Effects => _effects;
 }
 

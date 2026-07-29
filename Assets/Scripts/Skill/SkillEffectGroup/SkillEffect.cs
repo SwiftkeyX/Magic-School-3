@@ -30,6 +30,7 @@ public class AttackSkillEffect : SkillEffect
             recipient.Blackboard.TakeDamage(Mathf.RoundToInt(_damageAmount));
         }
     }
+
 }
 
 [Serializable]

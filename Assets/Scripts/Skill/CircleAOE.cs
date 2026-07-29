@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Lives on the spawned AOE effect prefab. Unlike ZoneAOE (which ticks cadence effects globally
-// against whoever's currently inside), CircleAOE's cadence effects are triggered once by initial
-// contact and then keep re-applying to that specific hero regardless of position - e.g. Teemo's
-// mushroom. Requires a Rigidbody2D on this object since Hero's own collider carries none - Unity's
-// 2D trigger events need at least one side of the pair to have one.
+/// <summary>
+/// CircleAOE are legacy action that can apply effect "once" or "overtime".
+/// 1) If apply once, it mean to apply effect to target immediately (apply at first contact).
+///
+/// 2) If apply overtime, it mean after first contact, it still apply damage over time to them afterward like a poison.
+/// Herores who get poison will can't walk out of poison like ZoneAOE, but they get full damage duration instead.
+/// 
+/// Example
+/// e.g. Teemo
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class CircleAOE : MonoBehaviour
 {
     [SerializeField] private float _lifetime = 0.5f;
     private Hero _caster;
     private List<SkillEffect> _effects;
-
-    // Guards against re-triggering a second DoT coroutine on the same hero if they leave and
-    // re-enter the hitbox while it's still alive.
-    private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
+    private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();  
 
     public void Init(Hero caster, List<SkillEffect> effects, float castTime)
     {
@@ -26,6 +28,11 @@ public class CircleAOE : MonoBehaviour
         Destroy(gameObject, _lifetime);
     }
 
+    /// <summary>
+    /// When heroes who was hit on first contact:
+    /// 1) Apply effect once if not cadence
+    /// 2) Apply effect over time if cadence
+    /// </summary>
     private void OnTriggerEnter2D(Collider2D other)
     {
         Hero hero = other.GetComponent<Hero>();
@@ -36,22 +43,25 @@ public class CircleAOE : MonoBehaviour
         List<Hero> recipients = new List<Hero> { hero };
         foreach (SkillEffect effect in _effects)
         {
+            // apply once
             if (!effect.Cadence.isCadence)
             {
-                // apply effect once, immediately on contact
+                // apply effect once
                 ApplyEffectToRecipients(effect, recipients);
             }
+
+            // apply over time BUT only apply to target who wasn't hit already 
+            // (prevent hitting twice)
             else if (_triggeredOnce.Add((effect, hero)))
             {
-                // e.g. Teemo's mushroom - contact triggers a DoT that keeps ticking on this
-                // specific hero regardless of whether they stay standing in the hitbox
+                // apply effect over time
                 StartCoroutine(PerHeroCadenceTick(effect, hero));
             }
         }
     }
 
-    // Per-hero cadence tick e.g. Teemo's mushroom: triggered once by contact, then keeps
-    // re-applying to that specific hero even after they leave the hitbox.
+    // Per hero cadence tick
+    // later should be change to poison status or something like that
     private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ZoneAOE, CircleAOE, etc... are all legacy action.
+/// later LegacyAction should be interface instead.
+/// </summary>
 [CreateAssetMenu(fileName = "LegacyAction", menuName = "Magic School 3/Legacy Action")]
 public class LegacyAction : ScriptableObject
 {
@@ -8,6 +12,7 @@ public class LegacyAction : ScriptableObject
     [SerializeField] private GameObject _effect;    // the prefab for the skill
     [SerializeField] private float _castTime;       // the duration skill was cast
 
+    // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
     public void TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
@@ -19,19 +24,21 @@ public class LegacyAction : ScriptableObject
         PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
+    // ==================================== LegacyAction ====================================
     private void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
-            SpawnAoeZone(caster, effects, aimTargetPosition);
+            SpawnZoneAOE(caster, effects, aimTargetPosition);
         }
+
         else if (_actionName == LegacyActionEnum.CircleAOE)
         {
-            SpawnCircleAoe(caster, effects, aimTargetPosition);
+            SpawnCircleAOE(caster, effects, aimTargetPosition);
         }
     }
 
-    private void SpawnAoeZone(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    private void SpawnZoneAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_effect == null) return;
 
@@ -41,7 +48,7 @@ public class LegacyAction : ScriptableObject
         if (zone != null) zone.Init(caster, effects, _castTime);
     }
 
-    private void SpawnCircleAoe(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    private void SpawnCircleAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_effect == null) return;
 
@@ -50,6 +57,7 @@ public class LegacyAction : ScriptableObject
         if (circle != null) circle.Init(caster, effects, _castTime);
     }
 
+    // ==================================== etc ====================================
     private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
     {
         // find position using aim target

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Lives on the spawned AOE effect prefab. Detects enemy heroes overlapping its trigger collider
-// and applies each area effect to them. Requires a Rigidbody2D on this object since Hero's own
-// collider carries none - Unity's 2D trigger events need at least one side of the pair to have one.
+/// <summary>
+/// ZoneAOE are legacy action that apply effect over time.
+/// Effect here was apply to the recipients on standing in the effect, if they walk out of it, they don't get effect re-apply.
+/// e.g. Garen, Silco, Swain
+/// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class ZoneAOE : MonoBehaviour
 {
@@ -12,8 +14,6 @@ public class ZoneAOE : MonoBehaviour
     private Hero _caster;
     private List<SkillEffect> _effects;
 
-    // Heroes currently standing in the zone - kept in sync via enter/exit so globally-ticking
-    // cadence effects know who to re-apply to without re-querying physics every tick.
     private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
 
     public void Init(Hero caster, List<SkillEffect> effects, float castTime)
@@ -23,9 +23,7 @@ public class ZoneAOE : MonoBehaviour
         _lifetime = castTime;
         Destroy(gameObject, _lifetime);
 
-        // Cadence effects tick globally from spawn, applying to whoever's inside at each
-        // interval e.g. Garen's E. ZoneAOE has no use for the per-hero/initial-collision
-        // variant (Teemo's mushroom) - that lives on CircleAOE instead.
+        // Immediately start a coroutine for apply effect over time
         foreach (SkillEffect effect in _effects)
         {
             if (effect.Cadence.isCadence) StartCoroutine(CadenceTick(effect));
@@ -40,23 +38,18 @@ public class ZoneAOE : MonoBehaviour
         // not apply effect to myself, my team, the dead hero
         if (hero == null || hero.Team == _caster.Team || hero.State == HeroStateType.Dead) return;
 
-        // apply non-cadence effects once, immediately on contact
-        List<Hero> recipients = new List<Hero> { hero };
-        foreach (SkillEffect effect in _effects)
-        {
-            if (!effect.Cadence.isCadence) ApplyEffectToRecipients(effect, recipients);
-        }
-
+        // Group all the heroes who was hit by the skill in 1 list 
         if (!_heroesWhoWasHit.Contains(hero)) _heroesWhoWasHit.Add(hero);
     }
 
+    // Remove hero who was not hit by the skill out of the list
     private void OnTriggerExit2D(Collider2D other)
     {
         Hero hero = other.GetComponent<Hero>();
         if (hero != null) _heroesWhoWasHit.Remove(hero);
     }
 
-    // Global cadence tick e.g. Garen's E: applies to whoever is currently standing in the zone,
+    // Global cadence tick
     // on a fixed schedule from spawn - no initial collision needed to start ticking.
     private IEnumerator CadenceTick(SkillEffect effect)
     {
@@ -71,6 +64,7 @@ public class ZoneAOE : MonoBehaviour
         }
     }
 
+    // apply effect to the recipients
     private void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
     {
         if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _caster });

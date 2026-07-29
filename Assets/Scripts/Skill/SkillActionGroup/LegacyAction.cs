@@ -33,7 +33,7 @@ public class LegacyAction : ScriptableObject
 
         GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
         // assign prefab data at runtime
-        AoeZone zone = instance.GetComponent<AoeZone>();
+        AOEZone zone = instance.GetComponent<AOEZone>();
         if (zone != null) zone.Init(caster, effects, _castTime);
     }
 

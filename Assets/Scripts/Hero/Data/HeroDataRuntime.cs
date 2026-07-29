@@ -49,5 +49,6 @@ public class HeroDataRuntime
     {
         _name = dataSO.Name;
         _stat = new Stat(dataSO);
+        _statModifier = new StatModifier(_stat);
     }
 }

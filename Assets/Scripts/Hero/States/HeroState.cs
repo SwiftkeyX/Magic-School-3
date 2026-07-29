@@ -12,7 +12,8 @@ public abstract class HeroState
     {
         _me = hero;
         _skill = skill;
-        _currentStep = skill.Steps[0];
+        // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned - they just never cast.
+        _currentStep = (skill != null && skill.Steps.Count > 0) ? skill.Steps[0] : null;
     }
 
     public abstract HeroStateType StateType { get; }

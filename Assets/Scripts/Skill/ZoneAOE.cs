@@ -33,6 +33,8 @@ public class ZoneAOE : MonoBehaviour
     // Get all the hero who was hit by the skill
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_caster == null) return;
+
         Hero hero = other.GetComponent<Hero>();
 
         // not apply effect to myself, my team, the dead hero

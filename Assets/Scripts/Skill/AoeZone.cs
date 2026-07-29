@@ -8,14 +8,14 @@ using UnityEngine;
 public class AoeZone : MonoBehaviour
 {
     [SerializeField] private float _lifetime = 0.5f;
-
     private Hero _caster;
     private List<SkillEffect> _effects;
 
-    public void Init(Hero caster, List<SkillEffect> effects)
+    public void Init(Hero caster, List<SkillEffect> effects, float castTime)
     {
         _caster = caster;
         _effects = effects;
+        _lifetime = castTime;
         Destroy(gameObject, _lifetime);
     }
 
@@ -30,6 +30,7 @@ public class AoeZone : MonoBehaviour
         List<Hero> recipients = new List<Hero> { hero };
         foreach (SkillEffect effect in _effects)
         {
+            // effect should be re-apply here every cadence interval
             ApplyEffectToRecipients(effect, recipients);
         }
     }

@@ -1,49 +1,50 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-[System.Serializable]
-public class LegacyAction
+[CreateAssetMenu(fileName = "LegacyAction", menuName = "Magic School 3/Legacy Action")]
+public class LegacyAction : ScriptableObject
 {
     [SerializeField] private LegacyActionEnum _actionName;
-    [SerializeField] private GameObject _effect;
-    private Vector3 _aimTargetPosition;
+    [SerializeField] private GameObject _effect;    // the prefab for the skill
+    [SerializeField] private float _castTime;       // the duration skill was cast
 
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public void PlayLegacyAction(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public void TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
     {
         // find position using aim target
-        ResolveAimTarget(aimTarget, caster);
+        Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
 
         // play animation based on legacy action
-        PlayLegacyAction(caster, effects);
+        PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
-    private void PlayLegacyAction(Hero caster, List<SkillEffect> effects)
+    private void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_actionName == LegacyActionEnum.ZoneAOE)
         {
-            SpawnAoeZone(caster, effects);
+            SpawnAoeZone(caster, effects, aimTargetPosition);
         }
     }
 
-    private void SpawnAoeZone(Hero caster, List<SkillEffect> effects)
+    private void SpawnAoeZone(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         if (_effect == null) return;
 
-        GameObject instance = Object.Instantiate(_effect, _aimTargetPosition, Quaternion.identity);
+        GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
         // assign prefab data at runtime
         AoeZone zone = instance.GetComponent<AoeZone>();
-        if (zone != null) zone.Init(caster, effects);
+        if (zone != null) zone.Init(caster, effects, _castTime);
     }
 
-    private void ResolveAimTarget(AimTarget aimTarget, Hero caster)
+    private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
     {
         // find position using aim target
         if (aimTarget == AimTarget.Self)
         {
-            _aimTargetPosition = caster.transform.position;
+            return caster.transform.position;
         }
+
+        return Vector3.zero;
     }
 }

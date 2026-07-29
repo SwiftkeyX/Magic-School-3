@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public class Cadence
+{
+    public bool isCadence;
+    public bool cadenceInterval;    // the interval of time effect is re-apply
+}
+
+[Serializable]
 public abstract class SkillEffect
 {
-    [SerializeField] private EffectRecipientEnum _recipient;
+    [SerializeField] private EffectRecipientEnum _recipient;        // the list of recipients who get effect
+    [SerializeField] private Cadence _cadence;                      // Is effect reapply over time?       
 
     // ================================== getter ==================================
     public EffectRecipientEnum Recipient => _recipient;

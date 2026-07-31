@@ -12,23 +12,14 @@ public class ZoneAOE : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;
 
-    protected override float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
-    {
-        Init(caster, effects, aimTargetPosition);
-
-        return _castTime;
-    }
-
     // ======================================== private ==============================================
-    private void Init(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         // initialize local variable
         _caster = caster;
         _effects = effects;
         _lifetime = _castTime;
 
-        // spawn cosmetic effect prefab, if any, and set this instance's lifetime
-        if (_effectPrefab != null) Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
         Destroy(gameObject, _lifetime);
 
         // one hitbox for the whole zone - every cadence effect on it shares one interval
@@ -53,6 +44,8 @@ public class ZoneAOE : LegacyAction
         }
 
         if (interval != null) StartCoroutine(CadenceTick(hitbox, interval.Value));
+
+        return _castTime;
     }
 
     // a hero currently in the zone got ticked - apply every cadence effect to them

@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class LegacyAction : MonoBehaviour
 {
     [SerializeField] private LegacyActionEnum _actionName;
-    [SerializeField] protected GameObject _effectPrefab;    // the prefab for the skill
     [SerializeField] protected float _castTime;       // the duration skill was cast
     protected Hero _caster;
     protected List<SkillEffect> _effects;
@@ -14,13 +13,13 @@ public abstract class LegacyAction : MonoBehaviour
     // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public virtual float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
     {
         // find position using aim target
         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
 
-        // _legacyAction fields reference a prefab asset, not a scene instance - spawn a real
-        // clone to act on so physics/Destroy() have an actual live GameObject to work with.
+        // Instantiate the LegacyAction BC the current instance is the prefab version 
+        // which can't interact with Unity's physics e.g. OnTriggerEnter() 
         LegacyAction instance = Instantiate(this, aimTargetPosition, Quaternion.identity);
 
         // play animation based on legacy action

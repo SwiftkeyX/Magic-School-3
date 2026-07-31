@@ -19,23 +19,14 @@ public class CircleAOE : LegacyAction
 
     private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 
-    protected override float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
-    {
-        Init(caster, effects, aimTargetPosition);
-
-        return _castTime;
-    }
-
     // ======================================== private ==============================================
-    private void Init(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         // initialize local variable
         _caster = caster;
         _effects = effects;
         _lifetime = _castTime;
 
-        // spawn effect prefab, and set this instance's lifetime
-        if (_effectPrefab != null) Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
         Destroy(gameObject, _lifetime);
 
         // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
@@ -43,6 +34,8 @@ public class CircleAOE : LegacyAction
         onceHitbox.OnHit += HandleFirstHit;
         _hitbox = onceHitbox;
         _hitbox.Init(_caster);
+
+        return _castTime;
     }
 
     /// <summary>

@@ -62,7 +62,9 @@ public class BuffSkillEffect : SkillEffect, Modifier
             if (recipient == null || recipient.State == HeroStateType.Dead) continue;
 
             recipient.Blackboard.AddModifier(this);
-            if (_modifier == ModifierEnum.BonusHP) recipient.Blackboard.Heal(_buffAmount);
+
+            // this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
+            // if (_modifier == ModifierEnum.BonusHP) recipient.Blackboard.Heal(_buffAmount);
         }
     }
 

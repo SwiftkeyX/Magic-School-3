@@ -54,7 +54,7 @@ public class StatModifier
         int newHP = _stat.BaseHP;
         foreach (var modifier in _modifiers)
         {
-            if (modifier.Source.GetModifier() == ModifierEnum.BonusHP)
+            if (modifier.Source.GetModifier() == ModifierEnum.Heal)
             {
                 newHP += (int)modifier.Source.GetAmount();
             }
@@ -103,6 +103,7 @@ public class StatModifier
         return _stat.BaseMaxMana;
     }
 
+    // =================================== modifier helper ===================================
     public bool HasModifier(ModifierEnum type)
     {
         foreach (var modifier in _modifiers)

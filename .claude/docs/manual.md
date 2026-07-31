@@ -1,3 +1,4 @@
+# Skill System Explain
 Due to how confusing skill are, I have to make a manual to make it easier to explain:
 
 What is this skill system for? 
@@ -33,10 +34,27 @@ This is the example when we combine all of the axes:
 Step 1 = OnCast(trigger), Yasuo(user) slash(action) aim on Enemy(target), the same target(recipient) get damaged(effect) and shred(effect).
 Step 2 = OnExpired(trigger), Yasuo(user) buff(action) aim on Yasuo(target), the same target(recipient) get buff(effect).
 
-// problem
+# problem
 1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 
 Maybe we should get rid of one of them? 
 OH, okay it actually not the same. This was really complicated. For example:
 ZoneAOE could also hit ally IF "Recipient = Ally in Area" instead.
 There is more case of this that convince me Recipient is different and was absolutely needed here.
 
+2) Problem with AOE class.
+// Maybe I have to change thing up? I think it more suitable to separate 1 AOE into AOE, Point&Click, HitScan, etc... 
+// Not everything should be call AOE since it was misleading.
+
+// No, that would change the direction too much, it was too much coupling here.
+I think it maybe just naming convention problem here? in google sheet, it was actually good.
+Maybe changing the field to "HitboxSize" ?
+Yes, I think that better, since it don't misleading the reader like AOE would.
+
+3) Galio still doesn't finished since his skill still doesn't heal over time.
+
+# Plan
+Teemo - for testing circle AOE with DOT - also need to implement homing projectile here
+Casseoipia - for testing homing projectile
+Jhin - implementing pierce projectile
+Samira - implementing first hit projectile
+Karma - test first hit projectile - AOE explode on impact

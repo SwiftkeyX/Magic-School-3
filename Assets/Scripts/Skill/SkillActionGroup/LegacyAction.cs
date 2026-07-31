@@ -67,7 +67,7 @@ public class LegacyAction : ScriptableObject
 
     // Cast are basically the custom legacy action
     // it does variety of thing. 
-    // NOtE that now it only use to buff.
+    // NOTE that now it only use to buff.
     private void Cast(Hero caster, List<SkillEffect> effects)
     {
         List<Hero> self = new List<Hero> { caster };
@@ -89,3 +89,4 @@ public class LegacyAction : ScriptableObject
         return Vector3.zero;
     }
 }
+

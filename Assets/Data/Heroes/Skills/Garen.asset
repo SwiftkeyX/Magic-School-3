@@ -19,20 +19,24 @@ MonoBehaviour:
     - _source: 0
       _legacyAction: {fileID: 11400000, guid: 9f2e841143607f34098cff4af721b824, type: 2}
       _target: 0
-      _aoe:
-        rid: -2
+      _size:
+        size: 1
+        shape:
+          rid: 6645218046250844232
       _effects:
       - rid: 6645218026192633927
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 6645218026192633927
       type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:
-          isCadence: 0
-          cadenceInterval: 0
-        _damageAmount: 500
+          isCadence: 1
+          startOnInitialCollisionOnly: 0
+          cadenceInterval: 0.5
+        _damageAmount: 80
+    - rid: 6645218046250844232
+      type: {class: Circle, ns: , asm: Assembly-CSharp}
+      data: 

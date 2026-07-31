@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2407621696395114698}
   - component: {fileID: 3885862123020805518}
   - component: {fileID: 5974146392146769718}
-  - component: {fileID: 7876316034039378978}
+  - component: {fileID: 1395724406477609479}
   m_Layer: 0
   m_Name: AOE
   m_TagString: Untagged
@@ -157,7 +157,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7876316034039378978
+--- !u!114 &1395724406477609479
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +166,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4910936322477073377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4260085bf5827bb4d8492b7b2192a626, type: 3}
+  m_Script: {fileID: 11500000, guid: 457129c01d4f3ea4ca42e91fce2df899, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AoeZone
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneAOE2
+  _actionName: 0
+  _effectPrefab: {fileID: 0}
+  _castTime: 4
   _lifetime: 0.5

@@ -3,74 +3,9 @@
   "title": "review",
   "steps": [
     {
-      "file": "Assets/Scripts/Board/BattleBoard.cs",
-      "description": "Find logic enemy now was in 2 place:\r\n1. HeroStateMachineBlackBoard\r\n2. BattleBoard\r\n\r\nFind logic enemy would need its own class. So we can get rid of this inconsistency.",
-      "line": 69
-    },
-    {
-      "file": "Assets/Scripts/Hero/Hero.cs",
-      "description": "I still don't sure what skillRuntime does?\r\nI think it kinda smelled for no reason?\r\n\r\nI'll come back later.",
-      "line": 67
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroDataRuntime.cs",
-      "description": "I don't think Stun or Wound should stay in Stat, no?\r\nFrom what I make sense, stat should only contain stuff like ad, as, df, mana, etc...\r\n\r\nBut it could work, I'll come back later.\r\n",
-      "line": 37
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroDataRuntime.cs",
-      "description": "Could we make DamageReductionPercent become another modifier?\r\nSince modifier represent buff right?",
-      "line": 48
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroDataRuntime.cs",
-      "description": "Stat's SRP = contain sta data for the hero and possibly getter and setter for those stat BUT not logic for calculating thing e.g. Heal().\r\n\r\nWe could have setter for increaseHP BUT not Heal() which calculate is target is wound or not.\r\n\r\nIs that make sense?",
-      "line": 132
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroDataRuntime.cs",
-      "description": "Same to Heal().\r\nWe have a class for modifier already, I think we should move all method that calculate logic for modifier inside it.\r\ne.g. TickModifiers(), ModifierSum(), HasModifier().\r\n\r\nThen lastly, make Stat call those method like a manager would do. (manager => I don't know the logic BUT I know who I should called)\r\n\r\nIs that make sense?",
-      "line": 138
-    },
-    {
-      "file": "Assets/Scripts/Hero/Hero.cs",
-      "description": "I'll inspect this later.",
-      "line": 65
-    },
-    {
-      "file": "Assets/Scripts/Hero/HeroStateMachineBlackBoard.cs",
-      "description": "This seem weird to me.\r\nTime to make a class for calculate damage espectially, so this TakeDamage() don't have to calculate damage itself.\r\n\r\nIs that make sense too?",
-      "line": 80
-    },
-    {
-      "file": "Assets/Scripts/Hero/States/HeroStunned.cs",
-      "description": "I want to test this out.",
-      "line": 15
-    },
-    {
-      "file": "Assets/Scripts/Skill/ActionModel.cs",
-      "description": "I will test this later.",
-      "line": 1
-    },
-    {
-      "file": "Assets/Scripts/Skill/ActiveEffect.cs",
-      "description": "test later.",
-      "line": 1
-    },
-    {
-      "file": "Assets/Scripts/Skill/SkillDefinitionSO.cs",
-      "description": "test later.",
-      "line": 1
-    },
-    {
-      "file": "Assets/Scripts/Skill/SkillRuntime.cs",
-      "description": "test later.",
-      "line": 1
-    },
-    {
-      "file": "Assets/Scripts/Hero/Hero.cs",
-      "description": "I will wire this correctly later.\r\n\r\ne.g. wire using the inspector, not wire here.",
-      "line": 94
+      "file": "Assets/Scripts/Skill/SkillActionGroup/LegacyAction.cs",
+      "description": "I don't understand this.\r\nWhy instantiate this again? explain in simple term",
+      "line": 112
     }
   ]
 }

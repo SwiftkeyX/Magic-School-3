@@ -107,9 +107,13 @@ public abstract class LegacyAction : MonoBehaviour
         // find position using aim target
         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
 
+        // _legacyAction fields reference a prefab asset, not a scene instance - spawn a real
+        // clone to act on so physics/Destroy() have an actual live GameObject to work with.
+        LegacyAction instance = Instantiate(this, aimTargetPosition, Quaternion.identity);
+
         // play animation based on legacy action
         // return cast duration
-        return PlayLegacyAction(caster, effects, aimTargetPosition);
+        return instance.PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
     // ==================================== local method ====================================
@@ -130,18 +134,6 @@ public abstract class LegacyAction : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 
     protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
-
-    // Cast are basically the custom legacy action
-    // it does variety of thing. 
-    // NOTE that now it only use to buff.
-    private void Cast(Hero caster, List<SkillEffect> effects)
-    {
-        List<Hero> self = new List<Hero> { caster };
-        foreach (SkillEffect effect in effects)
-        {
-            if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(self);
-        }
-    }
 
     // ==================================== Effect & Recipient ====================================
     // apply effect to the recipients

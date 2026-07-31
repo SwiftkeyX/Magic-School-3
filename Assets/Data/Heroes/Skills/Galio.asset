@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 11400000, guid: 09235870edac18d469257f7c23533dc8, type: 2}
+      _legacyAction: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
       _target: 0
       _size:
         size: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   - _trigger: 2
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 11400000, guid: 0e7c91da6ba07f248be0c8d9fc2bb4db, type: 2}
+      _legacyAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 0
       _size:
         size: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
           isCadence: 0
           startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
-        _modifier: 0
+        _modifier: 1
         _buffAmount: 150
         _buffDuration: 2
     - rid: 6645218046250844235
@@ -61,7 +61,7 @@ MonoBehaviour:
           isCadence: 0
           startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
-        _modifier: 1
+        _modifier: 2
         _buffAmount: 25
         _buffDuration: 2
     - rid: 6645218046250844236
@@ -72,4 +72,4 @@ MonoBehaviour:
           isCadence: 0
           startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
-        _damageAmount: 150
+        _damageAmount: 500

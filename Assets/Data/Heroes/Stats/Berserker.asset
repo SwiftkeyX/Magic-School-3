@@ -15,7 +15,7 @@ MonoBehaviour:
   _prefab: {fileID: 8729075628341993162, guid: 24347acb360a25c4ebc82a4f5a2acf34, type: 3}
   _name: Berserker
   _hp: 500
-  _attack: 55
+  _attack: 50
   _defend: 10
   _magic: 70
   _magicResist: 10
@@ -23,3 +23,4 @@ MonoBehaviour:
   _range: 1
   _startMana: 0
   _maxMana: 50
+  _skill: {fileID: 0}

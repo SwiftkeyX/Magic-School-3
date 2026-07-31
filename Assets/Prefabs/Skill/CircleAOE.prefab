@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2407621696395114698}
   - component: {fileID: 3885862123020805518}
   - component: {fileID: 5974146392146769718}
-  - component: {fileID: 6283955563849744558}
+  - component: {fileID: 2137041547401538855}
   m_Layer: 0
   m_Name: CircleAOE
   m_TagString: Untagged
@@ -157,7 +157,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6283955563849744558
+--- !u!114 &2137041547401538855
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +166,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4910936322477073377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333f3827c2516914199311730b9b9da0, type: 3}
+  m_Script: {fileID: 11500000, guid: 082a5995efdeba843a34242425cad86a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CircleAOE
+  m_EditorClassIdentifier: Assembly-CSharp::CircleAOE2
+  _actionName: 0
+  _effectPrefab: {fileID: 0}
+  _castTime: 0.5
   _lifetime: 0.5

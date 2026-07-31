@@ -28,8 +28,8 @@ public class ZoneAOE2 : LegacyAction
         _effects = effects;
         _lifetime = _castTime;
 
-        // spawn prefab, and set prefab lifetime
-        Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
+        // spawn cosmetic effect prefab, if any, and set this instance's lifetime
+        if (_effectPrefab != null) Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
         Destroy(gameObject, _lifetime);
 
         // Immediately start a coroutine for apply effect over time
@@ -38,7 +38,8 @@ public class ZoneAOE2 : LegacyAction
             if (effect.Cadence.isCadence) StartCoroutine(CadenceTick(effect));
         }
 
-        // initialize hitbox
+        // initialize hitbox: everyone currently standing in the zone gets hit on each cadence tick
+        _hitbox = new GlobalCadenceHitbox();
         _hitbox.Init(_caster);
     }
 

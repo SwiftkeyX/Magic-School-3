@@ -12,6 +12,7 @@ using UnityEngine;
 /// Example
 /// e.g. Teemo
 /// </summary>
+[RequireComponent(typeof(Rigidbody2D))]
 public class CircleAOE2 : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;
@@ -33,9 +34,36 @@ public class CircleAOE2 : LegacyAction
         _effects = effects;
         _lifetime = _castTime;
 
-        // spawn prefab, and set prefab lifetime
-        Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
+        // spawn effect prefab, and set this instance's lifetime
+        if (_effectPrefab != null) Instantiate(_effectPrefab, aimTargetPosition, Quaternion.identity);
         Destroy(gameObject, _lifetime);
+
+        // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
+        OnceHitbox onceHitbox = new OnceHitbox();
+        onceHitbox.OnFirstHit += HandleFirstHit;
+        _hitbox = onceHitbox;
+        _hitbox.Init(_caster);
+    }
+
+    /// <summary>
+    /// When a hero who was hit on first contact:
+    /// 1) Apply effect once if not cadence
+    /// 2) Apply effect over time if cadence
+    /// </summary>
+    private void HandleFirstHit(Hero hero)
+    {
+        List<Hero> recipients = new List<Hero> { hero };
+        foreach (SkillEffect effect in _effects)
+        {
+            if (!effect.Cadence.isCadence)
+            {
+                ApplyEffectToRecipients(effect, recipients);
+            }
+            else if (_triggeredOnce.Add((effect, hero)))
+            {
+                StartCoroutine(PerHeroCadenceTick(effect, hero));
+            }
+        }
     }
 
     // Per hero cadence tick

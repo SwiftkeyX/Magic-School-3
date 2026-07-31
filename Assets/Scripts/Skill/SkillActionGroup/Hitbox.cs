@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 // Hitbox was a interface for all hitbox class e.g. ZoneAOE, CircleAOE
-// Its purpose is to return the recipients who get hit by the hitbox
+// Its purpose is to report who get hit via OnHit
 public interface Hitbox
 {
     public void Init(Hero _caster);
@@ -11,12 +12,18 @@ public interface Hitbox
     public void OnTriggerExit2D(Collider2D other);
 }
 
-// use by CircleAOE
+/// <summary>
+/// Apply effect on contact
+/// </summary>
 public class OnceHitbox : Hitbox
 {
     private Hero _caster;
     private readonly HashSet<Hero> _triggeredOnce = new HashSet<Hero>();
     private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
+
+    // Raised the first time a given hero is hit, so callers (e.g. CircleAOE2) can
+    // kick off their once/cadence effect dispatch exactly once per hero.
+    public event Action<Hero> OnFirstHit;
 
     public void Init(Hero caster)
     {
@@ -42,18 +49,21 @@ public class OnceHitbox : Hitbox
         // not apply effect to myself, my team, the dead hero
         if (heroHit == null || heroHit.Team == _caster.Team || heroHit.State == HeroStateType.Dead) return;
 
+        // only the first contact counts - re-entering after walking out doesn't hit again
+        if (!_triggeredOnce.Add(heroHit)) return;
+
         _heroesWhoWasHit.Add(heroHit);
+        OnFirstHit?.Invoke(heroHit);
     }
 
-    // Remember hero that was already hit once, so we don't hit the same target again by accident
-    public void OnTriggerExit2D(Collider2D other)
-    {
-        Hero heroExit = other.GetComponent<Hero>();
-        if (heroExit != null) _triggeredOnce.Add(heroExit);
-    }
+    public void OnTriggerExit2D(Collider2D other) { }
 }
 
-// use by ZoneAOE
+/// <summary>
+/// The ZoneAOE doesn't apply effect on contact.
+/// BUT it apply effect on every cadence interval.
+/// So we should keep track of all the hero in the hitbox instead.
+/// </summary>
 public class GlobalCadenceHitbox : Hitbox
 {
     private Hero _caster;

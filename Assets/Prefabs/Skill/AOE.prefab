@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 457129c01d4f3ea4ca42e91fce2df899, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ZoneAOE2
+  m_EditorClassIdentifier: Assembly-CSharp::ZoneAOE
   _actionName: 0
   _effectPrefab: {fileID: 0}
   _castTime: 4

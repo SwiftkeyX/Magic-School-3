@@ -13,7 +13,7 @@ using UnityEngine;
 /// e.g. Teemo
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-public class CircleAOE2 : LegacyAction
+public class CircleAOE : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;
 
@@ -39,8 +39,8 @@ public class CircleAOE2 : LegacyAction
         Destroy(gameObject, _lifetime);
 
         // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
-        OnceHitbox onceHitbox = new OnceHitbox();
-        onceHitbox.OnFirstHit += HandleFirstHit;
+        OnContactHitbox onceHitbox = new OnContactHitbox();
+        onceHitbox.OnHit += HandleFirstHit;
         _hitbox = onceHitbox;
         _hitbox.Init(_caster);
     }

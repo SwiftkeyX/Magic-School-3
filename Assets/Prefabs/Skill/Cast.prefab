@@ -43,7 +43,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69b41096aa2495640ae6ec6ce09f75bb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Cast2
+  m_EditorClassIdentifier: Assembly-CSharp::Cast
   _actionName: 0
   _effectPrefab: {fileID: 0}
   _castTime: 2

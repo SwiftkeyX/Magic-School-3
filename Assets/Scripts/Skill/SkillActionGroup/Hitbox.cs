@@ -7,32 +7,24 @@ using UnityEngine;
 public interface Hitbox
 {
     public void Init(Hero _caster);
-    public List<Hero> GetRecipients();
+    public event Action<Hero> OnHit;
     public void OnTriggerEnter2D(Collider2D other);
     public void OnTriggerExit2D(Collider2D other);
 }
 
 /// <summary>
-/// Apply effect on contact
+/// Apply effect on contact 
 /// </summary>
-public class OnceHitbox : Hitbox
+public class OnContactHitbox : Hitbox
 {
     private Hero _caster;
     private readonly HashSet<Hero> _triggeredOnce = new HashSet<Hero>();
-    private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
 
-    // Raised the first time a given hero is hit, so callers (e.g. CircleAOE2) can
-    // kick off their once/cadence effect dispatch exactly once per hero.
-    public event Action<Hero> OnFirstHit;
+    public event Action<Hero> OnHit;
 
     public void Init(Hero caster)
     {
         _caster = caster;
-    }
-
-    public List<Hero> GetRecipients()
-    {
-        return _heroesWhoWasHit;
     }
 
     /// <summary>
@@ -52,8 +44,7 @@ public class OnceHitbox : Hitbox
         // only the first contact counts - re-entering after walking out doesn't hit again
         if (!_triggeredOnce.Add(heroHit)) return;
 
-        _heroesWhoWasHit.Add(heroHit);
-        OnFirstHit?.Invoke(heroHit);
+        OnHit?.Invoke(heroHit);
     }
 
     public void OnTriggerExit2D(Collider2D other) { }
@@ -64,19 +55,16 @@ public class OnceHitbox : Hitbox
 /// BUT it apply effect on every cadence interval.
 /// So we should keep track of all the hero in the hitbox instead.
 /// </summary>
-public class GlobalCadenceHitbox : Hitbox
+public class OnTickHitbox : Hitbox
 {
     private Hero _caster;
     private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
 
+    public event Action<Hero> OnHit;
+
     public void Init(Hero caster)
     {
         _caster = caster;
-    }
-
-    public List<Hero> GetRecipients()
-    {
-        return _heroesWhoWasHit;
     }
 
     // Get all the hero who was hit by the skill
@@ -89,7 +77,7 @@ public class GlobalCadenceHitbox : Hitbox
         // not apply effect to myself, my team, the dead hero
         if (heroHit == null || heroHit.Team == _caster.Team || heroHit.State == HeroStateType.Dead) return;
 
-        // Group all the heroes who was hit by the skill in 1 list 
+        // Group all the heroes who was hit by the skill in 1 list
         if (!_heroesWhoWasHit.Contains(heroHit)) _heroesWhoWasHit.Add(heroHit);
     }
 
@@ -98,5 +86,16 @@ public class GlobalCadenceHitbox : Hitbox
     {
         Hero hero = other.GetComponent<Hero>();
         if (hero != null) _heroesWhoWasHit.Remove(hero);
+    }
+
+    // Called by the owner on its cadence interval - fires OnHit for everyone currently inside
+    public void FireTick()
+    {
+        _heroesWhoWasHit.RemoveAll(hero => hero == null || hero.State == HeroStateType.Dead);
+
+        foreach (Hero hero in _heroesWhoWasHit)
+        {
+            OnHit?.Invoke(hero);
+        }
     }
 }

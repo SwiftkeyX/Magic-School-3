@@ -12,7 +12,6 @@ using UnityEngine;
 /// Example
 /// e.g. Teemo
 /// </summary>
-[RequireComponent(typeof(Rigidbody2D))]
 public class CircleAOE : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;

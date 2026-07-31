@@ -43,6 +43,12 @@ There is more case of this that convince me Recipient is different and was absol
 
 2) I want to move CadenceTick() to LegacyAction to unified thing, BUT it was too soon. We'll have to see if it really is appropritae or not later. Let's leave it for now.
 
+3) Another thing that I leave untouched is the "Cadence" always being a field to edit, Most of the time Cadence are pair with action.
+e.g. ZoneAOE always ahve Cadence true, CircleAOE can have both Cadence true or false
+But now even ZoneAOE that always is Cadence true, it now a editable Cadence, if user happen to make the cadence false, the ZoneAOE just stop working since it's guarded that way.
+This is maybe confusing if I forget, so I need to leave some NOTE here.
+This is intentional for the early stage of implementing skill system, BUT once we get a hang of it, this should be get rid of. 
+
 # Resolve idea
 Galio's cast have anticipation of his skill expanding and once the duration expired, deal damage.
 We don't do that antticipation, BC if we do so, there's going to be a lot of hero that also need cast animation too.

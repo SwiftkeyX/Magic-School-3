@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8604899657615096219}
   - component: {fileID: 2407621696395114698}
   - component: {fileID: 3885862123020805518}
-  - component: {fileID: 5974146392146769718}
   - component: {fileID: 1395724406477609479}
   m_Layer: 0
   m_Name: ZoneAOE
@@ -130,33 +129,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!50 &5974146392146769718
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4910936322477073377}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &1395724406477609479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +142,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZoneAOE
   _actionName: 0
-  _effectPrefab: {fileID: 0}
   _castTime: 4
   _lifetime: 0.5

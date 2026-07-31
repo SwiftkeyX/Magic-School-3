@@ -1,4 +1,4 @@
-public enum ActionSource
+public enum ActionSourceEnum
 {
     Self,
     Ally,
@@ -22,7 +22,7 @@ public enum LegacyActionEnum
     // ...
 }
 
-public enum AimTarget
+public enum AimTargetEnum
 {
     Self,
     Current,

@@ -16,53 +16,60 @@ public abstract class LegacyAction : MonoBehaviour
     // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public void TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public void TriggerSkill(ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
     {
-        // find position using aim target
-        Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
+        Init(caster, null);
 
-        // Instantiate the LegacyAction BC the current instance is the prefab version 
-        // which can't interact with Unity's physics e.g. OnTriggerEnter() 
-        LegacyAction instance = Instantiate(this, aimTargetPosition, Quaternion.identity);
+        // find position using source/aim enum
+        ResolveSource(source);
+        ResolveAimTarget(aimTarget);
 
-        instance.Init(caster, effects);
-
-        // play legacy action
-        instance.PlayLegacyAction();
-    }
-
-    // ==================================== local method ====================================
-    private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
-    {
-        // find position using aim target
-        if (aimTarget == AimTarget.Self)
-        {
-            return caster.transform.position;
-        }
-
-        //
-        if (aimTarget == AimTarget.Current)
-        {
-            Hero target = caster.Blackboard.FindNearestEnemy();
-            return target != null ? target.transform.position : caster.transform.position;
-        }
-
-        return Vector3.zero;
+        // init the prefab using source/aim vector3
+        SpawnPrefab(caster, effects);
     }
 
     private void Init(Hero caster, List<SkillEffect> effects)
     {
-        // initialize local variable
         _me = caster;
         _effects = effects;
     }
 
-    // ==================================== protected method ====================================
+    // ==================================== override method ====================================
+    // Each legacy action child have a dirrent way to resolve how their skill was spawn/aim at.
+    // read ResolveSource&ResolveAimTarget in each different's child for more detail
+    protected abstract void ResolveSource(ActionSourceEnum source);
+    protected abstract void ResolveAimTarget(AimTargetEnum aimTarget);
+
+    // spawn effect prefab using source, aim
+    protected abstract void SpawnPrefab(Hero caster, List<SkillEffect> effects);
+
     protected abstract void PlayLegacyAction();
+
+    // ==================================== Prefab -> scene instance ====================================
+    // _legacyAction fields are prefab references, not live scene objects 
+    // - they can't run physics or be destroyed. 
+    // This resolves prefab into a real instance awhich fix the problem.
+    protected void SpawnInstanceAt(Vector3 position, Hero caster, List<SkillEffect> effects)
+    {
+        LegacyAction instance = Instantiate(this, position, Quaternion.identity);
+        instance.Init(caster, effects);
+        instance.PlayLegacyAction();
+    }
+
+    // ==================================== Hitbox ====================================
 
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 
     protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
+
+    // ==================================== Effect & Recipient ====================================
+    // apply effect to the recipients
+    protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
+    {
+        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _me });
+
+        else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
+    }
 
     // Cadence Tick are use by several legacy action
     // so we unified thing by move it here. 
@@ -81,15 +88,6 @@ public abstract class LegacyAction : MonoBehaviour
         }
 
         Destroy(gameObject);
-    }
-
-    // ==================================== Effect & Recipient ====================================
-    // apply effect to the recipients
-    protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
-    {
-        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _me });
-
-        else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
     }
 }
 

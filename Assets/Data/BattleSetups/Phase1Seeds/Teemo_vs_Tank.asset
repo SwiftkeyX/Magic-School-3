@@ -23,8 +23,8 @@ MonoBehaviour:
       team: 0
       column: 3
       row: 0
-  - dataSO: {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
+  - dataSO: {fileID: 11400000, guid: 53666a18ce11078449166e3ff6e5d59d, type: 2}
     hexPlacement:
       team: 1
-      column: 0
+      column: 3
       row: 0

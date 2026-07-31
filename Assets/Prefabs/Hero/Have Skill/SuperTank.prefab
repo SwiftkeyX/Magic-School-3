@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 3623241212850989597}
   - component: {fileID: 7736762698928274456}
   m_Layer: 0
-  m_Name: Teemo
+  m_Name: SuperTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -770,7 +770,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.14610755, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f39e857a0c76c74c8d89f56c0f4ad06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hero
-  _SOData: {fileID: 11400000, guid: 76e948a66c5e474439a5a33fcd03137a, type: 2}
+  _SOData: {fileID: 11400000, guid: 53666a18ce11078449166e3ff6e5d59d, type: 2}
   _moveSpeed: 1
   _walkCurve:
     serializedVersion: 2

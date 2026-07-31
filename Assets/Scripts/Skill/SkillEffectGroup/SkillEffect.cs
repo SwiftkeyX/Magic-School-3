@@ -12,13 +12,14 @@ public class Cadence
 {
     public bool isCadence = false;
     public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
+    public float cadenceDuration = 3f;      // total duration of the effect
 }
 
 [Serializable]
 public abstract class SkillEffect
 {
-    [SerializeField] private EffectRecipientEnum _recipient;        // the list of recipients who get effect
-    [SerializeField] private Cadence _cadence = new Cadence();      // Is effect reapply over time?
+    [SerializeField] protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
+    [SerializeField] protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
 
     // ================================== getter ==================================
     public EffectRecipientEnum Recipient => _recipient;
@@ -40,8 +41,15 @@ public class AttackSkillEffect : SkillEffect
         {
             if (recipient == null || recipient.State == HeroStateType.Dead) continue;
 
+            // if the damage was cadence, calculate tick damage instead
+            float dmg;
+            if (_cadence.isCadence) dmg = _damageAmount * _cadence.cadenceInterval / _cadence.cadenceDuration;
+            
+            // if not cadence, apply normal flat damage
+            else dmg = _damageAmount;
+
             // apply damage
-            recipient.Blackboard.TakeDamage(Mathf.RoundToInt(_damageAmount));
+            recipient.Blackboard.TakeDamage(Mathf.RoundToInt(dmg));
         }
     }
 

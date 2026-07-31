@@ -12,9 +12,9 @@ using UnityEngine;
 /// Example
 /// e.g. Teemo
 /// </summary>
-public class CircleAOE : LegacyAction
+public class CircleAOE : AOE
 {
-    [SerializeField] private float _lifetime = 0.5f;
+    private float _lifetime = 0.5f;
 
     private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 

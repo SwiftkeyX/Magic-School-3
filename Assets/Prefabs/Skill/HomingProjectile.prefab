@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6420747537363264345}
   - component: {fileID: 3679381810146453927}
-  - component: {fileID: 8198009179562479145}
   - component: {fileID: 1967671719386722588}
+  - component: {fileID: 8198009179562479145}
   m_Layer: 0
   m_Name: HomingProjectile
   m_TagString: Untagged
@@ -93,21 +93,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &8198009179562479145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4231865678848504582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0673e39a92f7d4449f098f778fe31e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HomingProjectile
-  _castTime: 1
-  _lifetime: 0.5
-  _speed: 8
 --- !u!61 &1967671719386722588
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -154,3 +139,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8198009179562479145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231865678848504582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0673e39a92f7d4449f098f778fe31e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HomingProjectile
+  _castTime: 1
+  _speed: 8

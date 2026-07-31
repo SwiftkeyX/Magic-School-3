@@ -49,6 +49,10 @@ But now even ZoneAOE that always is Cadence true, it now a editable Cadence, if 
 This is maybe confusing if I forget, so I need to leave some NOTE here.
 This is intentional for the early stage of implementing skill system, BUT once we get a hang of it, this should be get rid of. 
 
+4) duration stuff e.g. cadenceDuration, prefabDuration (lifetime). Are confusing, fix later.
+
+5) it's awkward to use prefab instance, since we have to manually 
+
 # Resolve idea
 Galio's cast have anticipation of his skill expanding and once the duration expired, deal damage.
 We don't do that antticipation, BC if we do so, there's going to be a lot of hero that also need cast animation too.

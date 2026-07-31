@@ -22,7 +22,7 @@ public class SkillTrigger
             // play legacy action
             LegacyAction currentAction = actionGroup.LegacyAction;
             
-            currentAction.TriggerSkill(actionGroup.Target, caster, actionGroup.Effects);
+            currentAction.TriggerSkill(actionGroup.Source, actionGroup.Target, caster, actionGroup.Effects);
             
             float castTime = currentAction.CastTime;
             if (castTime > maxCastTime) maxCastTime = castTime;

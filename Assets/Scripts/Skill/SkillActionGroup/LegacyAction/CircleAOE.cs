@@ -27,6 +27,7 @@ public class CircleAOE : LegacyAction
         _effects = effects;
         _lifetime = _castTime;
 
+        // set object lifetime
         Destroy(gameObject, _lifetime);
 
         // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only

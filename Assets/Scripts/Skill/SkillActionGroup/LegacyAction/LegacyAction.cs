@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public abstract class LegacyAction : MonoBehaviour
     protected Hero _caster;
     protected List<SkillEffect> _effects;
     protected Hitbox _hitbox;
-    
+
     // ==================================== getter ====================================
     public float CastTime => _castTime;
 
@@ -48,6 +49,25 @@ public abstract class LegacyAction : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 
     protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
+
+    // Cadence Tick are use by several legacy action
+    // so we unified thing by move it here. 
+    // But it should be move later since not all legacy action need it.
+    protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
+    {
+        WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
+        float elapsed = 0f;
+
+        while (elapsed < effect.Duration)
+        {
+            yield return wait;
+            elapsed += effect.Cadence.cadenceInterval;
+
+            effect.ApplyEffect(recipients);
+        }
+
+        Destroy(gameObject);
+    }
 
     // ==================================== Effect & Recipient ====================================
     // apply effect to the recipients

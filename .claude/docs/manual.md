@@ -41,16 +41,7 @@ OH, okay it actually not the same. This was really complicated. For example:
 ZoneAOE could also hit ally IF "Recipient = Ally in Area" instead.
 There is more case of this that convince me Recipient is different and was absolutely needed here.
 
-2) Problem with AOE class.
-// Maybe I have to change thing up? I think it more suitable to separate 1 AOE into AOE, Point&Click, HitScan, etc... 
-// Not everything should be call AOE since it was misleading.
-
-// No, that would change the direction too much, it was too much coupling here.
-I think it maybe just naming convention problem here? in google sheet, it was actually good.
-Maybe changing the field to "HitboxSize" ?
-Yes, I think that better, since it don't misleading the reader like AOE would.
-
-3) Galio still doesn't finished since his skill still doesn't heal over time.
+2) I want to move CadenceTick() to LegacyAction to unified thing, BUT it was too soon. We'll have to see if it really is appropritae or not later. Let's leave it for now.
 
 # Resolve idea
 Galio's cast have anticipation of his skill expanding and once the duration expired, deal damage.

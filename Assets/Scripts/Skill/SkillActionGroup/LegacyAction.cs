@@ -1,21 +1,108 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// ZoneAOE, CircleAOE, etc... are all legacy action.
-/// later LegacyAction should be interface instead.
-/// </summary>
-[CreateAssetMenu(fileName = "LegacyAction", menuName = "Magic School 3/Legacy Action")]
-public class LegacyAction : ScriptableObject
+// /// <summary>
+// /// ZoneAOE, CircleAOE, etc... are all legacy action.
+// /// later LegacyAction should be interface instead.
+// /// </summary>
+// [CreateAssetMenu(fileName = "LegacyAction", menuName = "Magic School 3/Legacy Action")]
+// public class LegacyAction : ScriptableObject
+// {
+//     [SerializeField] private LegacyActionEnum _actionName;
+//     [SerializeField] private GameObject _effect;    // the prefab for the skill
+//     [SerializeField] private float _castTime;       // the duration skill was cast
+
+//     // ==================================== public method ====================================
+//     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
+//     // that'll be resolve later
+//     public float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+//     {
+//         // find position using aim target
+//         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
+
+//         // play animation based on legacy action
+//         // return cast duration
+//         return PlayLegacyAction(caster, effects, aimTargetPosition);
+//     }
+
+//     // ==================================== LegacyAction ====================================
+//     private float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+//     {
+//         if (_actionName == LegacyActionEnum.ZoneAOE)
+//         {
+//             SpawnZoneAOE(caster, effects, aimTargetPosition);
+//         }
+
+//         else if (_actionName == LegacyActionEnum.CircleAOE)
+//         {
+//             SpawnCircleAOE(caster, effects, aimTargetPosition);
+//         }
+
+//         else if (_actionName == LegacyActionEnum.Cast)
+//         {
+//             Cast(caster, effects);
+//         }
+
+//         return _castTime;
+//     }
+
+//     private void SpawnZoneAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+//     {
+//         if (_effect == null) return;
+
+//         GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
+//         // assign prefab data at runtime
+//         ZoneAOE zone = instance.GetComponent<ZoneAOE>();
+//         if (zone != null) zone.Init(caster, effects, _castTime);
+//     }
+
+//     private void SpawnCircleAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+//     {
+//         if (_effect == null) return;
+
+//         GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
+//         CircleAOE circle = instance.GetComponent<CircleAOE>();
+//         if (circle != null) circle.Init(caster, effects, _castTime);
+//     }
+
+//     // Cast are basically the custom legacy action
+//     // it does variety of thing. 
+//     // NOTE that now it only use to buff.
+//     private void Cast(Hero caster, List<SkillEffect> effects)
+//     {
+//         List<Hero> self = new List<Hero> { caster };
+//         foreach (SkillEffect effect in effects)
+//         {
+//             if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(self);
+//         }
+//     }
+
+//     // ==================================== etc ====================================
+//     private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
+//     {
+//         // find position using aim target
+//         if (aimTarget == AimTarget.Self)
+//         {
+//             return caster.transform.position;
+//         }
+
+//         return Vector3.zero;
+//     }
+// }
+
+public abstract class LegacyAction : MonoBehaviour
 {
     [SerializeField] private LegacyActionEnum _actionName;
-    [SerializeField] private GameObject _effect;    // the prefab for the skill
-    [SerializeField] private float _castTime;       // the duration skill was cast
+    [SerializeField] protected GameObject _effectPrefab;    // the prefab for the skill
+    [SerializeField] protected float _castTime;       // the duration skill was cast
+    protected Hero _caster;
+    protected List<SkillEffect> _effects;
+    protected Hitbox _hitbox;
 
     // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public virtual float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
     {
         // find position using aim target
         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
@@ -25,45 +112,24 @@ public class LegacyAction : ScriptableObject
         return PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
-    // ==================================== LegacyAction ====================================
-    private float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    // ==================================== local method ====================================
+    private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
     {
-        if (_actionName == LegacyActionEnum.ZoneAOE)
+        // find position using aim target
+        if (aimTarget == AimTarget.Self)
         {
-            SpawnZoneAOE(caster, effects, aimTargetPosition);
+            return caster.transform.position;
         }
 
-        else if (_actionName == LegacyActionEnum.CircleAOE)
-        {
-            SpawnCircleAOE(caster, effects, aimTargetPosition);
-        }
-
-        else if (_actionName == LegacyActionEnum.Cast)
-        {
-            Cast(caster, effects);
-        }
-
-        return _castTime;
+        return Vector3.zero;
     }
 
-    private void SpawnZoneAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
-    {
-        if (_effect == null) return;
+    // ==================================== protected method ====================================
+    protected abstract float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition);
 
-        GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
-        // assign prefab data at runtime
-        ZoneAOE zone = instance.GetComponent<ZoneAOE>();
-        if (zone != null) zone.Init(caster, effects, _castTime);
-    }
+    protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 
-    private void SpawnCircleAOE(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
-    {
-        if (_effect == null) return;
-
-        GameObject instance = Object.Instantiate(_effect, aimTargetPosition, Quaternion.identity);
-        CircleAOE circle = instance.GetComponent<CircleAOE>();
-        if (circle != null) circle.Init(caster, effects, _castTime);
-    }
+    protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
 
     // Cast are basically the custom legacy action
     // it does variety of thing. 
@@ -77,16 +143,13 @@ public class LegacyAction : ScriptableObject
         }
     }
 
-    // ==================================== etc ====================================
-    private Vector3 ResolveAimTarget(AimTarget aimTarget, Hero caster)
+    // ==================================== Effect & Recipient ====================================
+    // apply effect to the recipients
+    protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
     {
-        // find position using aim target
-        if (aimTarget == AimTarget.Self)
-        {
-            return caster.transform.position;
-        }
+        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _caster });
 
-        return Vector3.zero;
+        else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
     }
 }
 

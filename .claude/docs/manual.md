@@ -52,6 +52,11 @@ Yes, I think that better, since it don't misleading the reader like AOE would.
 
 3) Galio still doesn't finished since his skill still doesn't heal over time.
 
+# Resolve idea
+Galio's cast have anticipation of his skill expanding and once the duration expired, deal damage.
+We don't do that antticipation, BC if we do so, there's going to be a lot of hero that also need cast animation too.
+So just skil cast animation for now.
+
 # Plan
 Teemo - for testing circle AOE with DOT - also need to implement homing projectile here
 Casseoipia - for testing homing projectile

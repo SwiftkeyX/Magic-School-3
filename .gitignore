@@ -66,3 +66,18 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ── Secrets — never commit ───────────────────────────────────────────────────
+.env
+*.pem
+.gh-token
+google-service-credential.json
+*credential*.json
+*-credentials.json
+
+# Python bytecode from .claude/scripts/
+__pycache__/
+*.pyc
+
+# Transient sheet dump written at repo root by sheet_sync.py (dated copies live in .claude/reference/json/)
+/sheet_dump.json

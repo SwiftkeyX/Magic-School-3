@@ -13,7 +13,8 @@ public interface Hitbox
 }
 
 /// <summary>
-/// Apply effect on contact 
+/// Apply effect on contact e.g. projectile.
+/// Hitbox immediately trigger once it contact someone, the normal kind of logic for hitbox
 /// </summary>
 public class OnContactHitbox : Hitbox
 {
@@ -51,9 +52,9 @@ public class OnContactHitbox : Hitbox
 }
 
 /// <summary>
-/// The ZoneAOE doesn't apply effect on contact.
-/// BUT it apply effect on every cadence interval.
-/// So we should keep track of all the hero in the hitbox instead.
+/// To Apply effect on tick e.g. Anivia's R.
+/// Hitbox will trigger every fix interval (cadence interval), even hero walk into hitbox won't get damage, if the hitbox doesn't trigger.
+/// e.g. you walk into spike but you are fine, until the spike trigger itself
 /// </summary>
 public class OnTickHitbox : Hitbox
 {

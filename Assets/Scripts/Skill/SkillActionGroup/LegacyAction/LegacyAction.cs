@@ -5,7 +5,6 @@ using UnityEngine;
 
 public abstract class LegacyAction : MonoBehaviour
 {
-    [SerializeField] private LegacyActionEnum _actionName;
     [SerializeField] protected float _castTime;                 // the duration skill was cast
     protected Hero _me;
     protected List<SkillEffect> _effects;
@@ -39,6 +38,12 @@ public abstract class LegacyAction : MonoBehaviour
         if (aimTarget == AimTarget.Self)
         {
             return caster.transform.position;
+        }
+
+        if (aimTarget == AimTarget.Current)
+        {
+            Hero target = caster.Blackboard.FindNearestEnemy();
+            return target != null ? target.transform.position : caster.transform.position;
         }
 
         return Vector3.zero;

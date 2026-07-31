@@ -1,43 +1,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// HomingProjectile travels toward the caster's nearest enemy each frame and applies its
+/// effects once on contact, then destroys itself. e.g. Jhin/Samira-style bolts.
+/// </summary>
 public class HomingProjectile : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;
+    [SerializeField] private float _speed = 8f;
 
-    private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
+    private Hero _target;
 
     // ======================================== private ==============================================
     protected override void PlayLegacyAction()
     {
-        // initialize local variable
+        // set object lifetime - fallback despawn if it never reaches anyone
         _lifetime = _castTime;
-
-        // set object lifetime
         Destroy(gameObject, _lifetime);
 
-        // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
+        _target = _me.Blackboard.FindNearestEnemy();
+
+        // initialize hitbox: apply effects once, on first contact
         OnContactHitbox onceHitbox = new OnContactHitbox();
-        onceHitbox.OnHit += HandleFirstHit;
+        onceHitbox.OnHit += HandleHit;
         _hitbox = onceHitbox;
         _hitbox.Init(_me);
     }
 
-    /// <summary>
-    /// When a hero who was hit on first contact:
-    /// 1) Apply effect once if not cadence
-    /// 2) Apply effect over time if cadence
-    /// </summary>
-    private void HandleFirstHit(Hero hero)
+    private void Update()
+    {
+        if (_target == null || _target.State == HeroStateType.Dead)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, _speed * Time.deltaTime);
+    }
+
+    private void HandleHit(Hero hero)
     {
         List<Hero> recipients = new List<Hero> { hero };
         foreach (SkillEffect effect in _effects)
         {
-            if (!effect.Cadence.isCadence)
-            {
-                ApplyEffectToRecipients(effect, recipients);
-            }
-
+            ApplyEffectToRecipients(effect, recipients);
         }
+
+        Destroy(gameObject);
     }
 }

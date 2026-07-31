@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// AOE here = Area of effect. AOE could have size = 1.
-/// So AOE doesn't neccesary mean it hit multiple target.
-/// </summary>
 [System.Serializable]
 public class HitboxSize
 {

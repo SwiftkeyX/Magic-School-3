@@ -34,7 +34,8 @@ public abstract class LegacyAction : MonoBehaviour
         _effects = effects;
     }
 
-    // ==================================== override method ====================================
+
+    // ==================================== abstract method ====================================
     // Each legacy action child have a dirrent way to resolve how their skill was spawn/aim at.
     // read ResolveSource&ResolveAimTarget in each different's child for more detail
     protected abstract void ResolveSource(ActionSourceEnum source);
@@ -45,10 +46,11 @@ public abstract class LegacyAction : MonoBehaviour
 
     protected abstract void PlayLegacyAction();
 
+
     // ==================================== Prefab -> scene instance ====================================
-    // _legacyAction fields are prefab references, not live scene objects 
-    // - they can't run physics or be destroyed. 
-    // This resolves prefab into a real instance awhich fix the problem.
+    // _legacyAction fields are prefab references, not a live scene object
+    // whic mean they can't run physics (e.g. OnTriggerEnter()) or be destroyed. 
+    // This method fix a problem by resolving prefab into a real instance.
     protected void SpawnInstanceAt(Vector3 position, Hero caster, List<SkillEffect> effects)
     {
         LegacyAction instance = Instantiate(this, position, Quaternion.identity);
@@ -56,11 +58,11 @@ public abstract class LegacyAction : MonoBehaviour
         instance.PlayLegacyAction();
     }
 
+
     // ==================================== Hitbox ====================================
-
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
-
     protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
+
 
     // ==================================== Effect & Recipient ====================================
     // apply effect to the recipients

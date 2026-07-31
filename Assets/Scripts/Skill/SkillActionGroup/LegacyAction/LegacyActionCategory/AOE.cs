@@ -10,15 +10,13 @@ public abstract class AOE : LegacyAction
     protected Vector3 _aimTarget;
 
     // ======================================= protected =======================================
-    /// <summary>
     /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
-    /// aim = where the AOE spawn
-    /// </summary>
     protected override void ResolveSource(ActionSourceEnum source)
     {
         _source = _me.transform.position;
     }
 
+    /// aim = where the AOE spawn
     protected override void ResolveAimTarget(AimTargetEnum aimTarget)
     {
         // aim skill at self

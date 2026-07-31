@@ -44,10 +44,13 @@ public class CircleAOE : AOE
         List<Hero> recipients = new List<Hero> { hero };
         foreach (SkillEffect effect in _effects)
         {
+            // if not cadence, apply once
             if (!effect.Cadence.isCadence)
             {
                 ApplyEffectToRecipients(effect, recipients);
             }
+
+            // if cadence true, apply effect multiple time
             else if (_triggeredOnce.Add((effect, hero)))
             {
                 StartCoroutine(PerHeroCadenceTick(effect, hero));

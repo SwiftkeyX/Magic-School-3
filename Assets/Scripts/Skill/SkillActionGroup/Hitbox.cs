@@ -39,7 +39,7 @@ public class OnContactHitbox : Hitbox
 
         Hero heroHit = other.GetComponent<Hero>();
 
-        // not apply effect to myself, my team, the dead hero
+        // not collide with myself, my team, the dead hero
         if (heroHit == null || heroHit.Team == _caster.Team || heroHit.State == HeroStateType.Dead) return;
 
         // only the first contact counts - re-entering after walking out doesn't hit again

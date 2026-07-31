@@ -18,7 +18,7 @@ MonoBehaviour:
     _actionGroups:
     - _source: 0
       _legacyAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
-      _target: 0
+      _target: 1
       _size:
         size: 0
         shape:
@@ -51,6 +51,7 @@ MonoBehaviour:
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _modifier: 4
         _statusAmount: 0
         _statusDuration: 3
@@ -60,5 +61,6 @@ MonoBehaviour:
         _recipient: 1
         _cadence:
           isCadence: 1
-          cadenceInterval: 1
-        _damageAmount: 100
+          cadenceInterval: 0.1
+          cadenceDuration: 3
+        _damageAmount: 2000

@@ -1,11 +1,5 @@
 {
   "$schema": "https://aka.ms/codetour-schema",
   "title": "review",
-  "steps": [
-    {
-      "file": "Assets/Scripts/Skill/SkillActionGroup/LegacyAction.cs",
-      "description": "I don't understand this.\r\nWhy instantiate this again? explain in simple term",
-      "line": 112
-    }
-  ]
+  "steps": []
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: SuperTank
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 8729075628341993162, guid: 0bd3c23cc29f0c64295334a7c3087d6c, type: 3}
+  _prefab: {fileID: 8729075628341993162, guid: b5c9c6ca5f97cc8499f5ca66ebc44fce, type: 3}
   _name: Hero A
   _hp: 2000
   _attack: 40

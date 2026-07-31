@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Teemo_vs_Tank
   m_EditorClassIdentifier: Assembly-CSharp::BattlePlacementSO
   _heroesPlacement:
-  - dataSO: {fileID: 11400000, guid: ba5aa01e654293f4ea2e1f1f4ac40319, type: 2}
+  - dataSO: {fileID: 11400000, guid: 76e948a66c5e474439a5a33fcd03137a, type: 2}
+    hexPlacement:
+      team: 0
+      column: 0
+      row: 0
+  - dataSO: {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
     hexPlacement:
       team: 0
       column: 3

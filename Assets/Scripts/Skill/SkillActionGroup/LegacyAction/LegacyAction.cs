@@ -40,6 +40,7 @@ public abstract class LegacyAction : MonoBehaviour
             return caster.transform.position;
         }
 
+        //
         if (aimTarget == AimTarget.Current)
         {
             Hero target = caster.Blackboard.FindNearestEnemy();

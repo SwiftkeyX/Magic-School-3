@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// HomingProjectile travels toward the caster's nearest enemy each frame and applies its
-/// effects once on contact, then destroys itself. e.g. Jhin/Samira-style bolts.
+/// Projectile was aim toward the "target", what determined which recipients get hit is based on the projectile type.
 /// </summary>
+// public class 
+
 public class HomingProjectile : LegacyAction
 {
     [SerializeField] private float _lifetime = 0.5f;

@@ -8,14 +8,13 @@ using UnityEngine;
 /// </summary>
 public class Cast : LegacyAction
 {
-    protected override void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override void PlayLegacyAction()
     {
         // initialize local variable
-        _caster = caster;
-        List<Hero> self = new List<Hero> { caster };
+        List<Hero> self = new List<Hero> { _me };
 
         bool hasCadenceEffect = false;
-        foreach (SkillEffect effect in effects)
+        foreach (SkillEffect effect in _effects)
         {
             if (effect.Recipient != EffectRecipientEnum.Self) continue;
 

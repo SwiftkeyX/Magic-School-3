@@ -13,11 +13,9 @@ public class ZoneAOE : LegacyAction
     [SerializeField] private float _lifetime = 0.5f;
 
     // ======================================== private ==============================================
-    protected override void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override void PlayLegacyAction()
     {
         // initialize local variable
-        _caster = caster;
-        _effects = effects;
         _lifetime = _castTime;
 
         Destroy(gameObject, _lifetime);
@@ -25,7 +23,7 @@ public class ZoneAOE : LegacyAction
         // one hitbox for the whole zone - every cadence effect on it shares one interval
         OnTickHitbox hitbox = new OnTickHitbox();
         hitbox.OnHit += HandleTick;
-        hitbox.Init(_caster);
+        hitbox.Init(_me);
         _hitbox = hitbox;
 
         // temporarily guard

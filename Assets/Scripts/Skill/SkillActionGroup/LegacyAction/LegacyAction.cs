@@ -7,7 +7,7 @@ public abstract class LegacyAction : MonoBehaviour
 {
     [SerializeField] private LegacyActionEnum _actionName;
     [SerializeField] protected float _castTime;                 // the duration skill was cast
-    protected Hero _caster;
+    protected Hero _me;
     protected List<SkillEffect> _effects;
     protected Hitbox _hitbox;
 
@@ -26,9 +26,10 @@ public abstract class LegacyAction : MonoBehaviour
         // which can't interact with Unity's physics e.g. OnTriggerEnter() 
         LegacyAction instance = Instantiate(this, aimTargetPosition, Quaternion.identity);
 
-        // play animation based on legacy action
-        // return cast duration
-        instance.PlayLegacyAction(caster, effects, aimTargetPosition);
+        instance.Init(caster, effects);
+
+        // play legacy action
+        instance.PlayLegacyAction();
     }
 
     // ==================================== local method ====================================
@@ -43,8 +44,15 @@ public abstract class LegacyAction : MonoBehaviour
         return Vector3.zero;
     }
 
+    private void Init(Hero caster, List<SkillEffect> effects)
+    {
+        // initialize local variable
+        _me = caster;
+        _effects = effects;
+    }
+
     // ==================================== protected method ====================================
-    protected abstract void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition);
+    protected abstract void PlayLegacyAction();
 
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 
@@ -73,7 +81,7 @@ public abstract class LegacyAction : MonoBehaviour
     // apply effect to the recipients
     protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
     {
-        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _caster });
+        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _me });
 
         else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
     }

@@ -20,11 +20,9 @@ public class CircleAOE : LegacyAction
     private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 
     // ======================================== private ==============================================
-    protected override void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override void PlayLegacyAction()
     {
         // initialize local variable
-        _caster = caster;
-        _effects = effects;
         _lifetime = _castTime;
 
         // set object lifetime
@@ -34,7 +32,7 @@ public class CircleAOE : LegacyAction
         OnContactHitbox onceHitbox = new OnContactHitbox();
         onceHitbox.OnHit += HandleFirstHit;
         _hitbox = onceHitbox;
-        _hitbox.Init(_caster);
+        _hitbox.Init(_me);
     }
 
     /// <summary>

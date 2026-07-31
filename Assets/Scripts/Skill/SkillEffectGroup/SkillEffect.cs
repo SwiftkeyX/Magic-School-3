@@ -11,7 +11,6 @@ using UnityEngine;
 public class Cadence
 {
     public bool isCadence = false;
-    public bool startOnInitialCollisionOnly = false;    // teemo's mushroom (true) vs garen's E (false)
     public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
 }
 
@@ -46,6 +45,28 @@ public class AttackSkillEffect : SkillEffect
         }
     }
 
+}
+
+[Serializable]
+public class HealSkillEffect : SkillEffect
+{
+    [SerializeField] private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
+    [SerializeField] private float _duration;
+
+    public float Duration => _duration;
+
+    public override void ApplyEffect(List<Hero> recipients)
+    {
+        int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
+        float healPerTick = _totalHealAmount / totalTicks;
+
+        foreach (Hero recipient in recipients)
+        {
+            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+
+            recipient.Blackboard.Heal(healPerTick);
+        }
+    }
 }
 
 [Serializable]

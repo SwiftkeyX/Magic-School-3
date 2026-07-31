@@ -5,15 +5,18 @@ using UnityEngine;
 public abstract class LegacyAction : MonoBehaviour
 {
     [SerializeField] private LegacyActionEnum _actionName;
-    [SerializeField] protected float _castTime;       // the duration skill was cast
+    [SerializeField] protected float _castTime;                 // the duration skill was cast
     protected Hero _caster;
     protected List<SkillEffect> _effects;
     protected Hitbox _hitbox;
+    
+    // ==================================== getter ====================================
+    public float CastTime => _castTime;
 
     // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public float TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
+    public void TriggerSkill(AimTarget aimTarget, Hero caster, List<SkillEffect> effects)
     {
         // find position using aim target
         Vector3 aimTargetPosition = ResolveAimTarget(aimTarget, caster);
@@ -24,7 +27,7 @@ public abstract class LegacyAction : MonoBehaviour
 
         // play animation based on legacy action
         // return cast duration
-        return instance.PlayLegacyAction(caster, effects, aimTargetPosition);
+        instance.PlayLegacyAction(caster, effects, aimTargetPosition);
     }
 
     // ==================================== local method ====================================
@@ -40,7 +43,7 @@ public abstract class LegacyAction : MonoBehaviour
     }
 
     // ==================================== protected method ====================================
-    protected abstract float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition);
+    protected abstract void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition);
 
     protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
 

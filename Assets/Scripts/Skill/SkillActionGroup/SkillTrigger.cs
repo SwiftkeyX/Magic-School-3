@@ -20,7 +20,11 @@ public class SkillTrigger
         foreach (SkillActionGroup actionGroup in step.ActionGroups)
         {
             // play legacy action
-            float castTime = actionGroup.LegacyAction.TriggerSkill(actionGroup.Target, caster, actionGroup.Effects);
+            LegacyAction currentAction = actionGroup.LegacyAction;
+            
+            currentAction.TriggerSkill(actionGroup.Target, caster, actionGroup.Effects);
+            
+            float castTime = currentAction.CastTime;
             if (castTime > maxCastTime) maxCastTime = castTime;
         }
 

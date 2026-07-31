@@ -26,15 +26,16 @@ MonoBehaviour:
       _effects:
       - rid: 6645218046250844234
       - rid: 6645218046250844235
+      - rid: 6645218084189896774
   - _trigger: 2
     _actionGroups:
     - _source: 0
       _legacyAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 0
       _size:
-        size: 0
+        size: 1
         shape:
-          rid: -2
+          rid: 6645218084189896773
       _effects:
       - rid: 6645218046250844236
   references:
@@ -47,8 +48,7 @@ MonoBehaviour:
       data:
         _recipient: 0
         _cadence:
-          isCadence: 0
-          startOnInitialCollisionOnly: 0
+          isCadence: 1
           cadenceInterval: 0.5
         _modifier: 1
         _buffAmount: 150
@@ -59,7 +59,6 @@ MonoBehaviour:
         _recipient: 0
         _cadence:
           isCadence: 0
-          startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
         _modifier: 2
         _buffAmount: 25
@@ -70,6 +69,17 @@ MonoBehaviour:
         _recipient: 1
         _cadence:
           isCadence: 0
-          startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
-        _damageAmount: 500
+        _damageAmount: 120
+    - rid: 6645218084189896773
+      type: {class: Circle, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6645218084189896774
+      type: {class: HealSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 0
+        _cadence:
+          isCadence: 1
+          cadenceInterval: 0.5
+        _totalHealAmount: 200
+        _duration: 2

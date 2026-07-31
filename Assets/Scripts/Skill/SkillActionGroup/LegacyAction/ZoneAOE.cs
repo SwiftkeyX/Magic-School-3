@@ -13,7 +13,7 @@ public class ZoneAOE : LegacyAction
     [SerializeField] private float _lifetime = 0.5f;
 
     // ======================================== private ==============================================
-    protected override float PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
+    protected override void PlayLegacyAction(Hero caster, List<SkillEffect> effects, Vector3 aimTargetPosition)
     {
         // initialize local variable
         _caster = caster;
@@ -44,8 +44,6 @@ public class ZoneAOE : LegacyAction
         }
 
         if (interval != null) StartCoroutine(CadenceTick(hitbox, interval.Value));
-
-        return _castTime;
     }
 
     // a hero currently in the zone got ticked - apply every cadence effect to them

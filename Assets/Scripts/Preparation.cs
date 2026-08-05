@@ -53,8 +53,8 @@ public class Preparation : MonoBehaviour
 
     private void HeroInit(Hero hero, Team team)
     {
-        hero.SetBoard(_board);
-        hero.SetTeam(team);
+        hero.Blackboard.SetBoard(_board);
+        hero.Blackboard.SetTeam(team);
     }
 
     public void MoveThisHeroInPreParationState(Hero hero, Placement placement)

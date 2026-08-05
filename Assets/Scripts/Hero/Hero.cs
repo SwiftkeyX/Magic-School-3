@@ -2,9 +2,8 @@ using UnityEngine;
 
 /// <summary>
 /// Hero don't have any logic inside it BUT: 
-/// 1) it act like a glue for the entire of hero system.
-/// 2) it keep all the variable inside to inject into other hero system.
-/// 3) logic allow here is the simple logic for getter & setter.
+/// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
+/// 2) it act like a glue, which mean itself don't contain any real logic.
 /// </summary>
 public class Hero : MonoBehaviour
 {
@@ -29,10 +28,6 @@ public class Hero : MonoBehaviour
     public HeroStateType State => _stateMachine.CurrentType;
     public HeroStateMachine StateMachine => _stateMachine;
     public HeroStateMachineBlackBoard Blackboard => _blackboard;
-
-    // ======================================== setter ========================================
-    public void SetBoard(BattleBoard battleBoard) => _blackboard.SetBoard(battleBoard);
-    public void SetTeam(Team team) => _blackboard.SetTeam(team);
 
     #region Life Cycle
     void Awake()

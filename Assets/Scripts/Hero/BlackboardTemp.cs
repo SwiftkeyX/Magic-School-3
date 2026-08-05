@@ -1,9 +1,7 @@
 using UnityEngine;
 
-// Grab-bag for hero logic that doesn't have an obvious home yet. Kept here, behind Blackboard.Temp, 
-// instead of scattered as ad hoc methods reached into directly (Hero used to carry these) 
-// so "we don't know where this goes" stays contained and easy to find later,
-// rather than disguised as real architecture elsewhere.
+// Code architecture begin to be really messy, and some of them don't have its obvious home yet.
+// So let just put all of them here so it not scatter around and be confusing.
 public class BlackboardTemp
 {
     private readonly Hero _me;

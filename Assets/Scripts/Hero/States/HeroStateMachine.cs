@@ -1,6 +1,8 @@
-// Owns exactly one instance of each state for its hero. States carry per-hero mutable
-// data (HeroIdle's grace-period timer, HeroWalk's walk progress), so they can't be shared
-// stateless singletons across every hero on the board the way the state TYPE can be.
+
+/// <summary>
+/// HeroStateMachine is state machine that control hero's behaviour.
+/// It's vanilla state machine, nothing special.
+/// </summary>
 public class HeroStateMachine
 {
     private readonly HeroIdle _idle;

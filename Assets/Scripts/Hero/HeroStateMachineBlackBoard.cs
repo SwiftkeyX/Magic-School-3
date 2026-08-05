@@ -1,13 +1,15 @@
 using System.Linq;
 using UnityEngine;
 
-// 1) BlackBoard's SRP is contain the data every statemachine use. 
-// And BlackBoard itself shouldn't have any real logic, it should act like getter & setter for other class.
-//
-// 2) BlackBoard is similar to Hero in the sense that we dump all data here 
-// when we don't know where to put it & both shouldn't contain any real logic.
-//
-// 3) But most of the time, we are going to violated its SRP, since we really like dump data into them.
+/// <summary>
+/// HeroStateMachineBlackBoard don't contain any real logic SIMILAR to Hero:
+/// 1) It act like a additional Glue which don't contain any real logic. 
+/// 
+/// 2) Why would we need this class when we have Hero as a glue? 
+/// We need this class because HeroStateMachine want a share data between each state. 
+/// BUT we don't want to pass Hero to those state because it's also contain additional unrelated data.
+/// So we create this class to be a dedicated glue for HeroStatMachine. 
+/// </summary>
 public class HeroStateMachineBlackBoard
 {
     // ================================================ dependency ================================================

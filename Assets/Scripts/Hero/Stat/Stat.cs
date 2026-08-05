@@ -2,11 +2,15 @@ using UnityEngine;
 
 /// <summary>
 /// Stat of a hero.
+/// 
 /// This class should only contain data and its getter & setter only.
 /// NO LOGIC.
 /// </summary>
 public class Stat
 {
+    // ========================================== dependency ==========================================
+    private StatModifier _statModifier;
+
     // ========================================== base stat ==========================================
     private int _currentHP;
     private int _maxHP;
@@ -63,8 +67,6 @@ public class Stat
     public void AddModifier(Modifier modifier) => _statModifier.AddModifier(modifier);
     public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
 
-    // ========================================== dependency ==========================================
-    private StatModifier _statModifier;
 
     public Stat(HeroDataSO stat)
     {

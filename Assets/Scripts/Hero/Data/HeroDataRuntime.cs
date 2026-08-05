@@ -2,10 +2,8 @@
 /// Hold every runtime data for a hero e.g. stat, placement.
 /// Runtime data = data that was can be changed in game dynamically. There MUST NOT have static variable here.
 /// 
-/// The data flow for hero look like this: 
-/// Manager class (Hero, HeroStateMachineBlackBoard) => Logic class (CombatMath, FindEnemy, SkillExecutor) => Data class (HeroDataRuntime, Stat)
-/// So HeroDataRuntime is a Data class one.  
-/// 
+/// This class should only contain data and its getter & setter only.
+/// NO LOGIC.
 /// </summary>
 public class HeroDataRuntime
 {
@@ -15,7 +13,6 @@ public class HeroDataRuntime
 
     // ==================================== Stat ====================================
     private Stat _stat;
-    private StatModifier _statModifier;     // FIXME: stat modifier is actually a logic class, and HeroDataRuntime shouldn't reference it. Move this to HeroStateMachineBlackBoard.
 
     // ==================================== Position ====================================
     private Placement _currentPlacement;    // placement hero stand on e.g. hex, benchslot
@@ -60,8 +57,8 @@ public class HeroDataRuntime
     public float DamageReductionPercent => _stat.DamageReductionPercent;
 
     // === stat modifier ===
-    public void AddModifier(Modifier modifier) => _statModifier.AddModifier(modifier);
-    public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
+    public void AddModifier(Modifier modifier) => _stat.AddModifier(modifier);
+    public void TickModifiers(float deltaTime) => _stat.TickModifiers(deltaTime);
 
 
 
@@ -69,6 +66,5 @@ public class HeroDataRuntime
     {
         _isDummy = dataSO.IsDummy;
         _stat = new Stat(dataSO);
-        _statModifier = new StatModifier(_stat);
     }
 }

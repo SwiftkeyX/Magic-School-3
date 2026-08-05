@@ -115,9 +115,7 @@ public class HeroStateMachineBlackBoard
         return nearestEnemy;
     }
 
-    // Picks furthest enemy (if there are several furthest enemies, random it). No sticky-pick like
-    // FindNearestEnemy - that exists to stop a hero's per-frame walk target from flickering, which
-    // doesn't apply here since nothing walks toward its furthest enemy.
+    // Picks furthest enemy (if there are several furthest enemies, random it). 
     public Hero FindFurthestEnemy()
     {
         var enemyDistances = GetEnemyDistance();
@@ -130,9 +128,16 @@ public class HeroStateMachineBlackBoard
         return tiedFurthest[Random.Range(0, tiedFurthest.Count)];
     }
 
+    private List<(Hero target, float dist)> _enemyDistanceCache;
+    private int _enemyDistanceCacheFrame = -1;
+
+    // Scan all enemy distance from myself. Cache it for this frame, to reduce repeat work.
     private List<(Hero target, float dist)> GetEnemyDistance()
     {
-        return _board.HeroesOnBoard
+        bool isCache = (_enemyDistanceCacheFrame == Time.frameCount);
+        if (isCache) return _enemyDistanceCache;
+
+        _enemyDistanceCache = _board.HeroesOnBoard
         // select enemy hero only
         .Where(target =>
         {
@@ -146,6 +151,9 @@ public class HeroStateMachineBlackBoard
         .Select(target => (target, dist: Vector3.Distance(GetCurrentHex().transform.position, target.Blackboard.GetCurrentHex().transform.position)))
         // get a list of = (Hero : float)
         .ToList();
+        _enemyDistanceCacheFrame = Time.frameCount;
+
+        return _enemyDistanceCache;
     }
     #endregion
 }

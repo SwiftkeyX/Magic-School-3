@@ -27,6 +27,7 @@ public class Preparation : MonoBehaviour
     {
         GameObject heroPrefab = Instantiate(data.Prefab);
         Hero hero = heroPrefab.GetComponent<Hero>();
+        hero.Init(data);
 
         // init hero by assigning their team, and give correct board reference to them
         HeroInit(hero, team);

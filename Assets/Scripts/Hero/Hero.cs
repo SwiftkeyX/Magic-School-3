@@ -8,7 +8,7 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     // ======================================== Dependency ========================================
-    [SerializeField] private HeroDataSO _SOData;        // One time use to populate HeroDataRuntime and SkillSo
+    private HeroDataSO _SOData;
     private HeroStateMachine _stateMachine;
     private HeroStateMachineBlackBoard _blackboard;
     private SkillSO _skill;
@@ -30,8 +30,9 @@ public class Hero : MonoBehaviour
     public HeroStateMachineBlackBoard Blackboard => _blackboard;
 
     #region Life Cycle
-    void Awake()
+    public void Init(HeroDataSO data)
     {
+        _SOData = data;
         _runtimeData = new HeroDataRuntime(_SOData);
         _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
         _skill = _SOData.Skill;

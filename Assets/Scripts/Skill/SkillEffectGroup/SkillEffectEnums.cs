@@ -2,19 +2,23 @@
 /// Skil use A LOT OF enum. We group all of them here for readability.
 /// </summary>
 
+// These enums are serialized into SkillSO assets as raw ints - always assign explicit values so
+// inserting a new member later can't silently remap what an existing asset's stored int means.
+
 // ================================================ Trigger ================================================
 public enum TriggerEnum
 {
-    OnCast,
-    OnKill,
-    OnExpired,
+    OnCast = 0,
+    OnKill = 1,
+    OnExpired = 2,
 }
 
 // ================================================ Recipient ================================================
 public enum EffectRecipientEnum
 {
-    Self,
-    EnemiesInArea,
+    Self = 0,
+    EnemiesInArea = 1,
+    SameToAimTarget = 2,
 }
 
 // ================================================ Effect ================================================
@@ -22,14 +26,14 @@ public enum EffectRecipientEnum
 public enum ModifierEnum
 {
     // ======================================= Buff =======================================
-    BonusHP,
-    Heal,
-    DamageReduction,
+    BonusHP = 0,
+    Heal = 1,
+    DamageReduction = 2,
 
     // ======================================= Debuff =======================================
     // ...
 
     // ======================================= Status =======================================
-    Stun,
-    Wound,
+    Stun = 3,
+    Wound = 4,
 }

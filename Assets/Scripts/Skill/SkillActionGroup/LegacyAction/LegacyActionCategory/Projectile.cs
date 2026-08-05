@@ -7,11 +7,6 @@ using UnityEngine;
 /// </summary>
 public abstract class Projectile : LegacyAction
 {
-    // normally, destroy upon projectile impact
-    // But here is also, fallback lifetime, in case something go wrong 
-    private float _lifetime = 10f;
-    private float _speed = 8f;
-
     // ======================================== override method ========================================
     // source = where projectile spawn from
     protected override void ResolveSource(ActionSourceEnum source)

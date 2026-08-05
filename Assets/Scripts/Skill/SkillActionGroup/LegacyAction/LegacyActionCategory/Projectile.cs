@@ -12,10 +12,6 @@ public abstract class Projectile : LegacyAction
     private float _lifetime = 10f;
     private float _speed = 8f;
 
-    protected Vector3 _source;
-    protected Vector3 _aimTarget;
-
-
     // ======================================== override method ========================================
     // source = where projectile spawn from
     protected override void ResolveSource(ActionSourceEnum source)
@@ -55,8 +51,5 @@ public abstract class Projectile : LegacyAction
         return true;
     }
 
-    protected override void SpawnPrefab(Hero caster, List<SkillEffect> effects)
-    {
-        SpawnInstanceAt(_source, caster, effects);
-    }
+    protected override Vector3 GetSpawnPosition() => _source;
 }

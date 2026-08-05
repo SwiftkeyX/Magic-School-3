@@ -6,9 +6,6 @@ using UnityEngine;
 /// </summary>
 public abstract class AOE : LegacyAction
 {
-    protected Vector3 _source;
-    protected Vector3 _aimTarget;
-
     // ======================================= protected =======================================
     /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
     protected override void ResolveSource(ActionSourceEnum source)
@@ -42,8 +39,5 @@ public abstract class AOE : LegacyAction
         return true;
     }
 
-    protected override void SpawnPrefab(Hero caster, List<SkillEffect> effects)
-    {
-        SpawnInstanceAt(_aimTarget, caster, effects);
-    }
+    protected override Vector3 GetSpawnPosition() => _aimTarget;
 }

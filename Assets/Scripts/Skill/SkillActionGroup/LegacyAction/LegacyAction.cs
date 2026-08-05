@@ -10,6 +10,9 @@ public abstract class LegacyAction : MonoBehaviour
     protected List<SkillEffect> _effects;
     protected Hitbox _hitbox;
 
+    protected Vector3 _source;
+    protected Vector3 _aimTarget;
+
     // ==================================== getter ====================================
     public float CastTime => _castTime;
 
@@ -18,16 +21,27 @@ public abstract class LegacyAction : MonoBehaviour
     // that'll be resolve later
     public void TriggerSkill(ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
     {
-        Init(caster, null);
+        // _legacyAction fields are prefab references, not live scene objects.
+        // So instantiate first so every resolve/spawn step below runs on the real instance instead of the prefab.
+        LegacyAction instance = Instantiate(this);
+        instance.Init(caster, effects);
 
         // find position using source/aim enum
-        ResolveSource(source);
+        instance.ResolveSource(source);
 
+        // What I want is => hero have mana full => check if target found
+        // found => consume mana => use skill => instantiate skill
+        // not found => not consume mana => skill was never used or instantiate
+        // BUT okay, let leave this, we can fix this later.
         // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
-        if (!ResolveAimTarget(aimTarget)) return;
+        if (!instance.ResolveAimTarget(aimTarget))
+        {
+            Destroy(instance.gameObject);
+            return;
+        }
 
-        // init the prefab using source/aim vector3
-        SpawnPrefab(caster, effects);
+        instance.transform.position = instance.GetSpawnPosition();
+        instance.PlayLegacyAction();
     }
 
     private void Init(Hero caster, List<SkillEffect> effects)
@@ -45,22 +59,12 @@ public abstract class LegacyAction : MonoBehaviour
     // returns false if no valid target could be resolved (e.g. Current-targeted with no enemy left) - caller skips the cast
     protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
-    // spawn effect prefab using source, aim
-    protected abstract void SpawnPrefab(Hero caster, List<SkillEffect> effects);
+    // where this action's instance should sit once source/aim are resolved.
+    // e.g. an AOE spawns at the aim target, 
+    // a projectile spawns at its source and travels from there.
+    protected abstract Vector3 GetSpawnPosition();
 
     protected abstract void PlayLegacyAction();
-
-
-    // ==================================== Prefab -> scene instance ====================================
-    // _legacyAction fields are prefab references, not a live scene object
-    // whic mean they can't run physics (e.g. OnTriggerEnter()) or be destroyed. 
-    // This method fix a problem by resolving prefab into a real instance.
-    protected void SpawnInstanceAt(Vector3 position, Hero caster, List<SkillEffect> effects)
-    {
-        LegacyAction instance = Instantiate(this, position, Quaternion.identity);
-        instance.Init(caster, effects);
-        instance.PlayLegacyAction();
-    }
 
 
     // ==================================== Hitbox ====================================

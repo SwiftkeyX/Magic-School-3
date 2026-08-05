@@ -27,7 +27,7 @@ MonoBehaviour:
   - _trigger: 2
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 2137041547401538855, guid: a0d4a2e4a22668940808364cb1d3b8da, type: 3}
+      _legacyAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 1
       _size:
         size: 1

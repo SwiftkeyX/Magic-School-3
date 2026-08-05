@@ -16,8 +16,9 @@ public abstract class AOE : LegacyAction
         _source = _me.transform.position;
     }
 
-    /// aim = where the AOE spawn
-    protected override void ResolveAimTarget(AimTargetEnum aimTarget)
+    /// aim = where the AOE spawn. 
+    /// if not target was found, return (don't use skill yet if target not found)
+    protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
     {
         // aim skill at self
         if (aimTarget == AimTargetEnum.Self)
@@ -29,13 +30,16 @@ public abstract class AOE : LegacyAction
         else if (aimTarget == AimTargetEnum.Current)
         {
             Hero target = _me.Blackboard.FindNearestEnemy();
-            _aimTarget = (target != null) ? target.transform.position : _me.transform.position;
+            if (target == null) return false;
+            _aimTarget = target.transform.position;
         }
 
         // else if () ...
 
         // fallback
         else _aimTarget = _me.transform.position;
+
+        return true;
     }
 
     protected override void SpawnPrefab(Hero caster, List<SkillEffect> effects)

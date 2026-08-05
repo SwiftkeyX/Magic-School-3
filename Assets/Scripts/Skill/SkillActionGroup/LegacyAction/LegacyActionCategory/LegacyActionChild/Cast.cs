@@ -11,7 +11,7 @@ public class Cast : LegacyAction
     // Cast always applies to the caster - nothing to resolve, it always spawns at _me's own position.
     protected override void ResolveSource(ActionSourceEnum source) { }
 
-    protected override void ResolveAimTarget(AimTargetEnum aimTarget) { }
+    protected override bool ResolveAimTarget(AimTargetEnum aimTarget) => true;
 
     protected override void SpawnPrefab(Hero caster, List<SkillEffect> effects)
     {

@@ -53,21 +53,25 @@ public class CircleAOE : AOE
             // if cadence true, apply effect multiple time
             else if (_triggeredOnce.Add((effect, hero)))
             {
-                StartCoroutine(PerHeroCadenceTick(effect, hero));
+                // run coroutine on target hero to apply that effect 
+                hero.StartCoroutine(PerHeroCadenceTick(effect, hero));
             }
         }
     }
 
+    // This is for the poison DOT. I think we should move this to its own class e.g. Status class later.
     // Per hero cadence tick
     // later should be change to poison status or something like that
     private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
         List<Hero> recipients = new List<Hero> { hero };
+        float elapsed = 0f;
 
-        while (true)
+        while (elapsed < effect.Cadence.cadenceDuration)
         {
             yield return wait;
+            elapsed += effect.Cadence.cadenceInterval;
 
             if (hero == null || hero.State == HeroStateType.Dead) yield break;
             ApplyEffectToRecipients(effect, recipients);

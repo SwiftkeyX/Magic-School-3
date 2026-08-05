@@ -30,8 +30,8 @@ public abstract class Projectile : LegacyAction
     }
 
 
-    // aim = where projectile shoot direction is
-    protected override void ResolveAimTarget(AimTargetEnum aimTarget)
+    // aim = where projectile shoot direction is. Returns false if no valid target was found (caller skips the cast).
+    protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
     {
         // aim skill at self
         if (aimTarget == AimTargetEnum.Self)
@@ -43,6 +43,7 @@ public abstract class Projectile : LegacyAction
         else if (aimTarget == AimTargetEnum.Current)
         {
             Hero target = _me.Blackboard.FindNearestEnemy();
+            if (target == null) return false;
             _aimTarget = target.transform.position;
         }
 
@@ -50,6 +51,8 @@ public abstract class Projectile : LegacyAction
 
         // fallback
         else _aimTarget = _me.transform.position;
+
+        return true;
     }
 
     protected override void SpawnPrefab(Hero caster, List<SkillEffect> effects)

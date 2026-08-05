@@ -22,7 +22,9 @@ public abstract class LegacyAction : MonoBehaviour
 
         // find position using source/aim enum
         ResolveSource(source);
-        ResolveAimTarget(aimTarget);
+
+        // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
+        if (!ResolveAimTarget(aimTarget)) return;
 
         // init the prefab using source/aim vector3
         SpawnPrefab(caster, effects);
@@ -39,7 +41,9 @@ public abstract class LegacyAction : MonoBehaviour
     // Each legacy action child have a dirrent way to resolve how their skill was spawn/aim at.
     // read ResolveSource&ResolveAimTarget in each different's child for more detail
     protected abstract void ResolveSource(ActionSourceEnum source);
-    protected abstract void ResolveAimTarget(AimTargetEnum aimTarget);
+
+    // returns false if no valid target could be resolved (e.g. Current-targeted with no enemy left) - caller skips the cast
+    protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
     // spawn effect prefab using source, aim
     protected abstract void SpawnPrefab(Hero caster, List<SkillEffect> effects);

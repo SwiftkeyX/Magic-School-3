@@ -77,6 +77,7 @@ public class HealSkillEffect : SkillEffect
     }
 }
 
+// TODO: I see BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect are all the same. I starting to consider combining them.
 [Serializable]
 public class BuffSkillEffect : SkillEffect, Modifier
 {
@@ -122,7 +123,12 @@ public class DebuffSkillEffect : SkillEffect, Modifier
 
     public override void ApplyEffect(List<Hero> recipients)
     {
-        throw new NotImplementedException();
+        foreach (Hero recipient in recipients)
+        {
+            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+
+            recipient.Blackboard.AddModifier(this);
+        }
     }
 
     public float GetAmount()

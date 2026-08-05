@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class HomingProjectile : Projectile
 {
     private float _lifetime = 0.5f;

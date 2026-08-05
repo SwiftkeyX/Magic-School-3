@@ -61,7 +61,7 @@ public class Preparation : MonoBehaviour
     public void MoveThisHeroInPreParationState(Hero hero, Placement placement)
     {
         // exit old placement
-        Placement oldPlacement = hero.Blackboard.CurrentPlacement;
+        Placement oldPlacement = hero.Blackboard.CurrentPlacement();
         if (oldPlacement != null) oldPlacement.OnHeroUnplaced(hero);
 
         // enter new placement

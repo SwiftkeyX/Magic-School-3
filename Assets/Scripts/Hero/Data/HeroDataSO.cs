@@ -19,6 +19,10 @@ public class HeroDataSO : ScriptableObject
     [SerializeField] private int _startMana = 0;
     [SerializeField] private int _maxMana = 50;
     [SerializeField] private SkillSO _skill;
+    // TODO: This is temporarily.
+    // A dummy never walks or attacks - see HeroIdle.CheckSwitchState. It still has HP/a collider,
+    // so it can be damaged and killed normally; it's just never the one deciding to act.
+    [SerializeField] private bool _isDummy = false;
 
     // ===================== setter & getter =====================
     public GameObject Prefab => _prefab;
@@ -33,4 +37,5 @@ public class HeroDataSO : ScriptableObject
     public int StartMana => _startMana;
     public int MaxMana => _maxMana;
     public SkillSO Skill => _skill;
+    public bool IsDummy => _isDummy;
 }

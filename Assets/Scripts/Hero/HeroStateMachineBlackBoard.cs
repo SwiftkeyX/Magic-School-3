@@ -42,6 +42,7 @@ public class HeroStateMachineBlackBoard
     public Hex GetCurrentHex() => _runtimeData.CurrentPlacement as Hex;
     public Hex GetReservedHex() => _runtimeData.ReservedHex;
     public bool IsInCombat() => _runtimeData.CurrentPlacement is Hex;
+    public bool IsDummy => _runtimeData.IsDummy;
     public Placement CurrentPlacement => _runtimeData.CurrentPlacement;
 
     // ================================================ setter ================================================

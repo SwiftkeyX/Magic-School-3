@@ -4,6 +4,8 @@ public class HeroDataRuntime
 {
     // ==================================== Description (name, skill desc, etc...) ====================================
     private string _name;
+    // TODO: this is temporarily.
+    private bool _isDummy;
 
     // ==================================== Stat ====================================
     private Stat _stat;
@@ -16,6 +18,7 @@ public class HeroDataRuntime
 
     // ==================================== getter ====================================
     public string Name => _name;
+    public bool IsDummy => _isDummy;
     public int HP => _stat.HP;
     public int Atk => _stat.Atk;
     public int DF => _stat.DF;
@@ -48,6 +51,7 @@ public class HeroDataRuntime
     public HeroDataRuntime(HeroDataSO dataSO)
     {
         _name = dataSO.Name;
+        _isDummy = dataSO.IsDummy;
         _stat = new Stat(dataSO);
         _statModifier = new StatModifier(_stat);
     }

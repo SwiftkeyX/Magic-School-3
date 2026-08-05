@@ -41,6 +41,10 @@ public class HeroIdle : HeroState
             return;
         }
 
+        // TODO: This is temporarily. I want the dummy to be its own unit later (Not a hero).
+        // Dummy never walks or attacks - it just stands there to be a target.
+        if (_me.Blackboard.IsDummy) return;
+
         Hero nearestEnemy = _me.Blackboard.FindNearestEnemy();
         if (nearestEnemy == null) return;
 

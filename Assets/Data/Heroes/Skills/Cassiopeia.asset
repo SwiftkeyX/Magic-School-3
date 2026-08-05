@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb8de5ce3577ec42a5d401bf2026334, type: 3}
+  m_Name: Cassiopeia
+  m_EditorClassIdentifier: Assembly-CSharp::SkillSO
+  _skillName: Skill
+  _steps:
+  - _trigger: 0
+    _actionGroups:
+    - _source: 0
+      _legacyAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
+      _target: 1
+      _size:
+        size: 0
+        shape:
+          rid: 1571255008676544581
+      _effects:
+      - rid: 1571255008676544582
+      - rid: 1571255008676544583
+  references:
+    version: 2
+    RefIds:
+    - rid: 1571255008676544581
+      type: {class: Box, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1571255008676544582
+      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 2
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0.5
+          cadenceDuration: 3
+        _damageAmount: 1000
+    - rid: 1571255008676544583
+      type: {class: DebuffSkillEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _recipient: 2
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0.5
+          cadenceDuration: 3
+        _modifier: 4
+        _debuffAmount: 0
+        _deBuffDuration: 5

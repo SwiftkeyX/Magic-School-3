@@ -78,8 +78,12 @@ public abstract class LegacyAction : MonoBehaviour
     {
         if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _me });
 
+        else if (effect.Recipient == EffectRecipientEnum.SameToAimTarget) effect.ApplyEffect(recipients);
+
         else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
-    }
+   
+        // else if
+    }   
 
     // Cadence Tick are use by several legacy action
     // so we unified thing by move it here. 

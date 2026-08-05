@@ -51,7 +51,7 @@ public class HeroWalk : HeroState
         }
 
         // If walking animation finishes, transition to idle
-        // This is weird, so it will be changed later
+        // TODO: This is weird, so it will be changed later
         bool isWalkingFinished = _elapsed >= _duration;
         if (isWalkingFinished)
         {

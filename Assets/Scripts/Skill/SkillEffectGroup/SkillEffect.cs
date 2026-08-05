@@ -92,7 +92,7 @@ public class BuffSkillEffect : SkillEffect, Modifier
 
             recipient.Blackboard.AddModifier(this);
 
-            // this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
+            // TODO: this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
             // if (_modifier == ModifierEnum.BonusHP) recipient.Blackboard.Heal(_buffAmount);
         }
     }

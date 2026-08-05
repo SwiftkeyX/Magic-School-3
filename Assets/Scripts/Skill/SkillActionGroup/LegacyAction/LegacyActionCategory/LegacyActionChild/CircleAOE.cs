@@ -59,9 +59,9 @@ public class CircleAOE : AOE
         }
     }
 
-    // This is for the poison DOT. I think we should move this to its own class e.g. Status class later.
+    // TODO: This is for the poison DOT. I think we should move this to its own class e.g. Status class later.
     // Per hero cadence tick
-    // later should be change to poison status or something like that
+    // TODO: later should be change to poison status or something like that
     private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

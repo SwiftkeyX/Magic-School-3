@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -97,17 +98,7 @@ public class HeroStateMachineBlackBoard
     // Picks nearest enemy (if there are several nearest enemies, random it).
     public Hero FindNearestEnemy()
     {
-        var enemyDistances = _board.HeroesOnBoard
-            .Where(target =>
-            {
-                bool notTargetMyself = target != _me;
-                bool notTargetFriend = target.Team != _me.Team;
-                bool notTargetDead = target.State != HeroStateType.Dead;
-                bool notTargetGuyNotInCombat = target.Blackboard.IsInCombat();
-                return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
-            })
-            .Select(target => new { target, dist = Vector3.Distance(GetCurrentHex().transform.position, target.Blackboard.GetCurrentHex().transform.position) })
-            .ToList();
+        var enemyDistances = GetEnemyDistance();
 
         if (enemyDistances.Count == 0) return null;
 
@@ -122,6 +113,39 @@ public class HeroStateMachineBlackBoard
         nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
         _runtimeData.SetNearestEnemy(nearestEnemy);
         return nearestEnemy;
+    }
+
+    // Picks furthest enemy (if there are several furthest enemies, random it). No sticky-pick like
+    // FindNearestEnemy - that exists to stop a hero's per-frame walk target from flickering, which
+    // doesn't apply here since nothing walks toward its furthest enemy.
+    public Hero FindFurthestEnemy()
+    {
+        var enemyDistances = GetEnemyDistance();
+
+        if (enemyDistances.Count == 0) return null;
+
+        float furthestDist = enemyDistances.Max(e => e.dist);
+        var tiedFurthest = enemyDistances.Where(e => e.dist >= furthestDist - NearestEnemyTieEpsilon).Select(e => e.target).ToList();
+
+        return tiedFurthest[Random.Range(0, tiedFurthest.Count)];
+    }
+
+    private List<(Hero target, float dist)> GetEnemyDistance()
+    {
+        return _board.HeroesOnBoard
+        // select enemy hero only
+        .Where(target =>
+        {
+            bool notTargetMyself = target != _me;
+            bool notTargetFriend = target.Team != _me.Team;
+            bool notTargetDead = target.State != HeroStateType.Dead;
+            bool notTargetGuyNotInCombat = target.Blackboard.IsInCombat();
+            return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
+        })
+        // calculate distance from myself to each enemy
+        .Select(target => (target, dist: Vector3.Distance(GetCurrentHex().transform.position, target.Blackboard.GetCurrentHex().transform.position)))
+        // get a list of = (Hero : float)
+        .ToList();
     }
     #endregion
 }

@@ -38,6 +38,13 @@ public abstract class Projectile : LegacyAction
             _aimTarget = target.transform.position;
         }
 
+        else if (aimTarget == AimTargetEnum.Furthest)
+        {
+            Hero target = _me.Blackboard.FindFurthestEnemy();
+            if (target == null) return false;
+            _aimTarget = target.transform.position;
+        }
+
         // else if () ...
 
         // fallback

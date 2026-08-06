@@ -20,3 +20,22 @@ public interface IStatReadout
     int CurrentMana { get; }
     int MaxMana { get; }
 }
+
+// Where a hero is standing. Used by Hex/BenchSlot when placing.
+public interface IPlaceable
+{
+    Hex CurrentHex { get; }
+    Hex ReservedHex { get; }
+    Placement CurrentPlacement { get; }
+    bool IsInCombat { get; }        // false when standing somewhere that isn't a Hex, e.g. the bench
+
+    void SetReservedHex(Hex hex);
+    void SetCurrentPlacement(Placement placement);
+}
+
+// What a skill action needs to aim: ask the caster who to point at.
+public interface ITargeter
+{
+    Hero FindNearestEnemy();
+    Hero FindFurthestEnemy();
+}

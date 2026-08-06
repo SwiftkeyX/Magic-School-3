@@ -4,8 +4,13 @@ using UnityEngine;
 /// Hero don't have any logic inside it BUT: 
 /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
 /// 2) it act like a glue, which mean itself don't contain any real logic.
+/// 
+/// ASKING: I think Hero and HeroStateMachineBlackBoard are doing the same thing. They are both the glue that have no logic inside. 
+/// And initial reason for HeroStateMachineBlackBoard are to separate thing for readability.
+/// which is good BUT it didn't separate well enough that they both still doing the same thing.
+/// I propose to combine them for now. And break it down later when appropriate. Right now it only add to the confusion that how those two different? when they aren't.
 /// </summary>
-public class Hero : MonoBehaviour, IDamageable, IStatReadout
+public class Hero : MonoBehaviour, IDamageable, IStatReadout, IPlaceable, ITargeter
 {
     // ======================================== Dependency ========================================
     private HeroDataSO _SOData;
@@ -27,7 +32,6 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout
     public Team Team => _blackboard.Team;
     public HeroStateType State => _stateMachine.CurrentType;
     public HeroStateMachine StateMachine => _stateMachine;
-    public HeroStateMachineBlackBoard Blackboard => _blackboard;    // blackboard should be use from each state only. Not allow other to access via Hero. Get rid of this getter.
 
     // ======================================== interface method ========================================
     // === IDamageable ===
@@ -42,6 +46,24 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout
     public int CurrentMana => _blackboard.GetCurrentMana();
     public int MaxMana => _blackboard.GetMaxMana();
 
+    // === IPlaceable ===
+    public Hex CurrentHex => _blackboard.GetCurrentHex();
+    public Hex ReservedHex => _blackboard.GetReservedHex();
+    public Placement CurrentPlacement => _blackboard.CurrentPlacement();
+    public bool IsInCombat => _blackboard.IsInCombat();
+    public void SetReservedHex(Hex hex) => _blackboard.SetReservedHex(hex);
+    public void SetCurrentPlacement(Placement placement) => _blackboard.SetCurrentPlacement(placement);
+
+    // === ITargeter ===
+    public Hero FindNearestEnemy() => _blackboard.FindNearestEnemy();
+    public Hero FindFurthestEnemy() => _blackboard.FindFurthestEnemy();
+
+    // ======================================== setup wiring ========================================
+    // Called by Preparation once the hero exists but before it can act - not part of any
+    // interface above, since this is lifecycle wiring rather than a role the hero plays.
+    public void SetBoard(BattleBoard board) => _blackboard.SetBoard(board);
+    public void SetTeam(Team team) => _blackboard.SetTeam(team);
+
     #region Life Cycle
     public void Init(HeroDataSO data)
     {
@@ -49,7 +71,7 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout
         _runtimeData = new HeroDataRuntime(_SOData);
         _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>());
         _skill = _SOData.Skill;
-        _stateMachine = new HeroStateMachine(this, _skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
+        _stateMachine = new HeroStateMachine(this, _blackboard, _skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
     }
 
     void Start()

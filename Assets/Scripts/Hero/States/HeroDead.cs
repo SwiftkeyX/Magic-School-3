@@ -5,11 +5,11 @@ public class HeroDead : HeroState
 {
     public override HeroStateType StateType => HeroStateType.Dead;
 
-    public HeroDead(Hero hero, SkillSO skill) : base(hero, skill) { }
+    public HeroDead(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill) : base(hero, blackboard, skill) { }
 
     public override void OnEnter()
     {
-        _me.Blackboard.Temp.SetDeadVisual();
+        _blackboard.Temp.SetDeadVisual();
     }
 
     public override void OnUpdate() { }

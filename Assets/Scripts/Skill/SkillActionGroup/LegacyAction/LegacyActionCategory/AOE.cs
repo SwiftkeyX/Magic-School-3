@@ -26,7 +26,7 @@ public abstract class AOE : LegacyAction
         // aim skill at current target
         else if (aimTarget == AimTargetEnum.Current)
         {
-            Hero target = _me.Blackboard.FindNearestEnemy();
+            Hero target = _me.FindNearestEnemy();
             if (target == null) return false;
             _aimTarget = target.transform.position;
         }

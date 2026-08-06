@@ -7,12 +7,12 @@ public class HeroStunned : HeroState
 {
     public override HeroStateType StateType => HeroStateType.Stunned;
 
-    public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
+    public HeroStunned(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill) : base(hero, blackboard, skill) { }
 
     public override void OnExit()
     {
         // Snap back in case a stun landed mid-attack-dash, same reasoning as HeroAttack.OnExit.
-        _me.transform.position = _me.Blackboard.GetCurrentHex().transform.position;
+        _me.transform.position = _blackboard.GetCurrentHex().transform.position;
     }
 
     public override void OnUpdate()
@@ -22,14 +22,14 @@ public class HeroStunned : HeroState
 
     protected override void CheckSwitchState()
     {
-        bool isMeDead = (_me.Blackboard.GetCurrentHP() <= 0);
+        bool isMeDead = (_blackboard.GetCurrentHP() <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
             return;
         }
 
-        if (!_me.Blackboard.IsStunned())
+        if (!_blackboard.IsStunned())
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);
         }

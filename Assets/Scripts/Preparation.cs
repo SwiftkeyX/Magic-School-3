@@ -54,14 +54,14 @@ public class Preparation : MonoBehaviour
 
     private void HeroInit(Hero hero, Team team)
     {
-        hero.Blackboard.SetBoard(_board);
-        hero.Blackboard.SetTeam(team);
+        hero.SetBoard(_board);
+        hero.SetTeam(team);
     }
 
     public void MoveThisHeroInPreParationState(Hero hero, Placement placement)
     {
         // exit old placement
-        Placement oldPlacement = hero.Blackboard.CurrentPlacement();
+        Placement oldPlacement = hero.CurrentPlacement;
         if (oldPlacement != null) oldPlacement.OnHeroUnplaced(hero);
 
         // enter new placement

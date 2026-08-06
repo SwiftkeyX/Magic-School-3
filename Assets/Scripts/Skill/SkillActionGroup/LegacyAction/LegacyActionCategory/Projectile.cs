@@ -33,14 +33,14 @@ public abstract class Projectile : LegacyAction
         // aim skill at current target
         else if (aimTarget == AimTargetEnum.Current)
         {
-            Hero target = _me.Blackboard.FindNearestEnemy();
+            Hero target = _me.FindNearestEnemy();
             if (target == null) return false;
             _aimTarget = target.transform.position;
         }
 
         else if (aimTarget == AimTargetEnum.Furthest)
         {
-            Hero target = _me.Blackboard.FindFurthestEnemy();
+            Hero target = _me.FindFurthestEnemy();
             if (target == null) return false;
             _aimTarget = target.transform.position;
         }

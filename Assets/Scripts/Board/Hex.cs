@@ -30,9 +30,9 @@ public class Hex : MonoBehaviour, Placement
     // place hero on Hex
     public void OnHeroPlaced(Hero hero)
     {
-        this.EnterPlacementExtension(hero); // sets CurrentPlacement, which GetCurrentHex() derives from
+        this.EnterPlacementExtension(hero); 
 
-        hero.Blackboard.SetReservedHex(this);
+        hero.SetReservedHex(this);
         _board.TrackThisHero(hero);
     }
 
@@ -40,7 +40,7 @@ public class Hex : MonoBehaviour, Placement
     public void OnHeroUnplaced(Hero hero)
     {
         // what about setcurrenthex = null?
-        hero.Blackboard.SetReservedHex(null);
+        hero.SetReservedHex(null);
         _board.UntrackThisHero(hero);
     }
 

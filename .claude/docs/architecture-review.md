@@ -162,6 +162,24 @@ No errors.
   `HeroWalk`, `HeroAttack`. `HeroDead` and `HeroStunned` never see it. The blackboard lost three
   members and three constructor parameters.
 
+- [x] **Remove `Hero.Blackboard` entirely.** The getter was public, so anything *could* reach
+  through it — the finish line for this section is that nothing can.
+  → Done 2026-08-06. `.Blackboard.` now appears **zero** times in the codebase (was 59).
+
+  Two halves, per the decisions taken at the time:
+  - **States hold the blackboard directly.** `HeroState` takes it in its constructor
+    (your own idea from `review-comments.md`). States keep `_me` too, for `transform`,
+    `StateMachine.ChangeState` and `Team` — the Unity-facing bits that aren't the blackboard's
+    job. `_me.Blackboard.X` became `_blackboard.X`, ~35 sites.
+  - **Everyone else goes through interfaces.** Two new ones alongside `IDamageable`:
+    `IPlaceable` (CurrentHex, ReservedHex, CurrentPlacement, IsInCombat, SetReservedHex,
+    SetCurrentPlacement) and `ITargeter` (FindNearestEnemy, FindFurthestEnemy). `SetBoard`/
+    `SetTeam` stayed plain public methods — they're lifecycle wiring, not a role.
+
+  Cross-hero reads were the interesting part: `nearestEnemy.Blackboard.GetCurrentHex()` is now
+  `nearestEnemy.CurrentHex`, so one hero asking about another goes through the same narrow
+  contract as any outside system.
+
 - [x] `FindEnemy` reaching back through `_me.Blackboard.Board` for the object that built it.
   → It now holds `BattleBoard` directly, set via `FindEnemy.SetBoard()` from the blackboard's
   own `SetBoard()`. It arrives by setter rather than constructor because the board doesn't

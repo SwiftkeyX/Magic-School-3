@@ -14,13 +14,13 @@ public class HeroStateMachine
     public HeroState Current { get; private set; }
     public HeroStateType CurrentType => Current.StateType;
 
-    public HeroStateMachine(Hero hero, SkillSO skill, MovementConfig movement)
+    public HeroStateMachine(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill, MovementConfig movement)
     {
-        _idle = new HeroIdle(hero, skill, movement);
-        _walk = new HeroWalk(hero, skill, movement);
-        _attack = new HeroAttack(hero, skill, movement);
-        _dead = new HeroDead(hero, skill);
-        _stunned = new HeroStunned(hero, skill);
+        _idle = new HeroIdle(hero, blackboard, skill, movement);
+        _walk = new HeroWalk(hero, blackboard, skill, movement);
+        _attack = new HeroAttack(hero, blackboard, skill, movement);
+        _dead = new HeroDead(hero, blackboard, skill);
+        _stunned = new HeroStunned(hero, blackboard, skill);
     }
 
     public void Start(HeroStateType initial)

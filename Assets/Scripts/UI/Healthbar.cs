@@ -30,6 +30,6 @@ public class Healthbar : MonoBehaviour
         transform.position = _hero.transform.position + _offset;
 
         if (_hero.IsInitialized)
-            _slider.value = (float)_hero.CurrentHP / _hero.MaxHP;   // ASKING: I thought you are going to use IStatReadout?
+            _slider.value = (float)_hero.CurrentHP / _hero.MaxHP; 
     }
 }

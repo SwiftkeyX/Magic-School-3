@@ -68,15 +68,15 @@ public class BattleBoard : MonoBehaviour
     // reasoning as everywhere else hex-hops are counted instead of world-space distance.
     public Hero FindClusteredEnemy(Team myTeam, int radius = 2)
     {
-        var enemies = _heroesOnBoard.Where(h => h.Team != myTeam && h.State != HeroStateType.Dead).ToList();
+        List<Hero> enemies = _heroesOnBoard.Where(h => h.Team != myTeam && h.State != HeroStateType.Dead).ToList();
         if (enemies.Count == 0) return null;
 
         Hero best = null;
         int bestCount = -1;
         foreach (var candidate in enemies)
         {
-            Hex candidateHex = candidate.Blackboard.GetCurrentHex();
-            int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.Blackboard.GetCurrentHex(), radius));
+            Hex candidateHex = candidate.CurrentHex;
+            int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex, radius));
             if (count > bestCount)
             {
                 bestCount = count;

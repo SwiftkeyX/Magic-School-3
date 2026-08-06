@@ -72,11 +72,11 @@ public class FindEnemy
             bool notTargetMyself = target != _me;
             bool notTargetFriend = target.Team != _me.Team;
             bool notTargetDead = target.State != HeroStateType.Dead;
-            bool notTargetGuyNotInCombat = target.Blackboard.IsInCombat();
+            bool notTargetGuyNotInCombat = target.IsInCombat;
             return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
         })
         // calculate distance from myself to each enemy
-        .Select(target => (target, dist: Vector3.Distance(myHex.transform.position, target.Blackboard.GetCurrentHex().transform.position)))
+        .Select(target => (target, dist: Vector3.Distance(myHex.transform.position, target.CurrentHex.transform.position)))
         // get a list of = (Hero : float)
         .ToList();
         _enemyDistanceCacheFrame = Time.frameCount;

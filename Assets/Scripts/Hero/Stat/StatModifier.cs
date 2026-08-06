@@ -12,18 +12,32 @@ public interface Modifier
 /// 1) It contain all logic for calculating those modifier into final stat
 /// 2) Update those modifier duration
 /// 3) Remember all modifier for this hero
+///
+/// It takes a base value in and hands the modified value back (see Apply), rather than
+/// reading it off Stat itself - so Stat depends on StatModifier but not the other way round.
+/// The two used to point at each other, which meant neither could be read on its own.
 /// </summary>
 public class StatModifier
 {
     private const float Permanent = -1f;
 
-    private readonly Stat _stat;
     private readonly List<ActiveModifier> _modifiers = new List<ActiveModifier>();
 
-    public StatModifier(Stat stat)
+    // Which stat each modifier adds a flat bonus to.
+    //
+    // A ModifierEnum that ISN'T in here doesn't touch any stat - Stun/Wound are asked about
+    // via HasModifier(), DamageReduction is summed via SumModifier(). Adding an entry here is
+    // exactly what makes a modifier start affecting a stat, so this map is the one place to
+    // look when a buff "does nothing".
+    //
+    // NOTE: BonusHP is deliberately absent - it was a no-op before this refactor too
+    // (the old ModifiedHP() only ever summed Heal), and BuffSkillEffect has the matching
+    // line commented out. Kept as-is so this stays a pure restructure; see the max-HP entry
+    // in .claude/docs/architecture-review.md before wiring it up.
+    private static readonly Dictionary<ModifierEnum, StatType> FlatBonusTarget = new Dictionary<ModifierEnum, StatType>
     {
-        _stat = stat;
-    }
+        { ModifierEnum.Heal, StatType.HP },
+    };
 
     // =================================== setter ===================================
     // update all current modifier duration, removing any that just expired
@@ -49,58 +63,21 @@ public class StatModifier
     }
 
     // =================================== modified stat getter ===================================
-    public int ModifiedHP()
+    // baseValue in, modified value out. Replaces the nine near-identical ModifiedX() methods,
+    // eight of which just returned the base value untouched.
+    public float Apply(StatType type, float baseValue)
     {
-        int newHP = _stat.BaseHP;
+        float total = baseValue;
+
         foreach (var modifier in _modifiers)
         {
-            if (modifier.Source.GetModifier() == ModifierEnum.Heal)
-            {
-                newHP += (int)modifier.Source.GetAmount();
-            }
+            if (!FlatBonusTarget.TryGetValue(modifier.Source.GetModifier(), out StatType target)) continue;
+            if (target != type) continue;
+
+            total += modifier.Source.GetAmount();
         }
 
-        return newHP;
-    }
-
-    public int ModifiedAtk()
-    {
-        return _stat.BaseAtk;
-    }
-
-    public int ModifiedDF()
-    {
-        return _stat.BaseDF;
-    }
-
-    public int ModifiedMG()
-    {
-        return _stat.BaseMG;
-    }
-
-    public int ModifiedMR()
-    {
-        return _stat.BaseMR;
-    }
-
-    public float ModifiedAttackSpeed()
-    {
-        return _stat.BaseAttackSpeed;
-    }
-
-    public int ModifiedRange()
-    {
-        return _stat.BaseRange;
-    }
-
-    public int ModifiedStartMana()
-    {
-        return _stat.BaseStartMana;
-    }
-
-    public int ModifiedMaxMana()
-    {
-        return _stat.BaseMaxMana;
+        return total;
     }
 
     // =================================== modifier helper ===================================

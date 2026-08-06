@@ -1,9 +1,12 @@
 /// <summary>
 /// Hold every runtime data for a hero e.g. stat, placement.
 /// Runtime data = data that was can be changed in game dynamically. There MUST NOT have static variable here.
-/// 
+///
 /// This class should only contain data and its getter & setter only.
 /// NO LOGIC.
+///
+/// It used to also mirror all ~15 of Stat's getters one-for-one, which meant every new stat
+/// had to be added here too. It exposes Stat directly now - callers that want a stat ask Stat.
 /// </summary>
 public class HeroDataRuntime
 {
@@ -21,22 +24,10 @@ public class HeroDataRuntime
 
 
     // ==================================== getter ====================================
-    // === stat === 
-    public int HP => _stat.HP;
-    public int Atk => _stat.Atk;
-    public int DF => _stat.DF;
-    public int MG => _stat.MG;
-    public int MR => _stat.MR;
-    public float AttackSpeed => _stat.AttackSpeed;
-    public int Range => _stat.Range;
-    public int StartMana => _stat.StartMana;
-    public int MaxMana => _stat.MaxMana;
-    public int CurrentHP => _stat.CurrentHP;
-    public int CurrentMana => _stat.CurrentMana;
-    public bool IsStunned => _stat.IsStunned;
-    public bool IsWounded => _stat.IsWounded;
+    // === stat ===
+    public Stat Stat => _stat;
 
-    // === placement === 
+    // === placement ===
     public Placement CurrentPlacement => _currentPlacement;
     public Hex ReservedHex => _reservedHex;
     public Hero NearestEnemy => _nearestEnemy;
@@ -50,16 +41,6 @@ public class HeroDataRuntime
     public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
     public void SetReservedHex(Hex hex) => _reservedHex = hex;
     public void SetNearestEnemy(Hero hero) => _nearestEnemy = hero;
-
-    // === Stat ===
-    public void SetCurrentHP(int value) => _stat.SetCurrentHP(value);
-    public bool GainMana(int amount) => _stat.AddMana(amount);
-    public float DamageReductionPercent => _stat.DamageReductionPercent;
-
-    // === stat modifier ===
-    public void AddModifier(Modifier modifier) => _stat.AddModifier(modifier);
-    public void TickModifiers(float deltaTime) => _stat.TickModifiers(deltaTime);
-
 
 
     public HeroDataRuntime(HeroDataSO dataSO)

@@ -19,6 +19,7 @@ public enum EffectRecipientEnum
     Self = 0,
     EnemiesInArea = 1,
     SameToAimTarget = 2,
+    EnemiesInPath = 3,
 }
 
 // ================================================ Effect ================================================

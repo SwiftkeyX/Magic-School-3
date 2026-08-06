@@ -35,12 +35,6 @@ Step 1 = OnCast(trigger), Yasuo(user) slash(action) aim on Enemy(target), the sa
 Step 2 = OnExpired(trigger), Yasuo(user) buff(action) aim on Yasuo(target), the same target(recipient) get buff(effect).
 
 # problem
-1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 
-Maybe we should get rid of one of them? 
-OH, okay it actually not the same. This was really complicated. For example:
-ZoneAOE could also hit ally IF "Recipient = Ally in Area" instead.
-There is more case of this that convince me Recipient is different and was absolutely needed here.
-
 2) I want to move CadenceTick() to LegacyAction to unified thing, BUT it was too soon. We'll have to see if it really is appropritae or not later. Let's leave it for now.
 
 3) Another thing that I leave untouched is the "Cadence" always being a field to edit, Most of the time Cadence are pair with action.
@@ -51,7 +45,18 @@ This is intentional for the early stage of implementing skill system, BUT once w
 
 4) duration stuff e.g. cadenceDuration, prefabDuration (lifetime). Are confusing, fix later.
 
-5) it's awkward to use prefab instance, since we have to manually 
+5) it's awkward to use prefab instance, since we have to manually ...
+
+
+
+# Resolve problem
+1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 
+Maybe we should get rid of one of them? 
+OH, okay it actually not the same. This was really complicated. For example:
+ZoneAOE could also hit ally IF "Recipient = Ally in Area" instead.
+There is more case of this that convince me Recipient is different and was absolutely needed here.
+
+
 
 # Resolve idea
 Galio's cast have anticipation of his skill expanding and once the duration expired, deal damage.

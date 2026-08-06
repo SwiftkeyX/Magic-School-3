@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
-  m_Name: Dummy
+  m_Name: Jhin
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 8729075628341993162, guid: 28584df165b90ac499f9124bc544ebff, type: 3}
-  _name: Dummy
-  _hp: 5000
-  _attack: 0
-  _defend: 0
-  _magic: 0
-  _magicResist: 0
-  _attackSpeed: 0.1
-  _range: 1
-  _startMana: 0
-  _maxMana: 50
-  _skill: {fileID: 0}
-  _isDummy: 1
+  _prefab: {fileID: 8729075628341993162, guid: a171d66b8dd8cdb478301db704a12836, type: 3}
+  _name: Hero A
+  _hp: 500
+  _attack: 40
+  _defend: 20
+  _magic: 100
+  _magicResist: 20
+  _attackSpeed: 0.7
+  _range: 4
+  _startMana: 120
+  _maxMana: 144
+  _skill: {fileID: 11400000, guid: e097ff5be5f109245a0d4c073abd602e, type: 2}
+  _isDummy: 0

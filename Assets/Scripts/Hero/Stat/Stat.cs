@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,8 +12,11 @@ public class Stat
 {
     // ========================================== dependency ==========================================
     private readonly StatModifier _statModifier = new StatModifier();
+    private readonly StatModifier _statModifier = new StatModifier();
 
     // ========================================== base stat ==========================================
+    private readonly Dictionary<StatType, float> _base = new Dictionary<StatType, float>();
+
     private readonly Dictionary<StatType, float> _base = new Dictionary<StatType, float>();
 
     private int _currentHP;
@@ -50,6 +54,7 @@ public class Stat
     {
         int newMana = _currentMana + amount;
         bool capped = newMana >= MaxMana;
+        bool capped = newMana >= MaxMana;
         _currentMana = capped ? 0 : newMana;
         return capped;
     }
@@ -60,6 +65,15 @@ public class Stat
 
     public Stat(HeroDataSO stat)
     {
+        _base[StatType.HP] = stat.HP;
+        _base[StatType.Atk] = stat.Atk;
+        _base[StatType.DF] = stat.DF;
+        _base[StatType.MG] = stat.MG;
+        _base[StatType.MR] = stat.MR;
+        _base[StatType.AttackSpeed] = stat.AttackSpeed;
+        _base[StatType.Range] = stat.Range;
+        _base[StatType.StartMana] = stat.StartMana;
+        _base[StatType.MaxMana] = stat.MaxMana;
         _base[StatType.HP] = stat.HP;
         _base[StatType.Atk] = stat.Atk;
         _base[StatType.DF] = stat.DF;

@@ -12,6 +12,10 @@ public interface Modifier
 /// 1) It contain all logic for calculating those modifier into final stat
 /// 2) Update those modifier duration
 /// 3) Remember all modifier for this hero
+///
+/// It takes a base value in and hands the modified value back (see Apply), rather than
+/// reading it off Stat itself - so Stat depends on StatModifier but not the other way round.
+/// The two used to point at each other, which meant neither could be read on its own.
 /// </summary>
 public class StatModifier
 {
@@ -57,6 +61,8 @@ public class StatModifier
     {
         float total = baseValue;
 
+        float total = baseValue;
+
         foreach (var modifier in _modifiers)
         {
             if (!FlatBonusTarget.TryGetValue(modifier.Source.GetModifier(), out StatType target)) continue;
@@ -66,37 +72,45 @@ public class StatModifier
         }
 
         return total;
+        if (!FlatBonusTarget.TryGetValue(modifier.Source.GetModifier(), out StatType target)) continue;
+        if (target != type) continue;
+
+        total += modifier.Source.GetAmount();
     }
 
-    // =================================== modifier helper ===================================
-    public bool HasModifier(ModifierEnum type)
-    {
-        foreach (var modifier in _modifiers)
-            if (modifier.Source.GetModifier() == type) return true;
-        return false;
+        return total;
     }
 
-    public float SumModifier(ModifierEnum type)
+// =================================== modifier helper ===================================
+public bool HasModifier(ModifierEnum type)
+{
+    foreach (var modifier in _modifiers)
+        if (modifier.Source.GetModifier() == type) return true;
+    return false;
+}
+
+public float SumModifier(ModifierEnum type)
+{
+    float sum = 0f;
+    foreach (var modifier in _modifiers)
+        if (modifier.Source.GetModifier() == type) sum += modifier.Source.GetAmount();
+    return sum;
+}
+
+// =================================== active modifier ===================================
+private class ActiveModifier
+{
+    public readonly Modifier Source;    // remember its modifier type
+    public float Remaining;             // remember its duration
+
+    public ActiveModifier(Modifier source)
     {
-        float sum = 0f;
-        foreach (var modifier in _modifiers)
-            if (modifier.Source.GetModifier() == type) sum += modifier.Source.GetAmount();
-        return sum;
-    }
+        Source = source;
 
-    // =================================== active modifier ===================================
-    private class ActiveModifier
-    {
-        public readonly Modifier Source;    // remember its modifier type
-        public float Remaining;             // remember its duration
+        float duration = source.GetDuration();
 
-        public ActiveModifier(Modifier source)
-        {
-            Source = source;
-
-            float duration = source.GetDuration();
-
-            Remaining = (duration == Permanent) ? float.PositiveInfinity : duration;
-        }
+        Remaining = (duration == Permanent) ? float.PositiveInfinity : duration;
     }
 }
+}
+

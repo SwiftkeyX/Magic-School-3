@@ -28,20 +28,18 @@ public class Hex : MonoBehaviour, Placement
     }
 
     // place hero on Hex
-    public void OnHeroPlaced(Hero hero)
+    public void OnHeroPlaced(IPlaceable hero)
     {
-        this.EnterPlacementExtension(hero); 
+        this.EnterPlacementExtension(hero);
 
         hero.SetReservedHex(this);
-        _board.TrackThisHero(hero);
     }
 
     // unplace hero from Hex
-    public void OnHeroUnplaced(Hero hero)
+    public void OnHeroUnplaced(IPlaceable hero)
     {
         // what about setcurrenthex = null?
         hero.SetReservedHex(null);
-        _board.UntrackThisHero(hero);
     }
 
     public Team GetTeam()

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// The contracts other systems use to talk to a Hero
 /// </summary>
@@ -13,7 +15,6 @@ public interface IDamageable
 }
 
 // contract for hero stat.
-// FLAGGING: no actual use yet since it's still awkward to use it now. BUT still good to have. 
 public interface IHeroStats
 {
     int CurrentHP { get; }
@@ -25,9 +26,11 @@ public interface IHeroStats
     int Range { get; }
 }
 
-// Where a hero is standing. Used by Hex/BenchSlot when placing.
+// contract for moving hero on the board e.g. when we move hero on our own
 public interface IPlaceable
 {
+    Transform transform { get; }
+
     Hex CurrentHex { get; }
     Hex ReservedHex { get; }
     Placement CurrentPlacement { get; }

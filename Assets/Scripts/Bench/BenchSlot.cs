@@ -3,7 +3,7 @@ using UnityEngine;
 public class BenchSlot : MonoBehaviour, Placement
 {
     private bool _reserved = false;
-    private Hero _occupant;
+    private IPlaceable _occupant;
 
     // ==================== getter ===================
     public bool Reserved => _reserved;
@@ -13,7 +13,7 @@ public class BenchSlot : MonoBehaviour, Placement
 
     // A hero placed on a bench slot has no hex - just remember who's here so
     // OnHeroUnplaced can free the slot again once they leave.
-    public void OnHeroPlaced(Hero hero)
+    public void OnHeroPlaced(IPlaceable hero)
     {
         this.EnterPlacementExtension(hero);
 
@@ -22,7 +22,7 @@ public class BenchSlot : MonoBehaviour, Placement
     }
 
     // The hero sitting here is moving to a different placement - free the slot.
-    public void OnHeroUnplaced(Hero hero)
+    public void OnHeroUnplaced(IPlaceable hero)
     {
         _occupant = null;
         _reserved = false;

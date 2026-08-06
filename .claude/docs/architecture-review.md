@@ -256,6 +256,42 @@ Left as a `FIXLATER` on the class.
 
 ---
 
+### Follow-up: which interfaces actually earn their keep
+
+Counted 2026-08-06, after all of the above. Usages **outside** `Hero`'s own declaration:
+
+| Interface | Usages | Verdict |
+|---|---|---|
+| `IDamageable` | 11 | Real. `SkillEffect` takes `IReadOnlyList<IDamageable>` and never mentions `Hero`. |
+| `IPlaceable` | 9 | Real, as of this pass — see below. |
+| `IHeroStats` | 0 | Compile-checked grouping only. |
+| `ITargeter` | 0 | Compile-checked grouping only. |
+
+The pattern is clear: **an interface pays off when the consumer is a genuinely separate
+subsystem.** `SkillEffect` operates on anything damageable; `Hex`/`BenchSlot` only ever move a
+thing onto themselves. Neither needs to know what a Hero is.
+
+`IHeroStats`/`ITargeter` have no such consumer — the states are the hero's *own behaviour*, not
+an external system, and they need `transform`, `StateMachine` and `IsStunned` which no
+interface covers. Restricting a class's view of the object it is part of isn't the same problem.
+
+- [x] **Make `IPlaceable` real.** `Placement.OnHeroPlaced/OnHeroUnplaced` and
+  `PlacementExtensions.EnterPlacementExtension` now take `IPlaceable`. **`Hex.cs`,
+  `BenchSlot.cs` and `Placement.cs` contain zero references to `Hero`.**
+  `IPlaceable` gained `Transform transform { get; }`, satisfied implicitly by MonoBehaviour's
+  inherited member — the same trick `Placement` already used.
+
+  The one blocker was `Hex` calling `_board.TrackThisHero(hero)`, which needs a real `Hero`.
+  That call was misplaced anyway — a hex shouldn't own the board's roster — so it moved to
+  `Preparation`, which already knows it's moving a Hero. It keys off `hero.IsInCombat`
+  ("my placement is a Hex"), so no type test is needed.
+
+- [ ] **Don't add another interface** unless there's a second implementer or a genuinely
+  separate subsystem. That's the test `IDamageable` and `IPlaceable` passed and the other two
+  didn't.
+
+---
+
 ## 4. `CheckSwitchState` — the same 10 lines, four times
 
 `HeroIdle`, `HeroWalk`, `HeroAttack`, `HeroStunned` each open with an identical HP-check ->
@@ -367,6 +403,15 @@ Not the point of the review, but real:
 - [ ] **Dead code:** `LegacyActionEnum` is declared and never referenced anywhere.
   `HitboxSize` / `HitboxShape` are serialized into every `SkillActionGroup` but never read by any
   action (size actually comes from the prefab's collider).
+
+- [x] **`Hero.Start()`/`Hero.Update()` throw on a scene-placed Hero that was never spawned.**
+  Found 2026-08-06 when a `BaseHero` object in the scene started spamming
+  `NullReferenceException` every frame once combat began — `_runtimeData`/`_stateMachine` are
+  only set by `Init()`, which `Preparation` calls for spawned heroes only.
+  Pre-existing, not introduced by any refactor: the old code did `_blackboard.IsInCombat()`,
+  which threw identically. It only surfaced once a `Hero` was left sitting in the scene.
+  → Both now open with `if (!IsInitialized) return;`, matching what `Healthbar`/`Manabar`
+  already did.
 
 - [ ] **Stale comment:** `HeroDead.cs:1` says "Entered from `Blackboard.TakeDamage()`" — it's
   actually polled by each state's `CheckSwitchState`.

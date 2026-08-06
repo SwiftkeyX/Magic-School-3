@@ -9,17 +9,17 @@ public interface Placement
     Transform transform { get; }
 
     // Called once a hero's transform has been moved onto this placement
-    void OnHeroPlaced(Hero hero);
+    void OnHeroPlaced(IPlaceable hero);
 
     // Called just before a hero already on this placement moves to a different one
-    void OnHeroUnplaced(Hero hero);
+    void OnHeroUnplaced(IPlaceable hero);
 }
 
 // need somewhere to put the redundant code of each Placement logic, so we move it into dedicated Extension class
 public static class PlacementExtensions
 {
     // basically, set placement for the hero
-    public static void EnterPlacementExtension(this Placement placement, Hero hero)
+    public static void EnterPlacementExtension(this Placement placement, IPlaceable hero)
     {
         hero.SetCurrentPlacement(placement);
         hero.transform.position = placement.transform.position;

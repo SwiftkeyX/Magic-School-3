@@ -66,5 +66,9 @@ public class Preparation : MonoBehaviour
 
         // enter new placement
         placement.OnHeroPlaced(hero);
+
+        if (hero.IsInCombat) _board.TrackThisHero(hero);
+        
+        else _board.UntrackThisHero(hero);
     }
 }

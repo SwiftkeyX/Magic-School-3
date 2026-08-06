@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // FIXLATER: Temporary manual trigger for testing until a "Start Battle" UI button exists.
+        // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
         if (Phase == GamePhase.Preparation && PlayerInputSystem.SpacePressedThisFrame)
         {
             StartCombat();

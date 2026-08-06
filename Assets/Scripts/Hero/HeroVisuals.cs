@@ -4,7 +4,8 @@ using UnityEngine;
 /// The presentation layer for hero - as opposed to data layer (HeroDataRuntime) or logic layer (the states).
 /// This is still unstable though. I think it would be changed a lot from now.
 /// </summary>
-// FIXLATER: this wants to be a MonoBehaviour on the hero prefab, so the cast-text prefab is
+// BLOCKED on: the 19 hero prefabs becoming variants of BaseHero.
+// This wants to be a MonoBehaviour on the hero prefab, so the cast-text prefab is
 // wired in the Inspector instead of pulled from Resources (a legacy API). Held off because
 // all 19 hero prefabs are standalone rather than variants of BaseHero, so it'd mean adding
 // and wiring the component 19 times - and missing one only shows up as a null ref at runtime.

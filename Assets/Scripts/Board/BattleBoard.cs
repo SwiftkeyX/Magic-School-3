@@ -62,25 +62,4 @@ public class BattleBoard : MonoBehaviour
     // (e.g. back to the bench) is no longer on the battlefield.
     public void UntrackThisHero(Hero hero) => _heroesOnBoard.Remove(hero);
 
-    // FIXNOW: This should belong to FindEnemy.cs
-    public Hero FindClusteredEnemy(Team myTeam, int radius = 2)
-    {
-        List<Hero> enemies = _heroesOnBoard.Where(h => h.Team != myTeam && h.State != HeroStateType.Dead).ToList();
-        if (enemies.Count == 0) return null;
-
-        Hero best = null;
-        int bestCount = -1;
-        foreach (var candidate in enemies)
-        {
-            Hex candidateHex = candidate.CurrentHex;
-            int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex, radius));
-            if (count > bestCount)
-            {
-                bestCount = count;
-                best = candidate;
-            }
-        }
-
-        return best;
-    }
 }

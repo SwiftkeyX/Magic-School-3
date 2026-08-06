@@ -90,6 +90,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     // === ITargeter ===
     public Hero FindNearestEnemy() => _findEnemy.FindNearestEnemy();
     public Hero FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
+    public Hero FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
 
 
     // ======================================== setup wiring ========================================

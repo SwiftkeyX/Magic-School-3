@@ -46,7 +46,7 @@ public class HeroIdle : HeroState
             return;
         }
 
-        // FIXLATER: This is temporarily. I want the dummy to be its own unit later (Not a hero).
+        // Temporary, tagged once at its source - see the FIXLATER on HeroDataSO._isDummy.
         // Dummy never walks or attacks - it just stands there to be a target.
         if (_me.IsDummy) return;
 

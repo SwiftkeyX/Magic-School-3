@@ -59,9 +59,9 @@ public class CircleAOE : AOE
         }
     }
 
-    // FIXLATER: This is for the poison DOT. I think we should move this to its own class e.g. Status class later.
+    // FIXLATER: this is the poison DOT, and it should be its own Status class rather than a
+    // coroutine hanging off the AOE that applied it.
     // Per hero cadence tick
-    // FIXLATER: later should be change to poison status or something like that
     private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

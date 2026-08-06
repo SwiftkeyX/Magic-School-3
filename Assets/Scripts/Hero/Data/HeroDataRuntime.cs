@@ -11,7 +11,7 @@
 public class HeroDataRuntime
 {
     // ==================================== Description (name, skill desc, etc...) ====================================
-    // FIXLATER: this is temporarily.
+    // Temporary, tagged once at its source - see the FIXLATER on HeroDataSO._isDummy.
     private bool _isDummy;
 
     // ==================================== Stat ====================================

@@ -56,7 +56,7 @@ public class HeroWalk : HeroState
         }
 
         // If walking animation finishes, transition to idle
-        // FIXLATER: This is weird, so it will be changed later
+        // FlAGGING: This is weird, so it will be changed later
         bool isWalkingFinished = _elapsed >= _duration;
         if (isWalkingFinished)
         {

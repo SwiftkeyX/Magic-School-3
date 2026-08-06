@@ -45,4 +45,5 @@ public interface ITargeter
 {
     Hero FindNearestEnemy();
     Hero FindFurthestEnemy();
+    Hero FindClusteredEnemy(int radius = 2);
 }

@@ -70,18 +70,37 @@
     "dotnet.defaultSolution": "Magic School 3.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false,
     // ===================== Todo Tree =====================
-    // Urgency is the split that matters: FIXNOW blocks, FIXLATER doesn't.
-    // The rest are the notes-to-self/questions already used across the codebase.
+    // THE STANDARD. One axis: what action does this need, and from whom?
+    //
+    //   FIXNOW    Broken or wrong right now, and it blocks. Fix before moving on.
+    //   FIXLATER  Could be fixed TODAY, chose not to. This is the "pick something up" list.
+    //   BLOCKED   Can't be done until something else exists. Always name the blocker.
+    //   FLAGGING  Looks wrong but IS deliberate - here's why. Do NOT "fix" it.
+    //   ASKING    A direct question for whoever reads this. Answer it.
+    //   UNSURE    Uneasy about this, but no specific question and no answer yet.
+    //
+    // FLAGGING is the exact opposite of FIXLATER, which is what makes both worth having:
+    // one says "this is wrong, get to it", the other says "this is right, leave it alone".
+    // Without the second, a deliberate choice is indistinguishable from a bug someone will
+    // helpfully "fix" for you.
+    //
+    // BLOCKED exists to keep FIXLATER honest. Anything waiting on an unbuilt system is not a
+    // thing you can pick up, so it doesn't belong on the list of things you can pick up -
+    // it just makes that list look heavier than it is. Write "BLOCKED on: <what>".
+    //
+    // Self-check: FIXNOW and ASKING are an inbox and should trend to ZERO - they get
+    // resolved. FIXLATER, BLOCKED, FLAGGING and UNSURE are an archive and may accumulate.
+    // FIXNOW piling up, or FIXLATER growing past what you'd actually read, is the signal.
+    //
+    // Listed worst-first so the tree sorts by urgency rather than alphabetically.
     "todo-tree.general.tags": [
         "FIXNOW",
         "FIXLATER",
-        "ASKING",
-        "UNSURE",
+        "BLOCKED",
         "FLAGGING",
-        "FLAG",
-        "NOTE"
+        "ASKING",
+        "UNSURE"
     ],
-    // Listed worst-first so the tree sorts by urgency rather than alphabetically.
     "todo-tree.general.tagGroups": {},
     "todo-tree.highlights.defaultHighlight": {
         "type": "tag",
@@ -100,6 +119,14 @@
             "background": "#e3a008",
             "iconColour": "#e3a008"
         },
+        // Muted grey on purpose: BLOCKED items are not actionable, so they shouldn't compete
+        // for attention with the ones that are.
+        "BLOCKED": {
+            "icon": "lock",
+            "foreground": "#ffffff",
+            "background": "#57606a",
+            "iconColour": "#57606a"
+        },
         "ASKING": {
             "icon": "question",
             "foreground": "#ffffff",
@@ -112,23 +139,12 @@
             "background": "#8661c5",
             "iconColour": "#8661c5"
         },
+        // Green, not a warning colour: FLAGGING means "this is correct on purpose".
         "FLAGGING": {
-            "icon": "bookmark",
-            "foreground": "#1f1f1f",
-            "background": "#c2c208",
-            "iconColour": "#c2c208"
-        },
-        "FLAG": {
-            "icon": "bookmark",
-            "foreground": "#1f1f1f",
-            "background": "#c2c208",
-            "iconColour": "#c2c208"
-        },
-        "NOTE": {
-            "icon": "note",
+            "icon": "shield-check",
             "foreground": "#ffffff",
-            "background": "#57606a",
-            "iconColour": "#57606a"
+            "background": "#2f7d32",
+            "iconColour": "#2f7d32"
         }
     },
     // Don't scan Unity's generated folders or imported packages - only our own code.

@@ -29,10 +29,12 @@ public abstract class LegacyAction : MonoBehaviour
         // find position using source/aim enum
         instance.ResolveSource(source);
 
-        // What I want is => hero have mana full => check if target found
-        // found => consume mana => use skill => instantiate skill
-        // not found => not consume mana => skill was never used or instantiate
-        // FIXLATER: BUT okay, let leave this, we can fix this later.
+        // FIXNOW: mana is already spent by the time we get here. Stat.AddMana zeroes it the
+        // instant it caps, but this bails when there's no valid target and spawns nothing - so
+        // the hero pays full mana and gets no skill. Order should be:
+        //   mana full => check target found
+        //   found     => consume mana => use skill => instantiate skill
+        //   not found => DON'T consume mana => skill was never used or instantiated
         // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
         if (!instance.ResolveAimTarget(aimTarget))
         {

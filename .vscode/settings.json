@@ -68,5 +68,77 @@
         "*.slnx": "*.csproj"
     },
     "dotnet.defaultSolution": "Magic School 3.slnx",
-    "dotnet.enableWorkspaceBasedDevelopment": false
+    "dotnet.enableWorkspaceBasedDevelopment": false,
+    // ===================== Todo Tree =====================
+    // Urgency is the split that matters: FIXNOW blocks, FIXLATER doesn't.
+    // The rest are the notes-to-self/questions already used across the codebase.
+    "todo-tree.general.tags": [
+        "FIXNOW",
+        "FIXLATER",
+        "ASKING",
+        "UNSURE",
+        "FLAGGING",
+        "FLAG",
+        "NOTE"
+    ],
+    // Listed worst-first so the tree sorts by urgency rather than alphabetically.
+    "todo-tree.general.tagGroups": {},
+    "todo-tree.highlights.defaultHighlight": {
+        "type": "tag",
+        "gutterIcon": true
+    },
+    "todo-tree.highlights.customHighlight": {
+        "FIXNOW": {
+            "icon": "flame",
+            "foreground": "#ffffff",
+            "background": "#d13438",
+            "iconColour": "#d13438"
+        },
+        "FIXLATER": {
+            "icon": "clock",
+            "foreground": "#1f1f1f",
+            "background": "#e3a008",
+            "iconColour": "#e3a008"
+        },
+        "ASKING": {
+            "icon": "question",
+            "foreground": "#ffffff",
+            "background": "#0078d4",
+            "iconColour": "#0078d4"
+        },
+        "UNSURE": {
+            "icon": "alert",
+            "foreground": "#ffffff",
+            "background": "#8661c5",
+            "iconColour": "#8661c5"
+        },
+        "FLAGGING": {
+            "icon": "bookmark",
+            "foreground": "#1f1f1f",
+            "background": "#c2c208",
+            "iconColour": "#c2c208"
+        },
+        "FLAG": {
+            "icon": "bookmark",
+            "foreground": "#1f1f1f",
+            "background": "#c2c208",
+            "iconColour": "#c2c208"
+        },
+        "NOTE": {
+            "icon": "note",
+            "foreground": "#ffffff",
+            "background": "#57606a",
+            "iconColour": "#57606a"
+        }
+    },
+    // Don't scan Unity's generated folders or imported packages - only our own code.
+    "todo-tree.filtering.excludeGlobs": [
+        "**/Library/**",
+        "**/Temp/**",
+        "**/Obj/**",
+        "**/Build/**",
+        "**/Logs/**",
+        "**/Assets/TextMesh Pro/**",
+        "**/Packages/**"
+    ]
 }

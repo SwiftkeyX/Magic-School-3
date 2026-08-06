@@ -11,7 +11,7 @@
 public class HeroDataRuntime
 {
     // ==================================== Description (name, skill desc, etc...) ====================================
-    // TODO: this is temporarily.
+    // FIXLATER: this is temporarily.
     private bool _isDummy;
 
     // ==================================== Stat ====================================

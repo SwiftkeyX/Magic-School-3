@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class Cast : LegacyAction
 {
-    // TODO: Cast always applies to the caster (for now)
+    // FIXLATER: Cast always applies to the caster (for now)
     protected override void ResolveSource(ActionSourceEnum source)
     {
         _source = _me.transform.position;

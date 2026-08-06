@@ -32,7 +32,7 @@ public abstract class LegacyAction : MonoBehaviour
         // What I want is => hero have mana full => check if target found
         // found => consume mana => use skill => instantiate skill
         // not found => not consume mana => skill was never used or instantiate
-        // TODO: BUT okay, let leave this, we can fix this later.
+        // FIXLATER: BUT okay, let leave this, we can fix this later.
         // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
         if (!instance.ResolveAimTarget(aimTarget))
         {
@@ -87,7 +87,7 @@ public abstract class LegacyAction : MonoBehaviour
 
     // Cadence Tick are use by several legacy action
     // so we unified thing by move it here. 
-    // TODO: But it should be move later since not all legacy action need it.
+    // FIXLATER: But it should be move later since not all legacy action need it.
     protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

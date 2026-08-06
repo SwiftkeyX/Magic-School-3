@@ -77,7 +77,7 @@ public class HealSkillEffect : SkillEffect
     }
 }
 
-// TODO: I see BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect are all the same. I starting to consider combining them.
+// FIXLATER: I see BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect are all the same. I starting to consider combining them.
 [Serializable]
 public class BuffSkillEffect : SkillEffect, Modifier
 {
@@ -93,7 +93,7 @@ public class BuffSkillEffect : SkillEffect, Modifier
 
             recipient.AddModifier(this);
 
-            // TODO: this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
+            // FIXLATER: this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
             // if (_modifier == ModifierEnum.BonusHP) recipient.Heal(_buffAmount);
         }
     }

@@ -19,7 +19,7 @@ public class StatModifier
 
     private readonly List<ActiveModifier> _modifiers = new List<ActiveModifier>();
 
-    // TODO: BonusHP is deliberately absent - it was a no-op before this refactor too
+    // FIXLATER: BonusHP is deliberately absent - it was a no-op before this refactor too
     // (the old ModifiedHP() only ever summed Heal), and BuffSkillEffect has the matching
     // line commented out. Kept as-is so this stays a pure restructure; see the max-HP entry
     // in .claude/docs/architecture-review.md before wiring it up.

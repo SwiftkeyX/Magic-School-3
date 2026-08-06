@@ -218,7 +218,7 @@ public class ShopPanelController : MonoBehaviour
             return;
         }
 
-        // TODO: spend gold once that system exists.
+        // FIXLATER: spend gold once that system exists.
         bool bought = BuyHero(_heroSlotsDict[slot]);
         if (!bought) return;
 

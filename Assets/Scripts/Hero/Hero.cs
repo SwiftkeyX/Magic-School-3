@@ -10,10 +10,10 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     // ======================================== Dependency ========================================
     private HeroDataSO _SOData;
     private HeroStateMachine _stateMachine;
-    private SkillSO _skill;
     private BattleBoard _board;
     private FindEnemy _findEnemy;
-    private BlackboardTemp _temp;
+    private HeroVisuals _visuals;
+    private HeroSkillRuntime _skillRuntime;
 
     // ======================================== Etc ========================================
     [SerializeField] private float _moveSpeed = 1f;
@@ -26,14 +26,25 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     private Team _team;
     private Stat Stat => _runtimeData.Stat;
 
-    // ======================================== getter ========================================
+    // ======================================== other getter ========================================
     public bool IsInitialized => _runtimeData != null;
     public Team Team => _team;
     public HeroStateType State => _stateMachine.CurrentType;
+    // FIXNOW: Hero's pattern now let other to access its method mainly, then Hero will forward that method to the correct class. But Statemachine doesn't follow the same pattern.
     public HeroStateMachine StateMachine => _stateMachine;
     public BattleBoard Board => _board;
-    public BlackboardTemp Temp => _temp;    // Grab-bag for logic that doesn't have an obvious home yet - see BlackboardTemp for why.
     public bool IsDummy => _runtimeData.IsDummy;
+
+    // ======================================== visuals ========================================
+    public void SetDeadVisual() => _visuals.SetDeadVisual();
+    public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
+
+    // ======================================== skill ========================================
+    public bool TriggerSkill(SkillStep currentStep, bool isManaCapped) => _skillRuntime.TriggerSkill(currentStep, isManaCapped);
+
+    // ======================================== stat operation ========================================
+    public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
+    public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
     // ======================================== interface method ========================================
     // === IDamageable ===
@@ -75,10 +86,6 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     public Hero FindNearestEnemy() => _findEnemy.FindNearestEnemy();
     public Hero FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
 
-    // ======================================== stat operation ========================================
-    // Not on IHeroStats: that contract is the stats themselves, these are things done TO them.
-    public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
-    public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
     // ======================================== setup wiring ========================================
     public void SetBoard(BattleBoard board)
@@ -89,15 +96,16 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
 
     public void SetTeam(Team team) => _team = team;
 
+    // ======================================== life cycle ========================================
     #region Life Cycle
     public void Init(HeroDataSO data)
     {
         _SOData = data;
         _runtimeData = new HeroDataRuntime(_SOData);
-        _temp = new BlackboardTemp(this, GetComponent<SpriteRenderer>());
+        _visuals = new HeroVisuals(this, GetComponent<SpriteRenderer>());
+        _skillRuntime = new HeroSkillRuntime(this, _SOData.Skill);
         _findEnemy = new FindEnemy(this, _runtimeData);
-        _skill = _SOData.Skill;
-        _stateMachine = new HeroStateMachine(this, _skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
+        _stateMachine = new HeroStateMachine(this, _SOData.Skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
     }
 
     void Start()
@@ -119,6 +127,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     }
     #endregion
 
+    // ======================================== gizmo ========================================
     #region Gizmo
     // draw gize between attacker and receiver to show which hero is attacking.
     void OnDrawGizmos()

@@ -222,14 +222,37 @@ Already self-flagged as messy. It holds two unrelated things:
 Note: its name is now stale too — the "Blackboard" it was named after no longer exists.
 Renaming it is free to do as part of the split below.
 
-- [ ] **Sprite alpha + floating text** -> presentation. Wants to be a `HeroVisuals`
+**DONE** — 2026-08-06. `BlackboardTemp.cs` deleted. Verified live: compile clean, combat runs,
+`PlaySkillCastEffect` spawns its FloatingText (0 → 1), and dead heroes land at
+`spriteAlpha = 0.30`, so both halves are exercised from their real call paths. No errors.
+
+- [x] **Sprite alpha + floating text** -> presentation. Wants to be a `HeroVisuals`
   MonoBehaviour on the prefab, where the VFX prefab can be wired in the Inspector instead of
   `Resources.Load` (legacy API, and the `static` cache is shared across all heroes).
-- [ ] **`SkillTrigger`** -> *not* temporary. It's the hero's per-cast skill progress, permanent
+  → Split into `HeroVisuals`, but kept as a **plain class, not a MonoBehaviour** — see the
+  prefab note below. The `static` cache is fine as-is: it's one immutable prefab reference,
+  not per-hero state.
+- [x] **`SkillTrigger`** -> *not* temporary. It's the hero's per-cast skill progress, permanent
   runtime state. Belongs in a `HeroSkillRuntime` alongside the `SkillSO`.
+  → `HeroSkillRuntime` owns the `SkillSO` too, which removed an oddity: callers used to hand a
+  hero its own skill back to ask it to cast. `TriggerSkill(skill, step, capped)` is now
+  `TriggerSkill(step, capped)`.
 
-Splitting these is ~20 minutes and deletes the file currently labeled "code architecture begin
-to be really messy."
+`Hero` forwards `SetDeadVisual()` / `PlaySkillCastEffect()` / `TriggerSkill()` flat rather than
+exposing `_visuals` / `_skillRuntime`, per the `review-comments.md` dislike of
+`_me.SubObject.Method()`. Knock-on: `HeroState._skill` became dead (only `HeroAttack` read it)
+and was removed.
+
+### Why `HeroVisuals` is not a MonoBehaviour
+
+All **19 hero prefabs are standalone** — none is a variant of `BaseHero`. So the Inspector-wired
+version means adding and wiring the component 19 times, where a missed one only surfaces as a
+null ref the first time that hero dies. The payoff is removing one `Resources.Load` call.
+Left as a `FIXLATER` on the class.
+
+- [ ] **The real fix is upstream: make the 19 hero prefabs variants of `BaseHero`.** Then this
+  change — and every future shared-component change — is one edit instead of nineteen. Worth
+  doing before adding any more heroes.
 
 ---
 
@@ -308,13 +331,17 @@ collide with any asset-store package imported later.
 
 Not the point of the review, but real:
 
-- [ ] **`Hero/States/HeroAttack.cs:60-64` — dead code, skill cast VFX never plays.**
+- [x] **`Hero/States/HeroAttack.cs:60-64` — dead code, skill cast VFX never plays.**
   ```csharp
   bool success = false;
   if (_currentStep != null) _me.Blackboard.Temp.TriggerSkill(...);  // return value dropped
   if (success) _me.Blackboard.Temp.PlaySkillCastEffect(...);        // always false
   ```
   Should be `success = _me.Blackboard.Temp.TriggerSkill(...)`.
+  → Fixed 2026-08-06 as part of the section 3 split, since these were the exact lines being
+  rewritten and carrying dead code into a fresh file would have been worse. **This is a visible
+  gameplay change:** the floating "Skill Activated!" text now actually appears on cast. Verified
+  spawning live. The `_currentStep != null` guard moved inside `HeroSkillRuntime.TriggerSkill`.
 
 - [x] **Max-HP modifiers are unreachable.** `Stat.SetCurrentHP` clamps to `BaseHP`, but
   `Blackboard.GetMaxHP()` returns the *modified* HP (`ModifiedHP()` = base + Heal modifiers).
@@ -355,10 +382,12 @@ Ranked by payoff ÷ risk. 1–4 are mechanical and safe. 5–6 change the actual
 codebase — worth doing **before** combat and traits add more callers, because every new system
 built against the current `Blackboard` makes it more expensive to split later.
 
-1. [ ] Fix the `success` bug (2 min — it's a live feature that silently doesn't work)
+1. [x] Fix the `success` bug (2 min — it's a live feature that silently doesn't work)
+   — done alongside section 3
 2. [ ] Hoist Dead/Stunned interrupts into `HeroStateMachine` (removes 4x duplication)
 3. [ ] Rename `LegacyAction` -> `SkillAction`, flatten folders (pure readability)
-4. [ ] Split `BlackboardTemp` into `HeroVisuals` + `HeroSkillRuntime`
+4. [x] Split `BlackboardTemp` into `HeroVisuals` + `HeroSkillRuntime`
+   — **done third**, see section 3
 5. [x] Introduce `IDamageable`, cut the skill system loose from `Blackboard`
    — **done second**, see section 2
 6. [x] Collapse `Stat` / `StatModifier` / `HeroDataRuntime` into one data-driven stat block

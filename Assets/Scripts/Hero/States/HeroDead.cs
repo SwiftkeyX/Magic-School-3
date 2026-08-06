@@ -6,7 +6,7 @@ public class HeroDead : HeroState
 
     public override void OnEnter()
     {
-        _me.Temp.SetDeadVisual();
+        _me.SetDeadVisual();
     }
 
     public override void OnUpdate() { }

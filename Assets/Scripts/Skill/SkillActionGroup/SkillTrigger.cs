@@ -2,10 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// SkillTrigger tracks one hero's progress through their skill's steps (e.g. Cast -> OnExpired).
-/// Owned per-hero (see BlackboardTemp) rather than static, since _currentStep is per-cast state -
-/// a shared/static instance would let two heroes' casts (or two casts by the same hero) stomp
-/// on each other's progress.
+/// This class's SRP: To take care of trigger condition & skill order that was fired
 /// </summary>
 public class SkillTrigger
 {

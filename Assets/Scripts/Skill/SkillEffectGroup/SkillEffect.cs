@@ -32,7 +32,7 @@ public abstract class SkillEffect
 public class AttackSkillEffect : SkillEffect
 {
     [SerializeField] private float _damageAmount;
-    // FLAG: I mark this here as to tell that I have think throughly about AttackSkillEffect shouldn't have duration
+    // FLAGGING: I mark this here as to tell that I have think throughly about AttackSkillEffect shouldn't have duration
     // [SerializeField] private float _skillDuration;
 
     public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)

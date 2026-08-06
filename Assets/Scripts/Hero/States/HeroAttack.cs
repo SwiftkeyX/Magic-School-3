@@ -57,11 +57,10 @@ public class HeroAttack : HeroState
             bool isManaCapped = _me.GainMana(ManaPerAttack);
 
             // if mana is full, trigger OnCast skill
-            bool success = false;
-            if (_currentStep != null) _me.Temp.TriggerSkill(_skill, _currentStep, isManaCapped);
+            bool success = _me.TriggerSkill(_currentStep, isManaCapped);
 
-            // if skill cast is success, pop skill effect 
-            if (success) _me.Temp.PlaySkillCastEffect("Skill Activated!");
+            // if skill cast is success, pop skill effect
+            if (success) _me.PlaySkillCastEffect("Skill Activated!");
 
             // aa is now on cooldown
             _aaCooldown += 1f / _me.AttackSpeed;

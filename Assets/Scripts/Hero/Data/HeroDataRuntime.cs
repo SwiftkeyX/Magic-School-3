@@ -2,12 +2,8 @@
 /// Hold every runtime data for a hero e.g. stat, placement.
 /// Runtime data = data that was can be changed in game dynamically. There MUST NOT have static variable here.
 ///
-///
 /// This class should only contain data and its getter & setter only.
 /// NO LOGIC.
-///
-/// It used to also mirror all ~15 of Stat's getters one-for-one, which meant every new stat
-/// had to be added here too. It exposes Stat directly now - callers that want a stat ask Stat.
 ///
 /// It used to also mirror all ~15 of Stat's getters one-for-one, which meant every new stat
 /// had to be added here too. It exposes Stat directly now - callers that want a stat ask Stat.

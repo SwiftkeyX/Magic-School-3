@@ -52,21 +52,12 @@ its SO, current HP/mana seed correctly, modifiers still apply and expire, and th
 DamageReduction path is unchanged. No compile errors, no runtime errors.
 
 - [x] **Delete a layer.** `HeroDataRuntime` holds `Stat` + placement + `isDummy`. Its stat
-**DONE** — 2026-08-06. Verified in Play mode against all 5 seeded heroes: every stat matches
-its SO, current HP/mana seed correctly, modifiers still apply and expire, and the
-DamageReduction path is unchanged. No compile errors, no runtime errors.
-
-- [x] **Delete a layer.** `HeroDataRuntime` holds `Stat` + placement + `isDummy`. Its stat
   forwards earn nothing — expose `Stat` directly and let callers read `runtimeData.Stat.Atk`.
   Same for the blackboard's stat block.
   → `HeroDataRuntime`'s 15 stat forwards deleted, replaced by `public Stat Stat => _stat;`.
   The blackboard keeps its `GetX()` methods (states talk to the blackboard, never past it —
   per the `review-comments.md` decision) but they now read `Stat` in one hop.
-  → `HeroDataRuntime`'s 15 stat forwards deleted, replaced by `public Stat Stat => _stat;`.
-  The blackboard keeps its `GetX()` methods (states talk to the blackboard, never past it —
-  per the `review-comments.md` decision) but they now read `Stat` in one hop.
 
-- [x] **Make stat lookup data-driven.** `StatModifier` has nine near-identical methods, eight
 - [x] **Make stat lookup data-driven.** `StatModifier` has nine near-identical methods, eight
   of which are literally `return _stat.BaseX;`. Replace with:
 
@@ -82,28 +73,12 @@ DamageReduction path is unchanged. No compile errors, no runtime errors.
   `StatModifier` no longer holds a `Stat`, it takes the base value as an argument.
   Which modifier affects which stat is now one `FlatBonusTarget` dictionary, so "why does my
   buff do nothing?" has exactly one place to look.
-  → New `StatType` enum; `Stat` keys base values in one dictionary; the nine `ModifiedX()`
-  methods collapse into `StatModifier.Apply(StatType, baseValue)`. The cycle is gone —
-  `StatModifier` no longer holds a `Stat`, it takes the base value as an argument.
-  Which modifier affects which stat is now one `FlatBonusTarget` dictionary, so "why does my
-  buff do nothing?" has exactly one place to look.
 
-- [x] `GetAtk()` and `GetAttackDamage()` are duplicates returning the same value.
-  → `GetAtk()` removed (it had no callers); `GetAttackDamage()` kept.
 - [x] `GetAtk()` and `GetAttackDamage()` are duplicates returning the same value.
   → `GetAtk()` removed (it had no callers); `GetAttackDamage()` kept.
 
 - [ ] Getter style is inconsistent inside one layer — `GetRange()` (method) next to `Team`
   (property). Pick properties; they read cheaper.
-  → Left alone for now: converting the `GetX()` methods to properties churns every state file
-  for a purely cosmetic gain. Worth doing as its own pass, not bundled into this one.
-
-### Cost after the change
-
-Adding a new stat is now: one `StatType` member + one line in `Stat`'s constructor + one
-`HeroDataSO` field, plus a one-line typed property if call sites want `int` instead of `float`.
-**Down from 9 edits across 5 files to 3 edits across 3 files**, and none of them require
-touching `StatModifier` or `HeroDataRuntime` at all.
   → Left alone for now: converting the `GetX()` methods to properties churns every state file
   for a purely cosmetic gain. Worth doing as its own pass, not bundled into this one.
 
@@ -293,17 +268,9 @@ Not the point of the review, but real:
   Should be `success = _me.Blackboard.Temp.TriggerSkill(...)`.
 
 - [x] **Max-HP modifiers are unreachable.** `Stat.SetCurrentHP` clamps to `BaseHP`, but
-- [x] **Max-HP modifiers are unreachable.** `Stat.SetCurrentHP` clamps to `BaseHP`, but
   `Blackboard.GetMaxHP()` returns the *modified* HP (`ModifiedHP()` = base + Heal modifiers).
   With a bonus-HP modifier active, current HP can never reach max, and the health bar can never
   show full.
-  → Fixed while rewriting `Stat` — `SetCurrentHP` now clamps to the modified `HP`.
-
-  **Still open, and needs a design call:** the only `ModifierEnum` that raises max HP is
-  `Heal`, which is almost certainly wrong — healing shouldn't raise the ceiling, and `BonusHP`
-  (which should) was a silent no-op. The refactor preserved this exactly rather than changing
-  gameplay behaviour on its own; see `FlatBonusTarget` in `StatModifier.cs`. Swapping `Heal`
-  for `BonusHP` there is a one-line change once you decide.
   → Fixed while rewriting `Stat` — `SetCurrentHP` now clamps to the modified `HP`.
 
   **Still open, and needs a design call:** the only `ModifierEnum` that raises max HP is

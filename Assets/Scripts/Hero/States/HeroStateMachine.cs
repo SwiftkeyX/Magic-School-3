@@ -14,11 +14,13 @@ public class HeroStateMachine
     public HeroState Current { get; private set; }
     public HeroStateType CurrentType => Current.StateType;
 
-    public HeroStateMachine(Hero hero, SkillSO skill)
+    // Only the three states that actually animate movement are handed the MovementConfig -
+    // HeroDead and HeroStunned don't move, so they don't get to see it.
+    public HeroStateMachine(Hero hero, SkillSO skill, MovementConfig movement)
     {
-        _idle = new HeroIdle(hero, skill);
-        _walk = new HeroWalk(hero, skill);
-        _attack = new HeroAttack(hero, skill);
+        _idle = new HeroIdle(hero, skill, movement);
+        _walk = new HeroWalk(hero, skill, movement);
+        _attack = new HeroAttack(hero, skill, movement);
         _dead = new HeroDead(hero, skill);
         _stunned = new HeroStunned(hero, skill);
     }

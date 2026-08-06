@@ -13,7 +13,12 @@ public class HeroIdle : HeroState
     // Timestamp a "this step doesn't look like progress" hold started, or -1f when not holding.
     private float _holdSince = -1f;
 
-    public HeroIdle(Hero hero, SkillSO skill) : base(hero, skill) { }
+    private readonly MovementConfig _movement;
+
+    public HeroIdle(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
+    {
+        _movement = movement;
+    }
 
     public override void OnEnter()
     {
@@ -111,7 +116,7 @@ public class HeroIdle : HeroState
         if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
         {
             if (_holdSince < 0f) _holdSince = Time.time;
-            if (Time.time - _holdSince < 1f / _me.Blackboard.MoveSpeed) return true;
+            if (Time.time - _holdSince < 1f / _movement.MoveSpeed) return true;
         }
 
         return false;

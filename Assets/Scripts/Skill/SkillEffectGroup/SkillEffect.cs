@@ -25,7 +25,9 @@ public abstract class SkillEffect
     public EffectRecipientEnum Recipient => _recipient;
     public Cadence Cadence => _cadence;
 
-    public abstract void ApplyEffect(List<Hero> recipients);
+    // IReadOnlyList rather than List so a caller's List<Hero> converts implicitly - the
+    // interface is covariant, so every existing call site keeps passing what it already had.
+    public abstract void ApplyEffect(IReadOnlyList<IDamageable> recipients);
 }
 
 [Serializable]
@@ -35,11 +37,11 @@ public class AttackSkillEffect : SkillEffect
     // FLAG: I mark this here as to tell that I have think throughly about AttackSkillEffect shouldn't have duration
     // [SerializeField] private float _skillDuration;
 
-    public override void ApplyEffect(List<Hero> recipients)
+    public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
     {
-        foreach (Hero recipient in recipients)
+        foreach (IDamageable recipient in recipients)
         {
-            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+            if (recipient == null || !recipient.IsAlive) continue;
 
             // if the damage was cadence, calculate tick damage instead
             float dmg;
@@ -49,7 +51,7 @@ public class AttackSkillEffect : SkillEffect
             else dmg = _damageAmount;
 
             // apply damage
-            recipient.Blackboard.TakeDamage(Mathf.RoundToInt(dmg));
+            recipient.TakeDamage(Mathf.RoundToInt(dmg));
         }
     }
 
@@ -63,16 +65,16 @@ public class HealSkillEffect : SkillEffect
 
     public float Duration => _duration;
 
-    public override void ApplyEffect(List<Hero> recipients)
+    public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
     {
         int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
         float healPerTick = _totalHealAmount / totalTicks;
 
-        foreach (Hero recipient in recipients)
+        foreach (IDamageable recipient in recipients)
         {
-            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+            if (recipient == null || !recipient.IsAlive) continue;
 
-            recipient.Blackboard.Heal(healPerTick);
+            recipient.Heal(healPerTick);
         }
     }
 }
@@ -85,16 +87,16 @@ public class BuffSkillEffect : SkillEffect, Modifier
     [SerializeField] private float _buffAmount;
     [SerializeField] private float _buffDuration;
 
-    public override void ApplyEffect(List<Hero> recipients)
+    public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
     {
-        foreach (Hero recipient in recipients)
+        foreach (IDamageable recipient in recipients)
         {
-            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+            if (recipient == null || !recipient.IsAlive) continue;
 
-            recipient.Blackboard.AddModifier(this);
+            recipient.AddModifier(this);
 
             // TODO: this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
-            // if (_modifier == ModifierEnum.BonusHP) recipient.Blackboard.Heal(_buffAmount);
+            // if (_modifier == ModifierEnum.BonusHP) recipient.Heal(_buffAmount);
         }
     }
 
@@ -121,13 +123,13 @@ public class DebuffSkillEffect : SkillEffect, Modifier
     [SerializeField] private float _debuffAmount;
     [SerializeField] private float _deBuffDuration;
 
-    public override void ApplyEffect(List<Hero> recipients)
+    public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
     {
-        foreach (Hero recipient in recipients)
+        foreach (IDamageable recipient in recipients)
         {
-            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+            if (recipient == null || !recipient.IsAlive) continue;
 
-            recipient.Blackboard.AddModifier(this);
+            recipient.AddModifier(this);
         }
     }
 
@@ -154,13 +156,13 @@ public class StatusSkillEffect : SkillEffect, Modifier
     [SerializeField] private float _statusAmount;
     [SerializeField] private float _statusDuration;
 
-    public override void ApplyEffect(List<Hero> recipients)
+    public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
     {
-        foreach (Hero recipient in recipients)
+        foreach (IDamageable recipient in recipients)
         {
-            if (recipient == null || recipient.State == HeroStateType.Dead) continue;
+            if (recipient == null || !recipient.IsAlive) continue;
 
-            recipient.Blackboard.AddModifier(this);
+            recipient.AddModifier(this);
         }
     }
 

@@ -17,22 +17,14 @@ public class HeroStateMachineBlackBoard
     private BattleBoard _board;
     private readonly BlackboardTemp _temp;
 
-    // ================================================ movement ================================================
-    private float _moveSpeed;
-    private AnimationCurve _walkCurve;
-
     // ================================================ combat ================================================
     private Team _team;
-    private AnimationCurve _attackCurve;
     private readonly FindEnemy _findEnemy;
 
 
     // ================================================ getter ================================================
     // === other dependency ===
     public BattleBoard Board => _board;
-    public float MoveSpeed => _moveSpeed;
-    public AnimationCurve WalkCurve => _walkCurve;
-    public AnimationCurve AttackCurve => _attackCurve;
     public Team Team => _team;
     public BlackboardTemp Temp => _temp;    // Grab-bag for logic that doesn't have an obvious home yet - see BlackboardTemp for why.
     public bool IsDummy => _runtimeData.IsDummy;
@@ -49,18 +41,23 @@ public class HeroStateMachineBlackBoard
 
 
     // ================================================ setter ================================================
-    public void SetBoard(BattleBoard board) => _board = board;
+    // FindEnemy gets the board handed to it here rather than reading it back off this
+    // blackboard - the board only exists after Preparation wires it up, which is why it
+    // arrives by setter instead of through the constructor.
+    public void SetBoard(BattleBoard board)
+    {
+        _board = board;
+        _findEnemy.SetBoard(board);
+    }
+
     public void SetTeam(Team team) => _team = team;
     public void SetReservedHex(Hex targetHex) => _runtimeData.SetReservedHex(targetHex);
     public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
-    public HeroStateMachineBlackBoard(Hero hero, HeroDataRuntime runtimeData, SpriteRenderer sprite, float moveSpeed, AnimationCurve walkCurve, AnimationCurve attackCurve)
+    public HeroStateMachineBlackBoard(Hero hero, HeroDataRuntime runtimeData, SpriteRenderer sprite)
     {
         _me = hero;
         _runtimeData = runtimeData;
-        _moveSpeed = moveSpeed;
-        _walkCurve = walkCurve;
-        _attackCurve = attackCurve;
         _temp = new BlackboardTemp(hero, sprite);
         _findEnemy = new FindEnemy(hero, runtimeData);
     }

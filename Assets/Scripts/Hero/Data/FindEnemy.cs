@@ -10,7 +10,6 @@ public class FindEnemy
 
     private readonly Hero _me;
     private readonly HeroDataRuntime _runtimeData;
-    private BattleBoard _board;
 
     private List<(Hero target, float dist)> _enemyDistanceCache;
     private int _enemyDistanceCacheFrame = -1;
@@ -20,11 +19,6 @@ public class FindEnemy
         _me = me;
         _runtimeData = runtimeData;
     }
-
-    // Set by the blackboard once Preparation has wired the board up. Held directly rather than
-    // read back off _me.Blackboard.Board each scan - reaching through the hero to reach the
-    // object that constructed this was the long way round to the same reference.
-    public void SetBoard(BattleBoard board) => _board = board;
 
     // Picks nearest enemy (if there are several nearest enemies, random it).
     public Hero FindNearestEnemy()
@@ -68,7 +62,7 @@ public class FindEnemy
 
         Hex myHex = _runtimeData.CurrentPlacement as Hex;
 
-        _enemyDistanceCache = _board.HeroesOnBoard
+        _enemyDistanceCache = _me.Blackboard.Board.HeroesOnBoard
         // select enemy hero only
         .Where(target =>
         {

@@ -25,6 +25,6 @@ public class Manabar : MonoBehaviour
         // IsInitialized instead of Application.isPlaying because a Hero open in Prefab Mode
         // never gets Init() called even while Play mode is running elsewhere in the editor.
         if (_hero.IsInitialized)
-            _slider.value = (float)_hero.CurrentMana / _hero.MaxMana;
+            _slider.value = (float)_hero.Blackboard.GetCurrentMana() / _hero.Blackboard.GetMaxMana();
     }
 }

@@ -19,12 +19,7 @@ public class HeroAttack : HeroState
     private Vector3 _dashPeak;
     private float _dashElapsed = -1f;
 
-    private readonly MovementConfig _movement;
-
-    public HeroAttack(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
-    {
-        _movement = movement;
-    }
+    public HeroAttack(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnEnter()
     {
@@ -120,7 +115,7 @@ public class HeroAttack : HeroState
 
         _dashElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_dashElapsed / DashDuration);
-        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _movement.AttackCurve.Evaluate(t));
+        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.Blackboard.AttackCurve.Evaluate(t));
 
         if (t >= 1f) _dashElapsed = -1f;
     }

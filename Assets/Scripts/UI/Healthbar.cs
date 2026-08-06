@@ -33,6 +33,6 @@ public class Healthbar : MonoBehaviour
         // IsInitialized instead of Application.isPlaying because a Hero open in Prefab Mode
         // never gets Init() called even while Play mode is running elsewhere in the editor.
         if (_hero.IsInitialized)
-            _slider.value = (float)_hero.CurrentHP / _hero.MaxHP;
+            _slider.value = (float)_hero.Blackboard.GetCurrentHP() / _hero.Blackboard.GetMaxHP();
     }
 }

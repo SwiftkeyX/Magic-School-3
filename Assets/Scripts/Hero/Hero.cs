@@ -5,7 +5,7 @@ using UnityEngine;
 /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
 /// 2) it act like a glue, which mean itself don't contain any real logic.
 /// </summary>
-public class Hero : MonoBehaviour, IDamageable, IStatReadout
+public class Hero : MonoBehaviour
 {
     // ======================================== Dependency ========================================
     private HeroDataSO _SOData;
@@ -29,27 +29,14 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout
     public HeroStateMachine StateMachine => _stateMachine;
     public HeroStateMachineBlackBoard Blackboard => _blackboard;
 
-    // ======================================== IDamageable / IStatReadout ========================================
-    // Glue, same as the rest of this class: these let the skill system and the UI ask for the
-    // four things they actually need instead of reaching through Blackboard for them.
-    public void TakeDamage(int damage) => _blackboard.TakeDamage(damage);
-    public void Heal(float amount) => _blackboard.Heal(amount);
-    public void AddModifier(Modifier modifier) => _blackboard.AddModifier(modifier);
-    public bool IsAlive => this != null && IsInitialized && State != HeroStateType.Dead;
-
-    public int CurrentHP => _blackboard.GetCurrentHP();
-    public int MaxHP => _blackboard.GetMaxHP();
-    public int CurrentMana => _blackboard.GetCurrentMana();
-    public int MaxMana => _blackboard.GetMaxMana();
-
     #region Life Cycle
     public void Init(HeroDataSO data)
     {
         _SOData = data;
         _runtimeData = new HeroDataRuntime(_SOData);
-        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>());
+        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
         _skill = _SOData.Skill;
-        _stateMachine = new HeroStateMachine(this, _skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
+        _stateMachine = new HeroStateMachine(this, _skill);
     }
 
     void Start()

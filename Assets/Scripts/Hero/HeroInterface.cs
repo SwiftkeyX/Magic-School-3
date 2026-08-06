@@ -12,13 +12,17 @@ public interface IDamageable
     bool IsAlive { get; }
 }
 
-// What the healthbar/ manabar needs.
-public interface IStatReadout
+// contract for hero stat.
+// FLAGGING: no actual use yet since it's still awkward to use it now. BUT still good to have. 
+public interface IHeroStats
 {
     int CurrentHP { get; }
     int MaxHP { get; }
     int CurrentMana { get; }
     int MaxMana { get; }
+    int AttackDamage { get; }
+    float AttackSpeed { get; }
+    int Range { get; }
 }
 
 // Where a hero is standing. Used by Hex/BenchSlot when placing.

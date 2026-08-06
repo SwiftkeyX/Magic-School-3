@@ -5,7 +5,7 @@ using UnityEngine;
 /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
 /// 2) it act like a glue, which mean itself don't contain any real logic.
 /// </summary>
-public class Hero : MonoBehaviour, IDamageable, IStatReadout, IPlaceable, ITargeter
+public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargeter
 {
     // ======================================== Dependency ========================================
     private HeroDataSO _SOData;
@@ -52,11 +52,16 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout, IPlaceable, ITarge
         Stat.SetCurrentHP(newHP);
     }
 
-    // === IStatReadout ===
+    // === IHeroStats ===
     public int CurrentHP => Stat.CurrentHP;
     public int MaxHP => Stat.HP;
     public int CurrentMana => Stat.CurrentMana;
     public int MaxMana => Stat.MaxMana;
+    public int AttackDamage => Stat.Atk;
+    public float AttackSpeed => Stat.AttackSpeed;
+    public int Range => Stat.Range;
+    public bool IsStunned => Stat.IsStunned;
+    public bool IsWounded => Stat.IsWounded;
 
     // === IPlaceable ===
     public Hex CurrentHex => _runtimeData.CurrentPlacement as Hex;
@@ -70,14 +75,8 @@ public class Hero : MonoBehaviour, IDamageable, IStatReadout, IPlaceable, ITarge
     public Hero FindNearestEnemy() => _findEnemy.FindNearestEnemy();
     public Hero FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
 
-    // ======================================== stat ========================================
-    // ASKING: Hey, this should be IStatReadout too, no?
-    public int AttackDamage => Stat.Atk;
-    public float AttackSpeed => Stat.AttackSpeed;
-    public int Range => Stat.Range;
-    public bool IsStunned => Stat.IsStunned;
-    public bool IsWounded => Stat.IsWounded;
-
+    // ======================================== stat operation ========================================
+    // Not on IHeroStats: that contract is the stats themselves, these are things done TO them.
     public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
     public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 

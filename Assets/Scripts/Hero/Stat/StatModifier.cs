@@ -17,13 +17,16 @@ public class StatModifier
 {
     private const float Permanent = -1f;
 
-    private readonly Stat _stat;
     private readonly List<ActiveModifier> _modifiers = new List<ActiveModifier>();
 
-    public StatModifier(Stat stat)
+    // TODO: BonusHP is deliberately absent - it was a no-op before this refactor too
+    // (the old ModifiedHP() only ever summed Heal), and BuffSkillEffect has the matching
+    // line commented out. Kept as-is so this stays a pure restructure; see the max-HP entry
+    // in .claude/docs/architecture-review.md before wiring it up.
+    private static readonly Dictionary<ModifierEnum, StatType> FlatBonusTarget = new Dictionary<ModifierEnum, StatType>
     {
-        _stat = stat;
-    }
+        { ModifierEnum.Heal, StatType.HP },
+    };
 
     // =================================== setter ===================================
     // update all current modifier duration, removing any that just expired
@@ -49,58 +52,20 @@ public class StatModifier
     }
 
     // =================================== modified stat getter ===================================
-    public int ModifiedHP()
+    // Consume base stat. Spit the final stat out.
+    public float Apply(StatType type, float baseValue)
     {
-        int newHP = _stat.BaseHP;
+        float total = baseValue;
+
         foreach (var modifier in _modifiers)
         {
-            if (modifier.Source.GetModifier() == ModifierEnum.Heal)
-            {
-                newHP += (int)modifier.Source.GetAmount();
-            }
+            if (!FlatBonusTarget.TryGetValue(modifier.Source.GetModifier(), out StatType target)) continue;
+            if (target != type) continue;
+
+            total += modifier.Source.GetAmount();
         }
 
-        return newHP;
-    }
-
-    public int ModifiedAtk()
-    {
-        return _stat.BaseAtk;
-    }
-
-    public int ModifiedDF()
-    {
-        return _stat.BaseDF;
-    }
-
-    public int ModifiedMG()
-    {
-        return _stat.BaseMG;
-    }
-
-    public int ModifiedMR()
-    {
-        return _stat.BaseMR;
-    }
-
-    public float ModifiedAttackSpeed()
-    {
-        return _stat.BaseAttackSpeed;
-    }
-
-    public int ModifiedRange()
-    {
-        return _stat.BaseRange;
-    }
-
-    public int ModifiedStartMana()
-    {
-        return _stat.BaseStartMana;
-    }
-
-    public int ModifiedMaxMana()
-    {
-        return _stat.BaseMaxMana;
+        return total;
     }
 
     // =================================== modifier helper ===================================

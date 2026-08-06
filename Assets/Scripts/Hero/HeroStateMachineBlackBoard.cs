@@ -66,33 +66,36 @@ public class HeroStateMachineBlackBoard
     }
 
     // Hero have several stat. So we have dedicate section for this.
+    // These stay as the state machine's single access point for stats.
+    // Which mean each states should talk to the blackboard, BUT never past it.
     #region Stat
+    private Stat Stat => _runtimeData.Stat;
+
     // ====================================== stat getter ======================================
-    public int GetAtk() => _runtimeData.Atk;
-    public int GetAttackDamage() => _runtimeData.Atk;
-    public float GetAttackSpeed() => _runtimeData.AttackSpeed;
-    public int GetRange() => _runtimeData.Range;
-    public int GetCurrentHP() => _runtimeData.CurrentHP;
-    public int GetMaxHP() => _runtimeData.HP;
-    public int GetCurrentMana() => _runtimeData.CurrentMana;
-    public int GetMaxMana() => _runtimeData.MaxMana;
-    public bool IsStunned() => _runtimeData.IsStunned;
-    public bool IsWounded() => _runtimeData.IsWounded;
+    public int GetAttackDamage() => Stat.Atk;
+    public float GetAttackSpeed() => Stat.AttackSpeed;
+    public int GetRange() => Stat.Range;
+    public int GetCurrentHP() => Stat.CurrentHP;
+    public int GetMaxHP() => Stat.HP;
+    public int GetCurrentMana() => Stat.CurrentMana;
+    public int GetMaxMana() => Stat.MaxMana;
+    public bool IsStunned() => Stat.IsStunned;
+    public bool IsWounded() => Stat.IsWounded;
 
     // ====================================== stat setter ======================================
-    public bool GainMana(int amount) => _runtimeData.GainMana(amount);      // return true if mana if capped
-    public void AddModifier(Modifier modifier) => _runtimeData.AddModifier(modifier);
-    public void TickModifiers(float deltaTime) => _runtimeData.TickModifiers(deltaTime);
+    public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
+    public void AddModifier(Modifier modifier) => Stat.AddModifier(modifier);
+    public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
     public void Heal(float amount)
     {
-        int healed = CombatMath.Heal(amount, GetCurrentHP(), _runtimeData.IsWounded);
-        _runtimeData.SetCurrentHP(healed);
+        int healed = CombatMath.Heal(amount, Stat.CurrentHP, Stat.IsWounded);
+        Stat.SetCurrentHP(healed);
     }
 
     public void TakeDamage(int damage)
     {
-        int newHP = CombatMath.TakeDamage(damage, _runtimeData.DF, _runtimeData.DamageReductionPercent, GetCurrentHP());
-        _runtimeData.SetCurrentHP(newHP);
+        int newHP = CombatMath.TakeDamage(damage, Stat.DF, Stat.DamageReductionPercent, Stat.CurrentHP);
+        Stat.SetCurrentHP(newHP);
     }
     #endregion
 }

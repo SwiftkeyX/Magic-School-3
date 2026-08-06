@@ -1,65 +1,55 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Stat of a hero.
-/// 
+///
 /// This class should only contain data and its getter & setter only.
 /// NO LOGIC.
 /// </summary>
 public class Stat
 {
     // ========================================== dependency ==========================================
-    private StatModifier _statModifier;
+    private readonly StatModifier _statModifier = new StatModifier();
 
     // ========================================== base stat ==========================================
+    private readonly Dictionary<StatType, float> _base = new Dictionary<StatType, float>();
+
     private int _currentHP;
-    private int _maxHP;
-    private int _attack;
-    private int _defend;
-    private int _magic;
-    private int _magicResist;
-    private float _attackSpeed;
-    private int _range;
-    private int _startMana;
-    private int _maxMana;
     private int _currentMana;
 
     // ========================================== base stat getter ==========================================
-    public int BaseHP => _maxHP;
-    public int BaseAtk => _attack;
-    public int BaseDF => _defend;
-    public int BaseMG => _magic;
-    public int BaseMR => _magicResist;
-    public float BaseAttackSpeed => _attackSpeed;
-    public int BaseRange => _range;
-    public int BaseStartMana => _startMana;
-    public int BaseMaxMana => _maxMana;
+    public float GetBaseStat(StatType type) => _base[type];
+
+    // ========================================== modify stat getter ==========================================
+    public float GetFinalStat(StatType type) => _statModifier.Apply(type, _base[type]);
+
+    public int HP => Mathf.RoundToInt(GetFinalStat(StatType.HP));
+    public int Atk => Mathf.RoundToInt(GetFinalStat(StatType.Atk));
+    public int DF => Mathf.RoundToInt(GetFinalStat(StatType.DF));
+    public int MG => Mathf.RoundToInt(GetFinalStat(StatType.MG));
+    public int MR => Mathf.RoundToInt(GetFinalStat(StatType.MR));
+    public float AttackSpeed => GetFinalStat(StatType.AttackSpeed);
+    public int Range => Mathf.RoundToInt(GetFinalStat(StatType.Range));
+    public int StartMana => Mathf.RoundToInt(GetFinalStat(StatType.StartMana));
+    public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatType.MaxMana));
+
     public int CurrentHP => _currentHP;
     public int CurrentMana => _currentMana;
 
-    // ========================================== modify stat getter ==========================================
-    public int HP => _statModifier.ModifiedHP();
-    public int Atk => _statModifier.ModifiedAtk();
-    public int DF => _statModifier.ModifiedDF();
-    public int MG => _statModifier.ModifiedMG();
-    public int MR => _statModifier.ModifiedMR();
-    public float AttackSpeed => _statModifier.ModifiedAttackSpeed();
-    public int Range => _statModifier.ModifiedRange();
-    public int StartMana => _statModifier.ModifiedStartMana();
-    public int MaxMana => _statModifier.ModifiedMaxMana();
     public bool IsStunned => _statModifier.HasModifier(ModifierEnum.Stun);
     public bool IsWounded => _statModifier.HasModifier(ModifierEnum.Wound);
     public float DamageReductionPercent => _statModifier.SumModifier(ModifierEnum.DamageReduction);
 
     // ========================================== setter ==========================================
-    public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, BaseHP);
+    public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
 
     // This may conflict with "NO LOGIC", BUT since it was 4 line of code, it was allowed here.
     // Add mana but with additional logic for preventing mana to go above its capacity
     public bool AddMana(int amount)
     {
         int newMana = _currentMana + amount;
-        bool capped = newMana >= _maxMana;
+        bool capped = newMana >= MaxMana;
         _currentMana = capped ? 0 : newMana;
         return capped;
     }
@@ -70,21 +60,17 @@ public class Stat
 
     public Stat(HeroDataSO stat)
     {
-        _maxHP = stat.HP;
-        _attack = stat.Atk;
-        _defend = stat.DF;
-        _magic = stat.MG;
-        _magicResist = stat.MR;
-        _attackSpeed = stat.AttackSpeed;
-        _range = stat.Range;
-        _startMana = stat.StartMana;
-        _maxMana = stat.MaxMana;
+        _base[StatType.HP] = stat.HP;
+        _base[StatType.Atk] = stat.Atk;
+        _base[StatType.DF] = stat.DF;
+        _base[StatType.MG] = stat.MG;
+        _base[StatType.MR] = stat.MR;
+        _base[StatType.AttackSpeed] = stat.AttackSpeed;
+        _base[StatType.Range] = stat.Range;
+        _base[StatType.StartMana] = stat.StartMana;
+        _base[StatType.MaxMana] = stat.MaxMana;
 
-        _currentHP = _maxHP;
-        _currentMana = _startMana;
-
-        _statModifier = new StatModifier(this);
+        _currentHP = HP;
+        _currentMana = StartMana;
     }
-
-
 }

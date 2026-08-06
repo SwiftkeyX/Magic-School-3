@@ -110,7 +110,17 @@ Two tells that it's leaking:
 
 ### Fix — split by consumer, not by "who needs to share"
 
-- [ ] Introduce narrow interfaces, implemented by `Hero`:
+**DONE** — 2026-08-06. `.Blackboard.` call sites: **59 across 15 files → 47 across 12**.
+`SkillEffect.cs` and both UI bars are now entirely off that list. The states still go through
+the blackboard on purpose (per the `review-comments.md` decision) — they're the one consumer
+it was actually designed for.
+
+Verified with a live combat run: auto-attacks landed, heroes walked and attacked
+(so `MovementConfig` threads correctly), and Jhin's mana went 120 → capped → 20 with a Dummy
+taking 130 damage, which is the `SkillEffect` → `IDamageable` path proving itself end to end.
+No errors.
+
+- [x] Introduce narrow interfaces, implemented by `Hero`:
 
   ```csharp
   public interface IDamageable       // what SkillEffect needs
@@ -131,10 +141,31 @@ Two tells that it's leaking:
   `SkillEffect` then takes `List<IDamageable>` and stops knowing that heroes have blackboards,
   state machines, or hexes at all. This one change decouples the entire skill system from hero
   internals.
+  → Both live in `Hero/HeroInterface.cs`; `Hero` implements them. `SkillEffect.cs` no longer
+  mentions `Blackboard`, `Hero`, or `HeroStateType` anywhere.
 
-- [ ] Move `_moveSpeed` / `_walkCurve` / `_attackCurve` off the blackboard. They live there only
+  Two details worth remembering:
+  - `ApplyEffect` takes `IReadOnlyList<IDamageable>`, not `List<IDamageable>`. That interface is
+    **covariant**, so every existing caller keeps passing the `List<Hero>` it already had —
+    the whole switch cost zero changes in `LegacyAction`, `CircleAOE`, `ZoneAOE`,
+    `HomingProjectile`, and `Cast`.
+  - `IDamageable` exposes `IsAlive` rather than letting callers write `recipient == null`.
+    Once a recipient is typed as an interface, `==` is plain reference equality and Unity's
+    fake-null no longer applies, so a `== null` check would silently stop detecting destroyed
+    objects. This is the easy way to get a subtle bug out of an otherwise safe refactor.
+
+- [x] Move `_moveSpeed` / `_walkCurve` / `_attackCurve` off the blackboard. They live there only
   so `HeroWalk`/`HeroAttack` can reach them — that's animation config, not shared state. A
   `MovementConfig` struct passed to those two states removes three members and one whole concern.
+  → New `Hero/MovementConfig.cs` (readonly struct), built in `Hero.Init` and handed to
+  `HeroStateMachine`, which passes it to only the three states that move — `HeroIdle`,
+  `HeroWalk`, `HeroAttack`. `HeroDead` and `HeroStunned` never see it. The blackboard lost three
+  members and three constructor parameters.
+
+- [x] `FindEnemy` reaching back through `_me.Blackboard.Board` for the object that built it.
+  → It now holds `BattleBoard` directly, set via `FindEnemy.SetBoard()` from the blackboard's
+  own `SetBoard()`. It arrives by setter rather than constructor because the board doesn't
+  exist until `Preparation` wires it up, after `Hero.Init()` has already run.
 
 ---
 
@@ -279,7 +310,8 @@ built against the current `Blackboard` makes it more expensive to split later.
 2. [ ] Hoist Dead/Stunned interrupts into `HeroStateMachine` (removes 4x duplication)
 3. [ ] Rename `LegacyAction` -> `SkillAction`, flatten folders (pure readability)
 4. [ ] Split `BlackboardTemp` into `HeroVisuals` + `HeroSkillRuntime`
-5. [ ] Introduce `IDamageable`, cut the skill system loose from `Blackboard`
+5. [x] Introduce `IDamageable`, cut the skill system loose from `Blackboard`
+   — **done second**, see section 2
 6. [x] Collapse `Stat` / `StatModifier` / `HeroDataRuntime` into one data-driven stat block
    — **done first**, see section 1
 7. [ ] Move the reservation index onto `BattleBoard`

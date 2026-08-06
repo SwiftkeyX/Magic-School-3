@@ -1,8 +1,3 @@
-// Cooldown between attacks is 1 / AttackSpeed seconds. Each landed hit deals _me's Atk as
-// damage, grants ManaPerAttack mana, and plays a short dash-toward-and-back animation - same
-// Lerp + AnimationCurve approach as HeroWalk, but AttackCurve is a 0 -> 1 -> 0 hump so it
-// returns to the start instead of ending at the target. Re-checks every frame whether the
-// nearest enemy is still within Range, so a hero resumes moving as soon as that stops being true.
 using UnityEngine;
 
 public class HeroAttack : HeroState
@@ -19,7 +14,12 @@ public class HeroAttack : HeroState
     private Vector3 _dashPeak;
     private float _dashElapsed = -1f;
 
-    public HeroAttack(Hero hero, SkillSO skill) : base(hero, skill) { }
+    private readonly MovementConfig _movement;
+
+    public HeroAttack(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
+    {
+        _movement = movement;
+    }
 
     public override void OnEnter()
     {
@@ -115,7 +115,7 @@ public class HeroAttack : HeroState
 
         _dashElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_dashElapsed / DashDuration);
-        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _me.Blackboard.AttackCurve.Evaluate(t));
+        _me.transform.position = Vector3.Lerp(_dashStart, _dashPeak, _movement.AttackCurve.Evaluate(t));
 
         if (t >= 1f) _dashElapsed = -1f;
     }

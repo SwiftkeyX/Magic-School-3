@@ -29,10 +29,7 @@ public class Healthbar : MonoBehaviour
         if (_hero == null) _hero = GetComponentInParent<Hero>();
         transform.position = _hero.transform.position + _offset;
 
-        // CurrentHP/MaxHP only exist once Hero.Init() has run - skip otherwise. Checking
-        // IsInitialized instead of Application.isPlaying because a Hero open in Prefab Mode
-        // never gets Init() called even while Play mode is running elsewhere in the editor.
         if (_hero.IsInitialized)
-            _slider.value = (float)_hero.Blackboard.GetCurrentHP() / _hero.Blackboard.GetMaxHP();
+            _slider.value = (float)_hero.CurrentHP / _hero.MaxHP;   // ASKING: I thought you are going to use IStatReadout?
     }
 }

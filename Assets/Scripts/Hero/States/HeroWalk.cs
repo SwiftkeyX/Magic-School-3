@@ -13,14 +13,19 @@ public class HeroWalk : HeroState
     private float _duration;
     private float _elapsed;
 
-    public HeroWalk(Hero hero, SkillSO skill) : base(hero, skill) { }
+    private readonly MovementConfig _movement;
+
+    public HeroWalk(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
+    {
+        _movement = movement;
+    }
 
     public override void OnEnter()
     {
         _targetHex = _me.Blackboard.GetReservedHex();
         _start = _me.transform.position;
         _end = _targetHex.transform.position;
-        _duration = 1f / _me.Blackboard.MoveSpeed;
+        _duration = 1f / _movement.MoveSpeed;
         _elapsed = 0f;
     }
 
@@ -29,7 +34,7 @@ public class HeroWalk : HeroState
         // walk according the movement's curve
         _elapsed += Time.deltaTime;
         float t = Mathf.Clamp01(_elapsed / _duration);
-        _me.transform.position = Vector3.Lerp(_start, _end, _me.Blackboard.WalkCurve.Evaluate(t));
+        _me.transform.position = Vector3.Lerp(_start, _end, _movement.WalkCurve.Evaluate(t));
 
         CheckSwitchState();
     }

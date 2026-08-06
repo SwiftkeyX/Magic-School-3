@@ -5,7 +5,7 @@ using UnityEngine;
 /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
 /// 2) it act like a glue, which mean itself don't contain any real logic.
 /// </summary>
-public class Hero : MonoBehaviour
+public class Hero : MonoBehaviour, IDamageable, IStatReadout
 {
     // ======================================== Dependency ========================================
     private HeroDataSO _SOData;
@@ -27,16 +27,29 @@ public class Hero : MonoBehaviour
     public Team Team => _blackboard.Team;
     public HeroStateType State => _stateMachine.CurrentType;
     public HeroStateMachine StateMachine => _stateMachine;
-    public HeroStateMachineBlackBoard Blackboard => _blackboard;
+    public HeroStateMachineBlackBoard Blackboard => _blackboard;    // blackboard should be use from each state only. Not allow other to access via Hero. Get rid of this getter.
+
+    // ======================================== interface method ========================================
+    // === IDamageable ===
+    public void TakeDamage(int damage) => _blackboard.TakeDamage(damage);
+    public void Heal(float amount) => _blackboard.Heal(amount);
+    public void AddModifier(Modifier modifier) => _blackboard.AddModifier(modifier);
+    public bool IsAlive => this != null && IsInitialized && State != HeroStateType.Dead;
+
+    // === IStatReadout ===
+    public int CurrentHP => _blackboard.GetCurrentHP();
+    public int MaxHP => _blackboard.GetMaxHP();
+    public int CurrentMana => _blackboard.GetCurrentMana();
+    public int MaxMana => _blackboard.GetMaxMana();
 
     #region Life Cycle
     public void Init(HeroDataSO data)
     {
         _SOData = data;
         _runtimeData = new HeroDataRuntime(_SOData);
-        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>(), _moveSpeed, _walkCurve, _attackCurve);
+        _blackboard = new HeroStateMachineBlackBoard(this, _runtimeData, GetComponent<SpriteRenderer>());
         _skill = _SOData.Skill;
-        _stateMachine = new HeroStateMachine(this, _skill);
+        _stateMachine = new HeroStateMachine(this, _skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
     }
 
     void Start()

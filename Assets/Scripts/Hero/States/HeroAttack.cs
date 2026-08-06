@@ -79,13 +79,13 @@ public class HeroAttack : HeroState
         bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            _me.ChangeState(HeroStateType.Dead);
             return;
         }
 
         if (_me.IsStunned)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Stunned);
+            _me.ChangeState(HeroStateType.Stunned);
             return;
         }
 
@@ -93,7 +93,7 @@ public class HeroAttack : HeroState
         bool isEnemyInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
         if (!isEnemyInRange)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Idle);
+            _me.ChangeState(HeroStateType.Idle);
             return;
         }
     }

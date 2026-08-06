@@ -45,13 +45,13 @@ public class HeroWalk : HeroState
         bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            _me.ChangeState(HeroStateType.Dead);
             return;
         }
 
         if (_me.IsStunned)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Stunned);
+            _me.ChangeState(HeroStateType.Stunned);
             return;
         }
 
@@ -62,7 +62,7 @@ public class HeroWalk : HeroState
         {
             _me.transform.position = _end;
             _me.SetCurrentPlacement(_targetHex);
-            _me.StateMachine.ChangeState(HeroStateType.Idle);
+            _me.ChangeState(HeroStateType.Idle);
             return;
         }
     }

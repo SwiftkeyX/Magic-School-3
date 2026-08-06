@@ -36,13 +36,13 @@ public class HeroIdle : HeroState
         bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            _me.ChangeState(HeroStateType.Dead);
             return;
         }
 
         if (_me.IsStunned)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Stunned);
+            _me.ChangeState(HeroStateType.Stunned);
             return;
         }
 
@@ -56,7 +56,7 @@ public class HeroIdle : HeroState
         // If enemy is within attack range, stop moving, and transition to attack state
         if (IsEnemyInAttackRange(nearestEnemy))
         {
-            _me.StateMachine.ChangeState(HeroStateType.Attack);
+            _me.ChangeState(HeroStateType.Attack);
             return;
         }
 
@@ -78,7 +78,7 @@ public class HeroIdle : HeroState
 
         // Finally, I'll decide to walk
         _me.SetReservedHex(targetHex);
-        _me.StateMachine.ChangeState(HeroStateType.Walk);
+        _me.ChangeState(HeroStateType.Walk);
     }
 
 

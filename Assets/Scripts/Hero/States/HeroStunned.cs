@@ -22,13 +22,13 @@ public class HeroStunned : HeroState
         bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Dead);
+            _me.ChangeState(HeroStateType.Dead);
             return;
         }
 
         if (!_me.IsStunned)
         {
-            _me.StateMachine.ChangeState(HeroStateType.Idle);
+            _me.ChangeState(HeroStateType.Idle);
         }
     }
 }

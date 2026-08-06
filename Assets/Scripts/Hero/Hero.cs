@@ -34,10 +34,11 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     public bool IsInitialized => _runtimeData != null;
     public Team Team => _team;
     public HeroStateType State => _stateMachine.CurrentType;
-    // FIXNOW: Hero's pattern now let other to access its method mainly, then Hero will forward that method to the correct class. But Statemachine doesn't follow the same pattern.
-    public HeroStateMachine StateMachine => _stateMachine;
     public BattleBoard Board => _board;
     public bool IsDummy => _runtimeData.IsDummy;
+
+    // ======================================== state ========================================
+    public void ChangeState(HeroStateType next) => _stateMachine.ChangeState(next);
 
     // ======================================== visuals ========================================
     public void SetDeadVisual() => _visuals.SetDeadVisual();

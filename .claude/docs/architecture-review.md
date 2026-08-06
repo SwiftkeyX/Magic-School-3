@@ -256,6 +256,12 @@ Left as a `FIXLATER` on the class.
 
 ---
 
+- [x] **`Hero.StateMachine` was the last member breaking the flat-forward pattern.** Everything
+  else on `Hero` forwards a method; this one handed out the whole object, so states wrote
+  `_me.StateMachine.ChangeState(...)` — the `_me.SubObject.Method()` shape removed everywhere
+  else. Replaced with `Hero.ChangeState(HeroStateType)` across 12 call sites, and the getter is
+  gone: nothing outside the states ever used the machine, so `_stateMachine` is now fully private.
+
 ### Follow-up: which interfaces actually earn their keep
 
 Counted 2026-08-06, after all of the above. Usages **outside** `Hero`'s own declaration:

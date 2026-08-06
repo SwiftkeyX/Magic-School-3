@@ -16,7 +16,7 @@ public class HeroAttack : HeroState
 
     private readonly MovementConfig _movement;
 
-    public HeroAttack(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill, MovementConfig movement) : base(hero, blackboard, skill)
+    public HeroAttack(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
     {
         _movement = movement;
     }
@@ -30,17 +30,17 @@ public class HeroAttack : HeroState
     public override void OnExit()
     {
         // Snap back in case we leave Attack mid-dash, so the hero doesn't get left off-hex-center.
-        _me.transform.position = _blackboard.GetCurrentHex().transform.position;
+        _me.transform.position = _me.CurrentHex.transform.position;
     }
 
     public override void OnUpdate()
     {
-        _nearestEnemy = _blackboard.FindNearestEnemy();
+        _nearestEnemy = _me.FindNearestEnemy();
 
         // check if I have a target within range. if no, exit attack state
         CheckSwitchState();
 
-        bool isInRange = _nearestEnemy != null && _blackboard.GetCurrentHex().IsWithinRange(_nearestEnemy.CurrentHex, _blackboard.GetRange());
+        bool isInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
         if (!isInRange) return;
 
         // update aa timer
@@ -51,20 +51,20 @@ public class HeroAttack : HeroState
         if (isAaReset)
         {
             // apply damage to target
-            _nearestEnemy.TakeDamage(_blackboard.GetAttackDamage());
+            _nearestEnemy.TakeDamage(_me.AttackDamage);
 
             // after attack, gain mana
-            bool isManaCapped = _blackboard.GainMana(ManaPerAttack);
+            bool isManaCapped = _me.GainMana(ManaPerAttack);
 
             // if mana is full, trigger OnCast skill
             bool success = false;
-            if (_currentStep != null) _blackboard.Temp.TriggerSkill(_skill, _currentStep, isManaCapped);
+            if (_currentStep != null) _me.Temp.TriggerSkill(_skill, _currentStep, isManaCapped);
 
             // if skill cast is success, pop skill effect 
-            if (success) _blackboard.Temp.PlaySkillCastEffect("Skill Activated!");
+            if (success) _me.Temp.PlaySkillCastEffect("Skill Activated!");
 
             // aa is now on cooldown
-            _aaCooldown += 1f / _blackboard.GetAttackSpeed();
+            _aaCooldown += 1f / _me.AttackSpeed;
 
             // attack animation: dash toward the enemy, then back to where we started
             AttackAnimation();
@@ -77,21 +77,21 @@ public class HeroAttack : HeroState
     protected override void CheckSwitchState()
     {
         // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_blackboard.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
             return;
         }
 
-        if (_blackboard.IsStunned())
+        if (_me.IsStunned)
         {
             _me.StateMachine.ChangeState(HeroStateType.Stunned);
             return;
         }
 
         // If the enemy is no longer within attack range, transition to idle
-        bool isEnemyInRange = _nearestEnemy != null && _blackboard.GetCurrentHex().IsWithinRange(_nearestEnemy.CurrentHex, _blackboard.GetRange());
+        bool isEnemyInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
         if (!isEnemyInRange)
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);

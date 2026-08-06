@@ -15,14 +15,14 @@ public class HeroWalk : HeroState
 
     private readonly MovementConfig _movement;
 
-    public HeroWalk(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill, MovementConfig movement) : base(hero, blackboard, skill)
+    public HeroWalk(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
     {
         _movement = movement;
     }
 
     public override void OnEnter()
     {
-        _targetHex = _blackboard.GetReservedHex();
+        _targetHex = _me.ReservedHex;
         _start = _me.transform.position;
         _end = _targetHex.transform.position;
         _duration = 1f / _movement.MoveSpeed;
@@ -42,14 +42,14 @@ public class HeroWalk : HeroState
     protected override void CheckSwitchState()
     {
         // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_blackboard.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
             return;
         }
 
-        if (_blackboard.IsStunned())
+        if (_me.IsStunned)
         {
             _me.StateMachine.ChangeState(HeroStateType.Stunned);
             return;
@@ -61,7 +61,7 @@ public class HeroWalk : HeroState
         if (isWalkingFinished)
         {
             _me.transform.position = _end;
-            _blackboard.SetCurrentPlacement(_targetHex);
+            _me.SetCurrentPlacement(_targetHex);
             _me.StateMachine.ChangeState(HeroStateType.Idle);
             return;
         }

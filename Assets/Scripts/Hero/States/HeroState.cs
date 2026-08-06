@@ -1,14 +1,12 @@
 public abstract class HeroState
 {
-    protected readonly Hero _me;                                
-    protected readonly HeroStateMachineBlackBoard _blackboard;  
+    protected readonly Hero _me;
     protected readonly SkillSO _skill;
     protected SkillStep _currentStep;
 
-    protected HeroState(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill)
+    protected HeroState(Hero hero, SkillSO skill)
     {
         _me = hero;
-        _blackboard = blackboard;
         _skill = skill;
         // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned - they just never cast.
         _currentStep = (skill != null && skill.Steps.Count > 0) ? skill.Steps[0] : null;

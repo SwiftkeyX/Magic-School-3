@@ -1,18 +1,15 @@
-// Entered whenever a Status/Stun StatModifier is active (see Blackboard.IsStunned()). Does
-// nothing on OnUpdate, same shape as HeroDead, but it isn't terminal - the modifier's own
-// Remaining timer (ticked by Hero.Update()) expires it, and this state notices and leaves.
 using UnityEngine;
 
 public class HeroStunned : HeroState
 {
     public override HeroStateType StateType => HeroStateType.Stunned;
 
-    public HeroStunned(Hero hero, HeroStateMachineBlackBoard blackboard, SkillSO skill) : base(hero, blackboard, skill) { }
+    public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
 
     public override void OnExit()
     {
         // Snap back in case a stun landed mid-attack-dash, same reasoning as HeroAttack.OnExit.
-        _me.transform.position = _blackboard.GetCurrentHex().transform.position;
+        _me.transform.position = _me.CurrentHex.transform.position;
     }
 
     public override void OnUpdate()
@@ -22,14 +19,14 @@ public class HeroStunned : HeroState
 
     protected override void CheckSwitchState()
     {
-        bool isMeDead = (_blackboard.GetCurrentHP() <= 0);
+        bool isMeDead = (_me.CurrentHP <= 0);
         if (isMeDead)
         {
             _me.StateMachine.ChangeState(HeroStateType.Dead);
             return;
         }
 
-        if (!_blackboard.IsStunned())
+        if (!_me.IsStunned)
         {
             _me.StateMachine.ChangeState(HeroStateType.Idle);
         }

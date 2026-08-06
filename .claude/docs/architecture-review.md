@@ -180,6 +180,34 @@ No errors.
   `nearestEnemy.CurrentHex`, so one hero asking about another goes through the same narrow
   contract as any outside system.
 
+- [x] **Then delete `HeroStateMachineBlackBoard` outright.** Once the getter was gone, the
+  blackboard and `Hero` were visibly two classes doing the same job — both pure glue, both
+  forwarding, with no way to answer "how are these different?".
+
+  Its stated reason (in its own docstring) was "we don't want to pass Hero to the states,
+  since Hero contains additional unrelated data". The interfaces do that now, and better —
+  so the blackboard was a second mechanism for a solved problem, costing one extra forwarding
+  hop on every single access.
+
+  Folded into `Hero`; states hold `_me` only. The duplicate accessor pairs collapsed in the
+  process — `GetCurrentHP()`/`CurrentHP` and `GetMaxHP()`/`MaxHP` were the same value under
+  two names, and are now one each.
+
+  What it reads like at the call site:
+  ```csharp
+  // before
+  _nearestEnemy.Blackboard.TakeDamage(_me.Blackboard.GetAttackDamage());
+  // after
+  _nearestEnemy.TakeDamage(_me.AttackDamage);
+  ```
+
+  **Known trade-off, accepted deliberately:** the blackboard was a plain C# class, `Hero` is a
+  MonoBehaviour, so hero runtime state now lives inside a Unity component and can't be
+  constructed in a test without a GameObject. `Stat`, `StatModifier`, `HeroDataRuntime`,
+  `FindEnemy`, `CombatMath`, `HexPathfinder` and the state machine are all still plain classes,
+  so the testable core is largely intact — but `Hero` itself no longer is. Revisit if unit
+  tests ever arrive.
+
 - [x] `FindEnemy` reaching back through `_me.Blackboard.Board` for the object that built it.
   → It now holds `BattleBoard` directly, set via `FindEnemy.SetBoard()` from the blackboard's
   own `SetBoard()`. It arrives by setter rather than constructor because the board doesn't
@@ -190,6 +218,9 @@ No errors.
 ## 3. `BlackboardTemp` — the split is easy
 
 Already self-flagged as messy. It holds two unrelated things:
+
+Note: its name is now stale too — the "Blackboard" it was named after no longer exists.
+Renaming it is free to do as part of the split below.
 
 - [ ] **Sprite alpha + floating text** -> presentation. Wants to be a `HeroVisuals`
   MonoBehaviour on the prefab, where the VFX prefab can be wired in the Inspector instead of

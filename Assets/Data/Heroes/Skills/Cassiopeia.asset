@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
+      _templateAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
       _target: 2
       _size:
         size: 0

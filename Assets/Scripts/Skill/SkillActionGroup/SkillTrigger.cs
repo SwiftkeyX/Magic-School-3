@@ -16,10 +16,10 @@ public class SkillTrigger
         // Play every action in this step
         foreach (SkillActionGroup actionGroup in step.ActionGroups)
         {
-            // play legacy action - actionGroup.LegacyAction is the PREFAB, Spawn makes the instance
-            LegacyAction actionPrefab = actionGroup.LegacyAction;
+            // play template action - actionGroup.TemplateAction is the PREFAB, Spawn makes the instance
+            TemplateAction actionPrefab = actionGroup.TemplateAction;
 
-            LegacyAction.Spawn(actionPrefab, actionGroup.Source, actionGroup.Target, caster, actionGroup.Effects);
+            TemplateAction.Spawn(actionPrefab, actionGroup.Source, actionGroup.Target, caster, actionGroup.Effects);
 
             float castTime = actionPrefab.CastTime;
             if (castTime > maxCastTime) maxCastTime = castTime;

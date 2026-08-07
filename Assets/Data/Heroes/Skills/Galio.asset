@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
+      _templateAction: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
       _target: 0
       _size:
         size: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
   - _trigger: 2
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
+      _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 0
       _size:
         size: 1
@@ -50,6 +50,7 @@ MonoBehaviour:
         _cadence:
           isCadence: 1
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _modifier: 1
         _buffAmount: 150
         _buffDuration: 2
@@ -60,6 +61,7 @@ MonoBehaviour:
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _modifier: 2
         _buffAmount: 25
         _buffDuration: 2
@@ -70,6 +72,7 @@ MonoBehaviour:
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _damageAmount: 120
     - rid: 6645218084189896773
       type: {class: Circle, ns: , asm: Assembly-CSharp}
@@ -81,5 +84,6 @@ MonoBehaviour:
         _cadence:
           isCadence: 1
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _totalHealAmount: 200
         _duration: 2

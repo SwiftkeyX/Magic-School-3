@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Cast is the legacy action for instant self-effects (e.g. self-buffs).
+/// Cast is the template action for instant self-effects (e.g. self-buffs).
 /// No hitbox, no physical footprint - it applies its effects to the caster and is done.
 /// e.g. Galio's Idol of Durand step 1.
 /// </summary>
-public class Cast : LegacyAction
+public class Cast : TemplateAction
 {
     // FIXLATER: Cast always applies to the caster (for now)
     protected override void ResolveSource(ActionSourceEnum source)
@@ -18,7 +18,7 @@ public class Cast : LegacyAction
 
     protected override Vector3 GetSpawnPosition() => _source;
 
-    protected override void PlayLegacyAction()
+    protected override void Play()
     {
         // initialize local variable
         List<Hero> self = new List<Hero> { _me };

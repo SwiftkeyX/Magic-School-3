@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class LegacyAction : MonoBehaviour
+public abstract class TemplateAction : MonoBehaviour
 {
     [SerializeField] protected float _castTime;                 // the duration skill was cast
     protected Hero _me;
@@ -17,14 +17,14 @@ public abstract class LegacyAction : MonoBehaviour
     public float CastTime => _castTime;
 
     // ==================================== spawn ====================================
-    // Static on purpose: the prefab is an argument, not `this`. _legacyAction fields are prefab
+    // Static on purpose: the prefab is an argument, not `this`. _templateAction fields are prefab
     // references, not live scene objects, and every resolve/spawn step below runs on the
     // instantiated copy - so nothing here can be mistaken for something the prefab itself does.
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public static void Spawn(LegacyAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
+    public static void Spawn(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
     {
-        LegacyAction instance = Instantiate(prefab);
+        TemplateAction instance = Instantiate(prefab);
         instance.Init(caster, effects);
 
         // find position using source/aim enum
@@ -44,7 +44,7 @@ public abstract class LegacyAction : MonoBehaviour
         }
 
         instance.transform.position = instance.GetSpawnPosition();
-        instance.PlayLegacyAction();
+        instance.Play();
     }
 
     private void Init(Hero caster, List<SkillEffect> effects)
@@ -55,7 +55,7 @@ public abstract class LegacyAction : MonoBehaviour
 
 
     // ==================================== abstract method ====================================
-    // Each legacy action child have a dirrent way to resolve how their skill was spawn/aim at.
+    // Each template action child have a dirrent way to resolve how their skill was spawn/aim at.
     // read ResolveSource&ResolveAimTarget in each different's child for more detail
     protected abstract void ResolveSource(ActionSourceEnum source);
 
@@ -67,7 +67,7 @@ public abstract class LegacyAction : MonoBehaviour
     // a projectile spawns at its source and travels from there.
     protected abstract Vector3 GetSpawnPosition();
 
-    protected abstract void PlayLegacyAction();
+    protected abstract void Play();
 
 
     // ==================================== Hitbox ====================================
@@ -98,9 +98,9 @@ public abstract class LegacyAction : MonoBehaviour
         }
     }
 
-    // Cadence Tick are use by several legacy action
+    // Cadence Tick are use by several template action
     // so we unified thing by move it here. 
-    // FIXLATER: But it should be move later since not all legacy action need it.
+    // FIXLATER: But it should be move later since not all template action need it.
     protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
     {
         WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

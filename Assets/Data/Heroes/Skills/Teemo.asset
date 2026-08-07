@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
+      _templateAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
       _target: 1
       _size:
         size: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
   - _trigger: 2
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
+      _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 1
       _size:
         size: 1

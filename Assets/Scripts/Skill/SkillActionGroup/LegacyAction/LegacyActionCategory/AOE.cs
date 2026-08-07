@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// AOE type for LegacyAction
+/// AOE type for TemplateAction
 /// </summary>
-public abstract class AOE : LegacyAction
+public abstract class AOE : TemplateAction
 {
     // ======================================= protected =======================================
     /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"

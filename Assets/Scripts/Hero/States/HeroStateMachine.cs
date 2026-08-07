@@ -6,8 +6,6 @@ namespace MagicSchool
     /// </summary>
     public class HeroStateMachine
     {
-        // FLAGGING: I think this add too much coupling, no? having Hero, mean this class can do anything now. It shouldn't know about Hero.
-        // Maybe this is a good point of using interface? Let's leave it for now, we still don't see enough pattern to implement it.
         private readonly Hero _me;
 
         private readonly HeroIdle _idle;

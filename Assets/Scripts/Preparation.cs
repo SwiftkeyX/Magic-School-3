@@ -32,10 +32,7 @@ namespace MagicSchool
         {
             GameObject heroPrefab = Instantiate(data.Prefab);
             Hero hero = heroPrefab.GetComponent<Hero>();
-            hero.Init(data);        // ASKING: why is here have 2 init for Hero. 
-
-            // init hero by assigning their team, and give correct board reference to them
-            HeroInit(hero, team);
+            hero.Init(data, _board, team);
 
             // move them
             MoveThisHeroInPreParationState(hero, placement);
@@ -55,12 +52,6 @@ namespace MagicSchool
                 HexNumber placement = heroPlacement.hexPlacement;
                 SpawnHero(data, placement.team, _board.Hexs[placement]);
             }
-        }
-
-        private void HeroInit(Hero hero, Team team)
-        {
-            hero.SetBoard(_board);
-            hero.SetTeam(team);
         }
 
         public void MoveThisHeroInPreParationState(Hero hero, Placement placement)

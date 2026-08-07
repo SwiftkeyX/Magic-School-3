@@ -103,24 +103,19 @@ namespace MagicSchool
         public Hero FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
 
 
-        // ======================================== setup wiring ========================================
-        public void SetBoard(BattleBoard board)
-        {
-            _board = board;
-            _findEnemy.SetBoard(board);     // UNSURE: This is kinda awkward. I want findEnemy to use the exact same ref to battle board. (SingleSourceTruth)
-        }
-
-        public void SetTeam(Team team) => _team = team;
-
         // ======================================== life cycle ========================================
         #region Life Cycle
-        public void Init(HeroDataSO data)
+        // Give everything a hero needs to exist, in one call. 
+        public void Init(HeroDataSO data, BattleBoard board, Team team)
         {
             _SOData = data;
+            _board = board;
+            _team = team;
+
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
             _skillRuntime = new HeroSkillRuntime(this, _SOData.Skill);
-            _findEnemy = new FindEnemy(this, _runtimeData);
+            _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _stateMachine = new HeroStateMachine(this, _SOData.Skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }
 

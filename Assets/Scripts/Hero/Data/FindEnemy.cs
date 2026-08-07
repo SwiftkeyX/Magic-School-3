@@ -11,7 +11,7 @@ namespace MagicSchool
 
         private readonly Hero _me;
         private readonly HeroDataRuntime _runtimeData;
-        private BattleBoard _board;
+        private readonly BattleBoard _board;
 
         private List<Hero> _enemyBFSCache;
         private int _enemyBFSCacheFrame = -1;
@@ -19,13 +19,12 @@ namespace MagicSchool
         private List<(Hero target, float dist)> _enemyDistanceCache;
         private int _enemyDistanceCacheFrame = -1;
 
-        public FindEnemy(Hero me, HeroDataRuntime runtimeData)
+        public FindEnemy(Hero me, HeroDataRuntime runtimeData, BattleBoard board)
         {
             _me = me;
             _runtimeData = runtimeData;
+            _board = board;
         }
-
-        public void SetBoard(BattleBoard board) => _board = board;
 
         // Picks nearest enemy (if there are several nearest enemies, random it).
         public Hero FindNearestEnemy()

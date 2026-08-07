@@ -5,6 +5,9 @@ namespace MagicSchool
     // <summary>
     // In Preparation state, it have so many function that alike to Combat state which cause a lot of confusion.
     // So we make a new script just for this state.
+    // ASKING: I think preparation and battleboard are actually the same class. they got separate to reduce the complexity BUT
+    // it's not working since they both kinda work for the same purpose "to manage the Board".
+    // Separating them acutally make the reader confused which responsibility should belonged to.
     // </summary>
     public class Preparation : MonoBehaviour
     {
@@ -29,7 +32,7 @@ namespace MagicSchool
         {
             GameObject heroPrefab = Instantiate(data.Prefab);
             Hero hero = heroPrefab.GetComponent<Hero>();
-            hero.Init(data);
+            hero.Init(data);        // ASKING: why is here have 2 init for Hero. 
 
             // init hero by assigning their team, and give correct board reference to them
             HeroInit(hero, team);
@@ -49,7 +52,7 @@ namespace MagicSchool
             foreach (var heroPlacement in _placementSO.HeroesPlacement)
             {
                 HeroDataSO data = heroPlacement.dataSO;
-                HexPlacement placement = heroPlacement.hexPlacement;
+                HexNumber placement = heroPlacement.hexPlacement;
                 SpawnHero(data, placement.team, _board.Hexs[placement]);
             }
         }

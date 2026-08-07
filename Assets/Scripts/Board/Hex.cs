@@ -8,7 +8,7 @@ namespace MagicSchool
         private BattleBoard _board;
         // neighbors hex of this hex - to give the hex available for pathfinding logic
         private List<Hex> _neighbors;
-        private HexPlacement _hexPlacement;
+        private HexNumber _hexPlacement;
 
         // ========================== getter & setter ==========================
         public string Name => gameObject.name;
@@ -22,7 +22,7 @@ namespace MagicSchool
         #endregion
 
         #region Setup
-        public void Init(BattleBoard board, HexPlacement hexPlacement)
+        public void Init(BattleBoard board, HexNumber hexPlacement)
         {
             _board = board;
             _hexPlacement = hexPlacement;

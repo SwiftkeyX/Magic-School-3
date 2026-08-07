@@ -8,18 +8,14 @@ namespace MagicSchool
     {
         // ======================== Runtime data ============================
         // track every hex
-        private Dictionary<HexPlacement, Hex> _hexs = new Dictionary<HexPlacement, Hex>();
+        private Dictionary<HexNumber, Hex> _hexs = new Dictionary<HexNumber, Hex>();
 
         // track every hero on the battle board
         private List<Hero> _heroesOnBoard = new List<Hero>();
-
-        // Reverse lookup of Hero.ReservedHex: which hero has claimed which hex.
-        // The hero's own field stays the source of truth for "which hex did I claim" - this only
-        // answers the opposite question, "who claimed this hex", without scanning the roster.
         private Dictionary<Hex, Hero> _reservedBy = new Dictionary<Hex, Hero>();
 
         // ======================== Setter & Getter ========================
-        public IReadOnlyDictionary<HexPlacement, Hex> Hexs => _hexs;
+        public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
         public IReadOnlyList<Hero> HeroesOnBoard => _heroesOnBoard;
 
         void Awake()
@@ -48,7 +44,7 @@ namespace MagicSchool
                     int rowIndex = 0;
                     foreach (var hex in sortedRows)
                     {
-                        HexPlacement hexKey = new HexPlacement(side, columnIndex, rowIndex);
+                        HexNumber hexKey = new HexNumber(side, columnIndex, rowIndex);
                         _hexs[hexKey] = hex;
                         hex.Init(this, hexKey);
                         rowIndex++;
@@ -85,23 +81,21 @@ namespace MagicSchool
         }
 
         // Who currently holds this hex, or null if it's free.
-        public Hero ReserverOf(Hex hex)
+        // FIXNOW: The Hero shouldn't public the board. and let HeroIdle access board directly.
+        public Hero WhoReservedThisHex(Hex hex)
         {
             if (hex == null || !_reservedBy.TryGetValue(hex, out Hero hero)) return null;
 
-            // Destroyed heroes shouldn't hold a hex either - `hero == null` is Unity's fake-null,
-            // so this catches a destroyed GameObject before we touch a member on it.
             if (hero == null) return null;
 
-            // Dead heroes don't hold their hex - otherwise a corpse would block that hex forever.
-            // Filtered on read rather than cleared on death, so nothing has to hook the transition.
             return hero.StateType == HeroStateType.Dead ? null : hero;
         }
 
         // "Is this hex taken by someone other than me?"
+        // FIXNOW: The Hero shouldn't public the board. and let HeroIdle access board directly.
         public bool IsReservedByOther(Hex hex, Hero asker)
         {
-            Hero reserver = ReserverOf(hex);
+            Hero reserver = WhoReservedThisHex(hex);
             return reserver != null && reserver != asker;
         }
     }

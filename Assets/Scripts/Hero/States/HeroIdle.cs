@@ -84,7 +84,7 @@ namespace MagicSchool
         {
             foreach (var neighbor in _me.CurrentHex.GetNeighbors())
             {
-                Hero reserver = _me.Board.ReserverOf(neighbor);
+                Hero reserver = _me.Board.WhoReservedThisHex(neighbor);
                 if (reserver != null && reserver.Team != _me.Team) return true;
             }
 
@@ -124,7 +124,7 @@ namespace MagicSchool
                 float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
                 if (neighborDist >= distFromMeToEnemy) continue;
 
-                Hero occupant = _me.Board.ReserverOf(neighbor);
+                Hero occupant = _me.Board.WhoReservedThisHex(neighbor);
                 if (occupant != null && occupant != _me && occupant.StateType != HeroStateType.Attack) return true;
             }
 

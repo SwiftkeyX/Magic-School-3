@@ -3,13 +3,13 @@ using System;
 namespace MagicSchool
 {
     [Serializable]
-    public struct HexPlacement
+    public struct HexNumber
     {
         public Team team;
         public int column;
         public int row;
 
-        public HexPlacement(Team team, int column, int row)
+        public HexNumber(Team team, int column, int row)
         {
             this.team = team;
             this.column = column;
@@ -21,9 +21,9 @@ namespace MagicSchool
     public struct HeroPlacement
     {
         public HeroDataSO dataSO;
-        public HexPlacement hexPlacement;
+        public HexNumber hexPlacement;
 
-        public HeroPlacement(HeroDataSO data, HexPlacement hexPlacement)
+        public HeroPlacement(HeroDataSO data, HexNumber hexPlacement)
         {
             this.dataSO = data;
             this.hexPlacement = hexPlacement;

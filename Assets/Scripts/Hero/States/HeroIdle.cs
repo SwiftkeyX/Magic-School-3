@@ -73,9 +73,16 @@ public class HeroIdle : HeroState
         return _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
     }
 
+    // check if my neighbor was reserved by enemy
     private bool IsEnemyArrivingNextToMe()
     {
-        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.StateType != HeroStateType.Dead && _me.CurrentHex.IsAdjacentTo(h.ReservedHex));
+        foreach (var neighbor in _me.CurrentHex.GetNeighbors())
+        {
+            Hero reserver = _me.Board.ReserverOf(neighbor);
+            if (reserver != null && reserver.Team != _me.Team) return true;
+        }
+
+        return false;
     }
 
     private HashSet<Hex> ReservedHexes()

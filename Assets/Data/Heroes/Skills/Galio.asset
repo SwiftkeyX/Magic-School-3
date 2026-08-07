@@ -44,7 +44,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 6645218046250844234
-      type: {class: BuffSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: BuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 0
         _cadence:
@@ -55,7 +55,7 @@ MonoBehaviour:
         _buffAmount: 150
         _buffDuration: 2
     - rid: 6645218046250844235
-      type: {class: BuffSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: BuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 0
         _cadence:
@@ -66,7 +66,7 @@ MonoBehaviour:
         _buffAmount: 25
         _buffDuration: 2
     - rid: 6645218046250844236
-      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:
@@ -75,10 +75,10 @@ MonoBehaviour:
           cadenceDuration: 3
         _damageAmount: 120
     - rid: 6645218084189896773
-      type: {class: Circle, ns: , asm: Assembly-CSharp}
+      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
       data: 
     - rid: 6645218084189896774
-      type: {class: HealSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: HealSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 0
         _cadence:

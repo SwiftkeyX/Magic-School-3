@@ -1,1 +1,4 @@
-public enum HeroStateType { Idle, Walk, Attack, Dead, Stunned }
+namespace MagicSchool
+{
+    public enum HeroStateType { Idle, Walk, Attack, Dead, Stunned }
+}

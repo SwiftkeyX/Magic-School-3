@@ -31,7 +31,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 1571255008676544584
-      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 3
         _cadence:

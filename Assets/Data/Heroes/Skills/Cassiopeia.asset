@@ -30,10 +30,10 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1571255008676544581
-      type: {class: Box, ns: , asm: Assembly-CSharp}
+      type: {class: Box, ns: MagicSchool, asm: Assembly-CSharp}
       data: 
     - rid: 1571255008676544582
-      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 2
         _cadence:
@@ -42,7 +42,7 @@ MonoBehaviour:
           cadenceDuration: 3
         _damageAmount: 1000
     - rid: 1571255008676544583
-      type: {class: DebuffSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: DebuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 2
         _cadence:

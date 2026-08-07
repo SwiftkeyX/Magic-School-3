@@ -42,10 +42,10 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 6645218084189896775
-      type: {class: Circle, ns: , asm: Assembly-CSharp}
+      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
       data: 
     - rid: 6645218084189896776
-      type: {class: StatusSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: StatusSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:
@@ -56,7 +56,7 @@ MonoBehaviour:
         _statusAmount: 0
         _statusDuration: 3
     - rid: 6645218084189896777
-      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:

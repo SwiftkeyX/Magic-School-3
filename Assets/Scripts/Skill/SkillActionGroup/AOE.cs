@@ -1,43 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// AOE type for TemplateAction
-/// </summary>
-public abstract class AOE : TemplateAction
+namespace MagicSchool
 {
-    // ======================================= protected =======================================
-    /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
-    protected override void ResolveSource(ActionSourceEnum source)
+    /// <summary>
+    /// AOE type for TemplateAction
+    /// </summary>
+    public abstract class AOE : TemplateAction
     {
-        _source = _me.transform.position;
-    }
-
-    /// aim = where the AOE spawn. 
-    /// if not target was found, return (don't use skill yet if target not found)
-    protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
-    {
-        // aim skill at self
-        if (aimTarget == AimTargetEnum.Self)
+        // ======================================= protected =======================================
+        /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
+        protected override void ResolveSource(ActionSourceEnum source)
         {
-            _aimTarget = _me.transform.position;
+            _source = _me.transform.position;
         }
 
-        // aim skill at current target
-        else if (aimTarget == AimTargetEnum.Current)
+        /// aim = where the AOE spawn. 
+        /// if not target was found, return (don't use skill yet if target not found)
+        protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
         {
-            Hero target = _me.FindNearestEnemy();
-            if (target == null) return false;
-            _aimTarget = target.transform.position;
+            // aim skill at self
+            if (aimTarget == AimTargetEnum.Self)
+            {
+                _aimTarget = _me.transform.position;
+            }
+
+            // aim skill at current target
+            else if (aimTarget == AimTargetEnum.Current)
+            {
+                Hero target = _me.FindNearestEnemy();
+                if (target == null) return false;
+                _aimTarget = target.transform.position;
+            }
+
+            // else if () ...
+
+            // fallback
+            else _aimTarget = _me.transform.position;
+
+            return true;
         }
 
-        // else if () ...
-
-        // fallback
-        else _aimTarget = _me.transform.position;
-
-        return true;
+        protected override Vector3 GetSpawnPosition() => _aimTarget;
     }
-
-    protected override Vector3 GetSpawnPosition() => _aimTarget;
 }

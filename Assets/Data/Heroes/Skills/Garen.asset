@@ -29,7 +29,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 6645218026192633927
-      type: {class: AttackSkillEffect, ns: , asm: Assembly-CSharp}
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:
@@ -38,5 +38,5 @@ MonoBehaviour:
           cadenceDuration: 3
         _damageAmount: 80
     - rid: 6645218046250844232
-      type: {class: Circle, ns: , asm: Assembly-CSharp}
+      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
       data: 

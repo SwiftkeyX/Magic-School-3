@@ -1,35 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// World-space health bar
-// ExecuteAlways lets the offset be tweaked live in edit mode / Prefab Mode, without entering Play mode.
-[ExecuteAlways]
-public class Healthbar : MonoBehaviour
+namespace MagicSchool
 {
-    [SerializeField] private Slider _slider;
-    [SerializeField] private Vector3 _offset = new Vector3(0f, 1f, 0f);
-    private Image _image;
-    private Hero _hero;
-
-    void Awake()
+    // World-space health bar
+    // ExecuteAlways lets the offset be tweaked live in edit mode / Prefab Mode, without entering Play mode.
+    [ExecuteAlways]
+    public class Healthbar : MonoBehaviour
     {
-        _hero = GetComponentInParent<Hero>();
-        _image = _slider.fillRect.GetComponent<Image>();
-    }
+        [SerializeField] private Slider _slider;
+        [SerializeField] private Vector3 _offset = new Vector3(0f, 1f, 0f);
+        private Image _image;
+        private Hero _hero;
 
-    void Start()
-    {
-        if (_hero.Team == Team.Blue) _image.color = Color.green;
-        
-        else if (_hero.Team == Team.Red) _image.color = Color.red;
-    }
+        void Awake()
+        {
+            _hero = GetComponentInParent<Hero>();
+            _image = _slider.fillRect.GetComponent<Image>();
+        }
 
-    void LateUpdate()
-    {
-        if (_hero == null) _hero = GetComponentInParent<Hero>();
-        transform.position = _hero.transform.position + _offset;
+        void Start()
+        {
+            if (_hero.Team == Team.Blue) _image.color = Color.green;
 
-        if (_hero.IsInitialized)
-            _slider.value = (float)_hero.CurrentHP / _hero.MaxHP; 
+            else if (_hero.Team == Team.Red) _image.color = Color.red;
+        }
+
+        void LateUpdate()
+        {
+            if (_hero == null) _hero = GetComponentInParent<Hero>();
+            transform.position = _hero.transform.position + _offset;
+
+            if (_hero.IsInitialized)
+                _slider.value = (float)_hero.CurrentHP / _hero.MaxHP; 
+        }
     }
 }

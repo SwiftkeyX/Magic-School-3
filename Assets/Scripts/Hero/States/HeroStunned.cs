@@ -1,24 +1,27 @@
 using UnityEngine;
 
-public class HeroStunned : HeroState
+namespace MagicSchool
 {
-    public override HeroStateType StateType => HeroStateType.Stunned;
-
-    public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
-
-    public override void OnExit()
+    public class HeroStunned : HeroState
     {
-        // Snap back in case a stun landed mid-attack-dash, same reasoning as HeroAttack.OnExit.
-        _me.transform.position = _me.CurrentHex.transform.position;
-    }
+        public override HeroStateType StateType => HeroStateType.Stunned;
 
-    public override void OnUpdate()
-    {
-        CheckSwitchState();
-    }
+        public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
 
-    protected override void CheckSwitchState()
-    {
-        if (!_me.IsStunned) _me.ChangeState(HeroStateType.Idle);
+        public override void OnExit()
+        {
+            // Snap back in case a stun landed mid-attack-dash, same reasoning as HeroAttack.OnExit.
+            _me.transform.position = _me.CurrentHex.transform.position;
+        }
+
+        public override void OnUpdate()
+        {
+            CheckSwitchState();
+        }
+
+        protected override void CheckSwitchState()
+        {
+            if (!_me.IsStunned) _me.ChangeState(HeroStateType.Idle);
+        }
     }
 }

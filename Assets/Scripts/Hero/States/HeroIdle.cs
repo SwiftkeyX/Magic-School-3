@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using UnityEngine;
 
 // Looks for a reason to stop being idle: an adjacent enemy to attack, or a valid step
@@ -15,9 +14,14 @@ public class HeroIdle : HeroState
 
     private readonly MovementConfig _movement;
 
+    private readonly Func<Hex, bool> _isHexBlocked;
+
     public HeroIdle(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
     {
         _movement = movement;
+
+        // init func: to ask if this "hex" is reserved by me
+        _isHexBlocked = hex => _me.Board.IsReservedByOther(hex, _me);
     }
 
     public override void OnEnter()
@@ -53,7 +57,7 @@ public class HeroIdle : HeroState
         }
 
         // Find next hex that could lead this hero to nearest enemy
-        Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, ReservedHexes());
+        Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, _isHexBlocked);
         if (targetHex == null) return;
 
         // Do I wait for the blocker to move? (Read function's comment)
@@ -83,12 +87,6 @@ public class HeroIdle : HeroState
         }
 
         return false;
-    }
-
-    private HashSet<Hex> ReservedHexes()
-    {
-        // Dead heroes don't hold their hex - otherwise a corpse would block that hex forever.
-        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me && h.StateType != HeroStateType.Dead).Select(h => h.ReservedHex));
     }
 
     /// <summary>
@@ -124,8 +122,8 @@ public class HeroIdle : HeroState
             float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
             if (neighborDist >= distFromMeToEnemy) continue;
 
-            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.StateType != HeroStateType.Dead && h.ReservedHex == neighbor);
-            if (occupant != null && occupant.StateType != HeroStateType.Attack) return true;
+            Hero occupant = _me.Board.ReserverOf(neighbor);
+            if (occupant != null && occupant != _me && occupant.StateType != HeroStateType.Attack) return true;
         }
 
         return false;

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Finds the shortest unoccupied route between hexes on the board, via A* search.
+// Finds the next step along the shortest unoccupied route between hexes, via A* search.
 public static class HexPathfinder
 {
     // The largest possible Euclidean distance between two adjacent hexes (matches the
@@ -10,29 +11,22 @@ public static class HexPathfinder
     // admissible - it never overestimates the true number of hex-hops remaining.
     private const float MaxHexStepDistance = 1.15f;
 
-    // Finds the best next hex for startHex to move to on its way toward any hex adjacent
-    // to targetHex, via A* search over the hex grid. Compared to plain BFS, the
-    // Euclidean-distance heuristic breaks ties between equally-short routes in favor of
-    // the one that actually heads toward the target, instead of whichever route happens
-    // to be discovered first - which could otherwise be a same-length detour that doubles
-    // back through the mover's own territory when the direct hexes are occupied.
+    // Returns ONE step from startHex toward any hex adjacent to targetHex, not the whole route.
+    // Null means the target is fully boxed in - no free hex adjacent to it.
     //
-    // Always returns the real next step along the shortest route, even when that step
-    // doesn't look like local progress (e.g. a necessary detour around a permanently
-    // blocked hex has to start by moving sideways or backward before curving toward the
-    // goal). Whether that step is worth taking immediately versus waiting a moment for
-    // contention to clear is a timing judgment call, not a pathfinding one - callers that
-    // want a grace period before committing to a non-improving step should apply it
-    // themselves.
+    // isHexBlocked: is this hex claimed by someone other than the mover? Hex doesn't track
+    // occupancy itself, so the caller owns that.
     //
-    // reservedHexes is the set of hexes currently claimed by other heroes (Hex itself
-    // doesn't track occupancy - the caller supplies it from Hero.ReservedHex).
+    // A* rather than BFS so equally-short routes tie-break toward the target, instead of by
+    // whichever was found first - which can double back through the mover's own side.
     //
-    // Returns null only when there is no unreserved hex adjacent to the target at all
-    // (e.g. the target is fully boxed in by other heroes).
-    public static Hex FindValidHexToTarget(Hex startHex, Hex targetHex, HashSet<Hex> reservedHexes)
+    // The step returned is the real one even when it doesn't look like progress: routing around
+    // a blocked hex can start sideways or backward. Whether to take it now or wait for the
+    // contention to clear is timing, not pathfinding, so that's the caller's call.
+    public static Hex FindValidHexToTarget(Hex startHex, Hex targetHex, Func<Hex, bool> isHexBlocked)
     {
-        var goalHexes = new HashSet<Hex>(targetHex.GetNeighbors().Where(h => !reservedHexes.Contains(h)));
+        // find empty hex from the neighbors. (empty hex = hex that no hero reserved it) 
+        var goalHexes = new HashSet<Hex>(targetHex.GetNeighbors().Where(h => !isHexBlocked(h)));
         if (goalHexes.Count == 0) return null;
 
         float Heuristic(Hex h) => goalHexes.Min(g => Vector3.Distance(h.transform.position, g.transform.position)) / MaxHexStepDistance;
@@ -60,7 +54,7 @@ public static class HexPathfinder
 
             foreach (var neighbor in current.GetNeighbors())
             {
-                if (closed.Contains(neighbor) || reservedHexes.Contains(neighbor)) continue;
+                if (closed.Contains(neighbor) || isHexBlocked(neighbor)) continue;
 
                 int tentativeG = gScore[current] + 1;
                 if (gScore.TryGetValue(neighbor, out int existingG) && tentativeG >= existingG) continue;

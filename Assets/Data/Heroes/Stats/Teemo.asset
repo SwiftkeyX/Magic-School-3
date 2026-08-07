@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Teemo
   m_EditorClassIdentifier: Assembly-CSharp::HeroStat
-  _prefab: {fileID: 8729075628341993162, guid: 9cd5a6de2d0d3a6418f71456a9e8f54f, type: 3}
+  _prefab: {fileID: 182412447273031416, guid: 9cd5a6de2d0d3a6418f71456a9e8f54f, type: 3}
   _name: Teemo
   _hp: 500
   _attack: 40
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 40
   _maxMana: 50
   _skill: {fileID: 11400000, guid: 1705e27055a63c349a89217638a0032a, type: 2}
+  _isDummy: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Cleric
   m_EditorClassIdentifier: Assembly-CSharp::HeroStat
-  _prefab: {fileID: 8729075628341993162, guid: 7b1014693b7c4524880a7442bc46160e, type: 3}
+  _prefab: {fileID: 4139366583230113259, guid: 7b1014693b7c4524880a7442bc46160e, type: 3}
   _name: Cleric
   _hp: 420
   _attack: 25
@@ -23,3 +23,5 @@ MonoBehaviour:
   _range: 3
   _startMana: 30
   _maxMana: 45
+  _skill: {fileID: 0}
+  _isDummy: 0

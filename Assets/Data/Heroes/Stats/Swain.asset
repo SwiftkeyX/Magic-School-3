@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Swain
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 1833073233318278529, guid: 516b1a1174c6db046b4e49b084bfc79b, type: 3}
+  _prefab: {fileID: 1843579377170680441, guid: 516b1a1174c6db046b4e49b084bfc79b, type: 3}
   _name: Swain
   _hp: 600
   _attack: 40
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 0
   _maxMana: 50
   _skill: {fileID: 11400000, guid: e6288aa6ddde91e4ea10fb4d16f0345e, type: 2}
+  _isDummy: 0

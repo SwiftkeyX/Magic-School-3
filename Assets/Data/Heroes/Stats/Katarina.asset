@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Katarina
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 5928691137087251854, guid: b12589b9ffbd68c4c967275c71ca3aa5, type: 3}
+  _prefab: {fileID: 5274905518415144978, guid: b12589b9ffbd68c4c967275c71ca3aa5, type: 3}
   _name: Katarina
   _hp: 550
   _attack: 65
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 0
   _maxMana: 50
   _skill: {fileID: 11400000, guid: 0790135b6c653c7449b5d28df8222e1b, type: 2}
+  _isDummy: 0

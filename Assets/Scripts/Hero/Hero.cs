@@ -108,7 +108,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     {
         _SOData = data;
         _runtimeData = new HeroDataRuntime(_SOData);
-        _visuals = new HeroVisuals(this, GetComponent<SpriteRenderer>());
+        _visuals = GetComponent<HeroVisuals>();
         _skillRuntime = new HeroSkillRuntime(this, _SOData.Skill);
         _findEnemy = new FindEnemy(this, _runtimeData);
         _stateMachine = new HeroStateMachine(this, _SOData.Skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

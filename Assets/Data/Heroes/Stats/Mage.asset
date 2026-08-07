@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: Assembly-CSharp::HeroStat
-  _prefab: {fileID: 8729075628341993162, guid: 1fbc7a4730286994a9a483afc843f92a, type: 3}
+  _prefab: {fileID: 8728253020121698767, guid: 1fbc7a4730286994a9a483afc843f92a, type: 3}
   _name: Mage
   _hp: 350
   _attack: 30
@@ -23,3 +23,5 @@ MonoBehaviour:
   _range: 5
   _startMana: 20
   _maxMana: 40
+  _skill: {fileID: 0}
+  _isDummy: 0

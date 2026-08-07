@@ -229,9 +229,9 @@ Renaming it is free to do as part of the split below.
 - [x] **Sprite alpha + floating text** -> presentation. Wants to be a `HeroVisuals`
   MonoBehaviour on the prefab, where the VFX prefab can be wired in the Inspector instead of
   `Resources.Load` (legacy API, and the `static` cache is shared across all heroes).
-  → Split into `HeroVisuals`, but kept as a **plain class, not a MonoBehaviour** — see the
-  prefab note below. The `static` cache is fine as-is: it's one immutable prefab reference,
-  not per-hero state.
+  → Split into `HeroVisuals`, initially kept as a **plain class, not a MonoBehaviour** — see the
+  prefab note below. **Superseded 2026-08-07:** once the prefabs became variants it became a
+  MonoBehaviour after all, and the `static` cache went away with `Resources.Load`.
 - [x] **`SkillTrigger`** -> *not* temporary. It's the hero's per-cast skill progress, permanent
   runtime state. Belongs in a `HeroSkillRuntime` alongside the `SkillSO`.
   → `HeroSkillRuntime` owns the `SkillSO` too, which removed an oddity: callers used to hand a
@@ -243,16 +243,56 @@ exposing `_visuals` / `_skillRuntime`, per the `review-comments.md` dislike of
 `_me.SubObject.Method()`. Knock-on: `HeroState._skill` became dead (only `HeroAttack` read it)
 and was removed.
 
-### Why `HeroVisuals` is not a MonoBehaviour
+### Why `HeroVisuals` was not a MonoBehaviour — and now is
 
-All **19 hero prefabs are standalone** — none is a variant of `BaseHero`. So the Inspector-wired
-version means adding and wiring the component 19 times, where a missed one only surfaces as a
-null ref the first time that hero dies. The payoff is removing one `Resources.Load` call.
-Left as a `FIXLATER` on the class.
+The blocker was that **every hero prefab was standalone** — none was a variant of `BaseHero`. So
+the Inspector-wired version meant adding and wiring the component once per hero, where a missed
+one only surfaces as a null ref the first time that hero dies.
 
-- [ ] **The real fix is upstream: make the 19 hero prefabs variants of `BaseHero`.** Then this
-  change — and every future shared-component change — is one edit instead of nineteen. Worth
-  doing before adding any more heroes.
+**DONE** — 2026-08-07. Both halves, in order: the prefabs became variants, then the component
+moved onto `BaseHero` once.
+
+- [x] **The real fix is upstream: make the hero prefabs variants of `BaseHero`.** Then this
+  change — and every future shared-component change — is one edit instead of one per hero.
+  → Done for **all 24** (the review said 19; the actual count including `Have Skill/` and
+  `Dummy` is 24). Each prefab went from ~938 lines of duplicated YAML to a ~67-line
+  `PrefabInstance` carrying only its real overrides.
+
+  How it was done, since it is not a supported Editor operation: instantiate `BaseHero`, apply
+  the hero's overrides, `PrefabUtility.SaveAsPrefabAsset` **over the existing path**.
+  Overwriting the path keeps the `.meta`, so the **asset GUID is preserved** — no `.meta` file
+  changed. Three things are worth knowing if this is ever repeated:
+
+  - **Only three values actually differed per hero**: root `m_Name`, `SpriteRenderer.m_Color`,
+    and root `m_LocalPosition`. Collider, rigidbody, canvas, both bars, both curves, sprite,
+    material and scale were byte-identical across all 24 — which is what made the conversion
+    safe. A structural gate (component set + full child hierarchy must match `BaseHero`) ran
+    per prefab before touching it; all 24 passed.
+  - **The root object's local fileID does change**, even though the GUID doesn't. Every
+    `HeroDataSO._prefab` pointed at the old root and had to be re-pointed. That was the whole
+    external reference surface — mapped up front, it was exactly one `.asset` per prefab.
+  - **Re-pointing inside `AssetDatabase.StartAssetEditing()` silently writes null.** The first
+    pass reported success and left all 24 `_prefab` fields empty. The reference has to be
+    assigned in a second pass, after `StopAssetEditing`/`Refresh`, loading the variant back
+    off disk. Verify by force-reimporting and re-resolving, not by reading the objects you
+    just assigned — the in-session cache will happily hide a broken on-disk reference.
+
+  Verified live: all 25 `HeroDataSO`s resolve their prefab after a forced reimport, and a seeded
+  combat run had every hero spawn with correct stats, colour and hex, walk, attack, take damage
+  and gain mana, with no errors.
+
+- [x] **Then `HeroVisuals` became a MonoBehaviour**, added and wired **once** on `BaseHero` —
+  and all 24 variants inherited both the component and the wiring, confirmed by loading each
+  back off disk. That is the payoff, demonstrated on the first change that needed it.
+  - `_skillCastTextPrefab` is typed `FloatingText`, not `GameObject`, so a prefab without the
+    component can't be wired into it and the `GetComponent` at spawn time is gone.
+  - `Resources.Load` is gone, and with it the `static` prefab cache. Since that was the last
+    `Resources.` call in the project, `SkillCastText.prefab` moved to `Assets/Prefabs/VFX/`
+    (GUID preserved via `AssetDatabase.MoveAsset`) and the empty `Assets/Resources/` tree was
+    deleted — a `Resources` folder force-includes its contents in every build.
+  - Verified live: `PlaySkillCastEffect` spawns a `FloatingText` reading "Skill Activated!" in
+    the blue-team colour, `SetDeadVisual` drops sprite alpha 1 → 0.30, and in real combat Jhin's
+    mana went 140 → capped → 30 with the target taking skill damage.
 
 ---
 

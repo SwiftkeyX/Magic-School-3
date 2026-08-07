@@ -12,6 +12,13 @@ Unity auto-chess game: heroes are bought, benched, and placed on a hex board, th
 **UI Toolkit panel pattern** (`Assets/UI Toolkit/`): one shared `UIDocument` on `MainScreen.uxml`, which has empty named containers as slots (`#ShopPanel` is wired up; `#BenchPanel`/`#TraitPanel`/`#HeroPanel` still empty). Each actual panel is its own `.uxml` file plus a small controller script (see `ShopPanelController.cs`) that clones its UXML into the matching-named slot at runtime. The convention: name a panel's root element in its own `.uxml` the same as the slot container waiting for it in `MainScreen.uxml` — the controller looks up the slot by reading its own root element's name, so no manual string field has to be kept in sync.
 - The Bench is deliberately **not** a UI Toolkit panel: it needs real `Hero` GameObjects standing on it (animated sprites, not flat icons), which `VisualElement` can't host. It's being built world-space instead, using the same `Hero`/Physics2D-drag approach as board placement (see `Assets/Scripts/Bench/`, `Assets/Prefabs/Bench/`). The `#BenchPanel` slot in `MainScreen.uxml` stays empty/unused for this reason. The Shop panel (buy heroes) is the UI Toolkit one: drag a shop slot's ghost outside the shop panel's bounds to buy, drop it back inside to cancel — see `ShopPanelController.ResolveDrop`.
 
+**Hero prefabs are all variants of `BaseHero`** (`Assets/Prefabs/Hero/BaseHero.prefab`). All 24 —
+including `Have Skill/` and `Dummy` — override only their name, sprite colour and root position;
+everything else is inherited. **Add shared components to `BaseHero`, never to an individual hero**,
+and only ever add a new hero as a variant of it (right-click `BaseHero` → Create → Prefab Variant).
+A hero's `HeroDataSO` (in `Assets/Data/Heroes/Stats/`) holds the `_prefab` reference, not the other
+way round — `Hero._SOData` is assigned at runtime by `Preparation` via `Hero.Init()`.
+
 ## What's built vs. pending
 
 - Movement, pathfinding (greedy step-toward-nearest-enemy), and hex occupancy are working.

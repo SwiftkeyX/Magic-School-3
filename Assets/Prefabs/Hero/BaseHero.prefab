@@ -697,6 +697,7 @@ GameObject:
   - component: {fileID: 3255718499847640507}
   - component: {fileID: -5557713623014044713}
   - component: {fileID: 5198232010023557855}
+  - component: {fileID: 2685425804800036019}
   m_Layer: 0
   m_Name: BaseHero
   m_TagString: Untagged
@@ -791,7 +792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f39e857a0c76c74c8d89f56c0f4ad06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hero
-  _SOData: {fileID: 0}
   _moveSpeed: 1
   _walkCurve:
     serializedVersion: 2
@@ -936,3 +936,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2685425804800036019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729075628341993162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796beeecb52b5a144b7ba1930e86a5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeroVisuals
+  _skillCastTextPrefab: {fileID: 3204526375089561000, guid: 75ec92c4422e3d442a1cefed72ea548a, type: 3}

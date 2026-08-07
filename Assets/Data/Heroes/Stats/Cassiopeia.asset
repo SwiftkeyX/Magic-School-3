@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Cassiopeia
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 8729075628341993162, guid: 025d73e29140049439e538c96e19d1a2, type: 3}
+  _prefab: {fileID: 1147720973534413427, guid: 025d73e29140049439e538c96e19d1a2, type: 3}
   _name: Hero A
   _hp: 500
   _attack: 40
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 40
   _maxMana: 50
   _skill: {fileID: 11400000, guid: 9967aa3267861b24ebc512a54bb72f49, type: 2}
+  _isDummy: 0

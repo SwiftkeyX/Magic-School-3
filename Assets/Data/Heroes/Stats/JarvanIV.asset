@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: JarvanIV
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 3587867002352923116, guid: 2f0aa3d83a46c9f4493a5053d9aaae38, type: 3}
+  _prefab: {fileID: 2537393424233488038, guid: 2f0aa3d83a46c9f4493a5053d9aaae38, type: 3}
   _name: JarvanIV
   _hp: 650
   _attack: 55
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 0
   _maxMana: 50
   _skill: {fileID: 11400000, guid: f89d92692b7f73e488546fa5bf2cb7d0, type: 2}
+  _isDummy: 0

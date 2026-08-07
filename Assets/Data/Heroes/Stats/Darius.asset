@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Darius
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 1799869808389070307, guid: 3cd79937ea22dda46b342f632da236b0, type: 3}
+  _prefab: {fileID: 1462824358409463235, guid: 3cd79937ea22dda46b342f632da236b0, type: 3}
   _name: Darius
   _hp: 650
   _attack: 70
@@ -24,3 +24,4 @@ MonoBehaviour:
   _startMana: 0
   _maxMana: 50
   _skill: {fileID: 11400000, guid: 461bdd2ed6bf60a40968f81229a2fb7a, type: 2}
+  _isDummy: 0

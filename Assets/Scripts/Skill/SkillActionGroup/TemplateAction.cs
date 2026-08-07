@@ -16,10 +16,7 @@ public abstract class TemplateAction : MonoBehaviour
     // ==================================== getter ====================================
     public float CastTime => _castTime;
 
-    // ==================================== spawn ====================================
-    // Static on purpose: the prefab is an argument, not `this`. _templateAction fields are prefab
-    // references, not live scene objects, and every resolve/spawn step below runs on the
-    // instantiated copy - so nothing here can be mistaken for something the prefab itself does.
+    // ==================================== public method ====================================
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
     public static void Spawn(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)

@@ -10,21 +10,6 @@ public enum ActionSourceEnum
     // ...
 }
 
-public enum LegacyActionEnum
-{
-    // ====================== AOE ======================
-    ZoneAOE,
-    CircleAOE,
-
-    // ====================== Laser ======================
-    LaserShot,
-
-    // ======================== Etc ======================
-    Cast,
-
-    // ...
-}
-
 public enum AimTargetEnum
 {
     Self = 0,

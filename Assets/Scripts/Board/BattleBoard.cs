@@ -96,8 +96,7 @@ public class BattleBoard : MonoBehaviour
         return hero.StateType == HeroStateType.Dead ? null : hero;
     }
 
-    // "Is this hex taken by someone other than me?" - the question pathfinding actually asks,
-    // since a hero never needs to path around its own reservation.
+    // "Is this hex taken by someone other than me?"
     public bool IsReservedByOther(Hex hex, Hero asker)
     {
         Hero reserver = ReserverOf(hex);

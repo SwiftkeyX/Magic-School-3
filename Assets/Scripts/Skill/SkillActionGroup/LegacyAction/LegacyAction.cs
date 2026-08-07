@@ -16,14 +16,15 @@ public abstract class LegacyAction : MonoBehaviour
     // ==================================== getter ====================================
     public float CastTime => _castTime;
 
-    // ==================================== public method ====================================
+    // ==================================== spawn ====================================
+    // Static on purpose: the prefab is an argument, not `this`. _legacyAction fields are prefab
+    // references, not live scene objects, and every resolve/spawn step below runs on the
+    // instantiated copy - so nothing here can be mistaken for something the prefab itself does.
     // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
     // that'll be resolve later
-    public void TriggerSkill(ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
+    public static void Spawn(LegacyAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
     {
-        // _legacyAction fields are prefab references, not live scene objects.
-        // So instantiate first so every resolve/spawn step below runs on the real instance instead of the prefab.
-        LegacyAction instance = Instantiate(this);
+        LegacyAction instance = Instantiate(prefab);
         instance.Init(caster, effects);
 
         // find position using source/aim enum

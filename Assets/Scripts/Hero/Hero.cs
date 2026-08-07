@@ -84,7 +84,14 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     public Hex ReservedHex => _runtimeData.ReservedHex;
     public Placement CurrentPlacement => _runtimeData.CurrentPlacement;
     public bool IsInCombat => _runtimeData.CurrentPlacement is Hex;
-    public void SetReservedHex(Hex hex) => _runtimeData.SetReservedHex(hex);
+    // The board keeps a reverse index of this, so it has to be told before the old value is lost.
+    // _board is null for a hero that hasn't been placed on the battlefield yet (e.g. on the bench).
+    public void SetReservedHex(Hex hex)
+    {
+        if (_board != null) _board.UpdateReservation(this, _runtimeData.ReservedHex, hex);
+
+        _runtimeData.SetReservedHex(hex);
+    }
     public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
     // === ITargeter ===

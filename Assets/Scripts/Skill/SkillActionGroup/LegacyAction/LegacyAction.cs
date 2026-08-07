@@ -78,14 +78,24 @@ public abstract class LegacyAction : MonoBehaviour
     // apply effect to the recipients
     protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
     {
-        if (effect.Recipient == EffectRecipientEnum.Self) effect.ApplyEffect(new List<Hero> { _me });
+        switch (effect.Recipient)
+        {
+            case EffectRecipientEnum.Self:
+                effect.ApplyEffect(new List<Hero> { _me });
+                break;
 
-        else if (effect.Recipient == EffectRecipientEnum.SameToAimTarget) effect.ApplyEffect(recipients);
+            // These two share a body on purpose: they differ in HOW the hitbox picked the
+            // recipients, not in who ends up getting the effect.
+            case EffectRecipientEnum.SameToAimTarget:
+            case EffectRecipientEnum.EnemiesInArea:
+                effect.ApplyEffect(recipients);
+                break;
 
-        else if (effect.Recipient == EffectRecipientEnum.EnemiesInArea) effect.ApplyEffect(recipients);
-   
-        // else if
-    }   
+            // EnemiesInPath is deliberately absent, same as the old if/else chain left it out.
+            // Nothing produces it yet (PiercingProjectile is an empty stub), and folding it into
+            // the case above would silently start applying effects the moment it appears in an asset.
+        }
+    }
 
     // Cadence Tick are use by several legacy action
     // so we unified thing by move it here. 

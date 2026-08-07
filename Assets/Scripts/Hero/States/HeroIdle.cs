@@ -23,7 +23,7 @@ namespace MagicSchool
             _movement = movement;
 
             // init func: to ask if this "hex" is reserved by me
-            _isHexBlocked = hex => _me.Board.IsReservedByOther(hex, _me);
+            _isHexBlocked = hex => _me.IsHexReservedByOther(hex);
         }
 
         public override void OnEnter()
@@ -84,7 +84,7 @@ namespace MagicSchool
         {
             foreach (var neighbor in _me.CurrentHex.GetNeighbors())
             {
-                Hero reserver = _me.Board.WhoReservedThisHex(neighbor);
+                Hero reserver = _me.WhoReservedThisHex(neighbor);
                 if (reserver != null && reserver.Team != _me.Team) return true;
             }
 
@@ -124,7 +124,7 @@ namespace MagicSchool
                 float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
                 if (neighborDist >= distFromMeToEnemy) continue;
 
-                Hero occupant = _me.Board.WhoReservedThisHex(neighbor);
+                Hero occupant = _me.WhoReservedThisHex(neighbor);
                 if (occupant != null && occupant != _me && occupant.StateType != HeroStateType.Attack) return true;
             }
 

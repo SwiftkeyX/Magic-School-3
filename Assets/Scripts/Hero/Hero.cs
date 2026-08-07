@@ -36,11 +36,14 @@ namespace MagicSchool
         public bool IsInitialized => _runtimeData != null;
         public Team Team => _team;
         public HeroStateType StateType => _stateMachine.CurrentType;
-        public BattleBoard Board => _board;
         public bool IsDummy => _runtimeData.IsDummy;
 
         // ======================================== state ========================================
         public void ChangeState(HeroStateType next) => _stateMachine.ChangeState(next);
+
+        // ======================================== board ========================================
+        public Hero WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
+        public bool IsHexReservedByOther(Hex hex) => _board.IsReservedByOther(hex, this);
 
         // ======================================== visuals ========================================
         public void SetDeadVisual() => _visuals.SetDeadVisual();

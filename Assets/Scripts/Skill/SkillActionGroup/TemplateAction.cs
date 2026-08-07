@@ -28,7 +28,7 @@ namespace MagicSchool
             // find position using source/aim enum
             instance.ResolveSource(source);
 
-            // FIXNOW: mana is already spent by the time we get here. Stat.AddMana zeroes it the
+            // FIXLATER: mana is already spent by the time we get here. Stat.AddMana zeroes it the
             // instant it caps, but this bails when there's no valid target and spawns nothing - so
             // the hero pays full mana and gets no skill. Order should be:
             //   mana full => check target found

@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace MagicSchool
 {
+
+    /// <summary>
+    /// FLAGGING: I have been skeptical about circular dependency between: BattleBoard & Hero.
+    /// Because I don't think Hero should know about BattleBoard, the sound of it doesn't make sense to me.
+    /// I try to fix it BUT I found that it's already good and don't need any fix. 
+    /// => if I move the part where hero need to ask Battleboard out, into somewhere else, 
+    /// that just doesn't fix anything, I'm just doing BattleBoard v2 but with different name.
+    /// => if we set both as same module, then that would justified its deep coupling.
+    /// Let's move them into same folder called "Combat Module"
+    /// </summary>
     public class BattleBoard : MonoBehaviour
     {
         // ======================== Runtime data ============================
@@ -81,7 +91,6 @@ namespace MagicSchool
         }
 
         // Who currently holds this hex, or null if it's free.
-        // FIXNOW: The Hero shouldn't public the board. and let HeroIdle access board directly.
         public Hero WhoReservedThisHex(Hex hex)
         {
             if (hex == null || !_reservedBy.TryGetValue(hex, out Hero hero)) return null;
@@ -92,7 +101,7 @@ namespace MagicSchool
         }
 
         // "Is this hex taken by someone other than me?"
-        // FIXNOW: The Hero shouldn't public the board. and let HeroIdle access board directly.
+        // Callers come through Hero.IsHexReservedByOther, which supplies itself as the asker.
         public bool IsReservedByOther(Hex hex, Hero asker)
         {
             Hero reserver = WhoReservedThisHex(hex);

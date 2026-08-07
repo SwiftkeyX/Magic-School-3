@@ -6,7 +6,7 @@ using UnityEngine;
 public class SkillActionGroup
 {
     [SerializeField] private ActionSourceEnum _source;
-    [SerializeField] private LegacyAction _legacyAction;
+    [SerializeField] private TemplateAction _templateAction;
     [SerializeField] private AimTargetEnum _target;
     [SerializeField] private HitboxSize _size = new HitboxSize();
 
@@ -17,7 +17,7 @@ public class SkillActionGroup
 
     // ============================================ Getter ============================================
     public ActionSourceEnum Source => _source;
-    public LegacyAction LegacyAction => _legacyAction;
+    public TemplateAction TemplateAction => _templateAction;
     public AimTargetEnum Target => _target;
     public HitboxSize Size => _size;
     public List<SkillEffect> Effects => _effects;

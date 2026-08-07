@@ -7,7 +7,7 @@ public class HomingProjectile : Projectile
     [SerializeField] private float _speed = 8f;
 
     // ======================================== override method ==============================================
-    protected override void PlayLegacyAction()
+    protected override void Play()
     {
         // set object lifetime - fallback despawn if it never reaches anyone
         _lifetime = _castTime;

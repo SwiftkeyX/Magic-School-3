@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Projectile was aim toward the "target", what determined which recipients get hit is based on the projectile type.
 /// </summary>
-public abstract class Projectile : LegacyAction
+public abstract class Projectile : TemplateAction
 {
     // ======================================== override method ========================================
     // source = where projectile spawn from

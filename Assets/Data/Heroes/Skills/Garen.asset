@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _legacyAction: {fileID: 1395724406477609479, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
+      _templateAction: {fileID: 1395724406477609479, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
       _target: 0
       _size:
         size: 1
@@ -34,8 +34,8 @@ MonoBehaviour:
         _recipient: 1
         _cadence:
           isCadence: 1
-          startOnInitialCollisionOnly: 0
           cadenceInterval: 0.5
+          cadenceDuration: 3
         _damageAmount: 80
     - rid: 6645218046250844232
       type: {class: Circle, ns: , asm: Assembly-CSharp}

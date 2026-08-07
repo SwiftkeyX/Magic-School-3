@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// CircleAOE are legacy action that can apply effect "once" or "overtime".
+/// CircleAOE are template action that can apply effect "once" or "overtime".
 /// 1) If apply once, it mean to apply effect to target immediately (apply at first contact).
 ///
 /// 2) If apply overtime, it mean after first contact, it still apply damage over time to them afterward like a poison.
@@ -19,7 +19,7 @@ public class CircleAOE : AOE
     private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 
     // ======================================== private ==============================================
-    protected override void PlayLegacyAction()
+    protected override void Play()
     {
         // initialize local variable
         _lifetime = _castTime;

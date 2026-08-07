@@ -5,6 +5,10 @@
 /// </summary>
 public class HeroStateMachine
 {
+    // FLAGGING: I think this add too much coupling, no? having Hero, mean this class can do anything now. It shouldn't know about Hero.
+    // Maybe this is a good point of using interface? Let's leave it for now, we still don't see enough pattern to implement it.
+    private readonly Hero _me;
+
     private readonly HeroIdle _idle;
     private readonly HeroAttack _attack;
     private readonly HeroDead _dead;
@@ -16,6 +20,7 @@ public class HeroStateMachine
 
     public HeroStateMachine(Hero hero, SkillSO skill, MovementConfig movement)
     {
+        _me = hero;
         _idle = new HeroIdle(hero, skill, movement);
         _walk = new HeroWalk(hero, skill, movement);
         _attack = new HeroAttack(hero, skill, movement);
@@ -38,7 +43,48 @@ public class HeroStateMachine
         Current.OnEnter();
     }
 
-    public void Tick() => Current?.OnUpdate();
+    public void Tick()
+    {
+        if (Current == null) return;
+
+        // interrupt state e.g. stun, dead
+        if (TryResolveInterrupt(out HeroStateType forced))
+        {
+            ChangeState(forced);
+
+            // return early, so we don't update in the same frame
+            return;
+        }
+
+        // update state
+        Current.OnUpdate();
+    }
+
+    /// <summary>
+    /// Global state transition.  
+    /// Some of the transition are redundant in each state, make it a global transition by move it here.
+    /// </summary>
+    private bool TryResolveInterrupt(out HeroStateType forced)
+    {
+        forced = default;
+
+        if (CurrentType == HeroStateType.Dead) return false;
+
+        if (_me.CurrentHP <= 0)
+        {
+            forced = HeroStateType.Dead;
+            return true;
+        }
+
+        bool notStun = CurrentType != HeroStateType.Stunned;
+        if (_me.IsStunned && notStun)
+        {
+            forced = HeroStateType.Stunned;
+            return true;
+        }
+
+        return false;
+    }
 
     private HeroState GetState(HeroStateType type)
     {

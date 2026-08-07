@@ -17,6 +17,5 @@ public abstract class HeroState
     public virtual void OnEnter() { }
     public virtual void OnExit() { }
     public abstract void OnUpdate();
-
     protected abstract void CheckSwitchState();
 }

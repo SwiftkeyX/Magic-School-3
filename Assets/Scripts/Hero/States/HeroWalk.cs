@@ -41,20 +41,6 @@ public class HeroWalk : HeroState
 
     protected override void CheckSwitchState()
     {
-        // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.CurrentHP <= 0);
-        if (isMeDead)
-        {
-            _me.ChangeState(HeroStateType.Dead);
-            return;
-        }
-
-        if (_me.IsStunned)
-        {
-            _me.ChangeState(HeroStateType.Stunned);
-            return;
-        }
-
         // If walking animation finishes, transition to idle
         // FlAGGING: This is weird, so it will be changed later
         bool isWalkingFinished = _elapsed >= _duration;
@@ -63,8 +49,6 @@ public class HeroWalk : HeroState
             _me.transform.position = _end;
             _me.SetCurrentPlacement(_targetHex);
             _me.ChangeState(HeroStateType.Idle);
-            return;
         }
     }
-
 }

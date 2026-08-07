@@ -32,20 +32,6 @@ public class HeroIdle : HeroState
 
     protected override void CheckSwitchState()
     {
-        // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.CurrentHP <= 0);
-        if (isMeDead)
-        {
-            _me.ChangeState(HeroStateType.Dead);
-            return;
-        }
-
-        if (_me.IsStunned)
-        {
-            _me.ChangeState(HeroStateType.Stunned);
-            return;
-        }
-
         // Temporary, tagged once at its source - see the FIXLATER on HeroDataSO._isDummy.
         // Dummy never walks or attacks - it just stands there to be a target.
         if (_me.IsDummy) return;
@@ -89,13 +75,13 @@ public class HeroIdle : HeroState
 
     private bool IsEnemyArrivingNextToMe()
     {
-        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.State != HeroStateType.Dead && _me.CurrentHex.IsAdjacentTo(h.ReservedHex));
+        return _me.Board.HeroesOnBoard.Any(h => h.Team != _me.Team && h.StateType != HeroStateType.Dead && _me.CurrentHex.IsAdjacentTo(h.ReservedHex));
     }
 
     private HashSet<Hex> ReservedHexes()
     {
         // Dead heroes don't hold their hex - otherwise a corpse would block that hex forever.
-        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me && h.State != HeroStateType.Dead).Select(h => h.ReservedHex));
+        return new HashSet<Hex>(_me.Board.HeroesOnBoard.Where(h => h != _me && h.StateType != HeroStateType.Dead).Select(h => h.ReservedHex));
     }
 
     /// <summary>
@@ -131,8 +117,8 @@ public class HeroIdle : HeroState
             float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
             if (neighborDist >= distFromMeToEnemy) continue;
 
-            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.State != HeroStateType.Dead && h.ReservedHex == neighbor);
-            if (occupant != null && occupant.State != HeroStateType.Attack) return true;
+            var occupant = _me.Board.HeroesOnBoard.FirstOrDefault(h => h != _me && h.StateType != HeroStateType.Dead && h.ReservedHex == neighbor);
+            if (occupant != null && occupant.StateType != HeroStateType.Attack) return true;
         }
 
         return false;

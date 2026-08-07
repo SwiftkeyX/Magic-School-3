@@ -40,8 +40,8 @@ public class HeroAttack : HeroState
         // check if I have a target within range. if no, exit attack state
         CheckSwitchState();
 
-        bool isInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
-        if (!isInRange) return;
+        // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
+        if (_me.StateType != StateType) return;
 
         // update aa timer
         _aaCooldown -= Time.deltaTime;
@@ -75,27 +75,9 @@ public class HeroAttack : HeroState
 
     protected override void CheckSwitchState()
     {
-        // If hp is below 0, transition to dead, WOW
-        bool isMeDead = (_me.CurrentHP <= 0);
-        if (isMeDead)
-        {
-            _me.ChangeState(HeroStateType.Dead);
-            return;
-        }
-
-        if (_me.IsStunned)
-        {
-            _me.ChangeState(HeroStateType.Stunned);
-            return;
-        }
-
         // If the enemy is no longer within attack range, transition to idle
         bool isEnemyInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
-        if (!isEnemyInRange)
-        {
-            _me.ChangeState(HeroStateType.Idle);
-            return;
-        }
+        if (!isEnemyInRange) _me.ChangeState(HeroStateType.Idle);
     }
 
     private void AttackAnimation()

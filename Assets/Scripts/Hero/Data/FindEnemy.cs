@@ -88,7 +88,7 @@ public class FindEnemy
     {
         bool notTargetMyself = target != _me;
         bool notTargetFriend = target.Team != _me.Team;
-        bool notTargetDead = target.State != HeroStateType.Dead;
+        bool notTargetDead = target.StateType != HeroStateType.Dead;
         bool notTargetGuyNotInCombat = target.IsInCombat;
         return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
     }

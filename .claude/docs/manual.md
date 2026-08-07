@@ -47,6 +47,7 @@ This is intentional for the early stage of implementing skill system, BUT once w
 
 5) it's awkward to use prefab instance, since we have to manually ...
 
+6) The enum are really inconsistent, they don't use the same suffix e.g. Type, Enum. We should use the same suffix standard
 
 
 # Resolve problem

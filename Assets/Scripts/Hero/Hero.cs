@@ -33,7 +33,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     // ======================================== other getter ========================================
     public bool IsInitialized => _runtimeData != null;
     public Team Team => _team;
-    public HeroStateType State => _stateMachine.CurrentType;
+    public HeroStateType StateType => _stateMachine.CurrentType;
     public BattleBoard Board => _board;
     public bool IsDummy => _runtimeData.IsDummy;
 
@@ -53,7 +53,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
 
     // ======================================== interface method ========================================
     // === IDamageable ===
-    public bool IsAlive => this != null && IsInitialized && State != HeroStateType.Dead;
+    public bool IsAlive => this != null && IsInitialized && StateType != HeroStateType.Dead;
     public void AddModifier(Modifier modifier) => Stat.AddModifier(modifier);
 
     public void Heal(float amount)
@@ -143,7 +143,7 @@ public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargete
     void OnDrawGizmos()
     {
         if (!Application.isPlaying || !IsInitialized) return;
-        if (State != HeroStateType.Attack) return;
+        if (StateType != HeroStateType.Attack) return;
 
         Hero target = _runtimeData.NearestEnemy;
         if (target == null) return;

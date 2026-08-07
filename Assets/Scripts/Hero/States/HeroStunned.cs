@@ -19,16 +19,6 @@ public class HeroStunned : HeroState
 
     protected override void CheckSwitchState()
     {
-        bool isMeDead = (_me.CurrentHP <= 0);
-        if (isMeDead)
-        {
-            _me.ChangeState(HeroStateType.Dead);
-            return;
-        }
-
-        if (!_me.IsStunned)
-        {
-            _me.ChangeState(HeroStateType.Idle);
-        }
+        if (!_me.IsStunned) _me.ChangeState(HeroStateType.Idle);
     }
 }

@@ -346,18 +346,62 @@ every state needs editing, forever.
 
 These are **machine-level interrupts, not state transitions**.
 
-- [ ] Hoist them into `HeroStateMachine.Tick()`:
+**DONE** — 2026-08-07. The duplicated ten lines are gone from all four states. **-63 lines, +58**,
+and `HeroWalk.CheckSwitchState` is now exactly "go idle when the walk finishes," which is all it
+ever was.
+
+**`CheckSwitchState()` itself stays** — your call, and the right one. The review's framing implied
+deleting it, but the duplication was never the method's fault: it's a useful named hook for "this
+state's own transitions," and each state still has one. What moved out is only the two checks that
+were never that state's business.
+
+- [x] Hoist them into `HeroStateMachine.Tick()`:
 
   ```csharp
   public void Tick()
   {
-      if (_interrupts.TryResolve(out HeroStateType forced)) { ChangeState(forced); return; }
-      Current?.OnUpdate();
+      if (Current == null) return;
+      if (TryResolveInterrupt(out HeroStateType forced)) { ChangeState(forced); return; }
+      Current.OnUpdate();
   }
   ```
 
-  Each state then contains only its own logic — `HeroWalk` drops to "lerp, then go idle when
-  done," which is all it actually is.
+  → `TryResolveInterrupt` is a private method on `HeroStateMachine`, not the separate
+  `_interrupts` object this sketch implied — two checks don't justify their own class, and
+  extracting one later is trivial. `HeroState` keeps its abstract `CheckSwitchState()`, now
+  documented as "this state's OWN transitions only."
+
+  Two decisions inside the interrupt worth keeping:
+  - **Dead is terminal** — the check returns early if the current state is already `Dead`, so
+    nothing interrupts a corpse. Matches the old behaviour, where `HeroDead.CheckSwitchState`
+    was empty.
+  - **Already-`Stunned` is excluded from the stun check.** Otherwise `Tick` would return before
+    `HeroStunned.OnUpdate` ever ran, and the state could never notice the stun expiring.
+    Entering a stun is machine-level; leaving it is `HeroStunned`'s own and only job.
+
+- [x] **Fixed a real bug in the process.** `HeroAttack.OnUpdate` called `CheckSwitchState()` and
+  then **kept running** — it never returned after the state changed. So a hero that died mid-attack
+  got one more full attack *after* `ChangeState(Dead)` had already fired `HeroAttack.OnExit`
+  (snapping it back to hex centre) and `HeroDead.OnEnter`: it dealt damage, gained mana, cast its
+  skill, and dashed off-centre as a corpse.
+
+  Resolving interrupts before `OnUpdate` removes the dead case structurally — a dead hero's
+  `OnUpdate` is never reached at all. The out-of-range → `Idle` case still runs through
+  `CheckSwitchState`, so `OnUpdate` now guards after calling it:
+
+  ```csharp
+  CheckSwitchState();
+  // everything below attacks, so it must not run once we're no longer the current state
+  if (_me.State != StateType) return;
+  ```
+
+  That also removed the in-range test that was being computed twice per frame — once inside
+  `CheckSwitchState`, once again right after it.
+
+  Verified live: `SuperTank` killed mid-Attack went straight to `Dead` with sprite alpha 0.30 and
+  stayed there; `Jhin` stunned mid-Attack went to `Stunned` and stopped attacking, and a shorter
+  stun let it recover through `Idle` back into `Attack`; the surviving `Tank` retargeted onto a
+  Dummy and combat carried on around the corpse. No compile or runtime errors.
 
 ---
 
@@ -459,8 +503,11 @@ Not the point of the review, but real:
   → Both now open with `if (!IsInitialized) return;`, matching what `Healthbar`/`Manabar`
   already did.
 
-- [ ] **Stale comment:** `HeroDead.cs:1` says "Entered from `Blackboard.TakeDamage()`" — it's
+- [x] **Stale comment:** `HeroDead.cs:1` says "Entered from `Blackboard.TakeDamage()`" — it's
   actually polled by each state's `CheckSwitchState`.
+  → The old comment had already gone by the time section 4 was done. `HeroDead.cs:1` now carries
+  an accurate one: entered by `HeroStateMachine`'s interrupt check the frame HP hits 0, from any
+  state. Which is finally a single true statement, since there's now a single place it happens.
 
 - [ ] **Stale docs in `CLAUDE.md`:** it says `Hex` tracks `Occupant` (it doesn't anymore) and
   references `BattleBoard._heroPlacement` (moved to `BattlePlacementSO`).
@@ -475,7 +522,8 @@ built against the current `Blackboard` makes it more expensive to split later.
 
 1. [x] Fix the `success` bug (2 min — it's a live feature that silently doesn't work)
    — done alongside section 3
-2. [ ] Hoist Dead/Stunned interrupts into `HeroStateMachine` (removes 4x duplication)
+2. [x] Hoist Dead/Stunned interrupts into `HeroStateMachine` (removes 4x duplication)
+   — **done last**, see section 4; also fixed the dead-hero-gets-a-free-attack bug
 3. [ ] Rename `LegacyAction` -> `SkillAction`, flatten folders (pure readability)
 4. [x] Split `BlackboardTemp` into `HeroVisuals` + `HeroSkillRuntime`
    — **done third**, see section 3

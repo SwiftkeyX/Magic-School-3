@@ -407,19 +407,70 @@ were never that state's business.
 
 ## 5. `LegacyAction` — rename it and flatten the folders
 
-- [ ] `Skill/SkillActionGroup/LegacyAction/LegacyActionCategory/LegacyActionChild/` is **five
-  folder levels for seven files**. Flatten to `Skill/Actions/`.
+**DONE** — 2026-08-07. "Legacy" no longer appears anywhere in `Assets/Scripts/`.
 
-- [ ] "Legacy" universally reads as *deprecated* to any C# reader (including future you). It
+- [x] `Skill/SkillActionGroup/LegacyAction/LegacyActionCategory/LegacyActionChild/` is **five
+  folder levels for seven files**. Flatten to `Skill/SkillActionGroup/`.
+  → Five levels → one. `Skill/SkillActionGroup/` is now flat with 13 files: the 8 action classes
+  plus `Hitbox`, `HitboxSize`, `SkillActionGroup`, `SkillActionGroupEnum`, `SkillTrigger`.
+
+  Moved with `git mv` on each `.cs` **and its `.cs.meta` together**, which is what preserves the
+  script GUIDs — all 8 are unchanged, so the `Cast`/`CircleAOE`/`ZoneAOE`/`HomingProjectile`/
+  `PiercingProjectile` prefabs kept their script references without a single edit. Moving a `.cs`
+  without its `.meta` is exactly what turns prefabs into "missing script".
+
+- [x] "Legacy" universally reads as *deprecated* to any C# reader (including future you). It
   isn't — it's the spawned physical thing a skill produces. Rename to `SkillAction`.
+  => Let's use "TemplateAction" as a new name.
+  → `TemplateAction` per your call. Also `PlayLegacyAction()` → `Play()` and
+  `SkillActionGroup._legacyAction` → `_templateAction`.
 
-- [ ] `LegacyAction.TriggerSkill` is an instance method called *on the prefab*, which then
+  That last one is a **serialized** field, so a plain rename would have silently blanked the
+  action reference in all five `SkillSO` assets. Migrated properly: added
+  `[FormerlySerializedAs]`, re-saved every `SkillSO` so the new key got written to disk, verified
+  all seven action groups still resolve their prefab, then **removed the attribute**. The assets
+  now store `_templateAction` with no compatibility shim left behind.
+
+- [x] `LegacyAction.TriggerSkill` is an instance method called *on the prefab*, which then
   instantiates a copy of itself. The object is simultaneously factory and product — which is why
   it needed a four-line comment to explain. A static `SkillActionSpawner.Spawn(prefab, ...)`
   makes the dual role disappear.
+  → Done as `static TemplateAction.Spawn(prefab, ...)` rather than a separate spawner class.
+  **Deliberate deviation:** the spawn sequence calls `Init`/`ResolveSource`/`ResolveAimTarget`/
+  `GetSpawnPosition`/`Play`, all private or protected. A separate class would have forced all
+  five to become public — trading the dual-role problem for a worse encapsulation one. A static
+  method on the type keeps them hidden and still gets the win: the prefab is now visibly an
+  *argument*, not `this`.
 
-- [ ] `ApplyEffectToRecipients` — the `SameToAimTarget` and `EnemiesInArea` branches have
+  ```csharp
+  // before - is currentAction the prefab or the instance?
+  currentAction.TriggerSkill(group.Source, group.Target, caster, group.Effects);
+  // after
+  TemplateAction.Spawn(actionPrefab, group.Source, group.Target, caster, group.Effects);
+  ```
+
+- [x] `ApplyEffectToRecipients` — the `SameToAimTarget` and `EnemiesInArea` branches have
   identical bodies.
+  → Now a `switch` with the two sharing one case label, which states "identical bodies" as syntax
+  rather than as a coincidence two `else if`s happen to share.
+
+  **`EnemiesInPath` was deliberately left out**, exactly as the old `if/else` chain left it out.
+  It is a no-op today (nothing produces it). Collapsing to "Self → caster, everything else →
+  recipients" would read cleaner but silently turn it live the first time it appeared in an
+  asset — a behaviour change disguised as a cleanup.
+
+Verified live: all seven action groups across the five `SkillSO`s spawn an instance through
+`TemplateAction.Spawn` (scene count 0 → 7), and in a normal combat run Jhin's mana went
+120 → capped → reset, so the natural `SkillTrigger` → `Spawn` path fires too. No compile or
+runtime errors.
+
+### Found while doing this
+
+- `Assets/Prefabs/Skill/PiercingProjectile.prefab` carries a **`HomingProjectile`** component —
+  it references that script's GUID, not `PiercingProjectile`'s. And `PiercingProjectile.cs` is a
+  **0-byte file** referenced by nothing. So "piercing" is a homing projectile wearing a different
+  name, and `Jhin.asset` points at it. Left alone as out of scope, but it's a trap: implementing
+  `PiercingProjectile` for real means fixing the prefab's component, not just filling in the file.
 
 ---
 
@@ -493,6 +544,10 @@ Not the point of the review, but real:
 - [ ] **Dead code:** `LegacyActionEnum` is declared and never referenced anywhere.
   `HitboxSize` / `HitboxShape` are serialized into every `SkillActionGroup` but never read by any
   action (size actually comes from the prefab's collider).
+  → Half done 2026-08-07: `LegacyActionEnum` **deleted** as part of section 5 — the rename forced
+  the question and there was nothing to rename it *to*, since nothing referenced it.
+  `HitboxSize`/`HitboxShape` **left alone**: unlike the enum they really are serialized into the
+  five `SkillSO` assets, so removing them is a data change, not a code deletion. Still open.
 
 - [x] **`Hero.Start()`/`Hero.Update()` throw on a scene-placed Hero that was never spawned.**
   Found 2026-08-06 when a `BaseHero` object in the scene started spamming
@@ -524,7 +579,8 @@ built against the current `Blackboard` makes it more expensive to split later.
    — done alongside section 3
 2. [x] Hoist Dead/Stunned interrupts into `HeroStateMachine` (removes 4x duplication)
    — **done last**, see section 4; also fixed the dead-hero-gets-a-free-attack bug
-3. [ ] Rename `LegacyAction` -> `SkillAction`, flatten folders (pure readability)
+3. [x] Rename `LegacyAction` -> `TemplateAction`, flatten folders (pure readability)
+   — **done last**, see section 5; also deleted the dead `LegacyActionEnum`
 4. [x] Split `BlackboardTemp` into `HeroVisuals` + `HeroSkillRuntime`
    — **done third**, see section 3
 5. [x] Introduce `IDamageable`, cut the skill system loose from `Blackboard`

@@ -60,6 +60,7 @@ namespace MagicSchool
 
         // ======================================== stat ========================================
         public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
+        public void SpendMana() => Stat.SpendMana();                   // called once a cast actually happened
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
         // ======================================== interface method ========================================

@@ -18,24 +18,22 @@ namespace MagicSchool
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
-        public static void TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
+        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
         {
-            // init skill prefab into scene instace
+            // change skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
 
-            // FIXLATER: mana is already spent by the time we get here. Stat.AddMana zeroes it the
-            // instant it caps, but this bails when there's no valid target and spawns nothing - so
-            // the hero pays full mana and gets no skill. Order should be:
-            //   mana full => check target found
-            //   found     => consume mana => use skill => instantiate skill
-            //   not found => DON'T consume mana => skill was never used or instantiated
+            // init skill variable
             if (!instance.TryConfigure(caster, effects, source, aimTarget))
             {
+                // skill is not play
                 Destroy(instance.gameObject);
-                return;
+                return false;
             }
 
+            // skill is played
             instance.Play();
+            return true;
         }
 
         // try initialize skill, if something went wrong, skill won't play

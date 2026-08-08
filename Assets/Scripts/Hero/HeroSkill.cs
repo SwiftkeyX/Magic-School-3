@@ -31,7 +31,11 @@ namespace MagicSchool
             if (_skill.Steps[0].Trigger != TriggerEnum.OnCast) return false;
 
             // OnCast skill is always step 0
-            FireStep(0);
+            if (!FireStep(0)) return false;
+
+            // if skill success, spend all mana
+            _me.SpendMana();
+
             return true;
         }
 
@@ -51,16 +55,18 @@ namespace MagicSchool
         }
 
         // ============================================== Action ==============================================
-        // Fire skill in "step" order 
-        private void FireStep(int stepIndex)
+        // Fire skill in "step" order. Returns whether this step actually played anything.
+        private bool FireStep(int stepIndex)
         {
-            if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return;
+            if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
 
-            // step can have several action, play them all
-            PlayAction(stepIndex);
+            // step can have several action, only action was choose base on condition
+            bool played = PlayAction(stepIndex);
 
-            // fire next step
-            FireNextStep(stepIndex + 1);
+            // if this step success, fire next step
+            if (played) FireNextStep(stepIndex + 1);
+
+            return played;
         }
 
         private void FireNextStep(int nextIndex)
@@ -81,10 +87,11 @@ namespace MagicSchool
         }
 
         // ============================================== helper ==============================================
-        // Play every action in this step
-        private void PlayAction(int stepIndex)
+        // Play every action in this step.
+        private bool PlayAction(int stepIndex)
         {
             _castTime = 0f;
+            bool played = false;
 
             // Play every action in this step
             var actionGroups = _skill.Steps[stepIndex].ActionGroups;
@@ -93,12 +100,17 @@ namespace MagicSchool
                 // get template action
                 TemplateAction actionPrefab = actionGroup.TemplateAction;
 
-                // FLAGGING: This is to complicated than it should be
-                TemplateAction.TryPlay(actionPrefab, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects);
-
                 // Get cast time for this action - it is use for other skill trigger condition
                 _castTime = actionPrefab.CastTime;
+
+                // try play the skill
+                played = TemplateAction.TryPlay(actionPrefab, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects);
+
+                // if one of the action is played, stop
+                if (played) return true;
             }
+
+            return played;
         }
 
         // coroutine for casting delay action

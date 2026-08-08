@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,9 +9,8 @@ namespace MagicSchool
     {
         [SerializeField] private Camera _cam;
         [SerializeField] private List<BenchSlot> _benchSlots;
-
-        private bool _isHeroHolded = false;
-        private Hero _heroHolded;
+        private BattleBoard _board;     // need to know which board, it'll seed on (there maybe several board at once)
+        public event Action<HeroDataSO, Team, Placement, BattleBoard> OnHeroSpawned;
 
         /// <summary>
         /// Spawn hero on the bench. Returns false (and spawns nothing) if the bench is full.
@@ -25,8 +25,8 @@ namespace MagicSchool
                 return false;
             }
 
-            // spawn hero prefab, move it to that slot - freeSlot.OnHeroPlaced() reserves it
-            Preparation.Instance.SpawnHero(data, Team.Blue, freeSlot);
+            // spawn hero prefab, move it to that slot, reserved the freeslot
+            OnHeroSpawned.Invoke(data, Team.Blue, freeSlot, _board);
             return true;
         }
     }

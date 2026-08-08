@@ -8,6 +8,7 @@ namespace MagicSchool
         public static GameManager Instance { get; private set; }
 
         [SerializeField] private BattleBoard _board;
+        [SerializeField] private BattleBoardSeed _seed;
 
         public GamePhase Phase { get; private set; } = GamePhase.Preparation;
         public Team? Winner { get; private set; }
@@ -34,6 +35,8 @@ namespace MagicSchool
         public void StartCombat()
         {
             Phase = GamePhase.Combat;
+
+            _seed.SpawnHeroOnBoard();
         }
 
         private void CheckForWinner()

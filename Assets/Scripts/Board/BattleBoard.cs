@@ -33,6 +33,7 @@ namespace MagicSchool
             InitializeHex();
         }
 
+        // =================================== initialzie ===================================
         // BattleBoard find reference to each hex
         void InitializeHex()
         {
@@ -66,17 +67,20 @@ namespace MagicSchool
 
         // Every hero need to be tracked on the board
         // If they didn't get tracked, those heroes will be invisible to other hero.
-        public void TrackThisHero(Hero hero)
+        public void TrackThisHero(IPlaceable hero)
         {
-            if (!_heroesOnBoard.Contains(hero)) _heroesOnBoard.Add(hero);
+            _heroesOnBoard.Add(hero as Hero);
         }
 
         // Counterpart to TrackThisHero - a hero leaving its hex for a non-hex placement
         // (e.g. back to the bench) is no longer on the battlefield.
-        public void UntrackThisHero(Hero hero) => _heroesOnBoard.Remove(hero);
+        public void UntrackThisHero(IPlaceable hero)
+        {
+            _heroesOnBoard.Remove(hero as Hero);
+        }
 
 
-        // ======================== Hex reservation ========================
+        // =================================== Hex reservation ===================================
         // Called by Hero.SetReservedHex, which is the only place a reservation changes.
         public void UpdateReservation(Hero hero, Hex previous, Hex next)
         {
@@ -101,7 +105,6 @@ namespace MagicSchool
         }
 
         // "Is this hex taken by someone other than me?"
-        // Callers come through Hero.IsHexReservedByOther, which supplies itself as the asker.
         public bool IsReservedByOther(Hex hex, Hero asker)
         {
             Hero reserver = WhoReservedThisHex(hex);

@@ -6,22 +6,19 @@ namespace MagicSchool
     public class Hex : MonoBehaviour, Placement
     {
         private BattleBoard _board;
-        // neighbors hex of this hex - to give the hex available for pathfinding logic
-        private List<Hex> _neighbors;
         private HexNumber _hexPlacement;
+        private List<Hex> _neighbors;   // neighbors hex of this hex - use in pathfinding logic
 
         // ========================== getter & setter ==========================
         public string Name => gameObject.name;
 
-        #region Life Cycle
+        // ===================================== life cycle =====================================
         void Start()
         {
             InitializeNeighbors();
         }
 
-        #endregion
-
-        #region Setup
+        // ===================================== setup =====================================
         public void Init(BattleBoard board, HexNumber hexPlacement)
         {
             _board = board;
@@ -29,30 +26,40 @@ namespace MagicSchool
             _neighbors = null;
         }
 
+        public Team GetTeam()
+        {
+            return _hexPlacement.team;
+        }
+
+        // ===================================== placement interface =====================================
         // place hero on Hex
         public void OnHeroPlaced(IPlaceable hero)
         {
+            // set placement for the hero normally
             this.EnterPlacementExtension(hero);
 
+            // now hero was on the board, board track that new hero
+            _board.TrackThisHero(hero);
+
+            // for hex, set reserve for the hex too 
+            // (see reserve hex for explanation)
             hero.SetReservedHex(this);
+            // ASKING: I see BenchSlot having its own variable of "reserved", I think for the sake of pattern,
+            // let's move reserved inside the hero to here instead. That wouldn't be difficult, no?
         }
 
         // unplace hero from Hex
         public void OnHeroUnplaced(IPlaceable hero)
         {
+            _board.UntrackThisHero(hero);
+            
             // what about setcurrenthex = null?
             hero.SetReservedHex(null);
         }
 
-        public Team GetTeam()
-        {
-            return _hexPlacement.team;
-        }
-        #endregion
 
-        /// <summary>
-        /// Neighbors are the hex adjacent to current hex.
-        /// </summary>
+        // ===================================== Neighbors =====================================
+        // Neighbors are the hex adjacent to current hex.
         #region Neighbors
         // called by Hero - so hero know which hex is valid to move
         public List<Hex> GetNeighbors()

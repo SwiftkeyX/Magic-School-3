@@ -67,18 +67,19 @@ namespace MagicSchool
 
         // Every hero need to be tracked on the board
         // If they didn't get tracked, those heroes will be invisible to other hero.
-        public void TrackThisHero(IPlaceable hero)
+        // ASKING: Board need to answer hero "where is other hero on the board?"
+        // So it's actually doesn't need to know the entire hero right? let use IPlaceable instead.
+        public void TrackThisHero(Hero hero)
         {
-            _heroesOnBoard.Add(hero as Hero);
+            if (!_heroesOnBoard.Contains(hero)) _heroesOnBoard.Add(hero);
         }
 
         // Counterpart to TrackThisHero - a hero leaving its hex for a non-hex placement
         // (e.g. back to the bench) is no longer on the battlefield.
-        public void UntrackThisHero(IPlaceable hero)
+        public void UntrackThisHero(Hero hero)
         {
-            _heroesOnBoard.Remove(hero as Hero);
+            _heroesOnBoard.Remove(hero);
         }
-
 
         // =================================== Hex reservation ===================================
         // Called by Hero.SetReservedHex, which is the only place a reservation changes.

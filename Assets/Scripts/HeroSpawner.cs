@@ -4,12 +4,14 @@ namespace MagicSchool
 {
     public class HeroSpawner
     {
-        private HeroMover _heroMover;
+        private readonly HeroMover _heroMover;
 
-        public HeroSpawner(Bench bench, BattleBoardSeed board)
+        public HeroSpawner(HeroMover heroMover, Bench bench, BattleBoardSeed seed)
         {
-            bench.OnHeroSpawned += SpawnHero;
-            board.OnHeroSpawned += SpawnHero;
+            _heroMover = heroMover;
+
+            if (bench != null) bench.OnSpawnRequested += SpawnHero;
+            if (seed != null) seed.OnSpawnRequested += SpawnHero;
         }
 
         // basically spawn hero
@@ -24,5 +26,4 @@ namespace MagicSchool
             _heroMover.MoveThisHeroTo(hero, placement);
         }
     }
-
 }

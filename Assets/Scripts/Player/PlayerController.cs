@@ -54,7 +54,7 @@ namespace MagicSchool
                 bool isHexHit = (targetHex != null);
                 if (isRelease && isHexHit && ValidateHex(targetHex))
                 {
-                    Preparation.Instance.MoveThisHeroInPreParationState(_heroHolded, targetHex);
+                    GameManager.Instance.MoveHero(_heroHolded, targetHex);
                 }
             }
         }

@@ -8,15 +8,29 @@ namespace MagicSchool
         public static GameManager Instance { get; private set; }
 
         [SerializeField] private BattleBoard _board;
-        [SerializeField] private BattleBoardSeed _seed;
+        [SerializeField] private Bench _bench;
+        [SerializeField] private BattlePlacementSO _placementSO;
+        [SerializeField] private bool _seedMode;
 
         public GamePhase Phase { get; private set; } = GamePhase.Preparation;
         public Team? Winner { get; private set; }
 
+        // ======================== composition root ========================
+        private HeroMover _heroMover;
+        private BattleBoardSeed _seed;
+        private HeroSpawner _heroSpawner;
+
         void Awake()
         {
             Instance = this;
+
+            _heroMover = new HeroMover();
+            _seed = new BattleBoardSeed(_placementSO, _board, _seedMode);
+            _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed);
         }
+
+        // The system moving a hero, as opposed to a hero walking itself during combat.
+        public void MoveHero(Hero hero, Placement placement) => _heroMover.MoveThisHeroTo(hero, placement);
 
         void Update()
         {

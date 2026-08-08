@@ -449,7 +449,6 @@ GameObject:
   m_Component:
   - component: {fileID: 344829187}
   - component: {fileID: 344829186}
-  - component: {fileID: 344829188}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -470,6 +469,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _board: {fileID: 1120158067}
+  _bench: {fileID: 477776518}
+  _placementSO: {fileID: 11400000, guid: 81fcd5098c3636746a24df5fc9bff9ab, type: 2}
+  _seedMode: 1
 --- !u!4 &344829187
 Transform:
   m_ObjectHideFlags: 0
@@ -485,21 +487,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &344829188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 344829185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2629c4df8ff720147aaf6c7bd613b7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeroSpawner
-  _placementSO: {fileID: 11400000, guid: 81fcd5098c3636746a24df5fc9bff9ab, type: 2}
-  _seedMode: 1
-  _board: {fileID: 1120158067}
 --- !u!114 &477776518 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -3424873907348500826, guid: 38b26e3300af184498d1cfedcf906f4e, type: 3}
@@ -892,6 +879,10 @@ PrefabInstance:
       propertyPath: _cam
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: -3424873907348500826, guid: 38b26e3300af184498d1cfedcf906f4e, type: 3}
+      propertyPath: _board
+      value: 
+      objectReference: {fileID: 1120158067}
     - target: {fileID: -3424873907348500826, guid: 38b26e3300af184498d1cfedcf906f4e, type: 3}
       propertyPath: _benchSlots.Array.size
       value: 9

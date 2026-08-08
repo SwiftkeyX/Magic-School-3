@@ -38,21 +38,14 @@ namespace MagicSchool
             // set placement for the hero normally
             this.EnterPlacementExtension(hero);
 
-            // now hero was on the board, board track that new hero
-            _board.TrackThisHero(hero);
-
-            // for hex, set reserve for the hex too 
+            // for hex, set reserve for the hex too
             // (see reserve hex for explanation)
             hero.SetReservedHex(this);
-            // ASKING: I see BenchSlot having its own variable of "reserved", I think for the sake of pattern,
-            // let's move reserved inside the hero to here instead. That wouldn't be difficult, no?
         }
 
         // unplace hero from Hex
         public void OnHeroUnplaced(IPlaceable hero)
         {
-            _board.UntrackThisHero(hero);
-            
             // what about setcurrenthex = null?
             hero.SetReservedHex(null);
         }

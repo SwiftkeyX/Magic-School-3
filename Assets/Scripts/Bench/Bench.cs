@@ -9,8 +9,11 @@ namespace MagicSchool
     {
         [SerializeField] private Camera _cam;
         [SerializeField] private List<BenchSlot> _benchSlots;
-        private BattleBoard _board;     // need to know which board, it'll seed on (there maybe several board at once)
-        public event Action<HeroDataSO, Team, Placement, BattleBoard> OnHeroSpawned;
+
+        // need to know which board, its heroes will fight on (there maybe several board at once).
+        [SerializeField] private BattleBoard _board;
+
+        public event Action<HeroDataSO, Team, Placement, BattleBoard> OnSpawnRequested;
 
         /// <summary>
         /// Spawn hero on the bench. Returns false (and spawns nothing) if the bench is full.
@@ -19,14 +22,21 @@ namespace MagicSchool
         {
             // find the first slot that hasn't been used yet
             BenchSlot freeSlot = _benchSlots.FirstOrDefault(slot => !slot.Reserved);
+            
             if (freeSlot == null)
             {
-                Debug.LogWarning("Bench: no free slot to place hero.");
+                DebugTool.LogWarning("Bench: no free slot to place hero.");
+                return false;
+            }
+
+            if (OnSpawnRequested == null)
+            {
+                DebugTool.LogError("Bench: nothing is listening for spawn requests.");
                 return false;
             }
 
             // spawn hero prefab, move it to that slot, reserved the freeslot
-            OnHeroSpawned.Invoke(data, Team.Blue, freeSlot, _board);
+            OnSpawnRequested.Invoke(data, Team.Blue, freeSlot, _board);
             return true;
         }
     }

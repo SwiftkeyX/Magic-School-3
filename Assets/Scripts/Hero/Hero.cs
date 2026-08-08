@@ -44,6 +44,12 @@ namespace MagicSchool
         // ======================================== board ========================================
         public Hero WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
         public bool IsHexReservedByOther(Hex hex) => _board.IsReservedByOther(hex, this);
+        // A hero knows which board it belongs to, so HeroMover doesn't need telling.
+        // Null-checked (not `?.`) because `?.` skips Unity's fake-null: a destroyed board would
+        // pass the check and then throw. Guarded at all because a hero can exist before a board,
+        // e.g. spawned onto the bench.
+        public void TrackOnBoard() { if (_board != null) _board.TrackThisHero(this); }
+        public void UntrackFromBoard() { if (_board != null) _board.UntrackThisHero(this); }
 
         // ======================================== visuals ========================================
         public void SetDeadVisual() => _visuals.SetDeadVisual();
@@ -52,7 +58,7 @@ namespace MagicSchool
         // ======================================== skill ========================================
         public bool TriggerSkill(SkillStep currentStep, bool isManaCapped) => _skillRuntime.TriggerSkill(currentStep, isManaCapped);
 
-        // ======================================== stat operation ========================================
+        // ======================================== stat ========================================
         public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 

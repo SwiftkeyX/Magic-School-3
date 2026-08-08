@@ -18,7 +18,7 @@ namespace MagicSchool
 
         private readonly MovementConfig _movement;
 
-        public HeroAttack(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
+        public HeroAttack(Hero hero, MovementConfig movement) : base(hero)
         {
             _movement = movement;
         }

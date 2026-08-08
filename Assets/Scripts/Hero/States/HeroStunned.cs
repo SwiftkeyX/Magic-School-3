@@ -6,7 +6,7 @@ namespace MagicSchool
     {
         public override HeroStateType StateType => HeroStateType.Stunned;
 
-        public HeroStunned(Hero hero, SkillSO skill) : base(hero, skill) { }
+        public HeroStunned(Hero hero) : base(hero) { }
 
         public override void OnExit()
         {

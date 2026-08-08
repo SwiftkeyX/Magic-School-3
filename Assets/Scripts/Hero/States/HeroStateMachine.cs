@@ -18,14 +18,14 @@ namespace MagicSchool
 
         public HeroStateType CurrentType => Current == null ? HeroStateType.Idle : Current.StateType;
 
-        public HeroStateMachine(Hero hero, SkillSO skill, MovementConfig movement)
+        public HeroStateMachine(Hero hero, MovementConfig movement)
         {
             _me = hero;
-            _idle = new HeroIdle(hero, skill, movement);
-            _walk = new HeroWalk(hero, skill, movement);
-            _attack = new HeroAttack(hero, skill, movement);
-            _dead = new HeroDead(hero, skill);
-            _stunned = new HeroStunned(hero, skill);
+            _idle = new HeroIdle(hero, movement);
+            _walk = new HeroWalk(hero, movement);
+            _attack = new HeroAttack(hero, movement);
+            _dead = new HeroDead(hero);
+            _stunned = new HeroStunned(hero);
         }
 
         public void Start(HeroStateType initial)

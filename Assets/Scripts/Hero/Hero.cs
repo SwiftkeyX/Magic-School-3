@@ -122,7 +122,7 @@ namespace MagicSchool
             _visuals = GetComponent<HeroVisuals>();
             _skillRuntime = new HeroSkillRuntime(this, _SOData.Skill);
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
-            _stateMachine = new HeroStateMachine(this, _SOData.Skill, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
+            _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }
 
         void Start()

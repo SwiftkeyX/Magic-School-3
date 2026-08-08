@@ -18,7 +18,7 @@ namespace MagicSchool
 
         private readonly Func<Hex, bool> _isHexBlocked;
 
-        public HeroIdle(Hero hero, SkillSO skill, MovementConfig movement) : base(hero, skill)
+        public HeroIdle(Hero hero, MovementConfig movement) : base(hero)
         {
             _movement = movement;
 
@@ -125,7 +125,7 @@ namespace MagicSchool
                 if (neighborDist >= distFromMeToEnemy) continue;
 
                 ICombatant occupant = _me.WhoReservedThisHex(neighbor);
-                if (occupant != null && occupant != _me && occupant.StateType != HeroStateType.Attack) return true;
+                if (occupant != null && occupant != _me as ICombatant && occupant.StateType != HeroStateType.Attack) return true;
             }
 
             return false;

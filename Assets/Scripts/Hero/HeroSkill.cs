@@ -94,7 +94,7 @@ namespace MagicSchool
                 TemplateAction actionPrefab = actionGroup.TemplateAction;
 
                 // FLAGGING: This is to complicated than it should be
-                TemplateAction.Spawn(actionPrefab, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects);
+                TemplateAction.TryPlay(actionPrefab, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects);
 
                 // Get cast time for this action - it is use for other skill trigger condition
                 _castTime = actionPrefab.CastTime;

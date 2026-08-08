@@ -18,14 +18,10 @@ namespace MagicSchool
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
-        public static void Spawn(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
+        public static void TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
         {
             // init skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
-            instance.Init(caster, effects);
-
-            // find "source" using source enum
-            instance.ResolveSource(source);
 
             // FIXLATER: mana is already spent by the time we get here. Stat.AddMana zeroes it the
             // instant it caps, but this bails when there's no valid target and spawns nothing - so
@@ -33,20 +29,30 @@ namespace MagicSchool
             //   mana full => check target found
             //   found     => consume mana => use skill => instantiate skill
             //   not found => DON'T consume mana => skill was never used or instantiated
-            // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
-            // find "aim" using aim enum
-            if (!instance.ResolveAimTarget(aimTarget))
+            if (!instance.TryConfigure(caster, effects, source, aimTarget))
             {
                 Destroy(instance.gameObject);
                 return;
             }
 
-            // where this action's instance should sit once source/aim are resolved.
-            instance.transform.position = instance.GetSpawnPosition();
-
-            // FIXNOW: Hey, I think this function is too complicated then it should be, no?
-            // Spawn() should only init skill prefab into scene instance. And let Play() handle the rest.
             instance.Play();
+        }
+
+        // try initialize skill, if something went wrong, skill won't play
+        private bool TryConfigure(Hero caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
+        {
+            Init(caster, effects);
+
+            // find "source" using source enum
+            ResolveSource(source);
+
+            // find "aim" using aim enum
+            if (!ResolveAimTarget(aimTarget)) return false;
+
+            // where this action's instance should sit once source/aim are resolved.
+            transform.position = GetSpawnPosition();
+
+            return true;
         }
 
         private void Init(Hero caster, List<SkillEffect> effects)
@@ -94,9 +100,9 @@ namespace MagicSchool
                     effect.ApplyEffect(recipients);
                     break;
 
-                // EnemiesInPath is deliberately absent, same as the old if/else chain left it out.
-                // Nothing produces it yet (PiercingProjectile is an empty stub), and folding it into
-                // the case above would silently start applying effects the moment it appears in an asset.
+                    // EnemiesInPath is deliberately absent, same as the old if/else chain left it out.
+                    // Nothing produces it yet (PiercingProjectile is an empty stub), and folding it into
+                    // the case above would silently start applying effects the moment it appears in an asset.
             }
         }
 

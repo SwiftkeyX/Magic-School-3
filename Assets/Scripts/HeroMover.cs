@@ -9,7 +9,7 @@ namespace MagicSchool
     /// </summary>
     public class HeroMover
     {
-        public void MoveThisHeroTo(Hero hero, Placement placement)
+        public void MoveThisHeroTo(ICombatant hero, Placement placement)
         {
             // exit old placement
             Placement oldPlacement = hero.CurrentPlacement;
@@ -18,10 +18,7 @@ namespace MagicSchool
             // enter new placement
             placement.OnHeroPlaced(hero);
 
-            // ASKING: I don't like MoveThisHeroTo() to access inside hero like this. I want it to use contract IPlaceable.
-            // Keep the board's roster in step with where the hero ended up. IsInCombat means
-            // "my placement is a Hex", so this covers bench -> board and board -> bench both ways
-            // without either Placement having to know what a roster is.
+            // ASKING: Could we move this inside placement instead now?
             if (hero.IsInCombat) hero.TrackOnBoard();
             else hero.UntrackFromBoard();
         }

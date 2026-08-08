@@ -35,14 +35,14 @@ namespace MagicSchool
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                Hero target = _me.FindNearestEnemy();
+                ICombatant target = _me.FindNearestEnemy();
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }
 
             else if (aimTarget == AimTargetEnum.Furthest)
             {
-                Hero target = _me.FindFurthestEnemy();
+                ICombatant target = _me.FindFurthestEnemy();
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }

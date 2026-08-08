@@ -21,12 +21,12 @@ namespace MagicSchool
         private Dictionary<HexNumber, Hex> _hexs = new Dictionary<HexNumber, Hex>();
 
         // track every hero on the battle board
-        private List<Hero> _heroesOnBoard = new List<Hero>();
-        private Dictionary<Hex, Hero> _reservedBy = new Dictionary<Hex, Hero>();
+        private List<ICombatant> _heroesOnBoard = new List<ICombatant>();
+        private Dictionary<Hex, ICombatant> _reservedBy = new Dictionary<Hex, ICombatant>();
 
         // ======================== Setter & Getter ========================
         public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
-        public IReadOnlyList<Hero> HeroesOnBoard => _heroesOnBoard;
+        public IReadOnlyList<ICombatant> HeroesOnBoard => _heroesOnBoard;
 
         void Awake()
         {
@@ -67,27 +67,25 @@ namespace MagicSchool
 
         // Every hero need to be tracked on the board
         // If they didn't get tracked, those heroes will be invisible to other hero.
-        // ASKING: Board need to answer hero "where is other hero on the board?"
-        // So it's actually doesn't need to know the entire hero right? let use IPlaceable instead.
-        public void TrackThisHero(Hero hero)
+        public void TrackThisHero(ICombatant hero)
         {
             if (!_heroesOnBoard.Contains(hero)) _heroesOnBoard.Add(hero);
         }
 
         // Counterpart to TrackThisHero - a hero leaving its hex for a non-hex placement
         // (e.g. back to the bench) is no longer on the battlefield.
-        public void UntrackThisHero(Hero hero)
+        public void UntrackThisHero(ICombatant hero)
         {
             _heroesOnBoard.Remove(hero);
         }
 
         // =================================== Hex reservation ===================================
         // Called by Hero.SetReservedHex, which is the only place a reservation changes.
-        public void UpdateReservation(Hero hero, Hex previous, Hex next)
+        public void UpdateReservation(ICombatant hero, Hex previous, Hex next)
         {
             // Only clear the old entry if this hero still owns it. Two heroes can't hold the same
             // hex, but a stale `previous` would otherwise evict whoever legitimately holds it now.
-            if (previous != null && _reservedBy.TryGetValue(previous, out Hero owner) && owner == hero)
+            if (previous != null && _reservedBy.TryGetValue(previous, out ICombatant owner) && owner == hero)
             {
                 _reservedBy.Remove(previous);
             }
@@ -96,19 +94,17 @@ namespace MagicSchool
         }
 
         // Who currently holds this hex, or null if it's free.
-        public Hero WhoReservedThisHex(Hex hex)
+        public ICombatant WhoReservedThisHex(Hex hex)
         {
-            if (hex == null || !_reservedBy.TryGetValue(hex, out Hero hero)) return null;
+            if (hex == null || !_reservedBy.TryGetValue(hex, out ICombatant hero)) return null;
 
-            if (hero == null) return null;
-
-            return hero.StateType == HeroStateType.Dead ? null : hero;
+            return hero.IsAlive ? hero : null;
         }
 
         // "Is this hex taken by someone other than me?"
-        public bool IsReservedByOther(Hex hex, Hero asker)
+        public bool IsReservedByOther(Hex hex, ICombatant asker)
         {
-            Hero reserver = WhoReservedThisHex(hex);
+            ICombatant reserver = WhoReservedThisHex(hex);
             return reserver != null && reserver != asker;
         }
     }

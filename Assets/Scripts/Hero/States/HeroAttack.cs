@@ -9,7 +9,7 @@ namespace MagicSchool
         private const float DashDuration = 0.2f;
         private const float DashDistance = 0.5f;
 
-        private Hero _nearestEnemy;
+        private ICombatant _nearestEnemy;
         private float _aaCooldown = 0f;
 
         private Vector3 _dashStart;
@@ -78,7 +78,8 @@ namespace MagicSchool
         protected override void CheckSwitchState()
         {
             // If the enemy is no longer within attack range, transition to idle
-            bool isEnemyInRange = _nearestEnemy != null && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
+            bool isEnemyInRange = _nearestEnemy != null && _nearestEnemy.IsAlive
+                && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
             if (!isEnemyInRange) _me.ChangeState(HeroStateType.Idle);
         }
 

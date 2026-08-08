@@ -42,7 +42,7 @@ namespace MagicSchool
             // Dummy never walks or attacks - it just stands there to be a target.
             if (_me.IsDummy) return;
 
-            Hero nearestEnemy = _me.FindNearestEnemy();
+            ICombatant nearestEnemy = _me.FindNearestEnemy();
             if (nearestEnemy == null) return;
 
             // If enemy is within attack range, stop moving, and transition to attack state
@@ -74,7 +74,7 @@ namespace MagicSchool
         }
 
 
-        private bool IsEnemyInAttackRange(Hero nearestEnemy)
+        private bool IsEnemyInAttackRange(ICombatant nearestEnemy)
         {
             return _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
         }
@@ -84,7 +84,7 @@ namespace MagicSchool
         {
             foreach (var neighbor in _me.CurrentHex.GetNeighbors())
             {
-                Hero reserver = _me.WhoReservedThisHex(neighbor);
+                ICombatant reserver = _me.WhoReservedThisHex(neighbor);
                 if (reserver != null && reserver.Team != _me.Team) return true;
             }
 
@@ -100,7 +100,7 @@ namespace MagicSchool
         /// </summary>
         /// <returns = TRUE> I'll wait because I think ally will stop blocking me </returns>
         /// <returns = FALSE> I'll take a longer path </returns>
-        private bool IsTargetHexMakeMeGoFurtherFromEnemy(Hero nearestEnemy, Hex targetHex)
+        private bool IsTargetHexMakeMeGoFurtherFromEnemy(ICombatant nearestEnemy, Hex targetHex)
         {
             float distFromMeToEnemy = Vector3.Distance(_me.CurrentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
             float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
@@ -117,14 +117,14 @@ namespace MagicSchool
 
         // If my blocker is not in Attack state, it's worth waiting a moment, since it's likely
         // that ally will step aside soon.
-        private bool WorthWaitingForBlocker(float distFromMeToEnemy, Hero nearestEnemy)
+        private bool WorthWaitingForBlocker(float distFromMeToEnemy, ICombatant nearestEnemy)
         {
             foreach (var neighbor in _me.CurrentHex.GetNeighbors())
             {
                 float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
                 if (neighborDist >= distFromMeToEnemy) continue;
 
-                Hero occupant = _me.WhoReservedThisHex(neighbor);
+                ICombatant occupant = _me.WhoReservedThisHex(neighbor);
                 if (occupant != null && occupant != _me && occupant.StateType != HeroStateType.Attack) return true;
             }
 

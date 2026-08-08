@@ -11,7 +11,7 @@ namespace MagicSchool
     /// But only IDamageable see a real usage. Other was no usage at all.
     /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
-    public class Hero : MonoBehaviour, IDamageable, IHeroStats, IPlaceable, ITargeter
+    public class Hero : MonoBehaviour, ICombatant, IHeroStats, ITargeter
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;
@@ -42,7 +42,7 @@ namespace MagicSchool
         public void ChangeState(HeroStateType next) => _stateMachine.ChangeState(next);
 
         // ======================================== board ========================================
-        public Hero WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
+        public ICombatant WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
         public bool IsHexReservedByOther(Hex hex) => _board.IsReservedByOther(hex, this);
         // A hero knows which board it belongs to, so HeroMover doesn't need telling.
         // Null-checked (not `?.`) because `?.` skips Unity's fake-null: a destroyed board would
@@ -104,9 +104,9 @@ namespace MagicSchool
         public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
         // === ITargeter ===
-        public Hero FindNearestEnemy() => _findEnemy.FindNearestEnemy();
-        public Hero FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
-        public Hero FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
+        public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
+        public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
+        public ICombatant FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
 
 
         // ======================================== life cycle ========================================
@@ -156,8 +156,8 @@ namespace MagicSchool
             if (!Application.isPlaying || !IsInitialized) return;
             if (StateType != HeroStateType.Attack) return;
 
-            Hero target = _runtimeData.NearestEnemy;
-            if (target == null) return;
+            ICombatant target = _runtimeData.NearestEnemy;
+            if (target == null || !target.IsAlive) return;
 
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, target.transform.position);

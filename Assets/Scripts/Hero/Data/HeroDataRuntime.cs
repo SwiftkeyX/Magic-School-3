@@ -6,9 +6,6 @@ namespace MagicSchool
     ///
     /// This class should only contain data and its getter & setter only.
     /// NO LOGIC.
-    ///
-    /// It used to also mirror all ~15 of Stat's getters one-for-one, which meant every new stat
-    /// had to be added here too. It exposes Stat directly now - callers that want a stat ask Stat.
     /// </summary>
     public class HeroDataRuntime
     {
@@ -22,7 +19,7 @@ namespace MagicSchool
         // ==================================== Position ====================================
         private Placement _currentPlacement;    // placement hero stand on e.g. hex, benchslot
         private Hex _reservedHex;               // hex that hero reserved. use while battle
-        private Hero _nearestEnemy;
+        private ICombatant _nearestEnemy;
 
 
         // ==================================== getter ====================================
@@ -32,7 +29,7 @@ namespace MagicSchool
         // === placement ===
         public Placement CurrentPlacement => _currentPlacement;
         public Hex ReservedHex => _reservedHex;
-        public Hero NearestEnemy => _nearestEnemy;
+        public ICombatant NearestEnemy => _nearestEnemy;
 
         // === etc ===
         public bool IsDummy => _isDummy;
@@ -42,7 +39,7 @@ namespace MagicSchool
         // === Placement ===
         public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
         public void SetReservedHex(Hex hex) => _reservedHex = hex;
-        public void SetNearestEnemy(Hero hero) => _nearestEnemy = hero;
+        public void SetNearestEnemy(ICombatant hero) => _nearestEnemy = hero;
 
 
         public HeroDataRuntime(HeroDataSO dataSO)

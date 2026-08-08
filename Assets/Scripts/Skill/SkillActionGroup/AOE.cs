@@ -28,7 +28,7 @@ namespace MagicSchool
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                Hero target = _me.FindNearestEnemy();
+                ICombatant target = _me.FindNearestEnemy();
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }

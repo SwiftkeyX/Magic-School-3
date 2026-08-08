@@ -45,8 +45,21 @@ namespace MagicSchool
     // What a skill action needs to aim: ask the caster who to point at.
     public interface ITargeter
     {
-        Hero FindNearestEnemy();
-        Hero FindFurthestEnemy();
-        Hero FindClusteredEnemy(int radius = 2);
+        ICombatant FindNearestEnemy();
+        ICombatant FindFurthestEnemy();
+        ICombatant FindClusteredEnemy(int radius = 2);
+    }
+
+    // Contract for BattleBoard to talk to Hero
+    // BattleBoard need to answer 1 thing "What is all the hero on the board"
+    // So it need talk to only talk to "some part" of the Hero via this contract.
+    public interface ICombatant : IPlaceable, IDamageable
+    {
+        Team Team { get; }
+        HeroStateType StateType { get; }
+
+        // A unit should knows which board it's on
+        void TrackOnBoard();
+        void UntrackFromBoard();
     }
 }

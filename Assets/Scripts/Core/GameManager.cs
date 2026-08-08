@@ -30,7 +30,7 @@ namespace MagicSchool
         }
 
         // The system moving a hero, as opposed to a hero walking itself during combat.
-        public void MoveHero(Hero hero, Placement placement) => _heroMover.MoveThisHeroTo(hero, placement);
+        public void MoveHero(ICombatant hero, Placement placement) => _heroMover.MoveThisHeroTo(hero, placement);
 
         void Update()
         {

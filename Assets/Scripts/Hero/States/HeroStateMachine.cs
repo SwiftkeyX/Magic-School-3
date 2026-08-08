@@ -15,7 +15,8 @@ namespace MagicSchool
         private readonly HeroStunned _stunned;
 
         public HeroState Current { get; private set; }
-        public HeroStateType CurrentType => Current.StateType;
+
+        public HeroStateType CurrentType => Current == null ? HeroStateType.Idle : Current.StateType;
 
         public HeroStateMachine(Hero hero, SkillSO skill, MovementConfig movement)
         {

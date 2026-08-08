@@ -13,10 +13,10 @@ namespace MagicSchool
         private readonly HeroDataRuntime _runtimeData;
         private readonly BattleBoard _board;
 
-        private List<Hero> _enemyBFSCache;
+        private List<ICombatant> _enemyBFSCache;
         private int _enemyBFSCacheFrame = -1;
 
-        private List<(Hero target, float dist)> _enemyDistanceCache;
+        private List<(ICombatant target, float dist)> _enemyDistanceCache;
         private int _enemyDistanceCacheFrame = -1;
 
         public FindEnemy(Hero me, HeroDataRuntime runtimeData, BattleBoard board)
@@ -27,7 +27,7 @@ namespace MagicSchool
         }
 
         // Picks nearest enemy (if there are several nearest enemies, random it).
-        public Hero FindNearestEnemy()
+        public ICombatant FindNearestEnemy()
         {
             var enemyDistances = GetEnemyDistance();
 
@@ -38,8 +38,8 @@ namespace MagicSchool
 
             // Sticks with the previous pick across calls as long as it's still tied for nearest, so the target
             // doesn't flicker between equally-near enemies frame to frame.
-            Hero nearestEnemy = _runtimeData.NearestEnemy;
-            if (nearestEnemy != null && tiedNearest.Contains(nearestEnemy)) return nearestEnemy;
+            ICombatant nearestEnemy = _runtimeData.NearestEnemy;
+            if (nearestEnemy != null && nearestEnemy.IsAlive && tiedNearest.Contains(nearestEnemy)) return nearestEnemy;
 
             nearestEnemy = tiedNearest[Random.Range(0, tiedNearest.Count)];
             _runtimeData.SetNearestEnemy(nearestEnemy);
@@ -47,7 +47,7 @@ namespace MagicSchool
         }
 
         // Picks furthest enemy (if there are several furthest enemies, random it).
-        public Hero FindFurthestEnemy()
+        public ICombatant FindFurthestEnemy()
         {
             var enemyDistances = GetEnemyDistance();
 
@@ -61,15 +61,15 @@ namespace MagicSchool
 
         // Pick the hex that are most cluster (measuring by inpu radius)
         // FLAGGING: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
-        public Hero FindClusteredEnemy(int radius = 2)
+        public ICombatant FindClusteredEnemy(int radius = 2)
         {
-            List<Hero> enemies = GetEnemiesBFS();
+            List<ICombatant> enemies = GetEnemiesBFS();
             if (enemies.Count == 0) return null;
 
-            Hero best = null;
+            ICombatant best = null;
             int bestCount = -1;
 
-            foreach (Hero candidate in enemies)
+            foreach (ICombatant candidate in enemies)
             {
                 Hex candidateHex = candidate.CurrentHex;
                 int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex, radius));
@@ -84,18 +84,18 @@ namespace MagicSchool
             return best;
         }
 
-        // easy boolean logic to filter the enemy 
-        private bool IsEnemy(Hero target)
+        // easy boolean logic to filter the enemy
+        private bool IsEnemy(ICombatant target)
         {
-            bool notTargetMyself = target != _me;
+            bool notTargetMyself = target != _me as ICombatant;
             bool notTargetFriend = target.Team != _me.Team;
-            bool notTargetDead = target.StateType != HeroStateType.Dead;
+            bool notTargetDead = target.IsAlive;
             bool notTargetGuyNotInCombat = target.IsInCombat;
             return notTargetMyself && notTargetFriend && notTargetDead && notTargetGuyNotInCombat;
         }
 
-        // Every living enemy on the board. 
-        private List<Hero> GetEnemiesBFS()
+        // Every living enemy on the board.
+        private List<ICombatant> GetEnemiesBFS()
         {
             // if was cached, return it
             bool isCache = (_enemyBFSCacheFrame == Time.frameCount);
@@ -108,7 +108,7 @@ namespace MagicSchool
         }
 
         // Scan all enemy distance from myself.
-        private List<(Hero target, float dist)> GetEnemyDistance()
+        private List<(ICombatant target, float dist)> GetEnemyDistance()
         {
             // if was cached, return it
             bool isCache = (_enemyDistanceCacheFrame == Time.frameCount);

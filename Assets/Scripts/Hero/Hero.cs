@@ -19,7 +19,7 @@ namespace MagicSchool
         private BattleBoard _board;
         private FindEnemy _findEnemy;
         private HeroVisuals _visuals;
-        private HeroSkillRuntime _skillRuntime;
+        private HeroSkill _skillRuntime;
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;
@@ -56,7 +56,7 @@ namespace MagicSchool
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
-        public bool TriggerSkill(bool isManaCapped) => _skillRuntime.TriggerSkill(isManaCapped);
+        public bool TriggerSkill(bool isManaCapped) => _skillRuntime.TriggerOnCastSkill(isManaCapped);
 
         // ======================================== stat ========================================
         public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
@@ -120,7 +120,7 @@ namespace MagicSchool
 
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
-            _skillRuntime = new HeroSkillRuntime(this, _SOData.Skill);
+            _skillRuntime = new HeroSkill(this, _SOData.Skill);
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }

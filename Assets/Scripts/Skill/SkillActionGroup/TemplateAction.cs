@@ -18,14 +18,13 @@ namespace MagicSchool
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
-        // Hero that this would want is also Hero currentTarget, Hero furthestTarget and etc...
-        // that'll be resolve later
         public static void Spawn(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
         {
+            // init skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
             instance.Init(caster, effects);
 
-            // find position using source/aim enum
+            // find "source" using source enum
             instance.ResolveSource(source);
 
             // FIXLATER: mana is already spent by the time we get here. Stat.AddMana zeroes it the
@@ -35,13 +34,18 @@ namespace MagicSchool
             //   found     => consume mana => use skill => instantiate skill
             //   not found => DON'T consume mana => skill was never used or instantiated
             // no valid target (e.g. Current-targeted with no enemy left) - skip this cast, don't spawn anything
+            // find "aim" using aim enum
             if (!instance.ResolveAimTarget(aimTarget))
             {
                 Destroy(instance.gameObject);
                 return;
             }
 
+            // where this action's instance should sit once source/aim are resolved.
             instance.transform.position = instance.GetSpawnPosition();
+
+            // FIXNOW: Hey, I think this function is too complicated then it should be, no?
+            // Spawn() should only init skill prefab into scene instance. And let Play() handle the rest.
             instance.Play();
         }
 
@@ -53,7 +57,7 @@ namespace MagicSchool
 
 
         // ==================================== abstract method ====================================
-        // Each template action child have a dirrent way to resolve how their skill was spawn/aim at.
+        // Each template action child have a different way to resolve how their skill was spawn/aim at.
         // read ResolveSource&ResolveAimTarget in each different's child for more detail
         protected abstract void ResolveSource(ActionSourceEnum source);
 
@@ -61,8 +65,8 @@ namespace MagicSchool
         protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
         // where this action's instance should sit once source/aim are resolved.
-        // e.g. an AOE spawns at the aim target, 
-        // a projectile spawns at its source and travels from there.
+        // 1) an AOE spawns at the aim target, 
+        // 2) a projectile spawns at its source and travels from there.
         protected abstract Vector3 GetSpawnPosition();
 
         protected abstract void Play();

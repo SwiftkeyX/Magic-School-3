@@ -17,12 +17,12 @@ namespace MagicSchool
         }
 
         // Returns true if the skill cast successfully
-        public bool TriggerSkill(SkillStep currentStep, bool isManaCapped)
+        public bool TriggerSkill(bool isManaCapped)
         {
-            if (!HasSkill || currentStep == null) return false;
-            if (currentStep.Trigger != TriggerEnum.OnCast) return false;
+            if (!HasSkill) return false;
+            if (_skill.Steps[0].Trigger != TriggerEnum.OnCast) return false;
 
-            return _skillTrigger.OnCast(isManaCapped, _skill, currentStep, _me);
+            return _skillTrigger.OnCast(isManaCapped, _skill,  _me);
         }
     }
 }

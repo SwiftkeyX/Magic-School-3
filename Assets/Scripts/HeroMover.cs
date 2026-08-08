@@ -18,9 +18,10 @@ namespace MagicSchool
             // enter new placement
             placement.OnHeroPlaced(hero);
 
-            // ASKING: Could we move this inside placement instead now?
+            // if hero was placed on board, board must track that hero
             if (hero.IsInCombat) hero.TrackOnBoard();
             else hero.UntrackFromBoard();
         }
     }
 }
+

@@ -56,7 +56,7 @@ namespace MagicSchool
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
-        public bool TriggerSkill(SkillStep currentStep, bool isManaCapped) => _skillRuntime.TriggerSkill(currentStep, isManaCapped);
+        public bool TriggerSkill(bool isManaCapped) => _skillRuntime.TriggerSkill(isManaCapped);
 
         // ======================================== stat ========================================
         public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped

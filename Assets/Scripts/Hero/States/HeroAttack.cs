@@ -59,7 +59,7 @@ namespace MagicSchool
                 bool isManaCapped = _me.GainMana(ManaPerAttack);
 
                 // if mana is full, trigger OnCast skill
-                bool success = _me.TriggerSkill(_currentStep, isManaCapped);
+                bool success = _me.TriggerSkill(isManaCapped);
 
                 // if skill cast is success, pop skill effect
                 if (success) _me.PlaySkillCastEffect("Skill Activated!");

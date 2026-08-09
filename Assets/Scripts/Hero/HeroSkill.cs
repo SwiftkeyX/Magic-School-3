@@ -57,31 +57,30 @@ namespace MagicSchool
             return () => FireStep(nextIndex);
         }
 
-        // ============================================== Action ==============================================
+        // ============================================== helper ==============================================
         // Fire skill in "step" order. Returns whether this step actually played anything.
         private bool FireStep(int stepIndex)
         {
             if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
 
-            // step can have several action, only action was choose base on condition
+            // step can have several template action, only template action was choose base on condition
             return PlayAction(stepIndex);
         }
 
-        // ============================================== helper ==============================================
-        // Play every action in this step.
+        // Play every template action in this step.
         private bool PlayAction(int stepIndex)
         {
-            // hand the follow-up to the action before it plays - a short one can expire inside Play()
+            // hand the follow-up to the template action before it plays - a short one can expire inside Play()
             Action onExpired = TriggerOnExpiredStep(stepIndex + 1);
 
-            // Play 1 action
+            // Play 1 template action
             var actionGroups = _skill.Steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
                 // try play the skill
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects, onExpired);
 
-                // if one of the action is played, stop
+                // if one of the template action is played, stop
                 if (played) return true;
             }
 

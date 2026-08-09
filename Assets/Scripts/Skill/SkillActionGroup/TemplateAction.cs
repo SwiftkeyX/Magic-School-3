@@ -16,7 +16,7 @@ namespace MagicSchool
         protected Vector3 _aimTarget;   
         
         // ==================================== other ====================================
-        private event Action OnExpired;     // Fire when a action lifetime runout
+        private event Action OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime = 10f;      // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
 
         // ==================================== getter ====================================
@@ -73,7 +73,7 @@ namespace MagicSchool
         // returns false if no valid target could be resolved (e.g. Current-targeted with no enemy left) - caller skips the cast
         protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
-        // where this action's instance should sit once source/aim are resolved.
+        // where this template action's instance should sit once source/aim are resolved.
         // 1) an AOE spawns at the aim target, 
         // 2) a projectile spawns at its source and travels from there.
         protected abstract Vector3 GetSpawnPosition();
@@ -82,11 +82,11 @@ namespace MagicSchool
 
 
         // ==================================== Expire ====================================
-        // Every action ends the same way - it gets destroyed
+        // Every template action ends the same way - it gets destroyed
         // FIXNOW: still not implement
         protected void DestroyMe()
         {
-            // the scene is being torn down, not the action running out
+            // the scene is being torn down, not the template action running out
             if (_me == null) return;
 
             Destroy(gameObject);

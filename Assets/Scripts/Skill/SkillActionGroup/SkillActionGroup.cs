@@ -15,7 +15,7 @@ namespace MagicSchool
         // public Offset _offset;
         // ...
 
-        [SerializeReference] private List<SkillEffect> _effects;    // 1 action = have several effect
+        [SerializeReference] private List<SkillEffect> _effects;    // 1 template action = have several effect
 
         // ============================================ Getter ============================================
         public ActionSourceEnum Source => _source;

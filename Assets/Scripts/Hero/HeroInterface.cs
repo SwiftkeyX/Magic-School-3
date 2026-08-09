@@ -42,7 +42,7 @@ namespace MagicSchool
         void SetCurrentPlacement(Placement placement);
     }
 
-    // What a skill action needs to aim: ask the caster who to point at.
+    // What a template action needs to aim: ask the caster who to point at.
     public interface ITargeter
     {
         ICombatant FindNearestEnemy();

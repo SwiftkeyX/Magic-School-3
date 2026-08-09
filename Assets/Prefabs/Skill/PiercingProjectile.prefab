@@ -151,4 +151,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebb0e8289df89549b38a4dffaf78bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagicSchool.PiercingProjectile
-  _castTime: 10
+  _castTime: 0.5
+  _speed: 8

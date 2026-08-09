@@ -151,5 +151,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0673e39a92f7d4449f098f778fe31e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HomingProjectile
-  _castTime: 1
+  _castTime: 0.5
   _speed: 8

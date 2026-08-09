@@ -141,6 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082a5995efdeba843a34242425cad86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleAOE
-  _actionName: 1
   _castTime: 0.5
-  _lifetime: 0.5

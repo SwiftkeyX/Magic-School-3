@@ -12,12 +12,12 @@ namespace MagicSchool
         protected Hero _me;
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
-        protected Vector3 _source;     
-        protected Vector3 _aimTarget;   
-        
+        protected Vector3 _source;
+        protected Vector3 _aimTarget;
+
         // ==================================== other ====================================
         private event Action OnExpired;     // Fire when a template action lifetime runout
-        protected float _lifetime = 10f;      // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
+        protected float _lifetime;          // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
@@ -136,6 +136,13 @@ namespace MagicSchool
 
             // destroy once duration is expired
             DestroyMe();
+        }
+
+        // ===================================== helper =====================================
+        protected virtual void SetLifeTime()
+        {
+            _lifetime = 0.5f;
+            Destroy(gameObject, _lifetime);
         }
     }
 }

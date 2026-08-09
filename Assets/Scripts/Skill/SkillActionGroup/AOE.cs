@@ -50,11 +50,5 @@ namespace MagicSchool
         }
 
         protected override Vector3 GetSpawnPosition() => _aimTarget;
-
-        // ======================================== private ==============================================
-        private void SetLifeTime()
-        {
-            Destroy(gameObject, _lifetime);
-        }
     }
 }

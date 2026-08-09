@@ -141,6 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457129c01d4f3ea4ca42e91fce2df899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZoneAOE
-  _actionName: 0
-  _castTime: 4
-  _lifetime: 0.5
+  _castTime: 0.5

@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MagicSchool
@@ -84,9 +82,11 @@ namespace MagicSchool
         }
 
         // set object lifetime - this is for fallback despawn if it never reaches anyone
-        private void SetLifeTime()
+        protected override void SetLifeTime()
         {
-            Destroy(gameObject, _lifetime);
+            base.SetLifeTime();
+
+            _lifetime = 10f;
         }
     }
 }

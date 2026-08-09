@@ -9,6 +9,12 @@ namespace MagicSchool
     public abstract class AOE : TemplateAction
     {
         // ======================================= protected =======================================
+        protected override void Play()
+        {
+            // starting position
+            transform.position = GetSpawnPosition();
+        }
+        
         /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
         protected override void ResolveSource(ActionSourceEnum source)
         {

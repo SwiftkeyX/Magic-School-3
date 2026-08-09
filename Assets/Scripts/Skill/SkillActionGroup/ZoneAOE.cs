@@ -16,6 +16,8 @@ namespace MagicSchool
         // ======================================== private ==============================================
         protected override void Play()
         {
+            base.Play();
+            
             // initialize local variable
             _lifetime = _castTime;
 

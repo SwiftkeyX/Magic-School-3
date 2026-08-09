@@ -47,9 +47,6 @@ namespace MagicSchool
             // find "aim" using aim enum
             if (!ResolveAimTarget(aimTarget)) return false;
 
-            // where this action's instance should sit once source/aim are resolved.
-            transform.position = GetSpawnPosition();
-
             return true;
         }
 

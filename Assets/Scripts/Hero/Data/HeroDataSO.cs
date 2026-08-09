@@ -21,7 +21,7 @@ namespace MagicSchool
         [SerializeField] private int _startMana = 0;
         [SerializeField] private int _maxMana = 50;
         [SerializeField] private SkillSO _skill;
-        // FIXLATER: a dummy should be its own unit type, not a Hero. Let's see later if it make sense.
+        // FLAGGING: a dummy should be its own unit type, not a Hero. Let's see later if it make sense.
         [SerializeField] private bool _isDummy = false; // A dummy never walks or attacks 
 
         // ===================== setter & getter =====================

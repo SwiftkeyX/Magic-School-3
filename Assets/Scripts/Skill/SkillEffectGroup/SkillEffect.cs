@@ -55,6 +55,8 @@ namespace MagicSchool
 
     }
 
+    // FIXLATER: I don't like that we have several skilleffect BUT BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect does the same thing.
+    // Even Healskilleffect is also lumpable into those too. Let's leave it for now, let consider this again when we see pattern more clearly.
     [Serializable]
     public class HealSkillEffect : SkillEffect
     {
@@ -77,7 +79,6 @@ namespace MagicSchool
         }
     }
 
-    // FIXLATER: I see BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect are all the same. I starting to consider combining them.
     [Serializable]
     public class BuffSkillEffect : SkillEffect, Modifier
     {

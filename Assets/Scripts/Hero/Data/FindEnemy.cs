@@ -60,7 +60,7 @@ namespace MagicSchool
         }
 
         // Pick the hex that are most cluster (measuring by inpu radius)
-        // FLAGGING: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
+        // FiXLATER: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
         public ICombatant FindClusteredEnemy(int radius = 2)
         {
             List<ICombatant> enemies = GetEnemiesBFS();

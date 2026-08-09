@@ -51,6 +51,10 @@ This is intentional for the early stage of implementing skill system, BUT once w
 
 7) Cast time = skill that user use for a cast time, and during that he can't auto attack.
 There is also another Cast time (which is not intended) - it is OnExpired one -> It shouldn't also use Cast time
+=> Now Cast time have to clean itself up, bc now it don't use lifetime anymore
+
+8) Should heal and modifier lump together? Or should they be lump like now?
+
 
 # Resolve problem
 1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 

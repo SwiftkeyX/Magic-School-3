@@ -93,9 +93,6 @@ namespace MagicSchool
                 if (recipient == null || !recipient.IsAlive) continue;
 
                 recipient.AddModifier(this);
-
-                // FIXLATER: this shouldn't be here, so I comment it out, and it doesn't even use now, so let leave it for now.
-                // if (_modifier == ModifierEnum.BonusHP) recipient.Heal(_buffAmount);
             }
         }
 
@@ -104,7 +101,7 @@ namespace MagicSchool
             return _buffAmount;
         }
 
-        public ModifierEnum GetModifier()
+        public ModifierEnum GetModifierEnum()
         {
             return _modifier;
         }
@@ -137,7 +134,7 @@ namespace MagicSchool
             return _debuffAmount;
         }
 
-        public ModifierEnum GetModifier()
+        public ModifierEnum GetModifierEnum()
         {
             return _modifier;
         }
@@ -170,7 +167,7 @@ namespace MagicSchool
             return _statusAmount;
         }
 
-        public ModifierEnum GetModifier()
+        public ModifierEnum GetModifierEnum()
         {
             return _modifier;
         }

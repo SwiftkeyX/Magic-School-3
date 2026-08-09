@@ -19,5 +19,8 @@ namespace MagicSchool
         Range = 6,
         StartMana = 7,
         MaxMana = 8,
+
+        // ====================== Extension ======================
+        DamageReduction = 9,
     }
 }

@@ -5,97 +5,96 @@ namespace MagicSchool
     public interface Modifier
     {
         public float GetAmount();
-        public ModifierEnum GetModifier();
+        public ModifierEnum GetModifierEnum();
         public float GetDuration();
     }
 
-    /// <summary>
-    /// StatModifier are a helper for Stat:
-    /// 1) It contain all logic for calculating those modifier into final stat
-    /// 2) Update those modifier duration
-    /// 3) Remember all modifier for this hero
-    /// </summary>
-    public class StatModifier
+    // 1) ModifierResolver are used to calculate final stat from modifier:
+    // 1.1) stat modifier: they increase/decrease stat e.g. atk, def, as, mana, hp, etc...
+    // 1.2) status modifier: they don't relate to stat e.g. stun, wound, untargetable, disarm, etc... 
+    // 2) ModifierResolver track which modifier will expired
+    public class ModifierResolver
     {
         private const float Permanent = -1f;
 
-        private readonly List<ActiveModifier> _modifiers = new List<ActiveModifier>();
+        private readonly Dictionary<ModifierEnum, ModifierTracker> _modifierTracker = new Dictionary<ModifierEnum, ModifierTracker>();
 
-        // Only modifiers that add a flat amount to a base stat belong here. Healing does NOT:
-        // it moves current HP, which is not a stat, so it stays HealSkillEffect's job.
-        // What this entry is really for is the max-HP buff - i.e. BonusHP.
-        private static readonly Dictionary<ModifierEnum, StatType> FlatBonusTarget = new Dictionary<ModifierEnum, StatType>
+        // to track modifier that was expired
+        private readonly List<ModifierEnum> _expired = new List<ModifierEnum>();
+
+        // pair of modifier & stat - tell which stat is increase by this modifier
+        private static readonly Dictionary<ModifierEnum, StatType> _lookup = new Dictionary<ModifierEnum, StatType>
         {
             { ModifierEnum.BonusHP, StatType.HP },
+            { ModifierEnum.Attack, StatType.Atk },
+            { ModifierEnum.DamageReduction, StatType.DamageReduction },
+            // ...
         };
 
         // =================================== life cycle ===================================
         // update all current modifier duration, removing any that just expired
         public void Tick(float deltaTime)
         {
-            for (int i = _modifiers.Count - 1; i >= 0; i--)
+            _expired.Clear();
+
+            foreach (var tracker in _modifierTracker)
             {
                 // if permanent, skip timer
-                if (float.IsPositiveInfinity(_modifiers[i].Remaining)) continue;
+                if (float.IsPositiveInfinity(tracker.Value.Remaining)) continue;
 
                 // update timer
-                _modifiers[i].Remaining -= deltaTime;
+                tracker.Value.Remaining -= deltaTime;
 
-                // if timer is expired, remove modifier
-                if (_modifiers[i].Remaining <= 0f) _modifiers.RemoveAt(i);
+                // if modifier expired, keep it in expired list
+                if (tracker.Value.Remaining <= 0f) _expired.Add(tracker.Key);
             }
+
+            // remove expired modifier in 1 go
+            foreach (ModifierEnum type in _expired) _modifierTracker.Remove(type);
         }
 
         // =================================== setter ===================================
         // add new modifier
         public void AddModifier(Modifier modifier)
         {
-            _modifiers.Add(new ActiveModifier(modifier));
+            _modifierTracker[modifier.GetModifierEnum()] = new ModifierTracker(modifier);
         }
 
         // =================================== getter ===================================
+        // Compute final stat after modifier.
         // Consume base stat. Spit the final stat out.
-        public float Apply(StatType type, float baseValue)
+        public float GetStatModifier(StatType type, float baseValue)
         {
             float total = baseValue;    // get base stat from hero
 
-            foreach (var modifier in _modifiers)
+            foreach (var tracker in _modifierTracker)
             {
-                if (!FlatBonusTarget.TryGetValue(modifier.Source.GetModifier(), out StatType target)) continue;
+                // lookup modifier table - what stat is increase?
+                if (!_lookup.TryGetValue(tracker.Value.Modifier.GetModifierEnum(), out StatType target)) continue;
+
+                // guard
                 if (target != type) continue;
 
-                total += modifier.Source.GetAmount();   // increase base stat by modifier
+                // increase base stat by modifier
+                total += tracker.Value.Modifier.GetAmount();
             }
 
             return total;
         }
 
-        // FIXNOW: Apply and SumModifier have the same purpose. To be getter for the modifier. But the name is not justified that.
-        public float SumModifier(ModifierEnum type)
-        {
-            float sum = 0f;
-            foreach (var modifier in _modifiers)
-                if (modifier.Source.GetModifier() == type) sum += modifier.Source.GetAmount();
-            return sum;
-        }
-
-        // =================================== modifier helper ===================================
-        public bool HasModifier(ModifierEnum type)
-        {
-            foreach (var modifier in _modifiers)
-                if (modifier.Source.GetModifier() == type) return true;
-            return false;
-        }
+        // Return available status modifier
+        public bool GetStatusModifier(ModifierEnum type) => _modifierTracker.ContainsKey(type);
 
         // =================================== active modifier ===================================
-        private class ActiveModifier
+        // Current active modifer on the hero. To track how long this modifer last.
+        private class ModifierTracker
         {
-            public readonly Modifier Source;    // Modifier = heal, buff, debuff, status, etc...
-            public float Remaining;             // remember its duration
+            public readonly Modifier Modifier;      // Modifier = heal, buff, debuff, status, etc...
+            public float Remaining;                 // remember its duration
 
-            public ActiveModifier(Modifier source)
+            public ModifierTracker(Modifier source)
             {
-                Source = source;
+                Modifier = source;
 
                 float duration = source.GetDuration();
 

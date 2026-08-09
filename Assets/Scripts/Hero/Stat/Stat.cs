@@ -12,7 +12,7 @@ namespace MagicSchool
     public class Stat
     {
         // ========================================== dependency ==========================================
-        private readonly StatModifier _statModifier = new StatModifier();
+        private readonly ModifierResolver _statModifier = new ModifierResolver();
 
         // ========================================== base stat ==========================================
         private readonly Dictionary<StatType, float> _base = new Dictionary<StatType, float>();
@@ -24,7 +24,7 @@ namespace MagicSchool
         public float GetBaseStat(StatType type) => _base[type];
 
         // ========================================== modify stat getter ==========================================
-        public float GetFinalStat(StatType type) => _statModifier.Apply(type, _base[type]);
+        public float GetFinalStat(StatType type) => _statModifier.GetStatModifier(type, _base[type]);
 
         public int HP => Mathf.RoundToInt(GetFinalStat(StatType.HP));
         public int Atk => Mathf.RoundToInt(GetFinalStat(StatType.Atk));
@@ -35,13 +35,13 @@ namespace MagicSchool
         public int Range => Mathf.RoundToInt(GetFinalStat(StatType.Range));
         public int StartMana => Mathf.RoundToInt(GetFinalStat(StatType.StartMana));
         public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatType.MaxMana));
+        public float DamageReductionPercent => Mathf.RoundToInt(GetFinalStat(StatType.DamageReduction));   // FLAGGING: let make this a stat for now. if it doesn't, adjust later.
 
         public int CurrentHP => _currentHP;
         public int CurrentMana => _currentMana;
 
-        public bool IsStunned => _statModifier.HasModifier(ModifierEnum.Stun);
-        public bool IsWounded => _statModifier.HasModifier(ModifierEnum.Wound);
-        public float DamageReductionPercent => _statModifier.SumModifier(ModifierEnum.DamageReduction);
+        public bool IsStunned => _statModifier.GetStatusModifier(ModifierEnum.Stun);
+        public bool IsWounded => _statModifier.GetStatusModifier(ModifierEnum.Wound);
 
         // ========================================== setter ==========================================
         public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
@@ -73,6 +73,7 @@ namespace MagicSchool
             _base[StatType.Range] = stat.Range;
             _base[StatType.StartMana] = stat.StartMana;
             _base[StatType.MaxMana] = stat.MaxMana;
+            _base[StatType.DamageReduction] = 0f;
 
             _currentHP = HP;
             _currentMana = StartMana;

@@ -38,4 +38,4 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _damageAmount: 744
+        _damageAmount: 1000

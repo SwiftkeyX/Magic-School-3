@@ -1,5 +1,4 @@
-using System.Collections;
-using UnityEngine;
+using System;
 
 namespace MagicSchool
 {
@@ -11,8 +10,6 @@ namespace MagicSchool
     {
         private readonly Hero _me;
         private readonly SkillSO _skill;
-
-        private float _castTime;
 
         // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned.
         public bool HasSkill => _skill != null && _skill.Steps.Count > 0;
@@ -48,10 +45,16 @@ namespace MagicSchool
             // if (isTargetDead) FireAction(IndexOfStep(step));
         }
 
-        // on previous skill expired, next step is trigger 
-        private void TriggerOnExpiredStep(int nextIndex, float castTime)
+        // If current template action expired, run next step
+        private Action TriggerOnExpiredStep(int nextIndex)
         {
-            _me.StartCoroutine(FireActionAfterDelay(nextIndex, castTime));
+            // guard 
+            if (nextIndex >= _skill.Steps.Count) return null;
+
+            // if this step trigger by OnExpired, continue
+            if (_skill.Steps[nextIndex].Trigger != TriggerEnum.OnExpired) return null;
+
+            return () => FireStep(nextIndex);
         }
 
         // ============================================== Action ==============================================
@@ -61,64 +64,28 @@ namespace MagicSchool
             if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
 
             // step can have several action, only action was choose base on condition
-            bool played = PlayAction(stepIndex);
-
-            // if this step success, fire next step
-            if (played) FireNextStep(stepIndex + 1);
-
-            return played;
-        }
-
-        private void FireNextStep(int nextIndex)
-        {
-            // guard - ran off the end of the chain, nothing more to play
-            if (nextIndex >= _skill.Steps.Count) return;
-
-            // depend on enum, go different path
-            SkillStep nextStep = _skill.Steps[nextIndex];
-
-            // OnExpired, the caster fire skill after the delay e.g. Galio
-            if (nextStep.Trigger == TriggerEnum.OnExpired && _castTime > 0f)
-            {
-                TriggerOnExpiredStep(nextIndex, _castTime);
-            }
-
-            // else if (enum) {} ...
+            return PlayAction(stepIndex);
         }
 
         // ============================================== helper ==============================================
         // Play every action in this step.
         private bool PlayAction(int stepIndex)
         {
-            _castTime = 0f;
-            bool played = false;
+            // hand the follow-up to the action before it plays - a short one can expire inside Play()
+            Action onExpired = TriggerOnExpiredStep(stepIndex + 1);
 
-            // Play every action in this step
+            // Play 1 action
             var actionGroups = _skill.Steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
-                // get template action
-                TemplateAction actionPrefab = actionGroup.TemplateAction;
-
-                // Get cast time for this action - it is use for other skill trigger condition
-                _castTime = actionPrefab.CastTime;
-
                 // try play the skill
-                played = TemplateAction.TryPlay(actionPrefab, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects);
+                bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects, onExpired);
 
                 // if one of the action is played, stop
                 if (played) return true;
             }
 
-            return played;
+            return false;
         }
-
-        // coroutine for casting delay action
-        private IEnumerator FireActionAfterDelay(int stepIndex, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            FireStep(stepIndex);
-        }
-
     }
 }

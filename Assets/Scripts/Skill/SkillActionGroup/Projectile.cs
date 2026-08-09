@@ -87,7 +87,6 @@ namespace MagicSchool
         // set object lifetime - this is for fallback despawn if it never reaches anyone
         private void SetLifeTime()
         {
-            _lifetime = _castTime;
             Destroy(gameObject, _lifetime);
         }
     }

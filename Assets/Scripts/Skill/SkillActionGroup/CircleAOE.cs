@@ -16,20 +16,12 @@ namespace MagicSchool
     /// </summary>
     public class CircleAOE : AOE
     {
-        private float _lifetime = 0.5f;
-
         private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 
-        // ======================================== private ==============================================
+        // ======================================== override ==============================================
         protected override void Play()
         {
             base.Play();
-
-            // initialize local variable
-            _lifetime = _castTime;
-
-            // set object lifetime
-            Destroy(gameObject, _lifetime);
 
             // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
             OnContactHitbox onceHitbox = new OnContactHitbox();
@@ -38,6 +30,7 @@ namespace MagicSchool
             _hitbox.Init(_me);
         }
 
+        // ======================================== private ==============================================
         /// <summary>
         /// When a hero who was hit on first contact:
         /// 1) Apply effect once if not cadence

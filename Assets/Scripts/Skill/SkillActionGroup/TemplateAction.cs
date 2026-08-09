@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +11,16 @@ namespace MagicSchool
         protected Hero _me;
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
-
-        protected Vector3 _source;
-        protected Vector3 _aimTarget;
+        protected Vector3 _source;     
+        protected Vector3 _aimTarget;   
+        private event Action OnExpired;     // Fire when a action lifetime runout
+        private bool _played;       
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
-        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects)
+        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects, Action onExpired = null)
         {
             // change skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
@@ -30,6 +32,10 @@ namespace MagicSchool
                 Destroy(instance.gameObject);
                 return false;
             }
+
+            // other config
+            instance.OnExpired += onExpired;
+            instance._played = true;
 
             // skill is played
             instance.Play();
@@ -71,6 +77,20 @@ namespace MagicSchool
         protected abstract Vector3 GetSpawnPosition();
 
         protected abstract void Play();
+
+
+        // ==================================== Expire ====================================
+        // Every action ends the same way - it gets destroyed
+        // FIXNOW: still not implement
+        private void OnDestroy()
+        {
+            if (!_played) return;
+
+            // the scene is being torn down, not the action running out
+            if (_me == null) return;
+
+            OnExpired?.Invoke();
+        }
 
 
         // ==================================== Hitbox ====================================

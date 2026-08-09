@@ -8,11 +8,15 @@ namespace MagicSchool
     /// </summary>
     public abstract class AOE : TemplateAction
     {
+        private float _lifetime;
+
         // ======================================= protected =======================================
         protected override void Play()
         {
             // starting position
             transform.position = GetSpawnPosition();
+
+            SetLifeTime();
         }
         
         /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
@@ -48,5 +52,11 @@ namespace MagicSchool
         }
 
         protected override Vector3 GetSpawnPosition() => _aimTarget;
+
+        // ======================================== private ==============================================
+        private void SetLifeTime()
+        {
+            Destroy(gameObject, _lifetime);
+        }
     }
 }

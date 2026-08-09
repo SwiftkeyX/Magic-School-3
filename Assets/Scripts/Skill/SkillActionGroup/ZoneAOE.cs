@@ -11,18 +11,11 @@ namespace MagicSchool
     /// </summary>
     public class ZoneAOE : AOE
     {
-        private float _lifetime = 0.5f;
-
-        // ======================================== private ==============================================
+        // ======================================== override ==============================================
         protected override void Play()
         {
             base.Play();
             
-            // initialize local variable
-            _lifetime = _castTime;
-
-            Destroy(gameObject, _lifetime);
-
             // one hitbox for the whole zone - every cadence effect on it shares one interval
             OnTickHitbox hitbox = new OnTickHitbox();
             hitbox.OnHit += HandleTick;
@@ -47,6 +40,7 @@ namespace MagicSchool
             if (interval != null) StartCoroutine(CadenceTick(hitbox, interval.Value));
         }
 
+        // ======================================== private ==============================================
         // a hero currently in the zone got ticked - apply every cadence effect to them
         private void HandleTick(Hero hero)
         {

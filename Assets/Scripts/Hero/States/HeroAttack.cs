@@ -25,7 +25,9 @@ namespace MagicSchool
 
         public override void OnEnter()
         {
-            _aaCooldown = 0f;
+            // ASKING: why won't we let _aaCooldown run always in background?
+            if (_me.PreviousStateType != HeroStateType.Cast) _aaCooldown = 0f;
+
             _dashElapsed = -1f;
         }
 
@@ -56,13 +58,7 @@ namespace MagicSchool
                 _nearestEnemy.TakeDamage(_me.AttackDamage);
 
                 // after attack, gain mana
-                bool isManaCapped = _me.GainMana(ManaPerAttack);
-
-                // if mana is full, trigger OnCast skill
-                bool success = _me.TriggerSkill(isManaCapped);
-
-                // if skill cast is success, pop skill effect
-                if (success) _me.PlaySkillCastEffect("Skill Activated!");
+                _me.GainMana(ManaPerAttack);
 
                 // aa is now on cooldown
                 _aaCooldown += 1f / _me.AttackSpeed;
@@ -80,6 +76,7 @@ namespace MagicSchool
             // If the enemy is no longer within attack range, transition to idle
             bool isEnemyInRange = _nearestEnemy != null && _nearestEnemy.IsAlive
                 && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
+
             if (!isEnemyInRange) _me.ChangeState(HeroStateType.Idle);
         }
 

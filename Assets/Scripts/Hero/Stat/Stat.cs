@@ -45,17 +45,8 @@ namespace MagicSchool
 
         // ========================================== setter ==========================================
         public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
-
-        // This may conflict with "NO LOGIC", BUT since it was 4 line of code, it was allowed here.
-        // Add mana but with additional logic for preventing mana to go above its capacity.
-        public bool AddMana(int amount)
-        {
-            int newMana = _currentMana + amount;
-            bool capped = newMana >= MaxMana;
-            _currentMana = capped ? MaxMana : newMana;
-            return capped;
-        }
-
+        public void AddMana(int amount) => _currentMana += amount;
+        public bool IsManaCapped() => _currentMana >= MaxMana;
         public void SpendMana() => _currentMana = 0;
 
         public void AddModifier(Modifier modifier) => _statModifier.AddModifier(modifier);

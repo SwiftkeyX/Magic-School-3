@@ -115,7 +115,7 @@ namespace MagicSchool
             return false;
         }
 
-        // If my blocker is not in Attack state, it's worth waiting a moment, since it's likely
+        // If my blocker is not in ..., it's worth waiting a moment, since it's likely
         // that ally will step aside soon.
         private bool WorthWaitingForBlocker(float distFromMeToEnemy, ICombatant nearestEnemy)
         {
@@ -125,7 +125,11 @@ namespace MagicSchool
                 if (neighborDist >= distFromMeToEnemy) continue;
 
                 ICombatant occupant = _me.WhoReservedThisHex(neighbor);
-                if (occupant != null && occupant != _me as ICombatant && occupant.StateType != HeroStateType.Attack) return true;
+                if (occupant == null || occupant == _me as ICombatant) continue;
+
+                // if blocker is in attack or cast state, wait for him. 
+                bool isCommitted = occupant.StateType == HeroStateType.Attack || occupant.StateType == HeroStateType.Cast;
+                if (!isCommitted) return true;
             }
 
             return false;

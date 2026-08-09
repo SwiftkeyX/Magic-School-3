@@ -1,7 +1,6 @@
 namespace MagicSchool
 {
 
-    // BLOCKED: We should have state for casting skill specifically. But I still don't sure though. maybe we don't?
     public abstract class HeroState
     {
         protected readonly Hero _me;

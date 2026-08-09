@@ -13,10 +13,12 @@ namespace MagicSchool
         private readonly HeroDead _dead;
         private readonly HeroWalk _walk;
         private readonly HeroStunned _stunned;
+        private readonly HeroCast _cast;
 
         public HeroState Current { get; private set; }
 
         public HeroStateType CurrentType => Current == null ? HeroStateType.Idle : Current.StateType;
+        public HeroStateType PreviousType { get; private set; }
 
         public HeroStateMachine(Hero hero, MovementConfig movement)
         {
@@ -26,6 +28,7 @@ namespace MagicSchool
             _attack = new HeroAttack(hero, movement);
             _dead = new HeroDead(hero);
             _stunned = new HeroStunned(hero);
+            _cast = new HeroCast(hero);
         }
 
         public void Start(HeroStateType initial)
@@ -37,6 +40,8 @@ namespace MagicSchool
         public void ChangeState(HeroStateType next)
         {
             if (Current != null && next == CurrentType) return;
+
+            PreviousType = CurrentType;
 
             Current?.OnExit();
             Current = GetState(next);
@@ -83,6 +88,14 @@ namespace MagicSchool
                 return true;
             }
 
+            // if mana is full, trigger OnCast skill
+            bool success = _me.TriggerSkill(_me.IsManaCapped(), out float castTime);
+            if (success)
+            {
+                forced = HeroStateType.Cast;
+                return true;
+            }
+
             return false;
         }
 
@@ -95,6 +108,7 @@ namespace MagicSchool
                 case HeroStateType.Attack: return _attack;
                 case HeroStateType.Dead: return _dead;
                 case HeroStateType.Stunned: return _stunned;
+                case HeroStateType.Cast: return _cast;
                 default: return null;
             }
         }

@@ -19,7 +19,7 @@ namespace MagicSchool
         private BattleBoard _board;
         private FindEnemy _findEnemy;
         private HeroVisuals _visuals;
-        private HeroSkill _skillRuntime;
+        private HeroSkill _skill;
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;
@@ -40,6 +40,7 @@ namespace MagicSchool
 
         // ======================================== state ========================================
         public void ChangeState(HeroStateType next) => _stateMachine.ChangeState(next);
+        public HeroStateType PreviousStateType => _stateMachine.PreviousType;
 
         // ======================================== board ========================================
         public ICombatant WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
@@ -56,10 +57,12 @@ namespace MagicSchool
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
-        public bool TriggerSkill(bool isManaCapped) => _skillRuntime.TriggerOnCastSkill(isManaCapped);
+        public bool TriggerSkill(bool isManaCapped, out float castTime) => _skill.TriggerOnCastSkill(isManaCapped, out castTime);
+        public float GetCastTime() => _skill.GetCastTime();
 
         // ======================================== stat ========================================
-        public bool GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
+        public void GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
+        public bool IsManaCapped() => Stat.IsManaCapped();
         public void SpendMana() => Stat.SpendMana();                   // called once a cast actually happened
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
@@ -121,7 +124,7 @@ namespace MagicSchool
 
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
-            _skillRuntime = new HeroSkill(this, _SOData.Skill);
+            _skill = new HeroSkill(this, _SOData.Skill);
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }

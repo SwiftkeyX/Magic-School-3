@@ -10,6 +10,10 @@ namespace MagicSchool
     {
         private readonly Hero _me;
         private readonly SkillSO _skill;
+        private float _castTime;
+        
+        // ============================================== getter ==============================================
+        public float GetCastTime() => _castTime;
 
         // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned.
         public bool HasSkill => _skill != null && _skill.Steps.Count > 0;
@@ -21,14 +25,19 @@ namespace MagicSchool
         }
 
         // mana is full, skill is trigger. Returns true if the skill cast successfully.
-        public bool TriggerOnCastSkill(bool isManaCapped)
+        public bool TriggerOnCastSkill(bool isManaCapped, out float castTime)
         {
+            castTime = 0f;
+
             if (!isManaCapped || !HasSkill) return false;
 
             if (_skill.Steps[0].Trigger != TriggerEnum.OnCast) return false;
 
             // OnCast skill is always step 0
             if (!FireStep(0)) return false;
+
+            // read straight after step 0 played - a later OnExpired step fires long after we return
+            castTime = _castTime;
 
             // if skill success, spend all mana
             _me.SpendMana();
@@ -81,7 +90,11 @@ namespace MagicSchool
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects, onExpired);
 
                 // if one of the template action is played, stop
-                if (played) return true;
+                if (played)
+                {
+                    _castTime = actionGroup.TemplateAction.CastTime;
+                    return true;
+                }
             }
 
             return false;

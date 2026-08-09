@@ -7,8 +7,7 @@ namespace MagicSchool
 {
     public abstract class TemplateAction : MonoBehaviour
     {
-        // FIXNOW: cast time is stub. Have to be implement.
-        [SerializeField] protected float _castTime;                 // the duration skill was cast
+        [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
         protected Hero _me;
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;

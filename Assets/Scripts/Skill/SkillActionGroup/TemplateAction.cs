@@ -74,8 +74,8 @@ namespace MagicSchool
 
 
         // ==================================== Hitbox ====================================
-        protected void OnTriggerEnter2D(Collider2D other) => _hitbox.OnTriggerEnter2D(other);
-        protected void OnTriggerExit2D(Collider2D other) => _hitbox.OnTriggerExit2D(other);
+        protected void OnTriggerEnter2D(Collider2D other) => _hitbox?.OnTriggerEnter2D(other);
+        protected void OnTriggerExit2D(Collider2D other) => _hitbox?.OnTriggerExit2D(other);
 
 
         // ==================================== Effect & Recipient ====================================

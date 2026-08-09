@@ -25,15 +25,15 @@ namespace MagicSchool
     }
 
     // ================================================ Effect ================================================
-    // All effect in the enum here are "modifier" (There is some effect aren't modifier e.g. attack, which is don't included here)
     public enum ModifierEnum
     {
         // ======================================= Buff =======================================
-        // No Heal here on purpose (it used to sit at 1): a modifier adjusts a base stat for a
-        // duration, and healing is not a stat - it moves current HP once. That is HealSkillEffect.
-        // BonusHP is the one that raises max HP, which is what a "heal modifier" was really doing.
         BonusHP = 0,
         DamageReduction = 2,
+        AttackSpeed = 5,
+        Attack = 6,
+        Defend = 7,
+        AP = 8,
 
         // ======================================= Debuff =======================================
         // ...

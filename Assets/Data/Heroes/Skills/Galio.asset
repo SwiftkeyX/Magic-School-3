@@ -51,7 +51,7 @@ MonoBehaviour:
           isCadence: 1
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _modifier: 1
+        _modifier: 0
         _buffAmount: 150
         _buffDuration: 2
     - rid: 6645218046250844235

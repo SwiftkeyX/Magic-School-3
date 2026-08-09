@@ -88,16 +88,11 @@ namespace MagicSchool
                     effect.ApplyEffect(new List<Hero> { _me });
                     break;
 
-                // These two share a body on purpose: they differ in HOW the hitbox picked the
-                // recipients, not in who ends up getting the effect.
                 case EffectRecipientEnum.SameToAimTarget:
                 case EffectRecipientEnum.EnemiesInArea:
+                case EffectRecipientEnum.EnemiesInPath:
                     effect.ApplyEffect(recipients);
                     break;
-
-                    // EnemiesInPath is deliberately absent, same as the old if/else chain left it out.
-                    // Nothing produces it yet (PiercingProjectile is an empty stub), and folding it into
-                    // the case above would silently start applying effects the moment it appears in an asset.
             }
         }
 

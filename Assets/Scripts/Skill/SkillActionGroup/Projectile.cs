@@ -9,7 +9,6 @@ namespace MagicSchool
     /// </summary>
     public abstract class Projectile : TemplateAction
     {
-        private float _lifetime = 10f;  // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
         protected Vector3 _direction;
 
         // ======================================== override method ========================================

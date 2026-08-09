@@ -10,7 +10,6 @@ namespace MagicSchool
     /// </summary>
     public class Cast : TemplateAction
     {
-        // FIXLATER: Cast always applies to the caster (for now)
         protected override void ResolveSource(ActionSourceEnum source)
         {
             _source = _me.transform.position;
@@ -23,6 +22,7 @@ namespace MagicSchool
         protected override void Play()
         {
             // initialize local variable
+            // FIXLATER: Cast always applies to the caster (for now)
             List<Hero> self = new List<Hero> { _me };
 
             bool hasCadenceEffect = false;
@@ -30,20 +30,22 @@ namespace MagicSchool
             {
                 if (effect.Recipient != EffectRecipientEnum.Self) continue;
 
-                // Cast has no physical hitbox/lifetime to bound ticking, so a cadence effect here
-                // needs its own duration - only HealSkillEffect does that today.
+                // if cadence, apply effect over time. 
+                // e.g. galio heal
                 if (effect.Cadence.isCadence && effect is HealSkillEffect healEffect)
                 {
                     hasCadenceEffect = true;
                     StartCoroutine(CadenceTick(healEffect, self));
                 }
+
+                // if not cadence, apply effect once.
                 else
                 {
                     effect.ApplyEffect(self);
                 }
             }
 
-            // one-shot effects are already applied - only stick around if a cadence effect needs to keep ticking
+            // temp
             if (!hasCadenceEffect) Destroy(gameObject);
         }
     }

@@ -8,8 +8,6 @@ namespace MagicSchool
     /// </summary>
     public abstract class AOE : TemplateAction
     {
-        private float _lifetime;
-
         // ======================================= protected =======================================
         protected override void Play()
         {

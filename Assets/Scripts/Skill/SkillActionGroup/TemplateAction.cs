@@ -13,8 +13,10 @@ namespace MagicSchool
         protected Hitbox _hitbox;
         protected Vector3 _source;     
         protected Vector3 _aimTarget;   
+        
+        // ==================================== other ====================================
         private event Action OnExpired;     // Fire when a action lifetime runout
-        private bool _played;       
+        protected float _lifetime = 10f;      // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
@@ -35,7 +37,6 @@ namespace MagicSchool
 
             // other config
             instance.OnExpired += onExpired;
-            instance._played = true;
 
             // skill is played
             instance.Play();
@@ -82,12 +83,12 @@ namespace MagicSchool
         // ==================================== Expire ====================================
         // Every action ends the same way - it gets destroyed
         // FIXNOW: still not implement
-        private void OnDestroy()
+        protected void DestroyMe()
         {
-            if (!_played) return;
-
             // the scene is being torn down, not the action running out
             if (_me == null) return;
+
+            Destroy(gameObject);
 
             OnExpired?.Invoke();
         }
@@ -118,7 +119,7 @@ namespace MagicSchool
 
         // Cadence Tick are use by several template action
         // so we unified thing by move it here. 
-        // FIXLATER: But it should be move later since not all template action need it.
+        // FIXLATER: But it should be move later since not all template action need it. maybe to interface?
         protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
         {
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
@@ -132,7 +133,8 @@ namespace MagicSchool
                 effect.ApplyEffect(recipients);
             }
 
-            Destroy(gameObject);
+            // destroy once duration is expired
+            DestroyMe();
         }
     }
 }

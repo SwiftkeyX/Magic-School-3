@@ -44,8 +44,8 @@ namespace MagicSchool
             // aim skill at previous projectile hit position
             else if (aimTarget == AimTargetEnum.WhereProjectileHit)
             {
-                if (_onHitPosition == null) return false;
-                _aimTarget = _onHitPosition.Value;
+                if (_fromPreviousStep?.Position == null) return false;
+                _aimTarget = _fromPreviousStep.Position.Value;
             }
 
             // else if () ...

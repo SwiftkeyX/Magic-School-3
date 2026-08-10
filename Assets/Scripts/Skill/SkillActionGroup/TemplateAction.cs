@@ -14,30 +14,31 @@ namespace MagicSchool
         protected Vector3 _source;
         protected Vector3 _aimTarget;
 
-        // ==================================== universal template action ====================================
-        private event Action<Vector3> OnExpired;     // Fire when a template action lifetime runout
+        // ==================================== universal to template action ====================================
+        private event Action<SkillStepContext> OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime;
         private bool _hasExpired;
 
         // ==================================== specific to projectile ====================================
-        // FLAGGING: Maybe I have to move this somewhere else?
-        private event Action<Vector3> OnHit;         // Fire the first time it lands on someone e.g. on projectile hit
-        protected Vector3? _onHitPosition;           // where the OnHit event was hit
+        private event Action<SkillStepContext> OnHit;         // Fire the first time it lands on someone e.g. on projectile hit
         private bool _hasReportedHit;
+
+        // ==================================== from the step before ====================================
+        // whatever the previous step produced, this'll be used by next step, to check trigger's condition
+        protected SkillStepContext _fromPreviousStep;
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
         public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects,
-            Action<Vector3> onExpired = null, Action<Vector3> onHit = null, Vector3? lastHitPoint = null)
+            Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {
             // change skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
 
-            // FLAGGING: I think this begin to be too complicated. I'll see what I can do.
-            // before configuring - aiming at WhereProjectileHit needs it
-            instance._onHitPosition = lastHitPoint;
+            // config data from previous step
+            instance._fromPreviousStep = fromPreviousStep;
 
             // init skill variable
             if (!instance.TryConfigure(caster, effects, source, aimTarget))
@@ -93,7 +94,7 @@ namespace MagicSchool
         protected abstract void Play();
 
 
-        // ==================================== Expire ====================================
+        // ==================================== OnExpired event ====================================
         // Every template action ends the same way => through here
         // to make sure OnExpired always gets fired. 
         // Never call Destroy() on a template action directly.
@@ -110,16 +111,7 @@ namespace MagicSchool
 
             Destroy(gameObject);
 
-            OnExpired?.Invoke(expiredPosition);
-        }
-
-        // helper for projectile to report the hit position
-        protected void ReportHitPosition()
-        {
-            if (_hasReportedHit) return;
-            _hasReportedHit = true;
-
-            OnHit?.Invoke(transform.position);
+            OnExpired?.Invoke(new SkillStepContext(expiredPosition));
         }
 
         protected void ExpireAfter(float delay)
@@ -132,6 +124,17 @@ namespace MagicSchool
             yield return new WaitForSeconds(delay);
 
             DestroyMe();
+        }
+
+        // ==================================== OnHit event ====================================        
+        // FLAGGING: I don't like the idea that this is only used by Projectile. It mean we have bad abstraction.
+        // report the hit position
+        protected void ReportHitPosition()
+        {
+            if (_hasReportedHit) return;
+            _hasReportedHit = true;
+
+            OnHit?.Invoke(new SkillStepContext(transform.position));
         }
 
 

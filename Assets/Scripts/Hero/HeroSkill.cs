@@ -50,8 +50,9 @@ namespace MagicSchool
             // if (isTargetDead) FireAction(IndexOfStep(step));
         }
 
-        // on event invoke, related Trigger is fired
-        private Action<Vector3> TriggerNextStep(int nextIndex, TriggerEnum trigger)
+        // on event invoke, related Trigger is fired.
+        // return SkillStepContext - it is data from previous step that will be checked by this trigger
+        private Action<SkillStepContext> TriggerNextStep(int nextIndex, TriggerEnum trigger)
         {
             // guard
             if (nextIndex >= _skill.Steps.Count) return null;
@@ -59,27 +60,25 @@ namespace MagicSchool
             // if trigger type match with this step, fire next step
             if (_skill.Steps[nextIndex].Trigger != trigger) return null;
 
-            // FIXNOW: I don't think every action should fire the same parameter
-            return point => FireStep(nextIndex, point);
+            return context => FireStep(nextIndex, context);
         }
 
         // ============================================== helper ==============================================
         // Fire skill in "step" order. Returns whether this step actually played anything.
-        // FIXNOW: lastHitPoint isn't generic enough to be included here
-        private bool FireStep(int stepIndex, Vector3? lastHitPoint = null)
+        private bool FireStep(int stepIndex, SkillStepContext contextFromPreviousStep = null)
         {
             if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
 
             // step can have several template action, only template action was choose base on condition
-            return PlayAction(stepIndex, lastHitPoint);
+            return PlayAction(stepIndex, contextFromPreviousStep);
         }
 
         // Play every template action in this step.
-        private bool PlayAction(int stepIndex, Vector3? lastHitPoint)
+        private bool PlayAction(int stepIndex, SkillStepContext contextFromPreviousStep)
         {
             // initial event - this is hand to template action
-            Action<Vector3> onExpired = TriggerNextStep(stepIndex + 1, TriggerEnum.OnExpired);
-            Action<Vector3> onHit = TriggerNextStep(stepIndex + 1, TriggerEnum.OnHit);
+            Action<SkillStepContext> onExpired = TriggerNextStep(stepIndex + 1, TriggerEnum.OnExpired);
+            Action<SkillStepContext> onHit = TriggerNextStep(stepIndex + 1, TriggerEnum.OnHit);
 
             // Play 1 template action
             var actionGroups = _skill.Steps[stepIndex].ActionGroups;
@@ -87,7 +86,7 @@ namespace MagicSchool
             {
                 // try play the skill
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
-                    onExpired, onHit, lastHitPoint);
+                    onExpired, onHit, contextFromPreviousStep);
 
                 // if one of the template action is played, stop
                 if (played)

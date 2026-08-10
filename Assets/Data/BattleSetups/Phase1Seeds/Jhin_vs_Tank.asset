@@ -17,7 +17,7 @@ MonoBehaviour:
     hexPlacement:
       team: 0
       column: 0
-      row: 0
+      row: 3
   - dataSO: {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
     hexPlacement:
       team: 0

@@ -21,7 +21,7 @@ MonoBehaviour:
   _magicResist: 20
   _attackSpeed: 0.7
   _range: 4
-  _startMana: 120
-  _maxMana: 144
+  _startMana: 40
+  _maxMana: 50
   _skill: {fileID: 11400000, guid: e097ff5be5f109245a0d4c073abd602e, type: 2}
   _isDummy: 0

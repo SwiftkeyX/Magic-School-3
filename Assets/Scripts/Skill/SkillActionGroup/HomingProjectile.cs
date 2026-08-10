@@ -18,7 +18,7 @@ namespace MagicSchool
         }
 
         protected override void Update()
-        {                        
+        {
             // homing projectile update target position every frame, so it never miss on target enemy
             GetAimDirection();
 
@@ -37,6 +37,9 @@ namespace MagicSchool
             {
                 ApplyEffectToRecipients(effect, recipients);
             }
+
+            // tell the next step where this landed, before the destroy
+            ReportHitPosition();
 
             // destroy homing projectile once it hit target
             DestroyMe();

@@ -16,7 +16,7 @@ namespace MagicSchool
 
             SetLifeTime();
         }
-        
+
         /// source = 100% of the time doesn't mean anything in the spawn/aim term. BUT still important it tell us "who use this AOE"
         protected override void ResolveSource(ActionSourceEnum source)
         {
@@ -39,6 +39,13 @@ namespace MagicSchool
                 ICombatant target = _me.FindNearestEnemy();
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
+            }
+
+            // aim skill at previous projectile hit position
+            else if (aimTarget == AimTargetEnum.WhereProjectileHit)
+            {
+                if (_onHitPosition == null) return false;
+                _aimTarget = _onHitPosition.Value;
             }
 
             // else if () ...

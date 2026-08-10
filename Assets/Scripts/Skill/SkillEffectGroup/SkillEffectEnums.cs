@@ -12,7 +12,8 @@ namespace MagicSchool
     {
         OnCast = 0,
         OnKill = 1,
-        OnExpired = 2,
+        OnExpired = 2,      // once the previous step expired
+        OnHit = 3,          // once the previous step hit someone 
     }
 
     // ================================================ Recipient ================================================

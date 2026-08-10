@@ -18,6 +18,7 @@ namespace MagicSchool
         Current = 1,
         Furthest = 2,
         Clustered = 3,
+        WhereProjectileHit = 4,
 
         // ...
     }

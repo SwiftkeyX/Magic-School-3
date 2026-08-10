@@ -14,19 +14,30 @@ namespace MagicSchool
         protected Vector3 _source;
         protected Vector3 _aimTarget;
 
-        // ==================================== other ====================================
-        private event Action OnExpired;     // Fire when a template action lifetime runout
+        // ==================================== universal template action ====================================
+        private event Action<Vector3> OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime;
         private bool _hasExpired;
+
+        // ==================================== specific to projectile ====================================
+        // FLAGGING: Maybe I have to move this somewhere else?
+        private event Action<Vector3> OnHit;         // Fire the first time it lands on someone e.g. on projectile hit
+        protected Vector3? _onHitPosition;           // where the OnHit event was hit
+        private bool _hasReportedHit;
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
-        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects, Action onExpired = null)
+        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects,
+            Action<Vector3> onExpired = null, Action<Vector3> onHit = null, Vector3? lastHitPoint = null)
         {
             // change skill prefab into scene instace
             TemplateAction instance = Instantiate(prefab);
+
+            // FLAGGING: I think this begin to be too complicated. I'll see what I can do.
+            // before configuring - aiming at WhereProjectileHit needs it
+            instance._onHitPosition = lastHitPoint;
 
             // init skill variable
             if (!instance.TryConfigure(caster, effects, source, aimTarget))
@@ -38,6 +49,7 @@ namespace MagicSchool
 
             // other config
             instance.OnExpired += onExpired;
+            instance.OnHit += onHit;
 
             // skill is played
             instance.Play();
@@ -94,9 +106,20 @@ namespace MagicSchool
             if (_hasExpired) return;
             _hasExpired = true;
 
+            Vector3 expiredPosition = transform.position;
+
             Destroy(gameObject);
 
-            OnExpired?.Invoke();
+            OnExpired?.Invoke(expiredPosition);
+        }
+
+        // helper for projectile to report the hit position
+        protected void ReportHitPosition()
+        {
+            if (_hasReportedHit) return;
+            _hasReportedHit = true;
+
+            OnHit?.Invoke(transform.position);
         }
 
         protected void ExpireAfter(float delay)

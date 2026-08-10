@@ -26,6 +26,9 @@ namespace MagicSchool
                 ApplyEffectToRecipients(effect, recipients);
             }
 
+            // tell the next step where this landed, before the destroy
+            ReportHitPosition();
+
             // destroy first hit projectile once it hit target
             DestroyMe();
         }

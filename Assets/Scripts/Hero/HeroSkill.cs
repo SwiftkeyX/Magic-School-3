@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace MagicSchool
 {
@@ -49,40 +50,44 @@ namespace MagicSchool
             // if (isTargetDead) FireAction(IndexOfStep(step));
         }
 
-        // If current template action expired, run next step
-        private Action TriggerOnExpiredStep(int nextIndex)
+        // on event invoke, related Trigger is fired
+        private Action<Vector3> TriggerNextStep(int nextIndex, TriggerEnum trigger)
         {
-            // guard 
+            // guard
             if (nextIndex >= _skill.Steps.Count) return null;
 
-            // if this step trigger by OnExpired, continue
-            if (_skill.Steps[nextIndex].Trigger != TriggerEnum.OnExpired) return null;
+            // if trigger type match with this step, fire next step
+            if (_skill.Steps[nextIndex].Trigger != trigger) return null;
 
-            return () => FireStep(nextIndex);
+            // FIXNOW: I don't think every action should fire the same parameter
+            return point => FireStep(nextIndex, point);
         }
 
         // ============================================== helper ==============================================
         // Fire skill in "step" order. Returns whether this step actually played anything.
-        private bool FireStep(int stepIndex)
+        // FIXNOW: lastHitPoint isn't generic enough to be included here
+        private bool FireStep(int stepIndex, Vector3? lastHitPoint = null)
         {
             if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
 
             // step can have several template action, only template action was choose base on condition
-            return PlayAction(stepIndex);
+            return PlayAction(stepIndex, lastHitPoint);
         }
 
         // Play every template action in this step.
-        private bool PlayAction(int stepIndex)
+        private bool PlayAction(int stepIndex, Vector3? lastHitPoint)
         {
-            // hand the follow-up to the template action before it plays - a short one can expire inside Play()
-            Action onExpired = TriggerOnExpiredStep(stepIndex + 1);
+            // initial event - this is hand to template action
+            Action<Vector3> onExpired = TriggerNextStep(stepIndex + 1, TriggerEnum.OnExpired);
+            Action<Vector3> onHit = TriggerNextStep(stepIndex + 1, TriggerEnum.OnHit);
 
             // Play 1 template action
             var actionGroups = _skill.Steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
                 // try play the skill
-                bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects, onExpired);
+                bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
+                    onExpired, onHit, lastHitPoint);
 
                 // if one of the template action is played, stop
                 if (played)

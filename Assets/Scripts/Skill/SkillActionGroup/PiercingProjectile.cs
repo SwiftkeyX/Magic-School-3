@@ -31,6 +31,8 @@ namespace MagicSchool
                 ApplyEffectToRecipients(effect, recipients);
             }
 
+            // FLAGGING: pierce projectile never this, so maybe I'll get rid of it?
+            ReportHitPosition();
         }
 
     }

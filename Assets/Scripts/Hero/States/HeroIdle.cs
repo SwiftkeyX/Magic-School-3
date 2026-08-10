@@ -18,7 +18,9 @@ namespace MagicSchool
             if (_me.IsDummy) return;
 
             ICombatant nearestEnemy = _me.FindNearestEnemy();
-            if (nearestEnemy == null) return;
+
+            // guard
+            if (nearestEnemy == null) { return; }
 
             // go attack
             if (_transition.CanAttack(nearestEnemy))
@@ -33,6 +35,7 @@ namespace MagicSchool
                 _me.ChangeState(HeroStateType.Walk);
                 return;
             }
+
             // resume idle state
             else
             {

@@ -33,6 +33,9 @@ namespace MagicSchool
 
             ICombatant nearestEnemy = _me.FindNearestEnemy();
 
+            // guard
+            if (nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
+
             // FIXLATER: I will check the consistent usage of _transition across otherr state later.
             if (_transition.CanAttack(nearestEnemy))
             {
@@ -40,11 +43,17 @@ namespace MagicSchool
                 return;
             }
 
-            // Walking from here goes through Idle on purpose: a cast ends standing still, so
-            // there's no step in flight to continue - Idle picks the first one.
+            if (_transition.CanWalk(nearestEnemy))
+            {
+                _me.ChangeState(HeroStateType.Walk);
+            }
 
-            // if enemy is not in attack range (or there's no enemy), go idle
-            _me.ChangeState(HeroStateType.Idle);
+            else
+            {
+                _me.ChangeState(HeroStateType.Idle);
+            }
+
+
         }
 
     }

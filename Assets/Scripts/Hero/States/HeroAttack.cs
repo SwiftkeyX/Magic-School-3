@@ -37,9 +37,6 @@ namespace MagicSchool
         {
             _nearestEnemy = _me.FindNearestEnemy();
 
-            // check if I have a target within range. if no, exit attack state
-            CheckSwitchState();
-
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
             if (_me.StateType != StateType) return;
 
@@ -61,17 +58,22 @@ namespace MagicSchool
 
             // update attack animation
             UpdateAttackAnimation();
+            
+            CheckSwitchState();
         }
 
         protected override void CheckSwitchState()
         {
+            // guard
+            if (_nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
+
             // resume attack
             if (_transition.CanAttack(_nearestEnemy))
             {
                 return;
             }
 
-            if (_transition.CanWalk(_me))
+            if (_transition.CanWalk(_nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Walk);
             }

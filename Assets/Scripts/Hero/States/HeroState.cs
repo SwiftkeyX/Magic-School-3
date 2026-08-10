@@ -41,7 +41,7 @@ namespace MagicSchool
         // if enemy is in attack range, not dead, transition to attack 
         public bool CanAttack(ICombatant nearestEnemy)
         {
-            return nearestEnemy != null && nearestEnemy.IsAlive & _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
+            return nearestEnemy != null && nearestEnemy.IsAlive && _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
         }
 
         // walk condition, read function's comment

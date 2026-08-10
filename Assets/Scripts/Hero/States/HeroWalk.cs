@@ -42,18 +42,21 @@ namespace MagicSchool
             {
                 _me.transform.position = _end;
                 _me.SetCurrentPlacement(_targetHex);
-                CheckSwitchState();
             }
+
+            CheckSwitchState();
         }
 
         protected override void CheckSwitchState()
         {
+            // if walk isn't finished, return
+            bool isWalkingFinished = _elapsed >= _duration;
+            if (!isWalkingFinished) return;
+
             ICombatant nearestEnemy = _me.FindNearestEnemy();
-            if (nearestEnemy == null)
-            {
-                _me.ChangeState(HeroStateType.Idle);
-                return;
-            }
+
+            // guard
+            if (nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
 
             if (_transition.CanAttack(nearestEnemy))
             {

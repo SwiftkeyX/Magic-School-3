@@ -66,5 +66,11 @@ Teemo - for testing circle AOE with DOT - also need to implement homing projecti
 Casseoipia - for testing homing projectile
 Jhin - implementing pierce projectile
 Samira - implementing first hit projectile
+Teemo - implement new trigger "OnProjectileHit" 
+=> we already have OnExpired which work exactly like what I want 
+=> But the CircleAOE doesn't consume where projectile expired but it consume enemy position directly which is not intended
+=> Implement new aim target = "WhereProjectileHit"
 Karma - test first hit projectile - AOE explode on impact
 
+Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
+Warwick - test trigger OnAttack

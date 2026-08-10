@@ -4,7 +4,7 @@ namespace MagicSchool
     {
         public override HeroStateType StateType => HeroStateType.Dead;
 
-        public HeroDead(Hero hero) : base(hero) { }
+        public HeroDead(Hero hero, Transition transition) : base(hero, transition) { }
 
         public override void OnEnter()
         {

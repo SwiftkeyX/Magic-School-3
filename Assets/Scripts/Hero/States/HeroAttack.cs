@@ -17,7 +17,7 @@ namespace MagicSchool
 
         private readonly MovementConfig _movement;
 
-        public HeroAttack(Hero hero, MovementConfig movement) : base(hero)
+        public HeroAttack(Hero hero, MovementConfig movement, Transition transition) : base(hero, transition)
         {
             _movement = movement;
         }
@@ -65,11 +65,21 @@ namespace MagicSchool
 
         protected override void CheckSwitchState()
         {
-            // If the enemy is no longer within attack range, transition to idle
-            bool isEnemyInRange = _nearestEnemy != null && _nearestEnemy.IsAlive
-                && _me.CurrentHex.IsWithinRange(_nearestEnemy.CurrentHex, _me.Range);
+            // resume attack
+            if (_transition.CanAttack(_nearestEnemy))
+            {
+                return;
+            }
 
-            if (!isEnemyInRange) _me.ChangeState(HeroStateType.Idle);
+            if (_transition.CanWalk(_me))
+            {
+                _me.ChangeState(HeroStateType.Walk);
+            }
+
+            else
+            {
+                _me.ChangeState(HeroStateType.Idle);
+            }
         }
 
         private void AttackAnimation()

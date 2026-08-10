@@ -23,12 +23,14 @@ namespace MagicSchool
         public HeroStateMachine(Hero hero, MovementConfig movement)
         {
             _me = hero;
-            _idle = new HeroIdle(hero, movement);
-            _walk = new HeroWalk(hero, movement);
-            _attack = new HeroAttack(hero, movement);
-            _dead = new HeroDead(hero);
-            _stunned = new HeroStunned(hero);
-            _cast = new HeroCast(hero);
+            Transition transition = new Transition(hero, movement);
+
+            _idle = new HeroIdle(hero, transition);
+            _walk = new HeroWalk(hero, movement, transition);
+            _attack = new HeroAttack(hero, movement, transition);
+            _dead = new HeroDead(hero, transition);
+            _stunned = new HeroStunned(hero, transition);
+            _cast = new HeroCast(hero, transition);
         }
 
         public void Start(HeroStateType initial)

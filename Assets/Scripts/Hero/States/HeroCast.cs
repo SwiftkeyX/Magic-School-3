@@ -8,7 +8,7 @@ namespace MagicSchool
 
         private float _remaining;
 
-        public HeroCast(Hero hero) : base(hero) { }
+        public HeroCast(Hero hero, Transition transition) : base(hero, transition) { }
 
         public override void OnEnter()
         {
@@ -33,18 +33,15 @@ namespace MagicSchool
 
             ICombatant nearestEnemy = _me.FindNearestEnemy();
 
-            // If enemy is within attack range, stop moving, and transition to attack state
-            if (nearestEnemy != null && IsEnemyInAttackRange(nearestEnemy))
+            // FIXLATER: I will check the consistent usage of _transition across otherr state later.
+            if (_transition.CanAttack(nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Attack);
                 return;
             }
 
-            // else if ()
-            // transition to walk state
-            // FIXLATER: let implement this later, now we just delegate walk logic to idle state which doesn't sound like to me.
-            // every state should know how to transition to walk
-            // FIXLATER: I also see that transition logic is redundant. So let also implement Transition class later.
+            // Walking from here goes through Idle on purpose: a cast ends standing still, so
+            // there's no step in flight to continue - Idle picks the first one.
 
             // if enemy is not in attack range (or there's no enemy), go idle
             _me.ChangeState(HeroStateType.Idle);

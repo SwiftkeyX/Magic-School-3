@@ -5,7 +5,6 @@ namespace MagicSchool
     // Walks one hex, one frame at a time - no coroutine, since the state machine already drives
     // everything off OnUpdate(). SetTarget must be called (by whoever transitions in, e.g.
     // HeroIdle via Hero.BeginWalkTo) before this state becomes current.
-    // FIXNOW: walks state now only consider the logic to perform walking but not when to continue walk.
     public class HeroWalk : HeroState
     {
         public override HeroStateType StateType => HeroStateType.Walk;
@@ -18,18 +17,16 @@ namespace MagicSchool
 
         private readonly MovementConfig _movement;
 
-        public HeroWalk(Hero hero, MovementConfig movement) : base(hero)
+        public HeroWalk(Hero hero, MovementConfig movement, Transition transition) : base(hero, transition)
         {
             _movement = movement;
         }
 
         public override void OnEnter()
         {
-            _targetHex = _me.ReservedHex;
-            _start = _me.transform.position;
-            _end = _targetHex.transform.position;
-            _duration = 1f / _movement.MoveSpeed;
-            _elapsed = 0f;
+            _me.SetReservedHex(_transition.GetReservedHex());
+
+            StartStepTo(_me.ReservedHex);
         }
 
         public override void OnUpdate()
@@ -39,19 +36,59 @@ namespace MagicSchool
             float t = Mathf.Clamp01(_elapsed / _duration);
             _me.transform.position = Vector3.Lerp(_start, _end, _movement.WalkCurve.Evaluate(t));
 
-            CheckSwitchState();
-        }
-
-        protected override void CheckSwitchState()
-        {
-            // If walking animation finishes, transition to idle
+            // if walk is finished, set new placement, check switch state
             bool isWalkingFinished = _elapsed >= _duration;
             if (isWalkingFinished)
             {
                 _me.transform.position = _end;
                 _me.SetCurrentPlacement(_targetHex);
+                CheckSwitchState();
+            }
+        }
+
+        protected override void CheckSwitchState()
+        {
+            ICombatant nearestEnemy = _me.FindNearestEnemy();
+            if (nearestEnemy == null)
+            {
+                _me.ChangeState(HeroStateType.Idle);
+                return;
+            }
+
+            if (_transition.CanAttack(nearestEnemy))
+            {
+                _me.ChangeState(HeroStateType.Attack);
+                return;
+            }
+
+            if (_transition.CanWalk(nearestEnemy))
+            {
+                ResumeWalk();
+                return;
+            }
+
+            else
+            {
                 _me.ChangeState(HeroStateType.Idle);
             }
+        }
+
+        private void StartStepTo(Hex hex)
+        {
+            _targetHex = hex;
+            _start = _me.transform.position;
+            _end = hex.transform.position;
+            _duration = 1f / _movement.MoveSpeed;
+            _elapsed = 0f;
+        }
+
+        // FLAGGING: This look completely like OnEnter() BUT later OnEnter() maybe have animation and other logic
+        // so I separate it.
+        private void ResumeWalk()
+        {
+            _me.SetReservedHex(_transition.GetReservedHex());
+
+            StartStepTo(_me.ReservedHex);
         }
     }
 }

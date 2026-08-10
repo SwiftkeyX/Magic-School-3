@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Samira
   m_EditorClassIdentifier: Assembly-CSharp::HeroDataSO
-  _prefab: {fileID: 1147720973534413427, guid: 025d73e29140049439e538c96e19d1a2, type: 3}
+  _prefab: {fileID: 1147720973534413427, guid: 4ed677535d581454ab2bef37b65c4964, type: 3}
   _name: Hero A
   _hp: 500
   _attack: 40
@@ -21,7 +21,7 @@ MonoBehaviour:
   _magicResist: 20
   _attackSpeed: 0.7
   _range: 4
-  _startMana: 40
-  _maxMana: 50
+  _startMana: 10
+  _maxMana: 20
   _skill: {fileID: 11400000, guid: 8ce9ca9a26d038046b5fb6abc7b244d5, type: 2}
   _isDummy: 0

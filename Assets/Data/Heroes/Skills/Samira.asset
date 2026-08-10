@@ -40,7 +40,7 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _damageAmount: 1000
+        _damageAmount: 200
     - rid: 1571255008676544583
       type: {class: DebuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:

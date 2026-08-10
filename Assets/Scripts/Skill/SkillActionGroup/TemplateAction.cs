@@ -19,10 +19,6 @@ namespace MagicSchool
         protected float _lifetime;
         private bool _hasExpired;
 
-        // ==================================== specific to projectile ====================================
-        private event Action<SkillStepContext> OnHit;         // Fire the first time it lands on someone e.g. on projectile hit
-        private bool _hasReportedHit;
-
         // ==================================== from the step before ====================================
         // whatever the previous step produced, this'll be used by next step, to check trigger's condition
         protected SkillStepContext _fromPreviousStep;
@@ -48,9 +44,8 @@ namespace MagicSchool
                 return false;
             }
 
-            // other config
-            instance.OnExpired += onExpired;
-            instance.OnHit += onHit;
+            // other config - each template action wires up the triggers it can actually raise
+            instance.SubscribeTriggers(onExpired, onHit);
 
             // skill is played
             instance.Play();
@@ -126,15 +121,12 @@ namespace MagicSchool
             DestroyMe();
         }
 
-        // ==================================== OnHit event ====================================        
-        // FLAGGING: I don't like the idea that this is only used by Projectile. It mean we have bad abstraction.
-        // report the hit position
-        protected void ReportHitPosition()
+        // ==================================== Trigger wiring ====================================
+        // OnExpired is the only trigger every template action can raise 
+        // it was fired when the template action dies
+        protected virtual void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
         {
-            if (_hasReportedHit) return;
-            _hasReportedHit = true;
-
-            OnHit?.Invoke(new SkillStepContext(transform.position));
+            OnExpired += onExpired;
         }
 
 

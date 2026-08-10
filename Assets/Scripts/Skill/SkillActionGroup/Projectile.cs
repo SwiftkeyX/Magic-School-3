@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MagicSchool
@@ -11,6 +12,26 @@ namespace MagicSchool
         protected Vector3 _direction;
         protected ICombatant _target;
         const float PROJECTILELIFETIME = 10f;
+
+        // ==================================== OnHit event ====================================
+        private event Action<SkillStepContext> OnHit;        // Fire the first time projectile lands on someone
+        private bool _hasReportedHit;
+
+        protected override void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
+        {
+            base.SubscribeTriggers(onExpired, onHit);
+
+            OnHit += onHit;
+        }
+
+        // Report where the projectile hit
+        protected void ReportHitPosition()
+        {
+            if (_hasReportedHit) return;
+            _hasReportedHit = true;
+
+            OnHit?.Invoke(new SkillStepContext(transform.position));
+        }
 
         protected bool IsTargetAlive => _target != null && _target.IsAlive;
 

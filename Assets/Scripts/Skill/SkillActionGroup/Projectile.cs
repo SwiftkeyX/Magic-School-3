@@ -7,6 +7,7 @@ namespace MagicSchool
     /// </summary>
     public abstract class Projectile : TemplateAction
     {
+        [SerializeField] protected float _speed = 8f;
         protected Vector3 _direction;
         const float PROJECTILELIFETIME = 10f;
 
@@ -41,7 +42,7 @@ namespace MagicSchool
             // aim skill at self
             if (aimTarget == AimTargetEnum.Self)
             {
-                _aimTarget = _me.transform.position;
+                Debug.LogWarning("[Scriptable Object] Projectile can't be aim at self");
             }
 
             // aim skill at current target
@@ -69,19 +70,24 @@ namespace MagicSchool
 
         protected override Vector3 GetSpawnPosition() => _source;
 
-        // ======================================== private ========================================
-        private void GetAimDirection()
+        protected virtual void GetAimDirection()
         {
-            // lock the flight direction now - the target moving (or dying) later must not bend the shot
+            // lock projectile shoot direction 
             _direction = (_aimTarget - transform.position).normalized;
 
-            // aim and spawn ended up on the same spot, so there is no direction to fly in
+            // if no direction, destroy 
             if (_direction == Vector3.zero)
             {
                 DestroyMe();
             }
         }
 
+        protected virtual void Update()
+        {
+            transform.position += _direction * (_speed * Time.deltaTime);
+        }
+
+        // ======================================== private ========================================
         // set object lifetime - this is for fallback despawn if it never reaches anyone
         protected override void SetLifeTime()
         {

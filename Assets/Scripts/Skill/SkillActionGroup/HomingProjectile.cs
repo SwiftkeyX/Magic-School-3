@@ -5,7 +5,7 @@ namespace MagicSchool
 {
     public class HomingProjectile : Projectile
     {
-        [SerializeField] private float _speed = 8f;
+        private ICombatant _target;
 
         // ======================================== override method ==============================================
         protected override void Play()
@@ -19,12 +19,48 @@ namespace MagicSchool
             _hitbox.Init(_me);
         }
 
+        protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
+        {
+            // aim skill at current target
+            if (aimTarget == AimTargetEnum.Current)
+            {
+                _target = _me.FindNearestEnemy();
+                if (_target == null) return false;
+            }
+
+            else if (aimTarget == AimTargetEnum.Furthest)
+            {
+                _target = _me.FindFurthestEnemy();
+                if (_target == null) return false;
+            }
+
+            return true;
+        }
+
+        protected override void GetAimDirection()
+        {
+            // homing projectile update target position every frame, so it could land straight on target enemy
+            _aimTarget = _target.transform.position;
+
+            // lock projectile shoot direction 
+            _direction = (_aimTarget - transform.position).normalized;
+
+            // if no direction, destroy 
+            if (_direction == Vector3.zero)
+            {
+                DestroyMe();
+            }
+        }
+
+        protected override void Update()
+        {                        
+            // homing projectile update target position every frame, so it never miss on target enemy
+            GetAimDirection();
+
+            base.Update();
+        }
 
         // ======================================== private ==============================================
-        private void Update()
-        {
-            transform.position += _direction * (_speed * Time.deltaTime);
-        }
 
         private void HandleHit(Hero hero)
         {

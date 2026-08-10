@@ -9,8 +9,6 @@ namespace MagicSchool
     /// </summary>
     public class PiercingProjectile : Projectile
     {
-        [SerializeField] private float _speed = 8f;
-
         // ======================================== override method ==============================================
         protected override void Play()
         {
@@ -25,11 +23,6 @@ namespace MagicSchool
 
 
         // ======================================== private ==============================================
-        private void Update()
-        {
-            transform.position += _direction * (_speed * Time.deltaTime);
-        }
-
         private void HandleHit(Hero hero)
         {
             List<Hero> recipients = new List<Hero> { hero };

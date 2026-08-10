@@ -32,10 +32,9 @@ namespace MagicSchool
             if (_remaining > 0f) return;
 
             ICombatant nearestEnemy = _me.FindNearestEnemy();
-            if (nearestEnemy == null) return;
 
             // If enemy is within attack range, stop moving, and transition to attack state
-            if (IsEnemyInAttackRange(nearestEnemy))
+            if (nearestEnemy != null && IsEnemyInAttackRange(nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Attack);
                 return;
@@ -47,12 +46,8 @@ namespace MagicSchool
             // every state should know how to transition to walk
             // FIXLATER: I also see that transition logic is redundant. So let also implement Transition class later.
 
-            // if enemy is not in attack range, go idle
-            else
-            {
-                _me.ChangeState(HeroStateType.Idle);
-                return;
-            }
+            // if enemy is not in attack range (or there's no enemy), go idle
+            _me.ChangeState(HeroStateType.Idle);
         }
 
         // FIXLATER: DRY

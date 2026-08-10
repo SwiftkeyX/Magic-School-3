@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace MagicSchool
 {
-    // FIXNOW: make homing projectile work as intended, it should lock the target enemy, and go past any enemy that isn't the target. 
     public class HomingProjectile : Projectile
     {
         // ======================================== override method ==============================================

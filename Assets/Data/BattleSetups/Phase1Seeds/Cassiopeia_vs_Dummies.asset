@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b15591f0aa582343bd08d00a02b4206, type: 3}
-  m_Name: Jhin_vs_Tank
+  m_Name: Cassiopeia_vs_Dummies
   m_EditorClassIdentifier: Assembly-CSharp::BattlePlacementSO
   _heroesPlacement:
-  - dataSO: {fileID: 11400000, guid: 32ec63790ae82b342bcce0520067c869, type: 2}
-    hexPlacement:
-      team: 0
-      column: 0
-      row: 3
-  - dataSO: {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
+  - dataSO: {fileID: 11400000, guid: f09a9975497d1fe4597a86bb7d6cc48a, type: 2}
     hexPlacement:
       team: 0
       column: 3
-      row: 0
-  - dataSO: {fileID: 11400000, guid: 53666a18ce11078449166e3ff6e5d59d, type: 2}
-    hexPlacement:
-      team: 1
-      column: 3
-      row: 0
+      row: 1
   - dataSO: {fileID: 11400000, guid: 374c72dcb09b46c5ae6604af3ec59b79, type: 2}
     hexPlacement:
       team: 1
-      column: 2
-      row: 0
+      column: 0
+      row: 2
   - dataSO: {fileID: 11400000, guid: 374c72dcb09b46c5ae6604af3ec59b79, type: 2}
     hexPlacement:
       team: 1
       column: 1
-      row: 0
+      row: 2
+  - dataSO: {fileID: 11400000, guid: 374c72dcb09b46c5ae6604af3ec59b79, type: 2}
+    hexPlacement:
+      team: 1
+      column: 2
+      row: 3
+  - dataSO: {fileID: 11400000, guid: 1142ec2f41a940a4cb33a147a3223bc8, type: 2}
+    hexPlacement:
+      team: 1
+      column: 3
+      row: 3

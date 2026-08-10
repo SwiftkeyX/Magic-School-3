@@ -10,7 +10,6 @@ namespace MagicSchool
         private const float DashDistance = 0.5f;
 
         private ICombatant _nearestEnemy;
-        private float _aaCooldown = 0f;
 
         private Vector3 _dashStart;
         private Vector3 _dashPeak;
@@ -25,9 +24,6 @@ namespace MagicSchool
 
         public override void OnEnter()
         {
-            // ASKING: why won't we let _aaCooldown run always in background?
-            if (_me.PreviousStateType != HeroStateType.Cast) _aaCooldown = 0f;
-
             _dashElapsed = -1f;
         }
 
@@ -47,12 +43,8 @@ namespace MagicSchool
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
             if (_me.StateType != StateType) return;
 
-            // update aa timer
-            _aaCooldown -= Time.deltaTime;
-
-            // attack again if aa is reset
-            bool isAaReset = (_aaCooldown <= 0f);
-            if (isAaReset)
+            // attack again if aa is reset. The timer is always runs in the background
+            if (_me.IsAttackReady)
             {
                 // apply damage to target
                 _nearestEnemy.TakeDamage(_me.AttackDamage);
@@ -61,7 +53,7 @@ namespace MagicSchool
                 _me.GainMana(ManaPerAttack);
 
                 // aa is now on cooldown
-                _aaCooldown += 1f / _me.AttackSpeed;
+                _me.SpendAttack();
 
                 // attack animation: dash toward the enemy, then back to where we started
                 AttackAnimation();

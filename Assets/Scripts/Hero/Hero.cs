@@ -20,6 +20,7 @@ namespace MagicSchool
         private FindEnemy _findEnemy;
         private HeroVisuals _visuals;
         private HeroSkill _skill;
+        private AttackCooldown _attackCooldown;
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;
@@ -59,6 +60,10 @@ namespace MagicSchool
         // ======================================== skill ========================================
         public bool TriggerSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
         public float GetCastTime() => _skill.GetCastTime();
+
+        // ======================================== attack ========================================
+        public bool IsAttackReady => _attackCooldown.IsReady;
+        public void SpendAttack() => _attackCooldown.Spend(AttackSpeed);
 
         // ======================================== stat ========================================
         public void GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
@@ -126,6 +131,7 @@ namespace MagicSchool
             _visuals = GetComponent<HeroVisuals>();
             _skill = new HeroSkill(this, _SOData.Skill);
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
+            _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }
 
@@ -147,6 +153,9 @@ namespace MagicSchool
             if (!IsInCombat) return;
 
             TickModifiers(Time.deltaTime);
+
+            // update auto attack cooldown
+            _attackCooldown.Tick(Time.deltaTime);
 
             _stateMachine.Tick();
         }

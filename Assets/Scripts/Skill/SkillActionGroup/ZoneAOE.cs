@@ -31,14 +31,14 @@ namespace MagicSchool
             _hitbox = hitbox;
 
             // start applying effect every interval
-            if (_interval != VALUENOTASSIGN) StartCoroutine(CadenceTick(hitbox, _interval));
+            StartCoroutine(CadenceTick(hitbox, _interval));
         }
 
         // ZoneAOE have _lifetime as the same to cadence duration
         protected override void SetLifeTime()
         {
             // guard
-            if (_duration == VALUENOTASSIGN) { return; }
+            if (_duration == VALUENOTASSIGN) { base.SetLifeTime(); return; }
 
             _lifetime = _duration;
             ExpireAfter(_lifetime);
@@ -62,10 +62,14 @@ namespace MagicSchool
                     _duration = effect.Cadence.cadenceDuration;
                 }
 
-                // if interval value is assign already, we don't want 2 interval value, so log error
+                // if interval/duration value is assign already, we don't want 2 value, so log error.
                 else
                 {
-                    Debug.LogError($"{name}: cadence effects on the same zone must share one interval, found {_interval} and {effect.Cadence.cadenceInterval} - only {_interval} will be used", this);
+                    if (effect.Cadence.cadenceInterval != _interval)
+                        Debug.LogError($"{name}: cadence effects on the same zone must share one interval, found {_interval} and {effect.Cadence.cadenceInterval} - only {_interval} will be used", this);
+
+                    if (effect.Cadence.cadenceDuration != _duration)
+                        Debug.LogError($"{name}: cadence effects on the same zone must share one duration, found {_duration} and {effect.Cadence.cadenceDuration} - only {_duration} will be used", this);
                 }
             }
         }

@@ -17,6 +17,7 @@ namespace MagicSchool
         // ==================================== other ====================================
         private event Action OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime;          // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
+        private bool _hasExpired;
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
@@ -81,16 +82,33 @@ namespace MagicSchool
 
 
         // ==================================== Expire ====================================
-        // Every template action ends the same way - it gets destroyed
-        // FIXNOW: still not implement
+        // Every template action ends the same way => through here
+        // to make sure OnExpired always gets fired. 
+        // Never call Destroy() on a template action directly.
         protected void DestroyMe()
         {
-            // the scene is being torn down, not the template action running out
+            // guard
             if (_me == null) return;
+
+            // guard
+            if (_hasExpired) return;
+            _hasExpired = true;
 
             Destroy(gameObject);
 
             OnExpired?.Invoke();
+        }
+
+        protected void ExpireAfter(float delay)
+        {
+            StartCoroutine(ExpireRoutine(delay));
+        }
+
+        private IEnumerator ExpireRoutine(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            DestroyMe();
         }
 
 
@@ -141,7 +159,7 @@ namespace MagicSchool
         protected virtual void SetLifeTime()
         {
             _lifetime = 0.5f;
-            Destroy(gameObject, _lifetime);
+            ExpireAfter(_lifetime);
         }
     }
 }

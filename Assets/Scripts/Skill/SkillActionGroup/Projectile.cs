@@ -8,6 +8,7 @@ namespace MagicSchool
     public abstract class Projectile : TemplateAction
     {
         protected Vector3 _direction;
+        const float PROJECTILELIFETIME = 10f;
 
         // ======================================== override method ========================================
         protected override void Play()
@@ -77,16 +78,15 @@ namespace MagicSchool
             // aim and spawn ended up on the same spot, so there is no direction to fly in
             if (_direction == Vector3.zero)
             {
-                Destroy(gameObject);
+                DestroyMe();
             }
         }
 
         // set object lifetime - this is for fallback despawn if it never reaches anyone
         protected override void SetLifeTime()
         {
-            base.SetLifeTime();
-
-            _lifetime = 10f;
+            _lifetime = PROJECTILELIFETIME;
+            ExpireAfter(_lifetime);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace MagicSchool
             if (_duration == VALUENOTASSIGN) { return; }
 
             _lifetime = _duration;
-            Destroy(gameObject, _lifetime);
+            ExpireAfter(_lifetime);
         }
 
         // ======================================== private ==============================================

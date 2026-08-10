@@ -35,7 +35,7 @@ namespace MagicSchool
             }
 
             // destroy homing projectile once it hit target
-            Destroy(gameObject);
+            DestroyMe();
         }
 
     }

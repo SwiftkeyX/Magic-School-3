@@ -46,7 +46,7 @@ namespace MagicSchool
             }
 
             // temp
-            if (!hasCadenceEffect) Destroy(gameObject);
+            if (!hasCadenceEffect) DestroyMe();
         }
     }
 }

@@ -470,7 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _board: {fileID: 1120158067}
   _bench: {fileID: 477776518}
-  _placementSO: {fileID: 11400000, guid: dc34439a15559c6409a175f3b27e5081, type: 2}
+  _placementSO: {fileID: 11400000, guid: 74cea27e0d6b03044807c88f62473e87, type: 2}
   _seedMode: 1
 --- !u!4 &344829187
 Transform:
@@ -834,16 +834,13 @@ MonoBehaviour:
   _shopPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
   _ghostAsset: {fileID: 9197481963319205126, guid: f2b0855b1d9174942833f355aba69429, type: 3}
   _heroDataSOs:
-  - {fileID: 11400000, guid: 80781ac126a9ad64998c2067475a6bc5, type: 2}
-  - {fileID: 11400000, guid: 83ba46c23e0d667408f6f8bfd6d943de, type: 2}
-  - {fileID: 11400000, guid: 367ab696d925a9134a1f6bfdf10f6b50, type: 2}
-  - {fileID: 11400000, guid: 9186db1ff78beffb18f45d190b6cf657, type: 2}
-  - {fileID: 11400000, guid: 4b7285bd300163eaa8d8dd984c5cacb2, type: 2}
-  - {fileID: 11400000, guid: 446edbdd551757d88e4e4c4ea7bdebc9, type: 2}
-  - {fileID: 11400000, guid: ab15275bd47554d322ad78240bb196d8, type: 2}
-  - {fileID: 11400000, guid: 9a18ccd8aec210310f8e7f37debc48ef, type: 2}
-  - {fileID: 11400000, guid: cda4db8584c549232c664341b6f5c95c, type: 2}
-  - {fileID: 11400000, guid: fa8483a49acf499773dd412838a74521, type: 2}
+  - {fileID: 11400000, guid: f09a9975497d1fe4597a86bb7d6cc48a, type: 2}
+  - {fileID: 11400000, guid: 0f207332a3e601b46b3c098900106a8f, type: 2}
+  - {fileID: 11400000, guid: 0b00076b3dc75394d8144c4dbe4989b8, type: 2}
+  - {fileID: 11400000, guid: 32ec63790ae82b342bcce0520067c869, type: 2}
+  - {fileID: 11400000, guid: e55e93ecd34e44c429e32be0e761a605, type: 2}
+  - {fileID: 11400000, guid: 9636cb18892805344858c7b35439a83c, type: 2}
+  - {fileID: 11400000, guid: 76e948a66c5e474439a5a33fcd03137a, type: 2}
   _bench: {fileID: 477776518}
 --- !u!114 &1120158067 stripped
 MonoBehaviour:

@@ -17,7 +17,7 @@ MonoBehaviour:
   - _trigger: 0
     _actionGroups:
     - _source: 0
-      _templateAction: {fileID: 1395724406477609479, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
+      _templateAction: {fileID: 6725406645193746702, guid: 2914921450559ea4ab3b21f2208d213b, type: 3}
       _target: 0
       _size:
         size: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
         _cadence:
           isCadence: 1
           cadenceInterval: 0.5
-          cadenceDuration: 3
+          cadenceDuration: 4
         _damageAmount: 80
     - rid: 6645218046250844232
       type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}

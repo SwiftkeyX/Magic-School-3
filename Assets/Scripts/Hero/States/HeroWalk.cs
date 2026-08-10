@@ -24,8 +24,6 @@ namespace MagicSchool
 
         public override void OnEnter()
         {
-            _me.SetReservedHex(_transition.GetReservedHex());
-
             StartStepTo(_me.ReservedHex);
         }
 
@@ -90,8 +88,6 @@ namespace MagicSchool
         // so I separate it.
         private void ResumeWalk()
         {
-            _me.SetReservedHex(_transition.GetReservedHex());
-
             StartStepTo(_me.ReservedHex);
         }
     }

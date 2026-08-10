@@ -49,28 +49,21 @@ namespace MagicSchool
         private readonly MovementConfig _movement;
         private readonly Func<Hex, bool> _isHexBlocked;
         private float _holdSince = -1f;
-        private Hex _targetHex;
-        public Hex GetReservedHex() => _targetHex;
+
         public bool CanWalk(ICombatant nearestEnemy)
         {
-            // reset target hex
-            _targetHex = null;
-
             // If there is ANY enemy that'll walk into my neighbors (adjacent), stop moving, and wait for him instead
             if (IsEnemyArrivingNextToMe()) return false;
 
             // Find next hex that could lead this hero toward nearest enemy
-            _targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, _isHexBlocked);
-            if (_targetHex == null) return false;
+            Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, _isHexBlocked);
+            if (targetHex == null) return false;
 
             // Do I wait for the blocker to move? (Read function's comment)
-            if (ShouldWaitForBlocker(nearestEnemy, _targetHex))
-            {
-                _targetHex = null;
-                return false;
-            }
+            if (ShouldWaitForBlocker(nearestEnemy, targetHex)) return false;
 
             // finally, walk, reset the hold
+            _me.SetReservedHex(targetHex);
             _holdSince = -1f;
             return true;
         }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace MagicSchool
 {
+    // FIXNOW: make homing projectile work as intended, it should lock the target enemy, and go past any enemy that isn't the target. 
     public class HomingProjectile : Projectile
     {
         // ======================================== override method ==============================================
@@ -29,6 +30,9 @@ namespace MagicSchool
 
         private void HandleHit(Hero hero)
         {
+            // if hero is hit isn't the target one, don't apply effect
+            if ((ICombatant)hero != _target) return;
+
             List<Hero> recipients = new List<Hero> { hero };
             foreach (SkillEffect effect in _effects)
             {

@@ -9,8 +9,10 @@ namespace MagicSchool
     {
         [SerializeField] protected float _speed = 8f;
         protected Vector3 _direction;
-        private ICombatant _target;
+        protected ICombatant _target;
         const float PROJECTILELIFETIME = 10f;
+
+        protected bool IsTargetAlive => _target != null && _target.IsAlive;
 
         // ======================================== override method ========================================
         protected override void Play()
@@ -62,8 +64,12 @@ namespace MagicSchool
 
             // else if () ...
 
-            // fallback
-            else _target = _me;
+            // nothing to shoot at, so don't shoot 
+            else
+            {
+                Debug.LogWarning($"[Scriptable Object] Projectile can't aim at {aimTarget}", this);
+                return false;
+            }
 
             return true;
         }
@@ -72,8 +78,11 @@ namespace MagicSchool
 
         protected virtual void GetAimDirection()
         {
+            // if target die beforehand, return => let projectile keep heading forward 
+            if (!IsTargetAlive) return;
+
             _aimTarget = _target.transform.position;
-            
+
             // lock projectile shoot direction 
             _direction = (_aimTarget - transform.position).normalized;
 

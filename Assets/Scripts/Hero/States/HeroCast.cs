@@ -50,10 +50,5 @@ namespace MagicSchool
             _me.ChangeState(HeroStateType.Idle);
         }
 
-        // FIXLATER: DRY
-        private bool IsEnemyInAttackRange(ICombatant nearestEnemy)
-        {
-            return _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
-        }
     }
 }

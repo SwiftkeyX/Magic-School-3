@@ -46,93 +46,26 @@ namespace MagicSchool
             if (nearestEnemy == null) return;
 
             // If enemy is within attack range, stop moving, and transition to attack state
-            if (IsEnemyInAttackRange(nearestEnemy))
+            if (_transition.TryAttack(nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Attack);
                 return;
             }
 
             // If there is ANY enemy that'll walk into my neighbors (adjacent), stop moving, and wait for him instead
-            if (IsEnemyArrivingNextToMe())
+            if (_transition.TryWalk(_me))
             {
+                _me.SetReservedHex(targetHex);
+                _me.ChangeState(HeroStateType.Walk);
                 return;
             }
 
-            // Find next hex that could lead this hero to nearest enemy
-            Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, _isHexBlocked);
-            if (targetHex == null) return;
-
-            // Do I wait for the blocker to move? (Read function's comment)
-            if (IsTargetHexMakeMeGoFurtherFromEnemy(nearestEnemy, targetHex))
+            else
             {
+                _me.ChangeState(HeroStateType.Idle);
                 return;
             }
-
-            // Finally, I'll decide to walk
-            _me.SetReservedHex(targetHex);
-            _me.ChangeState(HeroStateType.Walk);
         }
 
-
-        private bool IsEnemyInAttackRange(ICombatant nearestEnemy)
-        {
-            return _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
-        }
-
-        // check if my neighbor was reserved by enemy
-        private bool IsEnemyArrivingNextToMe()
-        {
-            foreach (var neighbor in _me.CurrentHex.GetNeighbors())
-            {
-                ICombatant reserver = _me.WhoReservedThisHex(neighbor);
-                if (reserver != null && reserver.Team != _me.Team) return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        // If the next hex I CAN walk right now actually makes me go further from the nearest enemy, it means: 
-        // 1) There's a shorter path but something's blocking it (usually an ally), 
-        // so pathfinding gave me the longer route I can take instead.
-        // 2) Instead of immediately taking that longer path, wait a moment in case the ally steps aside - but
-        // only if it's worth waiting for.
-        /// </summary>
-        /// <returns = TRUE> I'll wait because I think ally will stop blocking me </returns>
-        /// <returns = FALSE> I'll take a longer path </returns>
-        private bool IsTargetHexMakeMeGoFurtherFromEnemy(ICombatant nearestEnemy, Hex targetHex)
-        {
-            float distFromMeToEnemy = Vector3.Distance(_me.CurrentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-            float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-            bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
-
-            if (nextHexMakeMeFurtherFromEnemy && WorthWaitingForBlocker(distFromMeToEnemy, nearestEnemy))
-            {
-                if (_holdSince < 0f) _holdSince = Time.time;
-                if (Time.time - _holdSince < 1f / _movement.MoveSpeed) return true;
-            }
-
-            return false;
-        }
-
-        // If my blocker is not in ..., it's worth waiting a moment, since it's likely
-        // that ally will step aside soon.
-        private bool WorthWaitingForBlocker(float distFromMeToEnemy, ICombatant nearestEnemy)
-        {
-            foreach (var neighbor in _me.CurrentHex.GetNeighbors())
-            {
-                float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
-                if (neighborDist >= distFromMeToEnemy) continue;
-
-                ICombatant occupant = _me.WhoReservedThisHex(neighbor);
-                if (occupant == null || occupant == _me as ICombatant) continue;
-
-                // if blocker is in attack or cast state, wait for him. 
-                bool isCommitted = occupant.StateType == HeroStateType.Attack || occupant.StateType == HeroStateType.Cast;
-                if (!isCommitted) return true;
-            }
-
-            return false;
-        }
     }
 }

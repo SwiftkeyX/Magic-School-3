@@ -5,6 +5,7 @@ namespace MagicSchool
     // Walks one hex, one frame at a time - no coroutine, since the state machine already drives
     // everything off OnUpdate(). SetTarget must be called (by whoever transitions in, e.g.
     // HeroIdle via Hero.BeginWalkTo) before this state becomes current.
+    // FIXNOW: walks state now only consider the logic to perform walking but not when to continue walk.
     public class HeroWalk : HeroState
     {
         public override HeroStateType StateType => HeroStateType.Walk;
@@ -44,7 +45,6 @@ namespace MagicSchool
         protected override void CheckSwitchState()
         {
             // If walking animation finishes, transition to idle
-            // FlAGGING: This is weird, so it will be changed later
             bool isWalkingFinished = _elapsed >= _duration;
             if (isWalkingFinished)
             {

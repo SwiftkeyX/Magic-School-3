@@ -16,7 +16,7 @@ namespace MagicSchool
 
         // ==================================== other ====================================
         private event Action OnExpired;     // Fire when a template action lifetime runout
-        protected float _lifetime;          // FLAGGING: lifetime of 10 sec is too long. Leave it for now.
+        protected float _lifetime;
         private bool _hasExpired;
 
         // ==================================== getter ====================================

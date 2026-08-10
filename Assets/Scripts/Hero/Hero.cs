@@ -57,7 +57,7 @@ namespace MagicSchool
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
-        public bool TriggerSkill(bool isManaCapped, out float castTime) => _skill.TriggerOnCastSkill(isManaCapped, out castTime);
+        public bool TriggerSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
         public float GetCastTime() => _skill.GetCastTime();
 
         // ======================================== stat ========================================

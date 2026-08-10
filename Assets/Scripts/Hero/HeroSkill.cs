@@ -25,19 +25,14 @@ namespace MagicSchool
         }
 
         // mana is full, skill is trigger. Returns true if the skill cast successfully.
-        public bool TriggerOnCastSkill(bool isManaCapped, out float castTime)
+        public bool TriggerOnCastSkill(bool isManaCapped)
         {
-            castTime = 0f;
-
             if (!isManaCapped || !HasSkill) return false;
 
             if (_skill.Steps[0].Trigger != TriggerEnum.OnCast) return false;
 
             // OnCast skill is always step 0
             if (!FireStep(0)) return false;
-
-            // read straight after step 0 played - a later OnExpired step fires long after we return
-            castTime = _castTime;
 
             // if skill success, spend all mana
             _me.SpendMana();

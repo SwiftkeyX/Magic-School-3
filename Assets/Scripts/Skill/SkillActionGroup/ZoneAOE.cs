@@ -12,13 +12,15 @@ namespace MagicSchool
     public class ZoneAOE : AOE
     {
         private float _interval;
+        private float _duration;
         const float VALUENOTASSIGN = -1f;
 
         // ======================================== override ==============================================
         protected override void Play()
         {
-            // Read the interval BEFORE base.Play()
-            ResolveInterval();
+            // FLAGGING: This shouldn't be check everytime, it should be initialize somewhere once.
+            // Read cadence BEFORE base.Play()
+            ResolveCadence();
 
             base.Play();
 
@@ -32,33 +34,33 @@ namespace MagicSchool
             if (_interval != VALUENOTASSIGN) StartCoroutine(CadenceTick(hitbox, _interval));
         }
 
-        // ZoneAOE have _lifetime as the same to effect duration
+        // ZoneAOE have _lifetime as the same to cadence duration
         protected override void SetLifeTime()
         {
             // guard
-            if (_interval == VALUENOTASSIGN)
-            {
-                base.SetLifeTime();
-                return;
-            }
+            if (_duration == VALUENOTASSIGN) { return; }
 
-            _lifetime = _interval;
+            _lifetime = _duration;
             Destroy(gameObject, _lifetime);
         }
 
         // ======================================== private ==============================================
-        // temporarily guard
-        // all cadence effects on this zone must share one interval - guard against a design
-        // mistake where they don't, since only the first interval found actually gets used
-        private void ResolveInterval()
+        // Assign value to interval, and duration.
+        // To guard - cadence effects on this zone must share one interval
+        private void ResolveCadence()
         {
             _interval = VALUENOTASSIGN;
+            _duration = VALUENOTASSIGN;
             foreach (SkillEffect effect in _effects)
             {
                 if (!effect.Cadence.isCadence) continue;
 
                 // if interval doesn't assign yet, assign it value
-                if (_interval == VALUENOTASSIGN) _interval = effect.Cadence.cadenceInterval;
+                if (_interval == VALUENOTASSIGN)
+                {
+                    _interval = effect.Cadence.cadenceInterval;
+                    _duration = effect.Cadence.cadenceDuration;
+                }
 
                 // if interval value is assign already, we don't want 2 interval value, so log error
                 else

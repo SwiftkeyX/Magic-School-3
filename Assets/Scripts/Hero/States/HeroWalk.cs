@@ -73,6 +73,7 @@ namespace MagicSchool
             else
             {
                 _me.ChangeState(HeroStateType.Idle);
+                return;
             }
         }
 

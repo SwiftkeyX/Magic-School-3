@@ -76,11 +76,13 @@ namespace MagicSchool
             if (_transition.CanWalk(_nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Walk);
+                return;
             }
 
             else
             {
                 _me.ChangeState(HeroStateType.Idle);
+                return;
             }
         }
 

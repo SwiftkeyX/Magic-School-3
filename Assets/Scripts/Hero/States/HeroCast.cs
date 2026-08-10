@@ -36,7 +36,6 @@ namespace MagicSchool
             // guard
             if (nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
 
-            // FIXLATER: I will check the consistent usage of _transition across otherr state later.
             if (_transition.CanAttack(nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Attack);
@@ -46,11 +45,13 @@ namespace MagicSchool
             if (_transition.CanWalk(nearestEnemy))
             {
                 _me.ChangeState(HeroStateType.Walk);
+                return;
             }
 
             else
             {
                 _me.ChangeState(HeroStateType.Idle);
+                return;
             }
 
 

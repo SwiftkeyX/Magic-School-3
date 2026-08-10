@@ -9,6 +9,7 @@ namespace MagicSchool
     {
         [SerializeField] protected float _speed = 8f;
         protected Vector3 _direction;
+        private ICombatant _target;
         const float PROJECTILELIFETIME = 10f;
 
         // ======================================== override method ========================================
@@ -42,28 +43,27 @@ namespace MagicSchool
             // aim skill at self
             if (aimTarget == AimTargetEnum.Self)
             {
-                Debug.LogWarning("[Scriptable Object] Projectile can't be aim at self");
+                Debug.LogWarning("[Scriptable Object] Projectile can't be aim at self", this);
+                return false;
             }
 
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                ICombatant target = _me.FindNearestEnemy();
-                if (target == null) return false;
-                _aimTarget = target.transform.position;
+                _target = _me.FindNearestEnemy();
+                if (_target == null) return false;
             }
 
             else if (aimTarget == AimTargetEnum.Furthest)
             {
-                ICombatant target = _me.FindFurthestEnemy();
-                if (target == null) return false;
-                _aimTarget = target.transform.position;
+                _target = _me.FindFurthestEnemy();
+                if (_target == null) return false;
             }
 
             // else if () ...
 
             // fallback
-            else _aimTarget = _me.transform.position;
+            else _target = _me;
 
             return true;
         }
@@ -72,6 +72,8 @@ namespace MagicSchool
 
         protected virtual void GetAimDirection()
         {
+            _aimTarget = _target.transform.position;
+            
             // lock projectile shoot direction 
             _direction = (_aimTarget - transform.position).normalized;
 

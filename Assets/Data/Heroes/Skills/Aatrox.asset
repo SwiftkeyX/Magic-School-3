@@ -19,8 +19,7 @@ MonoBehaviour:
     - _source: 0
       _templateAction: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
       _target: 0
-      _condition:
-        rid: -2
+      _conditions: []
       _effects:
       - rid: 1571255142806978631
       - rid: 1571255142806978632
@@ -33,15 +32,13 @@ MonoBehaviour:
     - _source: 0
       _templateAction: {fileID: 2553249872288390112, guid: 96c28c228dcc3584b93601bee3fb73b2, type: 3}
       _target: 1
-      _condition:
-        rid: 1571255142806978641
+      _conditions:
+      - rid: 1571255142806978647
       _effects:
       - rid: 1571255142806978629
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1571255142806978629
       type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -50,8 +47,7 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0.3
         _damageAmount: 200
     - rid: 1571255142806978631
@@ -62,8 +58,7 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0
         _modifier: 9
         _buffAmount: 10
@@ -76,8 +71,7 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0
         _modifier: 6
         _buffAmount: 80
@@ -90,18 +84,11 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0.3
         _modifier: 10
         _statusAmount: 0
         _statusDuration: 10
-    - rid: 1571255142806978641
-      type: {class: HasStatusCondition, ns: MagicSchool, asm: Assembly-CSharp}
-      data:
-        _subject: 0
-        _status: 10
-        _wantPresent: 1
     - rid: 1571255142806978644
       type: {class: StatusSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -110,8 +97,7 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0.3
         _modifier: 11
         _statusAmount: 0
@@ -124,9 +110,14 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _condition:
-          rid: -2
+        _conditions: []
         _amplifier: 0.3
         _modifier: 12
         _statusAmount: 0
         _statusDuration: 10
+    - rid: 1571255142806978647
+      type: {class: HasStatusCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _status: 10
+        _wantPresent: 1

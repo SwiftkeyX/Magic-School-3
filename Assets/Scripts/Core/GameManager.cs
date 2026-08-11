@@ -12,8 +12,8 @@ namespace MagicSchool
         [SerializeField] private BattlePlacementSO _placementSO;
         [SerializeField] private bool _seedMode;
 
-        public GamePhase Phase { get; private set; } = GamePhase.Preparation;
-        public Team? Winner { get; private set; }
+        public GamePhaseEnum Phase { get; private set; } = GamePhaseEnum.Preparation;
+        public TeamEnum? Winner { get; private set; }
 
         // ======================== composition root ========================
         private HeroMover _heroMover;
@@ -35,12 +35,12 @@ namespace MagicSchool
         void Update()
         {
             // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
-            if (Phase == GamePhase.Preparation && PlayerInputSystem.SpacePressedThisFrame)
+            if (Phase == GamePhaseEnum.Preparation && PlayerInputSystem.SpacePressedThisFrame)
             {
                 StartCombat();
             }
 
-            if (Phase == GamePhase.Combat)
+            if (Phase == GamePhaseEnum.Combat)
             {
                 CheckForWinner();
             }
@@ -48,21 +48,21 @@ namespace MagicSchool
 
         public void StartCombat()
         {
-            Phase = GamePhase.Combat;
+            Phase = GamePhaseEnum.Combat;
 
             _seed.SpawnHeroOnBoard();
         }
 
         private void CheckForWinner()
         {
-            var alive = _board.HeroesOnBoard.Where(h => h.StateType != HeroStateType.Dead);
-            bool blueAlive = alive.Any(h => h.Team == Team.Blue);
-            bool redAlive = alive.Any(h => h.Team == Team.Red);
+            var alive = _board.HeroesOnBoard.Where(h => h.StateType != HeroStateEnum.Dead);
+            bool blueAlive = alive.Any(h => h.Team == TeamEnum.Blue);
+            bool redAlive = alive.Any(h => h.Team == TeamEnum.Red);
 
             if (blueAlive && redAlive) return;
 
-            Winner = blueAlive ? Team.Blue : redAlive ? Team.Red : (Team?)null;
-            Phase = GamePhase.Result;
+            Winner = blueAlive ? TeamEnum.Blue : redAlive ? TeamEnum.Red : (TeamEnum?)null;
+            Phase = GamePhaseEnum.Result;
         }
     }
 }

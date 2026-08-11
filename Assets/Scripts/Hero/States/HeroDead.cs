@@ -2,7 +2,7 @@ namespace MagicSchool
 {
     public class HeroDead : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Dead;
+        public override HeroStateEnum StateType => HeroStateEnum.Dead;
 
         public HeroDead(Hero hero, Transition transition) : base(hero, transition) { }
 

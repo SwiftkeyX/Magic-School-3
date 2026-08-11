@@ -30,18 +30,18 @@ namespace MagicSchool
 
         // ======================================== Runtime data ========================================
         private HeroDataRuntime _runtimeData;
-        private Team _team;
+        private TeamEnum _team;
         private Stat Stat => _runtimeData.Stat;
 
         // ======================================== other getter ========================================
         public bool IsInitialized => _runtimeData != null;
-        public Team Team => _team;
-        public HeroStateType StateType => _stateMachine.CurrentType;
+        public TeamEnum Team => _team;
+        public HeroStateEnum StateType => _stateMachine.CurrentType;
         public bool IsDummy => _runtimeData.IsDummy;
 
         // ======================================== state ========================================
-        public void ChangeState(HeroStateType next) => _stateMachine.ChangeState(next);
-        public HeroStateType PreviousStateType => _stateMachine.PreviousType;
+        public void ChangeState(HeroStateEnum next) => _stateMachine.ChangeState(next);
+        public HeroStateEnum PreviousStateType => _stateMachine.PreviousType;
 
         // ======================================== board ========================================
         public ICombatant WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
@@ -74,8 +74,8 @@ namespace MagicSchool
 
         // ======================================== interface method ========================================
         // === IDamageable ===
-        public bool IsAlive => this != null && IsInitialized && StateType != HeroStateType.Dead;
-        public void AddModifier(Modifier modifier) => Stat.AddModifier(modifier);
+        public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
+        public void AddModifier(IModifier modifier) => Stat.AddModifier(modifier);
         public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);
 
         public void Heal(float amount)
@@ -123,7 +123,7 @@ namespace MagicSchool
         // ======================================== life cycle ========================================
         #region Life Cycle
         // Give everything a hero needs to exist, in one call. 
-        public void Init(HeroDataSO data, BattleBoard board, Team team)
+        public void Init(HeroDataSO data, BattleBoard board, TeamEnum team)
         {
             _SOData = data;
             _board = board;
@@ -141,7 +141,7 @@ namespace MagicSchool
         {
             if (!IsInitialized) return;
 
-            _stateMachine.Start(HeroStateType.Idle);
+            _stateMachine.Start(HeroStateEnum.Idle);
         }
 
         void Update()
@@ -149,7 +149,7 @@ namespace MagicSchool
             if (!IsInitialized) return;
 
             // if combat not start, return
-            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhase.Combat) return;
+            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhaseEnum.Combat) return;
 
             // Some hero are not on BattleBoard but was in the bench. They don't consider in combat.
             if (!IsInCombat) return;
@@ -169,7 +169,7 @@ namespace MagicSchool
         void OnDrawGizmos()
         {
             if (!Application.isPlaying || !IsInitialized) return;
-            if (StateType != HeroStateType.Attack) return;
+            if (StateType != HeroStateEnum.Attack) return;
 
             ICombatant target = _runtimeData.NearestEnemy;
             if (target == null || !target.IsAlive) return;

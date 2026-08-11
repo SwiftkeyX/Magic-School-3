@@ -4,7 +4,7 @@ namespace MagicSchool
 {
     public class HeroAttack : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Attack;
+        public override HeroStateEnum StateType => HeroStateEnum.Attack;
         private const int ManaPerAttack = 10;
         private const float DashDuration = 0.2f;
         private const float DashDistance = 0.5f;
@@ -59,7 +59,7 @@ namespace MagicSchool
         protected override void CheckSwitchState()
         {
             // guard
-            if (_nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
+            if (_nearestEnemy == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
 
             // resume attack
             if (_transition.CanAttack(_nearestEnemy))
@@ -69,13 +69,13 @@ namespace MagicSchool
 
             if (_transition.CanWalk(_nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Walk);
+                _me.ChangeState(HeroStateEnum.Walk);
                 return;
             }
 
             else
             {
-                _me.ChangeState(HeroStateType.Idle);
+                _me.ChangeState(HeroStateEnum.Idle);
                 return;
             }
         }

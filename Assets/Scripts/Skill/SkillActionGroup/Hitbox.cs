@@ -42,7 +42,7 @@ namespace MagicSchool
             Hero heroHit = other.GetComponent<Hero>();
 
             // not collide with myself, my team, the dead hero
-            if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateType.Dead) return;
+            if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateEnum.Dead) return;
 
             // only the first contact counts - re-entering after walking out doesn't hit again
             if (!_triggeredOnce.Add(heroHit)) return;
@@ -78,7 +78,7 @@ namespace MagicSchool
             Hero heroHit = other.GetComponent<Hero>();
 
             // not apply effect to myself, my team, the dead hero
-            if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateType.Dead) return;
+            if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateEnum.Dead) return;
 
             // Group all the heroes who was hit by the skill in 1 list
             if (!_heroesWhoWasHit.Contains(heroHit)) _heroesWhoWasHit.Add(heroHit);
@@ -94,7 +94,7 @@ namespace MagicSchool
         // Called by the owner on its cadence interval - fires OnHit for everyone currently inside
         public void FireTick()
         {
-            _heroesWhoWasHit.RemoveAll(hero => hero == null || hero.StateType == HeroStateType.Dead);
+            _heroesWhoWasHit.RemoveAll(hero => hero == null || hero.StateType == HeroStateEnum.Dead);
 
             foreach (Hero hero in _heroesWhoWasHit)
             {

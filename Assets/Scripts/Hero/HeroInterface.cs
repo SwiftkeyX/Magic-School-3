@@ -11,7 +11,7 @@ namespace MagicSchool
     {
         void TakeDamage(int damage);
         void Heal(float amount);
-        void AddModifier(Modifier modifier);
+        void AddModifier(IModifier modifier);
         bool HasStatus(ModifierEnum status);
 
         bool IsAlive { get; }
@@ -56,8 +56,8 @@ namespace MagicSchool
     // So it need talk to only talk to "some part" of the Hero via this contract.
     public interface ICombatant : IPlaceable, IDamageable
     {
-        Team Team { get; }
-        HeroStateType StateType { get; }
+        TeamEnum Team { get; }
+        HeroStateEnum StateType { get; }
 
         // A unit should knows which board it's on
         void TrackOnBoard();

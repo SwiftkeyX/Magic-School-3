@@ -5,11 +5,11 @@ namespace MagicSchool
     [Serializable]
     public struct HexNumber
     {
-        public Team team;
+        public TeamEnum team;
         public int column;
         public int row;
 
-        public HexNumber(Team team, int column, int row)
+        public HexNumber(TeamEnum team, int column, int row)
         {
             this.team = team;
             this.column = column;

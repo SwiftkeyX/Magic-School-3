@@ -26,7 +26,7 @@ namespace MagicSchool
         void Update()
         {
             // stand still until the battle is on, same as a hero
-            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhase.Combat) return;
+            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhaseEnum.Combat) return;
 
             if (_me == null || !_me.IsInitialized || _me.CurrentHex == null) return;
 

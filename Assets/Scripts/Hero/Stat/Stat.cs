@@ -15,27 +15,27 @@ namespace MagicSchool
         private readonly ModifierResolver _statModifier = new ModifierResolver();
 
         // ========================================== base stat ==========================================
-        private readonly Dictionary<StatType, float> _base = new Dictionary<StatType, float>();
+        private readonly Dictionary<StatEnum, float> _base = new Dictionary<StatEnum, float>();
 
         private int _currentHP;
         private int _currentMana;
 
         // ========================================== base stat getter ==========================================
-        public float GetBaseStat(StatType type) => _base[type];
+        public float GetBaseStat(StatEnum type) => _base[type];
 
         // ========================================== modify stat getter ==========================================
-        public float GetFinalStat(StatType type) => _statModifier.GetStatModifier(type, _base[type]);
+        public float GetFinalStat(StatEnum type) => _statModifier.GetStatModifier(type, _base[type]);
 
-        public int HP => Mathf.RoundToInt(GetFinalStat(StatType.HP));
-        public int Atk => Mathf.RoundToInt(GetFinalStat(StatType.Atk));
-        public int DF => Mathf.RoundToInt(GetFinalStat(StatType.DF));
-        public int MG => Mathf.RoundToInt(GetFinalStat(StatType.MG));
-        public int MR => Mathf.RoundToInt(GetFinalStat(StatType.MR));
-        public float AttackSpeed => GetFinalStat(StatType.AttackSpeed);
-        public int Range => Mathf.RoundToInt(GetFinalStat(StatType.Range));
-        public int StartMana => Mathf.RoundToInt(GetFinalStat(StatType.StartMana));
-        public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatType.MaxMana));
-        public float DamageReductionPercent => Mathf.RoundToInt(GetFinalStat(StatType.DamageReduction));   // FLAGGING: let make this a stat for now. if it doesn't, adjust later.
+        public int HP => Mathf.RoundToInt(GetFinalStat(StatEnum.HP));
+        public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.Atk));
+        public int DF => Mathf.RoundToInt(GetFinalStat(StatEnum.DF));
+        public int MG => Mathf.RoundToInt(GetFinalStat(StatEnum.MG));
+        public int MR => Mathf.RoundToInt(GetFinalStat(StatEnum.MR));
+        public float AttackSpeed => GetFinalStat(StatEnum.AttackSpeed);
+        public int Range => Mathf.RoundToInt(GetFinalStat(StatEnum.Range));
+        public int StartMana => Mathf.RoundToInt(GetFinalStat(StatEnum.StartMana));
+        public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatEnum.MaxMana));
+        public float DamageReductionPercent => Mathf.RoundToInt(GetFinalStat(StatEnum.DamageReduction));   // FLAGGING: let make this a stat for now. if it doesn't, adjust later.
 
         public int CurrentHP => _currentHP;
         public int CurrentMana => _currentMana;
@@ -51,22 +51,22 @@ namespace MagicSchool
         public bool IsManaCapped() => _currentMana >= MaxMana;
         public void SpendMana() => _currentMana = 0;
 
-        public void AddModifier(Modifier modifier) => _statModifier.AddModifier(modifier);
+        public void AddModifier(IModifier modifier) => _statModifier.AddModifier(modifier);
         public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
 
 
         public Stat(HeroDataSO stat)
         {
-            _base[StatType.HP] = stat.HP;
-            _base[StatType.Atk] = stat.Atk;
-            _base[StatType.DF] = stat.DF;
-            _base[StatType.MG] = stat.MG;
-            _base[StatType.MR] = stat.MR;
-            _base[StatType.AttackSpeed] = stat.AttackSpeed;
-            _base[StatType.Range] = stat.Range;
-            _base[StatType.StartMana] = stat.StartMana;
-            _base[StatType.MaxMana] = stat.MaxMana;
-            _base[StatType.DamageReduction] = 0f;
+            _base[StatEnum.HP] = stat.HP;
+            _base[StatEnum.Atk] = stat.Atk;
+            _base[StatEnum.DF] = stat.DF;
+            _base[StatEnum.MG] = stat.MG;
+            _base[StatEnum.MR] = stat.MR;
+            _base[StatEnum.AttackSpeed] = stat.AttackSpeed;
+            _base[StatEnum.Range] = stat.Range;
+            _base[StatEnum.StartMana] = stat.StartMana;
+            _base[StatEnum.MaxMana] = stat.MaxMana;
+            _base[StatEnum.DamageReduction] = 0f;
 
             _currentHP = HP;
             _currentMana = StartMana;

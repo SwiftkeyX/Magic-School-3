@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MagicSchool
 {
-    public interface Modifier
+    public interface IModifier
     {
         public float GetAmount();
         public ModifierEnum GetModifierEnum();
@@ -23,11 +23,11 @@ namespace MagicSchool
         private readonly List<ModifierEnum> _expired = new List<ModifierEnum>();
 
         // pair of modifier & stat - tell which stat is increase by this modifier
-        private static readonly Dictionary<ModifierEnum, StatType> _lookup = new Dictionary<ModifierEnum, StatType>
+        private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
         {
-            { ModifierEnum.BonusHP, StatType.HP },
-            { ModifierEnum.Attack, StatType.Atk },
-            { ModifierEnum.DamageReduction, StatType.DamageReduction },
+            { ModifierEnum.BonusHP, StatEnum.HP },
+            { ModifierEnum.Attack, StatEnum.Atk },
+            { ModifierEnum.DamageReduction, StatEnum.DamageReduction },
             // ...
         };
 
@@ -55,7 +55,7 @@ namespace MagicSchool
 
         // =================================== setter ===================================
         // add new modifier
-        public void AddModifier(Modifier modifier)
+        public void AddModifier(IModifier modifier)
         {
             _modifierTracker[modifier.GetModifierEnum()] = new ModifierTracker(modifier);
         }
@@ -63,14 +63,14 @@ namespace MagicSchool
         // =================================== getter ===================================
         // Compute final stat after modifier.
         // Consume base stat. Spit the final stat out.
-        public float GetStatModifier(StatType type, float baseValue)
+        public float GetStatModifier(StatEnum type, float baseValue)
         {
             float total = baseValue;    // get base stat from hero
 
             foreach (var tracker in _modifierTracker)
             {
                 // lookup modifier table - what stat is increase?
-                if (!_lookup.TryGetValue(tracker.Value.Modifier.GetModifierEnum(), out StatType target)) continue;
+                if (!_lookup.TryGetValue(tracker.Value.Modifier.GetModifierEnum(), out StatEnum target)) continue;
 
                 // guard
                 if (target != type) continue;
@@ -89,10 +89,10 @@ namespace MagicSchool
         // Current active modifer on the hero. To track how long this modifer last.
         private class ModifierTracker
         {
-            public readonly Modifier Modifier;      // Modifier = heal, buff, debuff, status, etc...
+            public readonly IModifier Modifier;      // Modifier = heal, buff, debuff, status, etc...
             public float Remaining;                 // remember its duration
 
-            public ModifierTracker(Modifier source)
+            public ModifierTracker(IModifier source)
             {
                 Modifier = source;
 

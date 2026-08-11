@@ -41,7 +41,7 @@ namespace MagicSchool
 
             foreach (var sideGroup in allHexes.GroupBy(h => h.transform.parent.name))
             {
-                Team side = sideGroup.Key == "BlueSideHex" ? Team.Blue : Team.Red;
+                TeamEnum side = sideGroup.Key == "BlueSideHex" ? TeamEnum.Blue : TeamEnum.Red;
 
                 var columns = sideGroup
                     .GroupBy(h => Mathf.RoundToInt(h.transform.localPosition.x * 10f))

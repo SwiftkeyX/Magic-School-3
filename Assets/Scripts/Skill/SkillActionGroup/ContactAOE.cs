@@ -70,7 +70,7 @@ namespace MagicSchool
                 yield return wait;
                 elapsed += effect.Cadence.cadenceInterval;
 
-                if (hero == null || hero.StateType == HeroStateType.Dead) yield break;
+                if (hero == null || hero.StateType == HeroStateEnum.Dead) yield break;
                 ApplyEffectToRecipients(effect, recipients);
             }
         }

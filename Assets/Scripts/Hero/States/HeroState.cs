@@ -12,7 +12,7 @@ namespace MagicSchool
             _transition = transition;
         }
 
-        public abstract HeroStateType StateType { get; }
+        public abstract HeroStateEnum StateType { get; }
 
         public virtual void OnEnter() { }
         public virtual void OnExit() { }

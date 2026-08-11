@@ -101,7 +101,7 @@ namespace MagicSchool
                 if (occupant == null || occupant == _me as ICombatant) continue;
 
                 // if blocker is in attack or cast state, wait for him.
-                bool isCommitted = occupant.StateType == HeroStateType.Attack || occupant.StateType == HeroStateType.Cast;
+                bool isCommitted = occupant.StateType == HeroStateEnum.Attack || occupant.StateType == HeroStateEnum.Cast;
                 if (!isCommitted) return true;
             }
 

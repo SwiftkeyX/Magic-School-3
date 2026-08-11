@@ -26,7 +26,7 @@ namespace MagicSchool
             _neighbors = null;
         }
 
-        public Team GetTeam()
+        public TeamEnum GetTeam()
         {
             return _hexPlacement.team;
         }

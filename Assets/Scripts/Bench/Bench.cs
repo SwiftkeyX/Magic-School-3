@@ -13,7 +13,7 @@ namespace MagicSchool
         // need to know which board, its heroes will fight on (there maybe several board at once).
         [SerializeField] private BattleBoard _board;
 
-        public event Action<HeroDataSO, Team, Placement, BattleBoard> OnSpawnRequested;
+        public event Action<HeroDataSO, TeamEnum, Placement, BattleBoard> OnSpawnRequested;
 
         /// <summary>
         /// Spawn hero on the bench. Returns false (and spawns nothing) if the bench is full.
@@ -36,7 +36,7 @@ namespace MagicSchool
             }
 
             // spawn hero prefab, move it to that slot, reserved the freeslot
-            OnSpawnRequested.Invoke(data, Team.Blue, freeSlot, _board);
+            OnSpawnRequested.Invoke(data, TeamEnum.Blue, freeSlot, _board);
             return true;
         }
     }

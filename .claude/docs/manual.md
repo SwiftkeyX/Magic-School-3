@@ -42,10 +42,6 @@ But now even ZoneAOE that always is Cadence true, it now a editable Cadence, if 
 This is maybe confusing if I forget, so I need to leave some NOTE here.
 This is intentional for the early stage of implementing skill system, BUT once we get a hang of it, this should be get rid of. 
 
-6) The enum are really inconsistent, they don't use the same suffix e.g. Type, Enum. We should use the same suffix standard
-
-
-
 
 # Resolve problem
 1) "Legacy action = ZoneAOE" and "Recipient = Enemies in Area" are telling the same thing that we want to spawn AOE. 

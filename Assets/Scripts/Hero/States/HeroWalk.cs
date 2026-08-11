@@ -7,7 +7,7 @@ namespace MagicSchool
     // HeroIdle via Hero.BeginWalkTo) before this state becomes current.
     public class HeroWalk : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Walk;
+        public override HeroStateEnum StateType => HeroStateEnum.Walk;
 
         private Hex _targetHex;
         private Vector3 _start;
@@ -54,11 +54,11 @@ namespace MagicSchool
             ICombatant nearestEnemy = _me.FindNearestEnemy();
 
             // guard
-            if (nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
+            if (nearestEnemy == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
 
             if (_transition.CanAttack(nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Attack);
+                _me.ChangeState(HeroStateEnum.Attack);
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace MagicSchool
 
             else
             {
-                _me.ChangeState(HeroStateType.Idle);
+                _me.ChangeState(HeroStateEnum.Idle);
                 return;
             }
         }

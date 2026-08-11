@@ -8,7 +8,7 @@ namespace MagicSchool
     /// </summary>
     // Not serialized into any asset today (HeroDataSO still has one field per stat), so the
     // explicit values are only here to keep it that way if it ever does get serialized.
-    public enum StatType
+    public enum StatEnum
     {
         HP = 0,
         Atk = 1,

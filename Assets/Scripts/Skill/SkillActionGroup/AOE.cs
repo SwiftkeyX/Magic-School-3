@@ -8,8 +8,8 @@ namespace MagicSchool
     /// </summary>
     public abstract class AOE : TemplateAction
     {
-        public enum AOEOffset { Center, Tip }
-        [SerializeField] private AOEOffset _offset;
+        public enum AOEOffsetEnum { Center, Tip }
+        [SerializeField] private AOEOffsetEnum _offset;
 
         // ======================================= protected =======================================
         protected override void Play()
@@ -102,9 +102,9 @@ namespace MagicSchool
         // e.g. place the tip of box AOE at user, place the center of circle AOE at user
         protected override Vector3 GetSpawnPosition()
         {
-            if (_offset == AOEOffset.Center) return _source;
+            if (_offset == AOEOffsetEnum.Center) return _source;
 
-            else if (_offset == AOEOffset.Tip)
+            else if (_offset == AOEOffsetEnum.Tip)
             {
                 // Tip: the near end sits on the source and the body runs out toward the aim, so shift
                 // the centre out by half the shape's length. No direction to run along = nothing to do.

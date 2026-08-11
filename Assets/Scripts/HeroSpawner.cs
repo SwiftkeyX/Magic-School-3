@@ -15,7 +15,7 @@ namespace MagicSchool
         }
 
         // basically spawn hero
-        public void SpawnHero(HeroDataSO data, Team team, Placement placement, BattleBoard board)
+        public void SpawnHero(HeroDataSO data, TeamEnum team, Placement placement, BattleBoard board)
         {
             // spawn hero
             GameObject heroPrefab = SceneHelper.Instantiate(data.Prefab);

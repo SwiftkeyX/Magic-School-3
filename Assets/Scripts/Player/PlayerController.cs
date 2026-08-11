@@ -7,11 +7,11 @@ namespace MagicSchool
         [SerializeField] private Camera _cam;
         private bool _isHeroHolded = false;
         private Hero _heroHolded;
-        private Team _team;
+        private TeamEnum _team;
 
         void Awake()
         {
-            _team = Team.Blue;
+            _team = TeamEnum.Blue;
         }
 
         void Update()
@@ -22,7 +22,7 @@ namespace MagicSchool
         private void PlayerMoveHero()
         {
             // if not in preparation, return;
-            if (GameManager.Instance.Phase != GamePhase.Preparation) return;
+            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation) return;
 
             // get world position from current pointer position (mouse)
             Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);

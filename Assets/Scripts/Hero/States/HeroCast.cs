@@ -4,7 +4,7 @@ namespace MagicSchool
 {
     public class HeroCast : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Cast;
+        public override HeroStateEnum StateType => HeroStateEnum.Cast;
 
         private float _remaining;
 
@@ -34,23 +34,23 @@ namespace MagicSchool
             ICombatant nearestEnemy = _me.FindNearestEnemy();
 
             // guard
-            if (nearestEnemy == null) { _me.ChangeState(HeroStateType.Idle); return; }
+            if (nearestEnemy == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
 
             if (_transition.CanAttack(nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Attack);
+                _me.ChangeState(HeroStateEnum.Attack);
                 return;
             }
 
             if (_transition.CanWalk(nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Walk);
+                _me.ChangeState(HeroStateEnum.Walk);
                 return;
             }
 
             else
             {
-                _me.ChangeState(HeroStateType.Idle);
+                _me.ChangeState(HeroStateEnum.Idle);
                 return;
             }
 

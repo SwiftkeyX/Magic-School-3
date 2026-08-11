@@ -124,7 +124,7 @@ namespace MagicSchool
                 {
                     if (modifier == null) continue;
 
-                    Modifier modifierAfterScale = modifier.Scaled(amplifier);
+                    IModifier modifierAfterScale = modifier.Scaled(amplifier);
 
                     recipient.AddModifier(modifierAfterScale);
                 }

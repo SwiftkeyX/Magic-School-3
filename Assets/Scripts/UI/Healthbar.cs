@@ -21,9 +21,9 @@ namespace MagicSchool
 
         void Start()
         {
-            if (_hero.Team == Team.Blue) _image.color = Color.green;
+            if (_hero.Team == TeamEnum.Blue) _image.color = Color.green;
 
-            else if (_hero.Team == Team.Red) _image.color = Color.red;
+            else if (_hero.Team == TeamEnum.Red) _image.color = Color.red;
         }
 
         void LateUpdate()

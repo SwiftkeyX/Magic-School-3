@@ -2,7 +2,7 @@ namespace MagicSchool
 {
     public class HeroIdle : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Idle;
+        public override HeroStateEnum StateType => HeroStateEnum.Idle;
 
         public HeroIdle(Hero hero, Transition transition) : base(hero, transition) { }
 
@@ -25,14 +25,14 @@ namespace MagicSchool
             // go attack
             if (_transition.CanAttack(nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Attack);
+                _me.ChangeState(HeroStateEnum.Attack);
                 return;
             }
 
             // go walk
             if (_transition.CanWalk(nearestEnemy))
             {
-                _me.ChangeState(HeroStateType.Walk);
+                _me.ChangeState(HeroStateEnum.Walk);
                 return;
             }
 

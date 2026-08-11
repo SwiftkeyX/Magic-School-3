@@ -39,7 +39,7 @@ namespace MagicSchool
             if (_skillCastTextPrefab == null) return;
 
             FloatingText instance = Instantiate(_skillCastTextPrefab);
-            Color color = _me.Team == Team.Blue ? BlueSkillTextColor : RedSkillTextColor;
+            Color color = _me.Team == TeamEnum.Blue ? BlueSkillTextColor : RedSkillTextColor;
             instance.Show(skillName, color, _me.transform.position);
         }
     }

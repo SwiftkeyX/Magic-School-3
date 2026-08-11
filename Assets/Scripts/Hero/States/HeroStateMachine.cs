@@ -17,8 +17,8 @@ namespace MagicSchool
 
         public HeroState Current { get; private set; }
 
-        public HeroStateType CurrentType => Current == null ? HeroStateType.Idle : Current.StateType;
-        public HeroStateType PreviousType { get; private set; }
+        public HeroStateEnum CurrentType => Current == null ? HeroStateEnum.Idle : Current.StateType;
+        public HeroStateEnum PreviousType { get; private set; }
 
         public HeroStateMachine(Hero hero, MovementConfig movement)
         {
@@ -33,13 +33,13 @@ namespace MagicSchool
             _cast = new HeroCast(hero, transition);
         }
 
-        public void Start(HeroStateType initial)
+        public void Start(HeroStateEnum initial)
         {
             Current = GetState(initial);
             Current.OnEnter();
         }
 
-        public void ChangeState(HeroStateType next)
+        public void ChangeState(HeroStateEnum next)
         {
             if (Current != null && next == CurrentType) return;
 
@@ -55,7 +55,7 @@ namespace MagicSchool
             if (Current == null) return;
 
             // interrupt state e.g. stun, dead
-            if (TryResolveInterrupt(out HeroStateType forced))
+            if (TryResolveInterrupt(out HeroStateEnum forced))
             {
                 ChangeState(forced);
 
@@ -71,22 +71,22 @@ namespace MagicSchool
         /// Global state transition.  
         /// Some of the transition are redundant in each state, make it a global transition by move it here.
         /// </summary>
-        private bool TryResolveInterrupt(out HeroStateType forced)
+        private bool TryResolveInterrupt(out HeroStateEnum forced)
         {
             forced = default;
 
-            if (CurrentType == HeroStateType.Dead) return false;
+            if (CurrentType == HeroStateEnum.Dead) return false;
 
             if (_me.CurrentHP <= 0)
             {
-                forced = HeroStateType.Dead;
+                forced = HeroStateEnum.Dead;
                 return true;
             }
 
-            bool notStun = CurrentType != HeroStateType.Stunned;
+            bool notStun = CurrentType != HeroStateEnum.Stunned;
             if (_me.IsStunned && notStun)
             {
-                forced = HeroStateType.Stunned;
+                forced = HeroStateEnum.Stunned;
                 return true;
             }
 
@@ -95,23 +95,23 @@ namespace MagicSchool
             bool success = _me.TriggerActiveSkill(_me.IsManaCapped());
             if (success)
             {
-                forced = HeroStateType.Cast;
+                forced = HeroStateEnum.Cast;
                 return true;
             }
 
             return false;
         }
 
-        private HeroState GetState(HeroStateType type)
+        private HeroState GetState(HeroStateEnum type)
         {
             switch (type)
             {
-                case HeroStateType.Idle: return _idle;
-                case HeroStateType.Walk: return _walk;
-                case HeroStateType.Attack: return _attack;
-                case HeroStateType.Dead: return _dead;
-                case HeroStateType.Stunned: return _stunned;
-                case HeroStateType.Cast: return _cast;
+                case HeroStateEnum.Idle: return _idle;
+                case HeroStateEnum.Walk: return _walk;
+                case HeroStateEnum.Attack: return _attack;
+                case HeroStateEnum.Dead: return _dead;
+                case HeroStateEnum.Stunned: return _stunned;
+                case HeroStateEnum.Cast: return _cast;
                 default: return null;
             }
         }

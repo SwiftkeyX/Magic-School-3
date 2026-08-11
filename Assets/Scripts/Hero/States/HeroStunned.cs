@@ -4,7 +4,7 @@ namespace MagicSchool
 {
     public class HeroStunned : HeroState
     {
-        public override HeroStateType StateType => HeroStateType.Stunned;
+        public override HeroStateEnum StateType => HeroStateEnum.Stunned;
 
         public HeroStunned(Hero hero, Transition transition) : base(hero, transition) { }
 
@@ -21,7 +21,7 @@ namespace MagicSchool
 
         protected override void CheckSwitchState()
         {
-            if (!_me.IsStunned) _me.ChangeState(HeroStateType.Idle);
+            if (!_me.IsStunned) _me.ChangeState(HeroStateEnum.Idle);
         }
     }
 }

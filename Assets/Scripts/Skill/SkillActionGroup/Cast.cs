@@ -42,7 +42,7 @@ namespace MagicSchool
                 // if not cadence, apply effect once.
                 else
                 {
-                    effect.ApplyEffect(self);
+                    effect.ApplyEffect(_me, self);
                 }
             }
 

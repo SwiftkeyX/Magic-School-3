@@ -12,6 +12,7 @@ namespace MagicSchool
         void TakeDamage(int damage);
         void Heal(float amount);
         void AddModifier(Modifier modifier);
+        bool HasStatus(ModifierEnum status);
 
         bool IsAlive { get; }
     }

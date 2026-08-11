@@ -44,5 +44,21 @@ namespace MagicSchool
         // ======================================= Status =======================================
         Stun = 3,
         Wound = 4,
+        Transformed = 10,   
+    }
+
+    // skill condition can either ask Caster or each Recipients
+    public enum ConditionSubjectEnum
+    {
+        Caster = 0,     // e.g. Is Caster transformed?
+        Recipient = 1,  // e.g. Is this recipient wounded?
+    }
+
+    // what skill condition return.
+    public enum ConditionResultEnum
+    {
+        NoConditionFound,
+        ConditionIsMet,
+        ConditionIsNotMet,
     }
 }

@@ -22,12 +22,27 @@ namespace MagicSchool
     {
         [SerializeField] protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
         [SerializeField] protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
+        [SerializeReference] protected SkillCondition _condition;         // condition for this effect. => if satisfied, effect is applified.
+        [SerializeField] protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the condition holds
 
         // ================================== getter ==================================
         public EffectRecipientEnum Recipient => _recipient;
         public Cadence Cadence => _cadence;
+        public SkillCondition Condition => _condition;
 
-        public abstract void ApplyEffect(IReadOnlyList<IDamageable> recipients);
+        // check condition to each recipients. 
+        // If condition is met, the effect is amplified.
+        protected float AmplifierFor(IDamageable caster, IDamageable recipient)
+        {
+            if (SkillCondition.Ask(_condition, caster, recipient) == ConditionResultEnum.ConditionIsMet)
+            {
+                return 1f + _amplifier;
+            }
+
+            return 1f;
+        }
+
+        public abstract void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients);
     }
 
     [Serializable]
@@ -35,7 +50,7 @@ namespace MagicSchool
     {
         [SerializeField] private float _damageAmount;
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {
@@ -47,6 +62,9 @@ namespace MagicSchool
 
                 // if not cadence, apply normal flat damage
                 else dmg = _damageAmount;
+
+                // if pass specify condition, amplify the effect
+                dmg *= AmplifierFor(caster, recipient);
 
                 // apply damage
                 recipient.TakeDamage(Mathf.RoundToInt(dmg));
@@ -65,7 +83,7 @@ namespace MagicSchool
 
         public float Duration => _duration;
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
             float healPerTick = _totalHealAmount / totalTicks;
@@ -74,7 +92,7 @@ namespace MagicSchool
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
-                recipient.Heal(healPerTick);
+                recipient.Heal(healPerTick * AmplifierFor(caster, recipient));
             }
         }
     }
@@ -86,7 +104,7 @@ namespace MagicSchool
         [SerializeField] private float _buffAmount;
         [SerializeField] private float _buffDuration;
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {
@@ -119,7 +137,7 @@ namespace MagicSchool
         [SerializeField] private float _debuffAmount;
         [SerializeField] private float _deBuffDuration;
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {
@@ -152,7 +170,7 @@ namespace MagicSchool
         [SerializeField] private float _statusAmount;
         [SerializeField] private float _statusDuration;
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {

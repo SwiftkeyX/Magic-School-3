@@ -76,6 +76,7 @@ namespace MagicSchool
         // === IDamageable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateType.Dead;
         public void AddModifier(Modifier modifier) => Stat.AddModifier(modifier);
+        public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);
 
         public void Heal(float amount)
         {

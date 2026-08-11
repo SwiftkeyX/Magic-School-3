@@ -40,8 +40,10 @@ namespace MagicSchool
         public int CurrentHP => _currentHP;
         public int CurrentMana => _currentMana;
 
-        public bool IsStunned => _statModifier.GetStatusModifier(ModifierEnum.Stun);
-        public bool IsWounded => _statModifier.GetStatusModifier(ModifierEnum.Wound);
+        public bool HasStatus(ModifierEnum type) => _statModifier.GetStatusModifier(type);
+
+        public bool IsStunned => HasStatus(ModifierEnum.Stun);
+        public bool IsWounded => HasStatus(ModifierEnum.Wound);
 
         // ========================================== setter ==========================================
         public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);

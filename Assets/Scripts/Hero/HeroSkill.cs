@@ -92,10 +92,10 @@ namespace MagicSchool
             return PlayAction(steps, stepIndex, contextFromPreviousStep);
         }
 
-        // Play every template action in this step.
+        // Play a template action.
         private bool PlayAction(IReadOnlyList<SkillStep> steps, int stepIndex, SkillStepContext contextFromPreviousStep)
         {
-            // initial event - this is hand to template action
+            // initial event - this is handed to template action that's going to be played
             Action<SkillStepContext> onExpired = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnExpired);
             Action<SkillStepContext> onHit = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnHit);
 
@@ -103,7 +103,11 @@ namespace MagicSchool
             IReadOnlyList<SkillActionGroup> actionGroups = steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
-                // try play the skill
+                // check condition for current template action. 
+                // if condition is not met, go check the next template action.
+                if (SkillCondition.Ask(actionGroup.Condition, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
+
+                // try play the template action
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
                     onExpired, onHit, contextFromPreviousStep);
 

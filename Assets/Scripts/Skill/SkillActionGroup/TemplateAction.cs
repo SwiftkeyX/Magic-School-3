@@ -8,7 +8,7 @@ namespace MagicSchool
     public abstract class TemplateAction : MonoBehaviour
     {
         [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
-        protected Hero _me;
+        protected Hero _me;         // FIXLATER: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
         protected Vector3 _source;
@@ -27,6 +27,8 @@ namespace MagicSchool
         public float CastTime => _castTime;
 
         // ==================================== public method ====================================
+        // try play template action. if play success, return true.
+        // ASKING: Is there a reason this have to be static?
         public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects,
             Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {
@@ -143,13 +145,13 @@ namespace MagicSchool
             switch (effect.Recipient)
             {
                 case EffectRecipientEnum.Self:
-                    effect.ApplyEffect(new List<Hero> { _me });
+                    effect.ApplyEffect(_me, new List<Hero> { _me });
                     break;
 
                 case EffectRecipientEnum.SameToAimTarget:
                 case EffectRecipientEnum.EnemiesInArea:
                 case EffectRecipientEnum.EnemiesInPath:
-                    effect.ApplyEffect(recipients);
+                    effect.ApplyEffect(_me, recipients);
                     break;
             }
         }
@@ -167,7 +169,7 @@ namespace MagicSchool
                 yield return wait;
                 elapsed += effect.Cadence.cadenceInterval;
 
-                effect.ApplyEffect(recipients);
+                effect.ApplyEffect(_me, recipients);
             }
 
             // destroy once duration is expired

@@ -41,6 +41,11 @@ namespace MagicSchool
             return true;
         }
 
+        public void TriggerPassiveSkill()
+        {
+            
+        }
+
         // ============================================== Trigger condition ==============================================
         // on kill enemy, OnKill step is trigger
         private void TriggerOnKillStep(int hp, SkillStep step)

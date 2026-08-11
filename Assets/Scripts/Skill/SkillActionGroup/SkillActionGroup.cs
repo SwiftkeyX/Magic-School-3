@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MagicSchool
 {
     [Serializable]
-    public class SkillActionGroup
+    public abstract class SkillActionGroup
     {
         [SerializeField] private ActionSourceEnum _source;
         [SerializeField] private TemplateAction _templateAction;
@@ -24,4 +24,10 @@ namespace MagicSchool
         public HitboxSize Size => _size;
         public List<SkillEffect> Effects => _effects;
     }
+
+    [Serializable]
+    public class SkillActiveGroup : SkillActionGroup { }
+
+    [Serializable]
+    public class SkillPassiveGroup : SkillActionGroup { }
 }

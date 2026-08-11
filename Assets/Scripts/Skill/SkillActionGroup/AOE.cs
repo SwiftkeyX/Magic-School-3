@@ -41,19 +41,11 @@ namespace MagicSchool
                 _source = target.transform.position;
             }
 
-            // spawn where the previous step's projectile landed
-            else if (source == ActionSourceEnum.Current)
-            {
-                ICombatant target = _me.FindNearestEnemy();
-                if (target == null) return false;
-                _source = target.transform.position;
-            }
             // e.g. Teemo's and Karma's dart exploding on impact rather than back at the caster
             else if (source == ActionSourceEnum.WhereProjectileHit)
             {
                 if (_fromPreviousStep?.Position == null) return false;
                 _source = _fromPreviousStep.Position.Value;
-                return true;
             }
 
             // else if () ...
@@ -121,8 +113,8 @@ namespace MagicSchool
                 return _source + facing.normalized * HalfLengthAlongFacing();
             }
 
-            // fallback
-            return Vector3.one;
+            // fallback - an unhandled offset still belongs on the source, not out at (1,1,1)
+            return _source;
         }
 
         // ======================================= private =======================================

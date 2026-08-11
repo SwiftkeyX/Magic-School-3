@@ -13,7 +13,24 @@ MonoBehaviour:
   m_Name: Aatrox
   m_EditorClassIdentifier: Assembly-CSharp::MagicSchool.SkillSO
   _skillName: Skill
-  _steps: []
+  _activeSteps: []
+  _passiveSteps:
+  - _trigger: 4
+    _actionGroups:
+    - _source: 0
+      _templateAction: {fileID: 2553249872288390112, guid: 96c28c228dcc3584b93601bee3fb73b2, type: 3}
+      _target: 2
+      _effects:
+      - rid: 1571255142806978629
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 1571255142806978629
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _recipient: 1
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0.5
+          cadenceDuration: 3
+        _damageAmount: 200

@@ -13,8 +13,10 @@ namespace MagicSchool
     public class Cadence
     {
         public bool isCadence = false;
-        public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
-        public float cadenceDuration = 3f;      // total duration of the effect
+
+        // neither is read unless isCadence, so neither is shown unless isCadence
+        [ShowIf(nameof(isCadence))] public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
+        [ShowIf(nameof(isCadence))] public float cadenceDuration = 3f;      // total duration of the effect
     }
 
     [Serializable]
@@ -23,6 +25,8 @@ namespace MagicSchool
         [SerializeField] protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
         [SerializeField] protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
         [SerializeReference] protected SkillCondition _condition;         // condition for this effect. => if satisfied, effect is applified.
+        // nothing amplifies without a condition to amplify on, so this stays hidden until there is one
+        [ShowIf(nameof(_condition))]
         [SerializeField] protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the condition holds
 
         // ================================== getter ==================================

@@ -78,6 +78,7 @@ Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
     => condition have 2 pattern: condition for template action & condition for effect
         => for template action: if achieve condition, the template action will be switch to different one.
         => for effect: if achieve condition, the effect will be amplified e.g. if wound => dmg +30%
+=> Implement no gain mana while transform
 => Implement actual scaling (currently ad, ap does nothing to skill damage)
 Warwick - test trigger OnAttack
 

@@ -47,7 +47,7 @@ namespace MagicSchool
                 _me.TriggerPassiveSkill(TriggerEnum.OnAttack);
 
                 // this hero auto attack
-                if (!_me.HasStatus(ModifierEnum.AutoAttackBlocked)) PerformAutoAttack();
+                PerformAutoAttack();
             }
 
             // update attack animation
@@ -82,15 +82,19 @@ namespace MagicSchool
 
         private void PerformAutoAttack()
         {
-            // apply damage to target
-            _nearestEnemy.TakeDamage(_me.AttackDamage);
+            // other action may replace normal auto attack e.g. Aatrox
+            if (!_me.HasStatus(ModifierEnum.AutoAttackWasReplaced))
+            {
+                // FIXLATER: attack animation got skip by skill which is not intended
+                // apply damage to target
+                _nearestEnemy.TakeDamage(_me.AttackDamage);
+
+                // attack animation: dash toward the enemy, then back to where we started
+                AttackAnimation();
+            }
 
             // aa is now on cooldown
             _me.SpendAttack();
-
-            // FIXLATER: attack animation got skip by skill which is not intended
-            // attack animation: dash toward the enemy, then back to where we started
-            AttackAnimation();
 
             // after attack gain mana
             if (!_me.HasStatus(ModifierEnum.ManaBlocked)) _me.GainMana(ManaPerAttack);

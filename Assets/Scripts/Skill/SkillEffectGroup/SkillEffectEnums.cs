@@ -44,9 +44,9 @@ namespace MagicSchool
         // ======================================= Status =======================================
         Stun = 3,
         Wound = 4,
-        Transformed = 10,   
+        Transformed = 10,
         ManaBlocked = 11,
-        AutoAttackBlocked = 12,
+        AutoAttackWasReplaced = 12,
     }
 
     // skill condition can either ask Caster or each Recipients

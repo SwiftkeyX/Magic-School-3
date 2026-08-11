@@ -8,7 +8,8 @@ namespace MagicSchool
         Self = 0,
         Ally = 1,
         Summon = 2,
-
+        WhereProjectileHit = 3,     // spawn where the previous step's projectile landed
+        Current = 4,
         // ...
     }
 

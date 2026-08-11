@@ -10,9 +10,10 @@ namespace MagicSchool
     /// </summary>
     public class Cast : TemplateAction
     {
-        protected override void ResolveSource(ActionSourceEnum source)
+        protected override bool ResolveSource(ActionSourceEnum source)
         {
             _source = _me.transform.position;
+            return true;
         }
 
         protected override bool ResolveAimTarget(AimTargetEnum aimTarget) => true;

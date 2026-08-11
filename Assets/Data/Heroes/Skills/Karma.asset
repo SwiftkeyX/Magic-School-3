@@ -13,36 +13,24 @@ MonoBehaviour:
   m_Name: Karma
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
   _skillName: Blinding Dart
-  _steps:
+  _activeSteps:
   - _trigger: 0
     _actionGroups:
     - _source: 0
       _templateAction: {fileID: 4979021782531030374, guid: f45373eff00267545bf995a5cd7d6f64, type: 3}
       _target: 1
-      _size:
-        size: 0
-        shape:
-          rid: -2
       _effects: []
   - _trigger: 3
     _actionGroups:
-    - _source: 0
+    - _source: 3
       _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 4
-      _size:
-        size: 0
-        shape:
-          rid: 1571255120571138117
       _effects:
       - rid: 1571255120571138118
+  _passiveSteps: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1571255120571138117
-      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
-      data: 
     - rid: 1571255120571138118
       type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:

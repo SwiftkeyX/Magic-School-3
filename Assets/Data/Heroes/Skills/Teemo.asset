@@ -13,37 +13,25 @@ MonoBehaviour:
   m_Name: Teemo
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
   _skillName: Blinding Dart
-  _steps:
+  _activeSteps:
   - _trigger: 0
     _actionGroups:
     - _source: 0
       _templateAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
       _target: 2
-      _size:
-        size: 0
-        shape:
-          rid: -2
       _effects: []
   - _trigger: 3
     _actionGroups:
-    - _source: 0
+    - _source: 3
       _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 4
-      _size:
-        size: 1
-        shape:
-          rid: 6645218084189896775
       _effects:
       - rid: 6645218084189896776
       - rid: 6645218084189896777
+  _passiveSteps: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 6645218084189896775
-      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
-      data: 
     - rid: 6645218084189896776
       type: {class: StatusSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:

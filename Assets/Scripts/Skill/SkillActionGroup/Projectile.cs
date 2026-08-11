@@ -48,7 +48,7 @@ namespace MagicSchool
         }
 
         // source = where projectile spawn from
-        protected override void ResolveSource(ActionSourceEnum source)
+        protected override bool ResolveSource(ActionSourceEnum source)
         {
             // spawn projectile at self
             if (source == ActionSourceEnum.Self)
@@ -57,6 +57,11 @@ namespace MagicSchool
             }
 
             // else if ...
+
+            // fallback - a projectile always has somewhere to come from, so this never fails
+            else _source = _me.transform.position;
+
+            return true;
         }
 
 

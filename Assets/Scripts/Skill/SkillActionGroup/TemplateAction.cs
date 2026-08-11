@@ -58,7 +58,7 @@ namespace MagicSchool
             Init(caster, effects);
 
             // find "source" using source enum
-            ResolveSource(source);
+            if (!ResolveSource(source)) return false;
 
             // find "aim" using aim enum
             if (!ResolveAimTarget(aimTarget)) return false;
@@ -76,9 +76,10 @@ namespace MagicSchool
         // ==================================== abstract method ====================================
         // Each template action child have a different way to resolve how their skill was spawn/aim at.
         // read ResolveSource&ResolveAimTarget in each different's child for more detail
-        protected abstract void ResolveSource(ActionSourceEnum source);
+        // returns false if no valid source
+        protected abstract bool ResolveSource(ActionSourceEnum source);
 
-        // returns false if no valid target could be resolved (e.g. Current-targeted with no enemy left) - caller skips the cast
+        // returns false if no valid target
         protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
         // where this template action's instance should sit once source/aim are resolved.

@@ -58,7 +58,8 @@ namespace MagicSchool
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
-        public bool TriggerSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
+        public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
+        public bool TriggerPassiveSkill(TriggerEnum trigger) => _skill.TriggerPassiveSkill(trigger);
         public float GetCastTime() => _skill.GetCastTime();
 
         // ======================================== attack ========================================

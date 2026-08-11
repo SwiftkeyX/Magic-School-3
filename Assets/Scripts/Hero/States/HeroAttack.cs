@@ -43,6 +43,9 @@ namespace MagicSchool
             // attack again if aa is reset. The timer is always runs in the background
             if (_me.IsAttackReady)
             {
+                // fire OnAttack event
+                _me.TriggerPassiveSkill(TriggerEnum.OnAttack);
+
                 // apply damage to target
                 _nearestEnemy.TakeDamage(_me.AttackDamage);
 
@@ -52,6 +55,7 @@ namespace MagicSchool
                 // aa is now on cooldown
                 _me.SpendAttack();
 
+                // FIXLATER: attack animation got skip by skill which is not intended
                 // attack animation: dash toward the enemy, then back to where we started
                 AttackAnimation();
             }

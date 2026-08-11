@@ -27,6 +27,7 @@ namespace MagicSchool
             _skill = skill;
         }
 
+        // ============================================== active & passive skill ==============================================
         // mana is full, active skill is trigger. 
         // Returns true if the skill cast successfully.
         public bool TriggerOnCastSkill(bool isManaCapped)
@@ -56,7 +57,6 @@ namespace MagicSchool
 
             if (steps[0].Trigger != trigger) return false;
 
-            // note: no SpendMana - a passive costs the hero nothing
             return FireStep(steps, 0);
         }
 

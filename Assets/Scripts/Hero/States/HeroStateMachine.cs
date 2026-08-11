@@ -92,7 +92,7 @@ namespace MagicSchool
 
             // FLAGGING: Being stun while casting skill is useless for the stun user, since skill effect is already fire.
             // if mana is full, trigger OnCast skill
-            bool success = _me.TriggerSkill(_me.IsManaCapped());
+            bool success = _me.TriggerActiveSkill(_me.IsManaCapped());
             if (success)
             {
                 forced = HeroStateType.Cast;

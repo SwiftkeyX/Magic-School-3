@@ -46,23 +46,13 @@ namespace MagicSchool
                 // fire OnAttack event
                 _me.TriggerPassiveSkill(TriggerEnum.OnAttack);
 
-                // apply damage to target
-                _nearestEnemy.TakeDamage(_me.AttackDamage);
-
-                // after attack, gain mana
-                _me.GainMana(ManaPerAttack);
-
-                // aa is now on cooldown
-                _me.SpendAttack();
-
-                // FIXLATER: attack animation got skip by skill which is not intended
-                // attack animation: dash toward the enemy, then back to where we started
-                AttackAnimation();
+                // this hero auto attack
+                if (!_me.HasStatus(ModifierEnum.AutoAttackBlocked)) PerformAutoAttack();
             }
 
             // update attack animation
             UpdateAttackAnimation();
-            
+
             CheckSwitchState();
         }
 
@@ -88,6 +78,22 @@ namespace MagicSchool
                 _me.ChangeState(HeroStateType.Idle);
                 return;
             }
+        }
+
+        private void PerformAutoAttack()
+        {
+            // apply damage to target
+            _nearestEnemy.TakeDamage(_me.AttackDamage);
+
+            // aa is now on cooldown
+            _me.SpendAttack();
+
+            // FIXLATER: attack animation got skip by skill which is not intended
+            // attack animation: dash toward the enemy, then back to where we started
+            AttackAnimation();
+
+            // after attack gain mana
+            if (!_me.HasStatus(ModifierEnum.ManaBlocked)) _me.GainMana(ManaPerAttack);
         }
 
         private void AttackAnimation()

@@ -104,7 +104,7 @@ namespace MagicSchool
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
                 // check condition for current template action. 
-                // if condition is not met, go check the next template action.
+                // if condition is not met, skip this one, and go check the next template action.
                 if (SkillCondition.Ask(actionGroup.Condition, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action

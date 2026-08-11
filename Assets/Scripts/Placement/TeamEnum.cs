@@ -8,5 +8,4 @@ namespace MagicSchool
         Red = 1,
     }
 
-    public enum GamePhaseEnum { Preparation, Combat, Result }
 }

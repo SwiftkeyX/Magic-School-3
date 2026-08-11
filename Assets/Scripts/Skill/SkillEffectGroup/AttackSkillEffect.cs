@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace MagicSchool
+{
+    // effect that apply damage to recipients
+    [Serializable]
+    public class AttackSkillEffect : SkillEffect
+    {
+        [SerializeField] private float _damageAmount;
+
+        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
+        {
+            foreach (IDamageable recipient in recipients)
+            {
+                if (recipient == null || !recipient.IsAlive) continue;
+
+                // if the damage was cadence, calculate tick damage instead
+                float dmg;
+                if (_cadence.isCadence) dmg = _damageAmount * _cadence.cadenceInterval / _cadence.cadenceDuration;
+
+                // if not cadence, apply normal flat damage
+                else dmg = _damageAmount;
+
+                // if pass specify condition, amplify the effect
+                dmg *= AmplifierFor(caster, recipient);
+
+                // apply damage
+                recipient.TakeDamage(Mathf.RoundToInt(dmg));
+            }
+        }
+    }
+}

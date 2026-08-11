@@ -2,6 +2,7 @@ using System;
 
 namespace MagicSchool
 {
+    // Which hex, named the way a designer thinks of the board: whose side, which column, which row.
     [Serializable]
     public struct HexNumber
     {
@@ -14,19 +15,6 @@ namespace MagicSchool
             this.team = team;
             this.column = column;
             this.row = row;
-        }
-    }
-
-    [Serializable]
-    public struct HeroPlacement
-    {
-        public HeroDataSO dataSO;
-        public HexNumber hexPlacement;
-
-        public HeroPlacement(HeroDataSO data, HexNumber hexPlacement)
-        {
-            this.dataSO = data;
-            this.hexPlacement = hexPlacement;
         }
     }
 }

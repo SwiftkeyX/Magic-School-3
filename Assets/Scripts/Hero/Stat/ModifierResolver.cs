@@ -2,16 +2,9 @@ using System.Collections.Generic;
 
 namespace MagicSchool
 {
-    public interface IModifier
-    {
-        public float GetAmount();
-        public ModifierEnum GetModifierEnum();
-        public float GetDuration();
-    }
-
     // 1) ModifierResolver are used to calculate final stat from modifier:
     // 1.1) stat modifier: they increase/decrease stat e.g. atk, def, as, mana, hp, etc...
-    // 1.2) status modifier: they don't relate to stat e.g. stun, wound, untargetable, disarm, etc... 
+    // 1.2) status modifier: they don't relate to stat e.g. stun, wound, untargetable, disarm, etc...
     // 2) ModifierResolver track which modifier will expired
     public class ModifierResolver
     {
@@ -87,6 +80,7 @@ namespace MagicSchool
 
         // =================================== active modifier ===================================
         // Current active modifer on the hero. To track how long this modifer last.
+        // Nested deliberately: nothing outside the resolver has any use for it.
         private class ModifierTracker
         {
             public readonly IModifier Modifier;      // Modifier = heal, buff, debuff, status, etc...

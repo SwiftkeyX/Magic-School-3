@@ -5,6 +5,8 @@ namespace MagicSchool
 {
     // The actual modifier class 
     // To contain modifier type, its amount, its duration in 1 place
+    // FLAGGING: We use to need IModifier, but it don't neccessary anymore, since ModifierSpec is the only user. 
+    // Let leave it for now though, maybe it'll see more used?.
     [Serializable]
     public class ModifierSpec : IModifier
     {

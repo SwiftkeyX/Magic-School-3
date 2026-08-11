@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MagicSchool
 {
@@ -11,14 +12,22 @@ namespace MagicSchool
     public class SkillSO : ScriptableObject
     {
         [SerializeField] private string _skillName = "Skill";
-        [SerializeField] private List<SkillStep> _steps = new List<SkillStep>();
+
+        // triggered by OnCast once mana caps
+        [FormerlySerializedAs("_steps")]
+        [SerializeField] private List<SkillStep> _activeSteps = new List<SkillStep>();
+
+        // triggered by whatever the hero does (attack, combat start, ...)
+        [SerializeField] private List<SkillStep> _passiveSteps = new List<SkillStep>();
 
         // ================================== getter ==================================
         public string SkillName => _skillName;
-        public IReadOnlyList<SkillStep> Steps => _steps;
+        public IReadOnlyList<SkillStep> ActiveSteps => _activeSteps;
+        public IReadOnlyList<SkillStep> PassiveSteps => _passiveSteps;
 
         // ================================== setter ==================================
         public void SetSkillName(string skillName) => _skillName = skillName;
-        public void SetSteps(List<SkillStep> steps) => _steps = steps;
+        public void SetActiveSteps(List<SkillStep> steps) => _activeSteps = steps;
+        public void SetPassiveSteps(List<SkillStep> steps) => _passiveSteps = steps;
     }
 }

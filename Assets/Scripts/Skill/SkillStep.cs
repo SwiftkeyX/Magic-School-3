@@ -8,18 +8,17 @@ namespace MagicSchool
     public class SkillStep
     {
         [SerializeField] private TriggerEnum _trigger;
-        [SerializeField] private List<SkillPassiveGroup> _passiveGroups;
-        [SerializeField] private List<SkillActiveGroup> _activeGroups;
+        [SerializeField] private List<SkillActionGroup> _actionGroups;
 
         // ================================== getter ==================================
         public TriggerEnum Trigger => _trigger;
-        public IReadOnlyList<SkillActionGroup> ActionGroups => _activeGroups;
+        public IReadOnlyList<SkillActionGroup> ActionGroups => _actionGroups;
 
         // ================================== setter ==================================
         public SkillStep(TriggerEnum trigger, List<SkillActionGroup> actionGroups)
         {
             _trigger = trigger;
-            _activeGroups = actionGroups;
+            _actionGroups = actionGroups;
         }
     }
 }

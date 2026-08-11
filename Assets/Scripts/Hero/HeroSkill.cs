@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MagicSchool
@@ -12,12 +13,13 @@ namespace MagicSchool
         private readonly Hero _me;
         private readonly SkillSO _skill;
         private float _castTime;
-        
+
         // ============================================== getter ==============================================
         public float GetCastTime() => _castTime;
 
         // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned.
-        public bool HasSkill => _skill != null && _skill.Steps.Count > 0;
+        public bool HasSkill => _skill != null && _skill.ActiveSteps.Count > 0;
+        public bool HasPassive => _skill != null && _skill.PassiveSteps.Count > 0;
 
         public HeroSkill(Hero hero, SkillSO skill)
         {
@@ -25,15 +27,18 @@ namespace MagicSchool
             _skill = skill;
         }
 
-        // mana is full, skill is trigger. Returns true if the skill cast successfully.
+        // mana is full, active skill is trigger. 
+        // Returns true if the skill cast successfully.
         public bool TriggerOnCastSkill(bool isManaCapped)
         {
             if (!isManaCapped || !HasSkill) return false;
 
-            if (_skill.Steps[0].Trigger != TriggerEnum.OnCast) return false;
+            IReadOnlyList<SkillStep> steps = _skill.ActiveSteps;
 
             // OnCast skill is always step 0
-            if (!FireStep(0)) return false;
+            if (steps[0].Trigger != TriggerEnum.OnCast) return false;
+
+            if (!FireStep(steps, 0)) return false;
 
             // if skill success, spend all mana
             _me.SpendMana();
@@ -41,9 +46,18 @@ namespace MagicSchool
             return true;
         }
 
-        public void TriggerPassiveSkill()
+        // passive skill could always be triggered if the condition is true  
+        // Returns true if the skill cast successfully.
+        public bool TriggerPassiveSkill(TriggerEnum trigger)
         {
-            
+            if (!HasPassive) return false;
+
+            IReadOnlyList<SkillStep> steps = _skill.PassiveSteps;
+
+            if (steps[0].Trigger != trigger) return false;
+
+            // note: no SpendMana - a passive costs the hero nothing
+            return FireStep(steps, 0);
         }
 
         // ============================================== Trigger condition ==============================================
@@ -57,36 +71,36 @@ namespace MagicSchool
 
         // on event invoke, related Trigger is fired.
         // return SkillStepContext - it is data from previous step that will be checked by this trigger
-        private Action<SkillStepContext> TriggerNextStep(int nextIndex, TriggerEnum trigger)
+        private Action<SkillStepContext> TriggerNextStep(IReadOnlyList<SkillStep> steps, int nextIndex, TriggerEnum trigger)
         {
             // guard
-            if (nextIndex >= _skill.Steps.Count) return null;
+            if (nextIndex >= steps.Count) return null;
 
             // if trigger type match with this step, fire next step
-            if (_skill.Steps[nextIndex].Trigger != trigger) return null;
+            if (steps[nextIndex].Trigger != trigger) return null;
 
-            return context => FireStep(nextIndex, context);
+            return context => FireStep(steps, nextIndex, context);
         }
 
         // ============================================== helper ==============================================
         // Fire skill in "step" order. Returns whether this step actually played anything.
-        private bool FireStep(int stepIndex, SkillStepContext contextFromPreviousStep = null)
+        private bool FireStep(IReadOnlyList<SkillStep> steps, int stepIndex, SkillStepContext contextFromPreviousStep = null)
         {
-            if (stepIndex < 0 || stepIndex >= _skill.Steps.Count) return false;
+            if (stepIndex < 0 || stepIndex >= steps.Count) return false;
 
             // step can have several template action, only template action was choose base on condition
-            return PlayAction(stepIndex, contextFromPreviousStep);
+            return PlayAction(steps, stepIndex, contextFromPreviousStep);
         }
 
         // Play every template action in this step.
-        private bool PlayAction(int stepIndex, SkillStepContext contextFromPreviousStep)
+        private bool PlayAction(IReadOnlyList<SkillStep> steps, int stepIndex, SkillStepContext contextFromPreviousStep)
         {
             // initial event - this is hand to template action
-            Action<SkillStepContext> onExpired = TriggerNextStep(stepIndex + 1, TriggerEnum.OnExpired);
-            Action<SkillStepContext> onHit = TriggerNextStep(stepIndex + 1, TriggerEnum.OnHit);
+            Action<SkillStepContext> onExpired = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnExpired);
+            Action<SkillStepContext> onHit = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnHit);
 
             // Play 1 template action
-            var actionGroups = _skill.Steps[stepIndex].ActionGroups;
+            IReadOnlyList<SkillActionGroup> actionGroups = steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
                 // try play the skill

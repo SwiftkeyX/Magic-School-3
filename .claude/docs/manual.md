@@ -74,7 +74,6 @@ Karma - test first hit projectile - AOE explode on impact
 
 Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
 => also implement offset to the AOE
-=> His skill have 2 part active&passive
-=> let implement passive first
+=> implement hitbox direction to the AOE
 Warwick - test trigger OnAttack
 

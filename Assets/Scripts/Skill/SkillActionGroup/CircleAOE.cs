@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MagicSchool
 {
     /// <summary>
-    /// CircleAOE are template action that can apply effect "once" or "overtime".
+    /// ContactAOE are template action that can apply effect to contacted hero => can apply both "once" or "overtime".
     /// 1) If apply once, it mean to apply effect to target immediately (apply at first contact).
     ///
     /// 2) If apply overtime, it mean after first contact, it still apply damage over time to them afterward like a poison.
@@ -16,7 +16,7 @@ namespace MagicSchool
     /// </summary>
 
     /// FIXNOW: CircleAOE, and BoxAOE behave the same, the only difference is they have different shape.
-    public class CircleAOE : AOE
+    public class ContactAOE : AOE
     {
         private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
 

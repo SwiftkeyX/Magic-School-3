@@ -20,8 +20,8 @@ MonoBehaviour:
   _magic: 40
   _magicResist: 20
   _attackSpeed: 0.7
-  _range: 4
-  _startMana: 40
+  _range: 1
+  _startMana: 0
   _maxMana: 50
   _skill: {fileID: 11400000, guid: 4981b7fff5cd9674c85353cec2130e1f, type: 2}
   _isDummy: 0

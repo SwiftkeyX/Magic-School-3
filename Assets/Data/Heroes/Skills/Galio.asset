@@ -13,58 +13,57 @@ MonoBehaviour:
   m_Name: Galio
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
   _skillName: Idol of Durand
-  _steps:
+  _activeSteps:
   - _trigger: 0
     _actionGroups:
     - _source: 0
       _templateAction: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
       _target: 0
-      _size:
-        size: 0
-        shape:
-          rid: -2
+      _conditions: []
       _effects:
-      - rid: 6645218046250844234
-      - rid: 6645218046250844235
+      - rid: 1571255142806978651
       - rid: 6645218084189896774
+      - rid: 1571255142806978652
   - _trigger: 2
     _actionGroups:
     - _source: 0
       _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 0
-      _size:
-        size: 1
-        shape:
-          rid: 6645218084189896773
+      _conditions: []
       _effects:
       - rid: 6645218046250844236
+  _passiveSteps: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 6645218046250844234
-      type: {class: BuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+    - rid: 1571255142806978651
+      type: {class: ModifierSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 0
         _cadence:
           isCadence: 1
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _modifier: 0
-        _buffAmount: 150
-        _buffDuration: 2
-    - rid: 6645218046250844235
-      type: {class: BuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+        _conditions: []
+        _amplifier: 0.3
+        _modifiers:
+        - _modifier: 0
+          _amount: 150
+          _duration: 2
+    - rid: 1571255142806978652
+      type: {class: ModifierSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 0
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _modifier: 2
-        _buffAmount: 25
-        _buffDuration: 2
+        _conditions: []
+        _amplifier: 0.3
+        _modifiers:
+        - _modifier: 2
+          _amount: 25
+          _duration: 2
     - rid: 6645218046250844236
       type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -73,10 +72,9 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
         _damageAmount: 120
-    - rid: 6645218084189896773
-      type: {class: Circle, ns: MagicSchool, asm: Assembly-CSharp}
-      data: 
     - rid: 6645218084189896774
       type: {class: HealSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -85,5 +83,7 @@ MonoBehaviour:
           isCadence: 1
           cadenceInterval: 0.5
           cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
         _totalHealAmount: 200
         _duration: 2

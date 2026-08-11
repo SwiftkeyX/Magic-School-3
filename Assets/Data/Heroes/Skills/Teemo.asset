@@ -19,30 +19,35 @@ MonoBehaviour:
     - _source: 0
       _templateAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
       _target: 2
+      _conditions: []
       _effects: []
   - _trigger: 3
     _actionGroups:
     - _source: 3
       _templateAction: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
       _target: 4
+      _conditions: []
       _effects:
-      - rid: 6645218084189896776
+      - rid: 1571255142806978654
       - rid: 6645218084189896777
   _passiveSteps: []
   references:
     version: 2
     RefIds:
-    - rid: 6645218084189896776
-      type: {class: StatusSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+    - rid: 1571255142806978654
+      type: {class: ModifierSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 1
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _modifier: 4
-        _statusAmount: 0
-        _statusDuration: 3
+        _conditions: []
+        _amplifier: 0.3
+        _modifiers:
+        - _modifier: 4
+          _amount: 0
+          _duration: 3
     - rid: 6645218084189896777
       type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -51,4 +56,6 @@ MonoBehaviour:
           isCadence: 1
           cadenceInterval: 0.1
           cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
         _damageAmount: 2000

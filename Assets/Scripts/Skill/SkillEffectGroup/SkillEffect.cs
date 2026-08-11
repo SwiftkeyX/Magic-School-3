@@ -48,6 +48,7 @@ namespace MagicSchool
         public abstract void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients);
     }
 
+    // effect that apply damage to recipients
     [Serializable]
     public class AttackSkillEffect : SkillEffect
     {
@@ -76,8 +77,8 @@ namespace MagicSchool
 
     }
 
-    // FIXLATER: I don't like that we have several skilleffect BUT BuffSkillEffect/DebuffSkillEffect/StatusSkillEffect does the same thing.
-    // Even Healskilleffect is also lumpable into those too. Let's leave it for now, let consider this again when we see pattern more clearly.
+    // FLAGGING: I don't sure if it was generic enough to have a inheritance. Let see laterward.
+    // effect that apply heal to recipients
     [Serializable]
     public class HealSkillEffect : SkillEffect
     {
@@ -100,12 +101,14 @@ namespace MagicSchool
         }
     }
 
+    // effect that apply modifer to a recipients
+    // e.g. apply wound, apply buff, apply stun, etc...
     [Serializable]
-    public class BuffSkillEffect : SkillEffect, Modifier
+    public class ModifierSkillEffect : SkillEffect
     {
-        [SerializeField] private ModifierEnum _modifier;
-        [SerializeField] private float _buffAmount;
-        [SerializeField] private float _buffDuration;
+        [SerializeField] private List<ModifierSpec> _modifiers = new List<ModifierSpec>();
+
+        public IReadOnlyList<ModifierSpec> Modifiers => _modifiers;
 
         public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
@@ -113,89 +116,19 @@ namespace MagicSchool
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
-                recipient.AddModifier(this);
+                // asked once per recipient BC each recipient may have different status which effect amplifier
+                float amplifier = AmplifierFor(caster, recipient);
+
+                // add every modifier to recipient
+                foreach (ModifierSpec modifier in _modifiers)
+                {
+                    if (modifier == null) continue;
+
+                    Modifier modifierAfterScale = modifier.Scaled(amplifier);
+
+                    recipient.AddModifier(modifierAfterScale);
+                }
             }
-        }
-
-        public float GetAmount()
-        {
-            return _buffAmount;
-        }
-
-        public ModifierEnum GetModifierEnum()
-        {
-            return _modifier;
-        }
-
-        public float GetDuration()
-        {
-            return _buffDuration;
-        }
-    }
-
-    [Serializable]
-    public class DebuffSkillEffect : SkillEffect, Modifier
-    {
-        [SerializeField] private ModifierEnum _modifier;
-        [SerializeField] private float _debuffAmount;
-        [SerializeField] private float _deBuffDuration;
-
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
-        {
-            foreach (IDamageable recipient in recipients)
-            {
-                if (recipient == null || !recipient.IsAlive) continue;
-
-                recipient.AddModifier(this);
-            }
-        }
-
-        public float GetAmount()
-        {
-            return _debuffAmount;
-        }
-
-        public ModifierEnum GetModifierEnum()
-        {
-            return _modifier;
-        }
-
-        public float GetDuration()
-        {
-            return _deBuffDuration;
-        }
-    }
-
-    [Serializable]
-    public class StatusSkillEffect : SkillEffect, Modifier
-    {
-        [SerializeField] private ModifierEnum _modifier;
-        [SerializeField] private float _statusAmount;
-        [SerializeField] private float _statusDuration;
-
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
-        {
-            foreach (IDamageable recipient in recipients)
-            {
-                if (recipient == null || !recipient.IsAlive) continue;
-
-                recipient.AddModifier(this);
-            }
-        }
-
-        public float GetAmount()
-        {
-            return _statusAmount;
-        }
-
-        public ModifierEnum GetModifierEnum()
-        {
-            return _modifier;
-        }
-
-        public float GetDuration()
-        {
-            return _statusDuration;
         }
     }
 }

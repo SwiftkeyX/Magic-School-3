@@ -13,25 +13,20 @@ MonoBehaviour:
   m_Name: Cassiopeia
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
   _skillName: Skill
-  _steps:
+  _activeSteps:
   - _trigger: 0
     _actionGroups:
     - _source: 0
       _templateAction: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
       _target: 2
-      _size:
-        size: 0
-        shape:
-          rid: 1571255008676544581
+      _conditions: []
       _effects:
       - rid: 1571255008676544582
-      - rid: 1571255008676544583
+      - rid: 1571255142806978650
+  _passiveSteps: []
   references:
     version: 2
     RefIds:
-    - rid: 1571255008676544581
-      type: {class: Box, ns: MagicSchool, asm: Assembly-CSharp}
-      data: 
     - rid: 1571255008676544582
       type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
@@ -40,15 +35,20 @@ MonoBehaviour:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
         _damageAmount: 1000
-    - rid: 1571255008676544583
-      type: {class: DebuffSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+    - rid: 1571255142806978650
+      type: {class: ModifierSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
       data:
         _recipient: 2
         _cadence:
           isCadence: 0
           cadenceInterval: 0.5
           cadenceDuration: 3
-        _modifier: 4
-        _debuffAmount: 0
-        _deBuffDuration: 5
+        _conditions: []
+        _amplifier: 0.3
+        _modifiers:
+        - _modifier: 4
+          _amount: 0
+          _duration: 5

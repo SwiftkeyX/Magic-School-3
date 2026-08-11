@@ -63,7 +63,7 @@ So just skil cast animation for now.
 
 # Plan
 Teemo - for testing circle AOE with DOT - also need to implement homing projectile here
-Casseoipia - for testing homing projectile
+Cassiopeia - for testing homing projectile
 Jhin - implementing pierce projectile
 Samira - implementing first hit projectile
 Teemo - implement new trigger "OnProjectileHit" 
@@ -72,17 +72,15 @@ Teemo - implement new trigger "OnProjectileHit"
 => Implement new aim target = "WhereProjectileHit"
 Karma - test first hit projectile - AOE explode on impact
 
-Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
-=> implement active skill => "transform" (Cast template action with Buff effect)
-=> Then add condition, to his passive, the passive only when he was transform
-    => condition have 2 pattern: condition for template action & condition for effect
-        => for template action: if achieve condition, the template action will be switch to different one.
-        => for effect: if achieve condition, the effect will be amplified e.g. if wound => dmg +30%
-=> Implement no gain mana while transform
+Aatrox 
+- implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
 => now we only have 1 condition per effect => let implement list of condition
     => after that, implement second&third AOE of Aatrox
 => Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
-=> It would be nice to see the progress bar of the skill's duration
-=> Implement actual scaling (currently ad, ap does nothing to skill damage) - the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
+=> It would be nice to see the progress bar of the skill's duration - the white progress bar just above healthbar 
+=> Implement actual scaling (currently ad, ap does nothing to skill damage) 
+- the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
+
 Warwick - test trigger OnAttack
 
+Cassiopeia - implement effect modifier +30% dmg amp when target is wounded

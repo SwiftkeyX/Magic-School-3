@@ -29,6 +29,10 @@ namespace MagicSchool
             // named a field that does not exist - show it rather than hide it forever with no clue why
             if (sibling == null) return true;
 
+            // a list or array sibling counts as filled in once it holds something
+            if (sibling.isArray && sibling.propertyType != SerializedPropertyType.String)
+                return sibling.arraySize > 0;
+
             switch (sibling.propertyType)
             {
                 case SerializedPropertyType.Boolean:

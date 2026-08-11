@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MagicSchool
@@ -40,17 +41,28 @@ namespace MagicSchool
             }
         }
 
-        // to tell the caller "Is condition met?"
+        // to tell the caller "Is all the condition met?"
         // ASKING: Is there a reason this need to be static?
-        public static ConditionResultEnum Ask(SkillCondition condition, IDamageable caster, IDamageable recipient)
+        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable caster, IDamageable recipient)
         {
-            // nobody wrote a condition on this group or effect
-            if (condition == null) return ConditionResultEnum.NoConditionFound;
+            if (conditions == null) return ConditionResultEnum.NoConditionFound;
 
-            // condition is met/not met
-            return condition.IsMet(caster, recipient)
+            bool askedAnything = false;
+
+            foreach (SkillCondition condition in conditions)
+            {
+                // guard
+                if (condition == null) { Debug.LogError(""); continue; }
+
+                askedAnything = true;
+
+                // if either condition isn't satisfied, return conditionNotMet
+                if (!condition.IsMet(caster, recipient)) return ConditionResultEnum.ConditionIsNotMet;
+            }
+
+            return askedAnything
                 ? ConditionResultEnum.ConditionIsMet
-                : ConditionResultEnum.ConditionIsNotMet;
+                : ConditionResultEnum.NoConditionFound;
         }
     }
 

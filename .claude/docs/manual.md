@@ -80,6 +80,9 @@ Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
         => for effect: if achieve condition, the effect will be amplified e.g. if wound => dmg +30%
 => Implement no gain mana while transform
 => now we only have 1 condition per effect => let implement list of condition
-=> Implement actual scaling (currently ad, ap does nothing to skill damage)
+    => after that, implement second&third AOE of Aatrox
+=> Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
+=> It would be nice to see the progress bar of the skill's duration
+=> Implement actual scaling (currently ad, ap does nothing to skill damage) - the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
 Warwick - test trigger OnAttack
 

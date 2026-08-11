@@ -105,7 +105,7 @@ namespace MagicSchool
             {
                 // check condition for current template action. 
                 // if condition is not met, skip this one, and go check the next template action.
-                if (SkillCondition.Ask(actionGroup.Condition, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
+                if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,

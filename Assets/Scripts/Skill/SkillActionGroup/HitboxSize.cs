@@ -1,17 +1,21 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MagicSchool
 {
     [System.Serializable]
     public class HitboxShape
     {
-        public float size;
-        [SerializeReference] public Shape shape;
+        [FormerlySerializedAs("size")] 
+        public float Size;
+
+        [FormerlySerializedAs("shape")]
+        [SerializeReference] public Shape Shape;
 
         public HitboxShape(float size, Shape shape)
         {
-            this.size = size;
-            this.shape = shape;
+            this.Size = size;
+            this.Shape = shape;
         }
     }
 

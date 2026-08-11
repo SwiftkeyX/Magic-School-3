@@ -3,22 +3,20 @@ using UnityEngine;
 namespace MagicSchool
 {
     [System.Serializable]
-    public class HitboxSize
+    public class HitboxShape
     {
         public float size;
-        [SerializeReference] public HitboxShape shape;
+        [SerializeReference] public Shape shape;
 
-        public HitboxSize() : this(1f, null) { }
-
-        public HitboxSize(float size, HitboxShape shape)
+        public HitboxShape(float size, Shape shape)
         {
             this.size = size;
             this.shape = shape;
         }
     }
 
-    public interface HitboxShape {}
-    [System.Serializable] public class Box: HitboxShape {}
-    [System.Serializable] public class Circle: HitboxShape {}
-    [System.Serializable] public class Cone: HitboxShape {}
+    public interface Shape { }
+    [System.Serializable] public class Box : Shape { }
+    [System.Serializable] public class Circle : Shape { }
+    [System.Serializable] public class Cone : Shape { }
 }

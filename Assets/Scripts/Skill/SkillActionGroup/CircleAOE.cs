@@ -14,6 +14,8 @@ namespace MagicSchool
     /// Example
     /// e.g. Teemo
     /// </summary>
+
+    /// FIXNOW: CircleAOE, and BoxAOE behave the same, the only difference is they have different shape.
     public class CircleAOE : AOE
     {
         private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();

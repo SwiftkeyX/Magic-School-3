@@ -8,7 +8,7 @@ namespace MagicSchool
 {
     // Same gap as SkillEffectDrawer: Unity's stock Inspector has no built-in dropdown for picking a
     // concrete type for a [SerializeReference] field. This fills it for HitboxShape (Box/Circle/Cone).
-    [CustomPropertyDrawer(typeof(HitboxShape), true)]
+    [CustomPropertyDrawer(typeof(Shape), true)]
     public class HitboxShapeDrawer : PropertyDrawer
     {
         private static Type[] _concreteTypes;
@@ -19,7 +19,7 @@ namespace MagicSchool
             {
                 _concreteTypes = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(SafeGetTypes)
-                    .Where(t => typeof(HitboxShape).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
+                    .Where(t => typeof(Shape).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                     .OrderBy(t => t.Name)
                     .ToArray();
             }

@@ -130,12 +130,7 @@ namespace MagicSchool
             // CIRCLEAOE - a circle's radius. 
             else if (hitbox is CircleCollider2D circle) localHalf = circle.radius;
             
-            // // ASKING: what is this does? Is this used now?
-            // else if (hitbox is PolygonCollider2D polygon)
-            // {
-            //     localHalf = 0f;
-            //     foreach (Vector2 point in polygon.points) localHalf = Mathf.Max(localHalf, point.y);
-            // }
+            // else if {} ...
 
             // fallback
             else

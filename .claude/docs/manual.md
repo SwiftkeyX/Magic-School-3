@@ -73,7 +73,11 @@ Teemo - implement new trigger "OnProjectileHit"
 Karma - test first hit projectile - AOE explode on impact
 
 Aatrox - implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
-=> also implement offset to the AOE
-=> implement hitbox direction to the AOE
+=> implement active skill => "transform" (Cast template action with Buff effect)
+=> Then add condition, to his passive, the passive only when he was transform
+    => condition have 2 pattern: condition for template action & condition for effect
+        => for template action: if achieve condition, the template action will be switch to different one.
+        => for effect: if achieve condition, the effect will be amplified e.g. if wound => dmg +30%
+=> Implement actual scaling (currently ad, ap does nothing to skill damage)
 Warwick - test trigger OnAttack
 

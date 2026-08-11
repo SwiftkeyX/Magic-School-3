@@ -10,7 +10,6 @@ namespace MagicSchool
         [SerializeField] private ActionSourceEnum _source;
         [SerializeField] private TemplateAction _templateAction;
         [SerializeField] private AimTargetEnum _target;
-        [SerializeField] private HitboxShape _size = new HitboxShape(1f, null);
 
         // public Offset _offset;
         // ...
@@ -21,7 +20,6 @@ namespace MagicSchool
         public ActionSourceEnum Source => _source;
         public TemplateAction TemplateAction => _templateAction;
         public AimTargetEnum Target => _target;
-        public HitboxShape Size => _size;
         public List<SkillEffect> Effects => _effects;
     }
 }

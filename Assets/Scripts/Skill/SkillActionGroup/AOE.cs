@@ -8,8 +8,6 @@ namespace MagicSchool
     /// </summary>
     public abstract class AOE : TemplateAction
     {
-        [SerializeField] protected HitboxShape _shape;
-
         // ======================================= protected =======================================
         protected override void Play()
         {
@@ -25,7 +23,7 @@ namespace MagicSchool
             _source = _me.transform.position;
         }
 
-        /// aim = where the AOE spawn. 
+        /// aim = where the AOE spawn.
         /// if not target was found, return (don't use skill yet if target not found)
         protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
         {
@@ -59,27 +57,5 @@ namespace MagicSchool
         }
 
         protected override Vector3 GetSpawnPosition() => _aimTarget;
-
-        // ======================================= private =======================================
-        // all shape behave the same, but only different hitbox shape, so we group them here
-        private void ShapeResolver()
-        {
-            // each shape load its own prefab and scale the prefab size with variable "Size"
-            
-            if (_shape.Shape is Box)
-            {
-
-            }
-
-            else if (_shape.Shape is Cone)
-            {
-
-            }
-
-            else if (_shape.Shape is Circle)
-            {
-
-            }
-        }
     }
 }

@@ -30,8 +30,25 @@ MonoBehaviour:
       _target: 1
       _conditions:
       - rid: 1571255142806978647
+      - rid: 1571255166009868357
       _effects:
       - rid: 1571255142806978629
+    - _source: 0
+      _templateAction: {fileID: 2115596131323804181, guid: 33365db968d644e4696d7cf5b18a8f77, type: 3}
+      _target: 1
+      _conditions:
+      - rid: 1571255166009868358
+      - rid: 1571255166009868359
+      _effects:
+      - rid: 1571255166009868360
+    - _source: 0
+      _templateAction: {fileID: 2137041547401538855, guid: 271d1b9170e3b514eb449664a28dbd0f, type: 3}
+      _target: 1
+      _conditions:
+      - rid: 1571255166009868375
+      - rid: 1571255166009868376
+      _effects:
+      - rid: 1571255166009868377
   references:
     version: 2
     RefIds:
@@ -78,3 +95,55 @@ MonoBehaviour:
         - _modifier: 12
           _amount: 0
           _duration: 10
+    - rid: 1571255166009868357
+      type: {class: NumberCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _matchCombo: 1
+        _maxCombo: 3
+    - rid: 1571255166009868358
+      type: {class: HasStatusCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _status: 10
+        _wantPresent: 1
+    - rid: 1571255166009868359
+      type: {class: NumberCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _matchCombo: 2
+        _maxCombo: 3
+    - rid: 1571255166009868360
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _recipient: 1
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0.5
+          cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
+        _damageAmount: 300
+    - rid: 1571255166009868375
+      type: {class: HasStatusCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _status: 10
+        _wantPresent: 1
+    - rid: 1571255166009868376
+      type: {class: NumberCondition, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _subject: 0
+        _matchCombo: 3
+        _maxCombo: 3
+    - rid: 1571255166009868377
+      type: {class: AttackSkillEffect, ns: MagicSchool, asm: Assembly-CSharp}
+      data:
+        _recipient: 1
+        _cadence:
+          isCadence: 0
+          cadenceInterval: 0.5
+          cadenceDuration: 3
+        _conditions: []
+        _amplifier: 0.3
+        _damageAmount: 400

@@ -8,7 +8,7 @@ namespace MagicSchool
     public abstract class TemplateAction : MonoBehaviour
     {
         [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
-        protected Hero _me;         // FIXLATER: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
+        protected Hero _me;         // FLAGGING: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
         protected Vector3 _source;
@@ -158,7 +158,7 @@ namespace MagicSchool
 
         // Cadence Tick are use by several template action
         // so we unified thing by move it here. 
-        // FIXLATER: But it should be move later since not all template action need it. maybe to interface?
+        // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
         protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
         {
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);

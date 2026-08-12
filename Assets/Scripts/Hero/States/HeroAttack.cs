@@ -85,7 +85,7 @@ namespace MagicSchool
             // other action may replace normal auto attack e.g. Aatrox
             if (!_me.HasStatus(ModifierEnum.AutoAttackWasReplaced))
             {
-                // FIXLATER: attack animation got skip by skill which is not intended
+                // FlAGGING: attack animation got skip by skill which is not intended
                 // apply damage to target
                 _nearestEnemy.TakeDamage(_me.AttackDamage);
 

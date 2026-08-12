@@ -23,7 +23,7 @@ namespace MagicSchool
         protected override void Play()
         {
             // initialize local variable
-            // FIXLATER: Cast always applies to the caster (for now)
+            // FLAGGING: Cast always applies to the caster (for now)
             List<Hero> self = new List<Hero> { _me };
 
             bool hasCadenceEffect = false;

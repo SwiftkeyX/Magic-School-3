@@ -24,7 +24,7 @@ namespace MagicSchool
 
         public ConditionSubjectEnum Subject => _subject;
 
-        // ...
+        // the actual condition - read each child for more detail
         protected abstract bool IsMet(IDamageable caster, IDamageable recipient);
 
         // condition look at which hero?

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MagicSchool
 {
-    /// FIXLATER: This is temp
+    /// FLAGGING: This is temp
     /// <summary>
     /// A dummy that patrols up and down its column, hex by hex, the same way a hero walks:
     /// </summary>

@@ -56,7 +56,7 @@ namespace MagicSchool
             }
         }
 
-        // FIXLATER: this is the poison DOT, and it should be its own Status class rather than a
+        // FLAGGING: this is the poison DOT, and it should be its own Status class rather than a
         // coroutine hanging off the AOE that applied it.
         // Per hero cadence tick
         private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)

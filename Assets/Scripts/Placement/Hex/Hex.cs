@@ -68,7 +68,7 @@ namespace MagicSchool
         // BFS over the neighbor graph rather than raw world-space distance, since hex spacing
         // isn't uniform (same-column neighbors are ~1.0 apart, diagonal ~1.118 apart) - a
         // distance-based cutoff would drift as range grows, hop-counting can't.
-        // FIXLATER: Now we have 2 standard of measuring the hex distance, we do Vector3.Distance() & count the hex using BFS. 
+        // FLAGGING: Now we have 2 standard of measuring the hex distance, we do Vector3.Distance() & count the hex using BFS. 
         // => We should use the same standard NOT scatter like this, no?
         public bool IsWithinRange(Hex other, int range)
         {

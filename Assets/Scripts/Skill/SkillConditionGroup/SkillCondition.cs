@@ -24,6 +24,10 @@ namespace MagicSchool
 
         public ConditionSubjectEnum Subject => _subject;
 
+        protected SkillCondition() { }
+
+        protected SkillCondition(ConditionSubjectEnum subject) => _subject = subject;
+
         // the actual condition - read each child for more detail
         protected abstract bool IsMet(IDamageable caster, IDamageable recipient);
 

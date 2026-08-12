@@ -13,6 +13,17 @@ namespace MagicSchool
         [ShowIf(nameof(_conditions))]
         [SerializeField] protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
 
+        protected SkillEffect() { }
+
+        protected SkillEffect(EffectRecipientEnum recipient, Cadence cadence = null,
+                              List<SkillCondition> conditions = null, float amplifier = 0.3f)
+        {
+            _recipient = recipient;
+            _cadence = cadence ?? new Cadence();
+            _conditions = conditions ?? new List<SkillCondition>();
+            _amplifier = amplifier;
+        }
+
         // ================================== getter ==================================
         public EffectRecipientEnum Recipient => _recipient;
         public Cadence Cadence => _cadence;

@@ -14,6 +14,16 @@ namespace MagicSchool
 
         public float Duration => _duration;
 
+        public HealSkillEffect() { }
+
+        public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration,
+                               Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)
+            : base(recipient, cadence, conditions, amplifier)
+        {
+            _totalHealAmount = totalHealAmount;
+            _duration = duration;
+        }
+
         public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));

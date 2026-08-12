@@ -25,6 +25,14 @@ namespace MagicSchool
         [FormerlySerializedAs("_maxNumber")]
         [SerializeField] private int _maxCombo;        // max combo number
 
+        public NumberCondition() { }
+
+        public NumberCondition(ConditionSubjectEnum subject, int matchCombo, int maxCombo) : base(subject)
+        {
+            _matchCombo = matchCombo;
+            _maxCombo = maxCombo;
+        }
+
         protected override bool IsMet(IDamageable caster, IDamageable recipient)
         {
             bool numberMatch = (_combo == _matchCombo);

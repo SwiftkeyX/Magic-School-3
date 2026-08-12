@@ -13,6 +13,15 @@ namespace MagicSchool
 
         public IReadOnlyList<ModifierSpec> Modifiers => _modifiers;
 
+        public ModifierSkillEffect() { }
+
+        public ModifierSkillEffect(EffectRecipientEnum recipient, List<ModifierSpec> modifiers, Cadence cadence = null,
+                                   List<SkillCondition> conditions = null, float amplifier = 0f)
+            : base(recipient, cadence, conditions, amplifier)
+        {
+            _modifiers = modifiers ?? new List<ModifierSpec>();
+        }
+
         public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)

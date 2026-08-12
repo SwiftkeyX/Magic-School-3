@@ -14,6 +14,15 @@ namespace MagicSchool
         [SerializeField] private float _amount;
         [SerializeField] private float _duration;
 
+        public ModifierSpec() { }
+
+        public ModifierSpec(ModifierEnum modifier, float amount, float duration)
+        {
+            _modifier = modifier;
+            _amount = amount;
+            _duration = duration;
+        }
+
         public ModifierEnum GetModifierEnum() => _modifier;
         public float GetAmount() => _amount;
         public float GetDuration() => _duration;

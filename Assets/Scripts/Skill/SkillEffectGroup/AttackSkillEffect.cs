@@ -10,6 +10,15 @@ namespace MagicSchool
     {
         [SerializeField] private float _damageAmount;
 
+        public AttackSkillEffect() { }
+
+        public AttackSkillEffect(EffectRecipientEnum recipient, float damageAmount, Cadence cadence = null,
+                                 List<SkillCondition> conditions = null, float amplifier = 0.3f)
+            : base(recipient, cadence, conditions, amplifier)
+        {
+            _damageAmount = damageAmount;
+        }
+
         public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)

@@ -16,5 +16,14 @@ namespace MagicSchool
         // neither is read unless isCadence, so neither is shown unless isCadence
         [ShowIf(nameof(isCadence))] public float cadenceInterval = 0.5f;    // the interval of time effect is re-apply
         [ShowIf(nameof(isCadence))] public float cadenceDuration = 3f;      // total duration of the effect
+
+        public Cadence() { }
+
+        public Cadence(float interval, float duration)
+        {
+            isCadence = true;
+            cadenceInterval = interval;
+            cadenceDuration = duration;
+        }
     }
 }

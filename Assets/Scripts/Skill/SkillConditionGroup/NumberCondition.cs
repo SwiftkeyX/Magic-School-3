@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MagicSchool
 {
@@ -7,24 +8,25 @@ namespace MagicSchool
     /// <summary>
     /// Aatrox's skill is a combo and it count combo number 1-3.
     /// This is condition for this hero. 
-    /// FLAGGING: It might have change in the future when we included other hero with similar pattern. 
+    /// FLAGGING: It might have change in the future when we included other hero with similar pattern.
     /// </summary>
     [Serializable]
     public class NumberCondition : SkillCondition
     {
-        private int _combo = 1;
+        [FormerlySerializedAs("_currentNumber")]
+        [SerializeField] private int _matchCombo;    // the beat this one answers to
 
-        [SerializeField] private int _matchCombo;    // current combo number
-        [SerializeField] private int _maxCombo;        // max combo number
+        [FormerlySerializedAs("_maxNumber")]
+        [SerializeField] private int _maxCombo;      // how many beats the whole combo has
 
-        protected override bool IsMet(IDamageable caster, IDamageable recipient)
+        protected override bool IsMet(SkillStepContext context)
         {
-            bool numberMatch = (_combo == _matchCombo);
-            
-            if (_combo < _maxCombo) _combo++;
-            else _combo = 1;  
-            
-            return numberMatch;
+            // guard
+            if (_maxCombo <= 0 || context.Combo == null) return false;
+
+            int beat = context.Combo.Value % _maxCombo + 1;
+
+            return beat == _matchCombo;
         }
     }
 }

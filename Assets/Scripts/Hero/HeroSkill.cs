@@ -14,6 +14,8 @@ namespace MagicSchool
         private readonly SkillSO _skill;
         private float _castTime;
 
+        private int _attacksMade;
+
         // ============================================== getter ==============================================
         public float GetCastTime() => _castTime;
 
@@ -57,7 +59,14 @@ namespace MagicSchool
 
             if (steps[0].Trigger != trigger) return false;
 
-            return FireStep(steps, 0);
+            bool played = FireStep(steps, 0);
+
+            // FIXNOW: No need for _attackMade, 
+            // 1) It doesn't generic enough to stay here.
+            // 2) we already have SkillContext that could do this instead too.
+            if (trigger == TriggerEnum.OnAttack) _attacksMade++;
+
+            return played;
         }
 
         // ============================================== Trigger condition ==============================================
@@ -99,13 +108,16 @@ namespace MagicSchool
             Action<SkillStepContext> onExpired = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnExpired);
             Action<SkillStepContext> onHit = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnHit);
 
+            // FIXNOW: the context should be the same instance, using different instance'll only make it difficult to read.
+            SkillStepContext askContext = new SkillStepContext(_me, _me.FindNearestEnemy(), combo: _attacksMade);
+
             // Play 1 template action
             IReadOnlyList<SkillActionGroup> actionGroups = steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
-                // check condition for current template action. 
+                // check condition for current template action.
                 // if condition is not met, skip this one, and go check the next template action.
-                if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
+                if (SkillCondition.Ask(actionGroup.Conditions, askContext) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,

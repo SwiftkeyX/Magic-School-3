@@ -20,6 +20,7 @@ namespace MagicSchool
 
         // check condition to each recipients.
         // If condition is met, the effect is amplified.
+        // FIXNOW: this should only know recipient too.
         protected float AmplifierFor(IDamageable caster, IDamageable recipient)
         {
             if (SkillCondition.Ask(_conditions, caster, recipient) == ConditionResultEnum.ConditionIsMet)
@@ -30,6 +31,8 @@ namespace MagicSchool
             return 1f;
         }
 
+        // FIXNOW: apply effect should only know recipients. It shouldn't know caster too.
+        // if caster was recipients, it should be send in as recipients.
         public abstract void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients);
     }
 }

@@ -92,19 +92,22 @@ namespace MagicSchool
             return PlayAction(steps, stepIndex, contextFromPreviousStep);
         }
 
-        // Play a template action.
+        // Play a ActionGroup
         private bool PlayAction(IReadOnlyList<SkillStep> steps, int stepIndex, SkillStepContext contextFromPreviousStep)
         {
             // initial event - this is handed to template action that's going to be played
             Action<SkillStepContext> onExpired = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnExpired);
             Action<SkillStepContext> onHit = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnHit);
 
-            // Play 1 template action
+            // Choose 1 TemplateAction from ActionGroup
             IReadOnlyList<SkillActionGroup> actionGroups = steps[stepIndex].ActionGroups;
             foreach (SkillActionGroup actionGroup in actionGroups)
             {
-                // check condition for current template action. 
+                // check condition for current TemplateAction. 
                 // if condition is not met, skip this one, and go check the next template action.
+                // FIXNOW: send FindNearestEnemy() is just straight wrong.
+                // I try look into pattern more, and found that condition for template action don't need recipient.
+                // just make recipient = null here.
                 if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action

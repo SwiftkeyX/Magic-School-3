@@ -8,7 +8,8 @@ namespace MagicSchool
     /// <summary>
     /// Aatrox's skill is a combo and it count combo number 1-3.
     /// This is condition for this hero. 
-    /// FLAGGING: It might have change in the future when we included other hero with similar pattern. 
+    /// FIXLATER: We have try implement this. But it change the skill system structure too much. 
+    /// I'll come back later.
     /// </summary>
     [Serializable]
     public class NumberCondition : SkillCondition

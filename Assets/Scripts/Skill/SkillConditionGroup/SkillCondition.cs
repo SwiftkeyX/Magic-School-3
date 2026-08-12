@@ -43,6 +43,7 @@ namespace MagicSchool
 
         // to tell the caller "Is all the condition met?"
         // ASKING: Is there a reason this need to be static?
+        // FIXNOW: we shouldn't have send caster in. Could we just dependency inject _me into here? 
         public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable caster, IDamageable recipient)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;

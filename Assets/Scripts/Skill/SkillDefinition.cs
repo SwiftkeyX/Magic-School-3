@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MagicSchool
@@ -5,6 +6,7 @@ namespace MagicSchool
     /// <summary>
     /// A whole container for 1 skill.
     /// </summary>
+    /// FIXLATER: don't use System.Action. Just use Action. apply this to entire project.
     public class SkillDefinition
     {
         public string SkillName { get; }
@@ -15,11 +17,16 @@ namespace MagicSchool
         // triggered by whatever the hero does (attack, combat start, ...)
         public IReadOnlyList<SkillStep> PassiveSteps { get; }
 
+        // Parts of a skill that need to know the hero did something
+        public event Action<TriggerEnum> Triggered;
+
         public SkillDefinition(string skillName, List<SkillStep> activeSteps = null, List<SkillStep> passiveSteps = null)
         {
             SkillName = skillName;
             ActiveSteps = activeSteps ?? new List<SkillStep>();
             PassiveSteps = passiveSteps ?? new List<SkillStep>();
         }
+
+        public void InvokeTrigger(TriggerEnum trigger) => Triggered?.Invoke(trigger);
     }
 }

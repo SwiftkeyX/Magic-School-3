@@ -28,7 +28,7 @@ namespace MagicSchool
 
         // ==================================== public method ====================================
         // try play template action. if play success, return true.
-        // ASKING: Is there a reason this have to be static?
+        // act as factory, since when this function is called, there is no real instance yet. 
         public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects,
             Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {

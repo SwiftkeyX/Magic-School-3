@@ -57,7 +57,13 @@ namespace MagicSchool
 
             if (steps[0].Trigger != trigger) return false;
 
-            return FireStep(steps, 0);
+            bool played = FireStep(steps, 0);
+
+            // invoke Aatrox's combo counter
+            // FLAGGING: Don't sure if it should stay here. Let's look at it again when the pattern is more clear. 
+            if (played) _skill.InvokeTrigger(trigger);
+
+            return played;
         }
 
         // ============================================== Trigger condition ==============================================

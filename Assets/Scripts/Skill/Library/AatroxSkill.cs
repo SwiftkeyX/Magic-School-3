@@ -18,10 +18,19 @@ namespace MagicSchool
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            return new SkillDefinition(
+            // one count for the whole combo, handed to each beat below. Shared deliberately and
+            // visibly, rather than a count inside each beat that nothing keeps in agreement.
+            ComboTracker combo = new ComboTracker(ComboLength);
+
+            SkillDefinition skill = new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Transform(registry) },
-                passiveSteps: new List<SkillStep> { Combo(registry) });
+                passiveSteps: new List<SkillStep> { Combo(registry, combo) });
+
+            // moves the combo on when he attacks - not when a condition is asked
+            skill.Triggered += combo.Count;
+
+            return skill;
         }
 
         // ============================== active: the transform ==============================
@@ -51,26 +60,26 @@ namespace MagicSchool
         }
 
         // ============================== passive: the combo ==============================
-        private static SkillStep Combo(TemplateActionRegistrySO registry)
+        private static SkillStep Combo(TemplateActionRegistrySO registry, ComboTracker combo)
         {
             List<SkillActionGroup> beats = new List<SkillActionGroup>
             {
-                Beat(registry, TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
-                Beat(registry, TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
-                Beat(registry, TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
+                Beat(registry, combo, TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
+                Beat(registry, combo, TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
+                Beat(registry, combo, TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
             };
 
             return new SkillStep(TriggerEnum.OnAttack, beats);
         }
 
         // One beat of the combo: play this shape when transformed and the combo is on this count.
-        private static SkillActionGroup Beat(TemplateActionRegistrySO registry, TemplateActionEnum action,
-                                             int beat, float damage)
+        private static SkillActionGroup Beat(TemplateActionRegistrySO registry, ComboTracker combo,
+                                             TemplateActionEnum action, int beat, float damage)
         {
             List<SkillCondition> conditions = new List<SkillCondition>
             {
                 new HasStatusCondition(ConditionSubjectEnum.Caster, ModifierEnum.Transformed, wantPresent: true),
-                new NumberCondition(ConditionSubjectEnum.Caster, matchCombo: beat, maxCombo: ComboLength),
+                new NumberCondition(ConditionSubjectEnum.Caster, combo, matchBeat: beat),
             };
 
             return new SkillActionGroup(

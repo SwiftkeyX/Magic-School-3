@@ -1,18 +1,13 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
-    [Serializable]
     public abstract class SkillEffect
     {
-        [SerializeField] protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
-        [SerializeField] protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
-        [SerializeReference] protected List<SkillCondition> _conditions;  // conditions for this effect. => if all satisfied, effect is amplified.
-        [ShowIf(nameof(_conditions))]
-        [SerializeField] protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
-
+        protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
+        protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
+        protected List<SkillCondition> _conditions;  // conditions for this effect. => if all satisfied, effect is amplified.
+        protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
 
         protected SkillEffect(EffectRecipientEnum recipient, Cadence cadence = null,
                               List<SkillCondition> conditions = null, float amplifier = 0.3f)

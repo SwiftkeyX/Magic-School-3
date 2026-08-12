@@ -1,22 +1,18 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
-    [Serializable]
     public class SkillActionGroup
     {
-        [SerializeField] private ActionSourceEnum _source;
-        [SerializeField] private TemplateAction _templateAction;
-        [SerializeField] private AimTargetEnum _target;
-        [SerializeReference] private List<SkillCondition> _conditions;
+        private ActionSourceEnum _source;
+        private TemplateAction _templateAction;
+        private AimTargetEnum _target;
+        private List<SkillCondition> _conditions;
 
         // public Offset _offset;
         // ...
 
-        [SerializeReference] private List<SkillEffect> _effects;    // 1 template action = have several effect
-
+        private List<SkillEffect> _effects;    // 1 template action = have several effect
 
         public SkillActionGroup(ActionSourceEnum source, TemplateAction templateAction, AimTargetEnum target,
                                 List<SkillCondition> conditions = null, List<SkillEffect> effects = null)

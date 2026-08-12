@@ -1,16 +1,13 @@
-using System;
 using UnityEngine;
 
 namespace MagicSchool
 {
 
-    [Serializable]
     public class NumberCondition : SkillCondition
     {
         // shared with the other beats of this combo, on purpose
         private ComboTracker _combo;
         private int _matchBeat;
-
 
         public NumberCondition(ConditionSubjectEnum subject, ComboTracker combo, int matchBeat) : base(subject)
         {

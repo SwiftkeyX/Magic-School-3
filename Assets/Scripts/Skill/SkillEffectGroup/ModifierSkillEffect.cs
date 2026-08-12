@@ -1,18 +1,14 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
     // effect that apply modifer to a recipients
     // e.g. apply wound, apply buff, apply stun, etc...
-    [Serializable]
     public class ModifierSkillEffect : SkillEffect
     {
-        [SerializeField] private List<ModifierSpec> _modifiers = new List<ModifierSpec>();
+        private List<ModifierSpec> _modifiers = new List<ModifierSpec>();
 
         public IReadOnlyList<ModifierSpec> Modifiers => _modifiers;
-
 
         public ModifierSkillEffect(EffectRecipientEnum recipient, List<ModifierSpec> modifiers, Cadence cadence = null,
                                    List<SkillCondition> conditions = null, float amplifier = 0f)

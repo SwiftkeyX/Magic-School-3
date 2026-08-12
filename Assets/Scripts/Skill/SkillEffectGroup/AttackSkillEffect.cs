@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MagicSchool
 {
     // effect that apply damage to recipients
-    [Serializable]
     public class AttackSkillEffect : SkillEffect
     {
-        [SerializeField] private float _damageAmount;
-
+        private float _damageAmount;
 
         public AttackSkillEffect(EffectRecipientEnum recipient, float damageAmount, Cadence cadence = null,
                                  List<SkillCondition> conditions = null, float amplifier = 0.3f)

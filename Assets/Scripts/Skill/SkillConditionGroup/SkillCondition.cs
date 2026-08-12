@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,13 +16,11 @@ namespace MagicSchool
     ///
     /// The consequence differs, the question does not, so it is written once here.
     /// </summary>
-    [Serializable]
     public abstract class SkillCondition
     {
-        [SerializeField] protected ConditionSubjectEnum _subject;
+        protected ConditionSubjectEnum _subject;
 
         public ConditionSubjectEnum Subject => _subject;
-
 
         protected SkillCondition(ConditionSubjectEnum subject) => _subject = subject;
 

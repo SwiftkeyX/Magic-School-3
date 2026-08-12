@@ -1,14 +1,11 @@
-using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 namespace MagicSchool
 {
-    [Serializable]
     public class SkillStep
     {
-        [SerializeField] private TriggerEnum _trigger;
-        [SerializeField] private List<SkillActionGroup> _actionGroups;
+        private TriggerEnum _trigger;
+        private List<SkillActionGroup> _actionGroups;
 
         // ================================== getter ==================================
         public TriggerEnum Trigger => _trigger;

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +5,12 @@ namespace MagicSchool
 {
     // FLAGGING: I don't sure if it was generic enough to have a inheritance. Let see laterward.
     // effect that apply heal to recipients
-    [Serializable]
     public class HealSkillEffect : SkillEffect
     {
-        [SerializeField] private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
-        [SerializeField] private float _duration;
+        private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
+        private float _duration;
 
         public float Duration => _duration;
-
 
         public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration,
                                Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)

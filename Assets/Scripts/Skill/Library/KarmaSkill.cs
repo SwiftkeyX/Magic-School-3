@@ -1,0 +1,50 @@
+using System.Collections.Generic;
+
+namespace MagicSchool
+{
+    /// <summary>
+    /// Karma: a projectile at the current target that does nothing itself - when it lands, an AOE
+    /// goes off where it hit.
+    ///
+    /// Two steps: the second is triggered by the first hitting something, and it spawns and aims at
+    /// the projectile's landing point rather than at the hero or a target.
+    ///
+    /// Ported from Assets/Data/Heroes/Skills/Karma.asset.
+    /// </summary>
+    public static class KarmaSkill
+    {
+        private const float ExplosionDamage = 200f;
+
+        public static SkillDefinition Build(TemplateActionRegistrySO registry)
+        {
+            return new SkillDefinition(
+                skillName: "Blinding Dart",
+                activeSteps: new List<SkillStep> { Dart(registry), Explosion(registry) });
+        }
+
+        // carries no effects of its own - it only exists to land somewhere
+        private static SkillStep Dart(TemplateActionRegistrySO registry)
+        {
+            SkillActionGroup dart = new SkillActionGroup(
+                source: ActionSourceEnum.Self,
+                templateAction: registry.Get(TemplateActionEnum.FirstHitProjectile),
+                target: AimTargetEnum.Current);
+
+            return new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { dart });
+        }
+
+        private static SkillStep Explosion(TemplateActionRegistrySO registry)
+        {
+            SkillActionGroup blast = new SkillActionGroup(
+                source: ActionSourceEnum.WhereProjectileHit,
+                templateAction: registry.Get(TemplateActionEnum.CircleAOE),
+                target: AimTargetEnum.WhereProjectileHit,
+                effects: new List<SkillEffect>
+                {
+                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, ExplosionDamage),
+                });
+
+            return new SkillStep(TriggerEnum.OnHit, new List<SkillActionGroup> { blast });
+        }
+    }
+}

@@ -17,9 +17,12 @@ namespace MagicSchool
             {
                 { SkillIdEnum.Aatrox, AatroxSkill.Build },
                 { SkillIdEnum.Cassiopeia, CassiopeiaSkill.Build },
+                { SkillIdEnum.Galio, GalioSkill.Build },
                 { SkillIdEnum.Garen, GarenSkill.Build },
                 { SkillIdEnum.Jhin, JhinSkill.Build },
+                { SkillIdEnum.Karma, KarmaSkill.Build },
                 { SkillIdEnum.Samira, SamiraSkill.Build },
+                { SkillIdEnum.Teemo, TeemoSkill.Build },
             };
 
         /// <summary>

@@ -109,10 +109,7 @@ namespace MagicSchool
 
             Destroy(gameObject);
 
-            // FLAGGING: using new here is smelled? 
-            // Since the skillContext that return to HeroSkill should be the same instance.
-            // I'll look others too.
-            OnExpired?.Invoke(new SkillStepContext(position: expiredPosition));
+            OnExpired?.Invoke(new SkillStepContext(expiredPosition));
         }
 
         protected void ExpireAfter(float delay)

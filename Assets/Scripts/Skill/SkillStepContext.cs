@@ -15,26 +15,11 @@ namespace MagicSchool
     /// </summary>
     public class SkillStepContext
     {
-        // ================================== Recipient ==================================
-        public IDamageable Me { get; private set; }
-        public IDamageable Recipient { get; private set; }
+        public Vector3? Position { get; private set; }  // context for projectile hit position
 
-        // ================================== Template action ==================================
-        public Vector3? Position { get; private set; }  // projectile hit position
-        // ...
-
-        // ================================== Skill Condition ==================================
-        public int? Combo { get; private set; }         // how many attacks the caster has made
-        // ...
-
-        // every parameter is optional so a caller fills in only what it knows 
-        public SkillStepContext(IDamageable me = null, IDamageable recipient = null,
-                                Vector3? position = null, int? combo = null)
+        public SkillStepContext(Vector3 position)
         {
-            Me = me;
-            Recipient = recipient;
             Position = position;
-            Combo = combo;
         }
     }
 }

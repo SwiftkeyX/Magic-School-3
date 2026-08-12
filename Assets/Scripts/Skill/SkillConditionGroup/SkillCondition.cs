@@ -22,11 +22,12 @@ namespace MagicSchool
     {
         [SerializeField] protected ConditionSubjectEnum _subject;
 
+        public ConditionSubjectEnum Subject => _subject;
+
         // the actual condition - read each child for more detail
-        protected abstract bool IsMet(SkillStepContext context);
+        protected abstract bool IsMet(IDamageable caster, IDamageable recipient);
 
         // condition look at which hero?
-        // FLAGGING: this is not used that widely, let move it to HasStatusCondition later
         protected IDamageable Subjected(IDamageable caster, IDamageable recipient)
         {
             if (_subject == ConditionSubjectEnum.Caster) return caster;
@@ -42,8 +43,7 @@ namespace MagicSchool
 
         // to tell the caller "Is all the condition met?"
         // ASKING: Is there a reason this need to be static?
-        // FIXLATER: too much paramter ?
-        public static ConditionResultEnum Ask(List<SkillCondition> conditions, SkillStepContext context)
+        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable caster, IDamageable recipient)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;
 
@@ -57,7 +57,7 @@ namespace MagicSchool
                 askedAnything = true;
 
                 // if either condition isn't satisfied, return conditionNotMet
-                if (!condition.IsMet(context)) return ConditionResultEnum.ConditionIsNotMet;
+                if (!condition.IsMet(caster, recipient)) return ConditionResultEnum.ConditionIsNotMet;
             }
 
             return askedAnything

@@ -22,11 +22,7 @@ namespace MagicSchool
         // If condition is met, the effect is amplified.
         protected float AmplifierFor(IDamageable caster, IDamageable recipient)
         {
-            // FIXNOW: again, no need for several instance of the context.
-            // just use the same context.
-            SkillStepContext context = new SkillStepContext(caster, recipient);
-
-            if (SkillCondition.Ask(_conditions, context) == ConditionResultEnum.ConditionIsMet)
+            if (SkillCondition.Ask(_conditions, caster, recipient) == ConditionResultEnum.ConditionIsMet)
             {
                 return 1f + _amplifier;
             }

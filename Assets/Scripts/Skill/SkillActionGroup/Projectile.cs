@@ -30,7 +30,7 @@ namespace MagicSchool
             if (_hasReportedHit) return;
             _hasReportedHit = true;
 
-            OnHit?.Invoke(new SkillStepContext(position: transform.position));
+            OnHit?.Invoke(new SkillStepContext(transform.position));
         }
 
         protected bool IsTargetAlive => _target != null && _target.IsAlive;

@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace MagicSchool
 {
+
+    /// <summary>
+    /// SkillActionGroup contain all the data neccessary to play TemplateAction.
+    /// </summary>
     public class SkillActionGroup
     {
         private ActionSourceEnum _source;

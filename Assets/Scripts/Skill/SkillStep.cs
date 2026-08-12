@@ -2,6 +2,15 @@ using System.Collections.Generic;
 
 namespace MagicSchool
 {
+
+    /// <summary>
+    /// 1 step = 1 part of the skill (called TemplateAction.cs) that can work independently.
+    /// But if work together with other step, could create a actual complex skill. 
+    /// E.g. projectile that explode into AOE.
+    /// 
+    /// 1 step could contain several SkillActionGroup (which contain TemplateAction). 
+    /// But only 1 SkillActionGroup will be played, which'll be played depending on the trigger. 
+    /// </summary>
     public class SkillStep
     {
         private TriggerEnum _trigger;

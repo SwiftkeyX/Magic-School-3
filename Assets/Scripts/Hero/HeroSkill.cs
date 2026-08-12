@@ -75,8 +75,9 @@ namespace MagicSchool
             // if (isTargetDead) FireAction(IndexOfStep(step));
         }
 
-        // on event invoke, related Trigger is fired.
-        // return SkillStepContext - it is data from previous step that will be checked by this trigger
+        // This function create a event that was handed to TemplateAction.
+        // on event invoke, next TemplateAction is played, and related context is sent to be used for next TemplateAction.
+        // e.g. Projectile invoke "OnHit" event => Send projectile hit position to next TemplateAction
         private Action<SkillStepContext> TriggerNextStep(IReadOnlyList<SkillStep> steps, int nextIndex, TriggerEnum trigger)
         {
             // guard
@@ -117,6 +118,7 @@ namespace MagicSchool
                 if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
+                // ASKING: what is amount of paramter? could we just send ActionGroup in? 
                 bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
                     onExpired, onHit, contextFromPreviousStep);
 

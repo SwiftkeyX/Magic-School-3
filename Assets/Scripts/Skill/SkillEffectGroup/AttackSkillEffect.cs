@@ -10,7 +10,6 @@ namespace MagicSchool
     {
         [SerializeField] private float _damageAmount;
 
-        public AttackSkillEffect() { }
 
         public AttackSkillEffect(EffectRecipientEnum recipient, float damageAmount, Cadence cadence = null,
                                  List<SkillCondition> conditions = null, float amplifier = 0.3f)

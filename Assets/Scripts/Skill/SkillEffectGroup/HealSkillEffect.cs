@@ -14,7 +14,6 @@ namespace MagicSchool
 
         public float Duration => _duration;
 
-        public HealSkillEffect() { }
 
         public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration,
                                Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)

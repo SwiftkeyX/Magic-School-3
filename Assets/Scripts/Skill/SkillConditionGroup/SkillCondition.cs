@@ -24,7 +24,6 @@ namespace MagicSchool
 
         public ConditionSubjectEnum Subject => _subject;
 
-        protected SkillCondition() { }
 
         protected SkillCondition(ConditionSubjectEnum subject) => _subject = subject;
 

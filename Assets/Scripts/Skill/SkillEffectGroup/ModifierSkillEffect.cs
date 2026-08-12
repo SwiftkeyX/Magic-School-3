@@ -13,7 +13,6 @@ namespace MagicSchool
 
         public IReadOnlyList<ModifierSpec> Modifiers => _modifiers;
 
-        public ModifierSkillEffect() { }
 
         public ModifierSkillEffect(EffectRecipientEnum recipient, List<ModifierSpec> modifiers, Cadence cadence = null,
                                    List<SkillCondition> conditions = null, float amplifier = 0f)

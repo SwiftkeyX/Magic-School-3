@@ -13,7 +13,6 @@ namespace MagicSchool
         [SerializeField] private ModifierEnum _status;
         [SerializeField] private bool _wantPresent = true;
 
-        public HasStatusCondition() { }
 
         public HasStatusCondition(ConditionSubjectEnum subject, ModifierEnum status, bool wantPresent = true)
             : base(subject)

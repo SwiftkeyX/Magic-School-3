@@ -11,9 +11,6 @@ namespace MagicSchool
         private ComboTracker _combo;
         private int _matchBeat;
 
-        // TRANSITIONAL: only here so the SerializeReference machinery can still construct one while
-        // SkillSO exists. An instance made that way has no tracker and says so when asked.
-        public NumberCondition() { }
 
         public NumberCondition(ConditionSubjectEnum subject, ComboTracker combo, int matchBeat) : base(subject)
         {

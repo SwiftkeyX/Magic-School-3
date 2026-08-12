@@ -17,7 +17,6 @@ namespace MagicSchool
 
         [SerializeReference] private List<SkillEffect> _effects;    // 1 template action = have several effect
 
-        public SkillActionGroup() { }
 
         public SkillActionGroup(ActionSourceEnum source, TemplateAction templateAction, AimTargetEnum target,
                                 List<SkillCondition> conditions = null, List<SkillEffect> effects = null)

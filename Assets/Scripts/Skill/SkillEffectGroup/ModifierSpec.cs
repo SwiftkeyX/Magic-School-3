@@ -14,7 +14,6 @@ namespace MagicSchool
         [SerializeField] private float _amount;
         [SerializeField] private float _duration;
 
-        public ModifierSpec() { }
 
         public ModifierSpec(ModifierEnum modifier, float amount, float duration)
         {

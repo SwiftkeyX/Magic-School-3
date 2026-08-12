@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace MagicSchool
@@ -32,37 +31,23 @@ namespace MagicSchool
         {
             if (data == null) return null;
 
-            if (data.SkillId != SkillIdEnum.None)
+            // no skill at all is normal - a dummy has none
+            if (data.SkillId == SkillIdEnum.None) return null;
+
+            if (!Builders.TryGetValue(data.SkillId, out var build))
             {
-                if (!Builders.TryGetValue(data.SkillId, out var build))
-                {
-                    Debug.LogError($"[SkillLibrary] {data.Name} asks for {data.SkillId}, which nothing builds yet.", data);
-                    return null;
-                }
-
-                if (registry == null)
-                {
-                    Debug.LogError($"[SkillLibrary] {data.Name} needs the template action registry to build {data.SkillId}, " +
-                                   "but none was supplied - check GameManager.", data);
-                    return null;
-                }
-
-                return build(registry);
+                Debug.LogError($"[SkillLibrary] {data.Name} asks for {data.SkillId}, which nothing builds yet.", data);
+                return null;
             }
 
-            return FromAsset(data.Skill);
-        }
+            if (registry == null)
+            {
+                Debug.LogError($"[SkillLibrary] {data.Name} needs the template action registry to build {data.SkillId}, " +
+                               "but none was supplied - check GameManager.", data);
+                return null;
+            }
 
-        // TRANSITIONAL: a SkillSO dressed as a SkillDefinition, so a hero that has not been ported
-        // still runs while the rest catch up.
-        private static SkillDefinition FromAsset(SkillSO skill)
-        {
-            if (skill == null) return null;
-
-            return new SkillDefinition(
-                skill.SkillName,
-                skill.ActiveSteps.ToList(),
-                skill.PassiveSteps.ToList());
+            return build(registry);
         }
     }
 }

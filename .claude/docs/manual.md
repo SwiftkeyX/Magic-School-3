@@ -69,9 +69,7 @@ Teemo - implement new trigger "OnProjectileHit"
 Karma - test first hit projectile - AOE explode on impact
 
 Aatrox 
-- implement BoxAOE, ConeAOE, CircleAOE, implement new trigger OnAttack
-=> now we only have 1 condition per effect => let implement list of condition
-    => after that, implement second&third AOE of Aatrox
+=> ConeAOE with Tip point option, is placing the wrong way. The point should be pointed to the opposite side.
 => Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
 => It would be nice to see the progress bar of the skill's duration - the white progress bar just above healthbar 
 => Implement actual scaling (currently ad, ap does nothing to skill damage) 

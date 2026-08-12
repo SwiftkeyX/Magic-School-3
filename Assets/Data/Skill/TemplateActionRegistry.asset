@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c67d82ebdaac4341baa0ae65c0cbada, type: 3}
+  m_Name: TemplateActionRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::MagicSchool.TemplateActionRegistrySO
+  _entries:
+  - Action: 1
+    Prefab: {fileID: 2553249872288390112, guid: 96c28c228dcc3584b93601bee3fb73b2, type: 3}
+  - Action: 2
+    Prefab: {fileID: 2137041547401538855, guid: 71a88a6e6c19b2440b4390d6ebf9b47e, type: 3}
+  - Action: 3
+    Prefab: {fileID: 2137041547401538855, guid: 271d1b9170e3b514eb449664a28dbd0f, type: 3}
+  - Action: 4
+    Prefab: {fileID: 2115596131323804181, guid: 33365db968d644e4696d7cf5b18a8f77, type: 3}
+  - Action: 5
+    Prefab: {fileID: 1395724406477609479, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
+  - Action: 6
+    Prefab: {fileID: 6725406645193746702, guid: 2914921450559ea4ab3b21f2208d213b, type: 3}
+  - Action: 7
+    Prefab: {fileID: 4979021782531030374, guid: f45373eff00267545bf995a5cd7d6f64, type: 3}
+  - Action: 8
+    Prefab: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}
+  - Action: 9
+    Prefab: {fileID: 6440614205257948553, guid: c31b480a1c907174b88ef052c8bfc312, type: 3}
+  - Action: 10
+    Prefab: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}

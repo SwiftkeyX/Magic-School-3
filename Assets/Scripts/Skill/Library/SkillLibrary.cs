@@ -16,6 +16,10 @@ namespace MagicSchool
             new Dictionary<SkillIdEnum, System.Func<TemplateActionRegistrySO, SkillDefinition>>
             {
                 { SkillIdEnum.Aatrox, AatroxSkill.Build },
+                { SkillIdEnum.Cassiopeia, CassiopeiaSkill.Build },
+                { SkillIdEnum.Garen, GarenSkill.Build },
+                { SkillIdEnum.Jhin, JhinSkill.Build },
+                { SkillIdEnum.Samira, SamiraSkill.Build },
             };
 
         /// <summary>

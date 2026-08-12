@@ -23,5 +23,6 @@ MonoBehaviour:
   _range: 4
   _startMana: 10
   _maxMana: 20
+  _skillId: 7
   _skill: {fileID: 11400000, guid: 8ce9ca9a26d038046b5fb6abc7b244d5, type: 2}
   _isDummy: 0

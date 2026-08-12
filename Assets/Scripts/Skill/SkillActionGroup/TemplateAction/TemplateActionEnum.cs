@@ -2,6 +2,9 @@ namespace MagicSchool
 {
     /// <summary>
     /// Which template action a skill wants to play.
+    /// 
+    /// This is enum used to reference matched prefab. 
+    /// E.g. projectile prefab
     /// </summary>
     public enum TemplateActionEnum
     {

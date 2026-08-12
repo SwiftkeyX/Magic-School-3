@@ -5,10 +5,15 @@ using UnityEngine;
 
 namespace MagicSchool
 {
+
+    /// <summary>
+    /// TemplateAction = 1 part of skill that being played independently.
+    /// e.g. create AOE, shoot projectile, cast buff/debuff
+    /// </summary>
     public abstract class TemplateAction : MonoBehaviour
     {
         [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
-        protected Hero _me;         // FLAGGING: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
+        protected Hero _me;                                         // FLAGGING: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
         protected Vector3 _source;

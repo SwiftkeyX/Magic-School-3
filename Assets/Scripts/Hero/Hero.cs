@@ -123,7 +123,7 @@ namespace MagicSchool
         // ======================================== life cycle ========================================
         #region Life Cycle
         // Give everything a hero needs to exist, in one call. 
-        public void Init(HeroDataSO data, BattleBoard board, TeamEnum team)
+        public void Init(HeroDataSO data, BattleBoard board, TeamEnum team, TemplateActionRegistrySO templateActions = null)
         {
             _SOData = data;
             _board = board;
@@ -131,7 +131,7 @@ namespace MagicSchool
 
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
-            _skill = new HeroSkill(this, _SOData.Skill);
+            _skill = new HeroSkill(this, SkillLibrary.Resolve(_SOData, templateActions));
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

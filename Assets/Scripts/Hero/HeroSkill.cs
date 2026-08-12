@@ -11,17 +11,17 @@ namespace MagicSchool
     public class HeroSkill
     {
         private readonly Hero _me;
-        private readonly SkillSO _skill;
+        private readonly SkillDefinition _skill;
         private float _castTime;
 
         // ============================================== getter ==============================================
         public float GetCastTime() => _castTime;
 
-        // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned.
+        // Some heroes (e.g. generic dummy/tank archetypes) have no skill at all.
         public bool HasSkill => _skill != null && _skill.ActiveSteps.Count > 0;
         public bool HasPassive => _skill != null && _skill.PassiveSteps.Count > 0;
 
-        public HeroSkill(Hero hero, SkillSO skill)
+        public HeroSkill(Hero hero, SkillDefinition skill)
         {
             _me = hero;
             _skill = skill;

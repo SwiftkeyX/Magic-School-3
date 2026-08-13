@@ -1,9 +1,10 @@
 namespace MagicSchool
 {
-    // Contract for BattleBoard to talk to Hero
-    // BattleBoard need to answer 1 thing "What is all the hero on the board"
-    // So it need talk to only talk to "some part" of the Hero via this contract.
-    public interface ICombatant : IPlaceable, IDamageable
+    // Contract for anything that needs a unit fighting on the board, without needing the whole Hero.
+    // E.g.
+    // BattleBoard asks "what is all the hero on the board"
+    // a template action asks "where its caster stands and who to aim at" 
+    public interface ICombatant : IPlaceable, IDamageable, ITargeter
     {
         TeamEnum Team { get; }
         HeroStateEnum StateType { get; }

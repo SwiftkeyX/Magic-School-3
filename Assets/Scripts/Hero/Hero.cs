@@ -11,7 +11,7 @@ namespace MagicSchool
     /// But only IDamageable see a real usage. Other was no usage at all.
     /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHeroStats, ITargeter
+    public class Hero : MonoBehaviour, ICombatant, IHeroStats
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;

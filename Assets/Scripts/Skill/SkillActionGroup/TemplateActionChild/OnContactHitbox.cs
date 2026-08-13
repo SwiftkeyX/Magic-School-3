@@ -10,12 +10,12 @@ namespace MagicSchool
     /// </summary>
     public class OnContactHitbox : Hitbox
     {
-        private Hero _caster;
+        private ICombatant _caster;
         private readonly HashSet<Hero> _triggeredOnce = new HashSet<Hero>();
 
         public event Action<Hero> OnHit;
 
-        public void Init(Hero caster)
+        public void Init(ICombatant caster)
         {
             _caster = caster;
         }

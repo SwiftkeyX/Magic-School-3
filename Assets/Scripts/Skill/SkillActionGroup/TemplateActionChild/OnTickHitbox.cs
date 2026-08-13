@@ -11,12 +11,12 @@ namespace MagicSchool
     /// </summary>
     public class OnTickHitbox : Hitbox
     {
-        private Hero _caster;
+        private ICombatant _caster;
         private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
 
         public event Action<Hero> OnHit;
 
-        public void Init(Hero caster)
+        public void Init(ICombatant caster)
         {
             _caster = caster;
         }

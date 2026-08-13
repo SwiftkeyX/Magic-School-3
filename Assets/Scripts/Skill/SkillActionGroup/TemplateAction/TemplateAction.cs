@@ -13,7 +13,7 @@ namespace MagicSchool
     public abstract class TemplateAction : MonoBehaviour
     {
         [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
-        protected Hero _me;                                         // FLAGGING: handing the entire hero is not good for abstraction. When we see the pattern clearer, we'll get rid of it.
+        protected ICombatant _me;
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
         protected Vector3 _source;
@@ -34,7 +34,7 @@ namespace MagicSchool
         // ==================================== public method ====================================
         // try play template action. if play success, return true.
         // act as factory, since when this function is called, there is no real instance yet. 
-        public static bool TryPlay(SkillActionGroup group, Hero caster, 
+        public static bool TryPlay(SkillActionGroup group, ICombatant caster,
         Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {
             // change skill prefab into scene instace
@@ -60,7 +60,7 @@ namespace MagicSchool
         }
 
         // try initialize skill, if something went wrong, skill won't play
-        private bool TryConfigure(Hero caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
+        private bool TryConfigure(ICombatant caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
         {
             // Not Init() before TryPlay(). 
             // because it need to instantiate the new instance first.
@@ -75,7 +75,7 @@ namespace MagicSchool
             return true;
         }
 
-        private void Init(Hero caster, List<SkillEffect> effects)
+        private void Init(ICombatant caster, List<SkillEffect> effects)
         {
             _me = caster;
             _effects = effects;
@@ -105,7 +105,7 @@ namespace MagicSchool
         // Never call Destroy() on a template action directly.
         protected void DestroyMe()
         {
-            // guard
+            // guard 
             if (_me == null) return;
 
             // guard
@@ -147,12 +147,12 @@ namespace MagicSchool
 
         // ==================================== Effect & Recipient ====================================
         // apply effect to the recipients
-        protected void ApplyEffectToRecipients(SkillEffect effect, List<Hero> recipients)
+        protected void ApplyEffectToRecipients(SkillEffect effect, IReadOnlyList<IDamageable> recipients)
         {
             switch (effect.Recipient)
             {
                 case EffectRecipientEnum.Self:
-                    effect.ApplyEffect(new List<Hero> { _me });
+                    effect.ApplyEffect(new List<IDamageable> { _me });
                     break;
 
                 case EffectRecipientEnum.SameToAimTarget:
@@ -166,7 +166,7 @@ namespace MagicSchool
         // Cadence Tick are use by several template action
         // so we unified thing by move it here. 
         // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
-        protected IEnumerator CadenceTick(HealSkillEffect effect, List<Hero> recipients)
+        protected IEnumerator CadenceTick(HealSkillEffect effect, IReadOnlyList<IDamageable> recipients)
         {
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
             float elapsed = 0f;

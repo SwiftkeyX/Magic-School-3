@@ -7,7 +7,7 @@ namespace MagicSchool
     // Its purpose is to report who get hit via OnHit
     public interface Hitbox
     {
-        public void Init(Hero _caster);
+        public void Init(ICombatant _caster);
         public event Action<Hero> OnHit;
         public void OnTriggerEnter2D(Collider2D other);
         public void OnTriggerExit2D(Collider2D other);

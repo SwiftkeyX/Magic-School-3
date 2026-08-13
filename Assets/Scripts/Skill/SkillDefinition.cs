@@ -8,7 +8,6 @@ namespace MagicSchool
     /// SkillDefinition contain list of SkillStep for both passive & active skill.
     /// skill are separated into step, those step are working together in order, to create a actual skill.
     /// </summary>
-    /// FIXNOW: don't use System.Action. Just use Action. apply this to entire project.
     public class SkillDefinition
     {
         public string SkillName { get; }

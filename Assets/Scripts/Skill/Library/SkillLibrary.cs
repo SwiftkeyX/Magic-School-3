@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +12,8 @@ namespace MagicSchool
         // a pair of TemplateAction & SkillDefinition
         // TemplateAction is a skill prefab used by hero, but hero don't know how this TemplateAction work.
         // How the TemplateAction work was put inside SkillDefinition.
-        private static readonly Dictionary<SkillIdEnum, System.Func<TemplateActionRegistrySO, SkillDefinition>> Builders =
-            new Dictionary<SkillIdEnum, System.Func<TemplateActionRegistrySO, SkillDefinition>>
+        private static readonly Dictionary<SkillIdEnum, Func<TemplateActionRegistrySO, SkillDefinition>> Builders =
+            new Dictionary<SkillIdEnum, Func<TemplateActionRegistrySO, SkillDefinition>>
             {
                 { SkillIdEnum.Aatrox, AatroxSkill.Build },
                 { SkillIdEnum.Cassiopeia, CassiopeiaSkill.Build },

@@ -26,6 +26,40 @@ namespace MagicSchool
             _board = board;
         }
 
+        // When a hero auto attack a enemy, he'll pick that enemy as current target. 
+        // Which mean he'll stick to that target until something break them off.
+        // read IsStillEngageWith() for more detail. 
+        public ICombatant CurrentTarget
+        {
+            get
+            {
+                ICombatant engaged = _runtimeData.CurrentTarget;
+
+                if (IsStillEngagedWith(engaged)) return engaged;
+
+                // if current target is break off, find new target.
+                ICombatant fresh = FindNearestEnemy();
+                _runtimeData.SetCurrentTarget(fresh);
+
+                return fresh;
+            }
+        }
+
+        // Hero'll pick new current target if: 
+        // 1) If target is out of range, pick new target.
+        // 2) If target is dead, pick new target.
+        private bool IsStillEngagedWith(ICombatant engaged)
+        {
+            // Is current target is dead?
+            if (engaged == null || !engaged.IsAlive || !engaged.IsInCombat) return false;
+
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null || engaged.CurrentHex == null) return false;
+
+            // Is current target is out of range?
+            return myHex.IsWithinRange(engaged.CurrentHex, _me.Range);
+        }
+
         // Picks nearest enemy (if there are several nearest enemies, random it).
         public ICombatant FindNearestEnemy()
         {
@@ -46,6 +80,7 @@ namespace MagicSchool
             return nearestEnemy;
         }
 
+
         // Picks furthest enemy (if there are several furthest enemies, random it).
         public ICombatant FindFurthestEnemy()
         {
@@ -59,7 +94,7 @@ namespace MagicSchool
             return tiedFurthest[Random.Range(0, tiedFurthest.Count)];
         }
 
-        // Pick the hex that are most cluster (measuring by inpu radius)
+        // Pick the hex that are most cluster (measuring by input radius)
         // FiXLATER: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
         public ICombatant FindClusteredEnemy(int radius = 2)
         {

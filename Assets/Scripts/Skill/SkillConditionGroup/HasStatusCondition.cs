@@ -1,22 +1,25 @@
-using System;
-using UnityEngine;
-
 namespace MagicSchool
 {
     /// <summary>
     /// "Is the subject carrying this status right now?"
     /// E.g. transformed, wounded, stunned, ...
     /// </summary>
-    [Serializable]
     public class HasStatusCondition : SkillCondition
     {
-        [SerializeField] private ModifierEnum _status;
-        [SerializeField] private bool _wantPresent = true;
+        private ModifierEnum _status;
+        private bool _wantPresent = true;
 
-        protected override bool IsMet(IDamageable caster, IDamageable recipient)
+        public HasStatusCondition(ConditionSubjectEnum subject, ModifierEnum status, bool wantPresent = true)
+            : base(subject)
+        {
+            _status = status;
+            _wantPresent = wantPresent;
+        }
+
+        protected override bool IsMet(IEffectable recipient)
         {
             // ask which unit?
-            IDamageable subject = Subjected(caster, recipient);
+            IEffectable subject = Subjected(recipient);
 
             // guard
             if (subject == null) return false;

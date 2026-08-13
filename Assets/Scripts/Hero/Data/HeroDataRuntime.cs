@@ -19,7 +19,8 @@ namespace MagicSchool
         // ==================================== Position ====================================
         private Placement _currentPlacement;    // placement hero stand on e.g. hex, benchslot
         private Hex _reservedHex;               // hex that hero reserved. use while battle
-        private ICombatant _nearestEnemy;
+        private ICombatant _nearestEnemy;       // who was nearest enemy
+        private ICombatant _currentTarget;      // who me is engaging
 
 
         // ==================================== getter ====================================
@@ -30,6 +31,7 @@ namespace MagicSchool
         public Placement CurrentPlacement => _currentPlacement;
         public Hex ReservedHex => _reservedHex;
         public ICombatant NearestEnemy => _nearestEnemy;
+        public ICombatant CurrentTarget => _currentTarget;
 
         // === etc ===
         public bool IsDummy => _isDummy;
@@ -40,6 +42,7 @@ namespace MagicSchool
         public void SetCurrentPlacement(Placement placement) => _currentPlacement = placement;
         public void SetReservedHex(Hex hex) => _reservedHex = hex;
         public void SetNearestEnemy(ICombatant hero) => _nearestEnemy = hero;
+        public void SetCurrentTarget(ICombatant hero) => _currentTarget = hero;
 
 
         public HeroDataRuntime(HeroDataSO dataSO)

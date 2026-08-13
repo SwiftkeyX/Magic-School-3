@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,34 +16,55 @@ namespace MagicSchool
     ///
     /// The consequence differs, the question does not, so it is written once here.
     /// </summary>
-    [Serializable]
     public abstract class SkillCondition
     {
-        [SerializeField] protected ConditionSubjectEnum _subject;
+        protected ConditionSubjectEnum _subject;
+        protected IEffectable _caster;
 
-        public ConditionSubjectEnum Subject => _subject;
+        protected SkillCondition(ConditionSubjectEnum subject)
+        {
+            _subject = subject;
+        }
+
+        public void Init(IEffectable caster) => _caster = caster;
 
         // the actual condition - read each child for more detail
-        protected abstract bool IsMet(IDamageable caster, IDamageable recipient);
+        protected abstract bool IsMet(IEffectable recipient);
 
         // condition look at which hero?
-        protected IDamageable Subjected(IDamageable caster, IDamageable recipient)
+        protected IEffectable Subjected(IEffectable recipient)
         {
-            if (_subject == ConditionSubjectEnum.Caster) return caster;
+            if (_subject == ConditionSubjectEnum.Caster)
+            {
+                if (_caster == null)
+                {
+                    Debug.LogError($"[{GetType().Name}] asks about the caster but was never given one. " +
+                                   "SkillDefinition.Init() has to reach every condition it holds.");
+                }
 
-            else if (_subject == ConditionSubjectEnum.Recipient) return recipient;
+                return _caster;
+            }
+
+            else if (_subject == ConditionSubjectEnum.Recipient)
+            {
+                if (recipient == null)
+                {
+                    Debug.LogError($"[{GetType().Name}] asks about the recipient but was asked without one. " +
+                                   "Only a SkillEffect's conditions get a recipient, not a SkillActionGroup's.");
+                }
+
+                return recipient;
+            }
 
             else
             {
-                // logerror; 
+                Debug.LogError($"[{GetType().Name}] has no idea who {_subject} is meant to be.");
                 return null;
             }
         }
 
         // to tell the caller "Is all the condition met?"
-        // ASKING: Is there a reason this need to be static?
-        // FIXNOW: we shouldn't have send caster in. Could we just dependency inject _me into here? 
-        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable caster, IDamageable recipient)
+        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IEffectable recipient = null)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;
 
@@ -53,12 +73,12 @@ namespace MagicSchool
             foreach (SkillCondition condition in conditions)
             {
                 // guard
-                if (condition == null) { Debug.LogError(""); continue; }
+                if (condition == null) { Debug.LogError("[SkillCondition] a null condition sits in this list - skipped."); continue; }
 
                 askedAnything = true;
 
                 // if either condition isn't satisfied, return conditionNotMet
-                if (!condition.IsMet(caster, recipient)) return ConditionResultEnum.ConditionIsNotMet;
+                if (!condition.IsMet(recipient)) return ConditionResultEnum.ConditionIsNotMet;
             }
 
             return askedAnything

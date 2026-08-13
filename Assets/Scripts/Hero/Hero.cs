@@ -7,11 +7,11 @@ namespace MagicSchool
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
     /// 
-    /// FLAGGING: We implement several interface that we thought would be useful e.g. IDamageable, IHeroStats, IPlaceable, ITargeter.
-    /// But only IDamageable see a real usage. Other was no usage at all.
+    /// FLAGGING: We implement several interface that we thought would be useful e.g. IEffectable, IHeroStats, IPlaceable, ITargeter.
+    /// But only IEffectable see a real usage. Other was no usage at all.
     /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHeroStats, ITargeter
+    public class Hero : MonoBehaviour, ICombatant, IHeroStats
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;
@@ -73,7 +73,7 @@ namespace MagicSchool
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
         // ======================================== interface method ========================================
-        // === IDamageable ===
+        // === IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
         public void AddModifier(IModifier modifier) => Stat.AddModifier(modifier);
         public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);
@@ -115,6 +115,7 @@ namespace MagicSchool
         public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
         // === ITargeter ===
+        public ICombatant CurrentTarget => _findEnemy.CurrentTarget;
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
         public ICombatant FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
@@ -123,7 +124,7 @@ namespace MagicSchool
         // ======================================== life cycle ========================================
         #region Life Cycle
         // Give everything a hero needs to exist, in one call. 
-        public void Init(HeroDataSO data, BattleBoard board, TeamEnum team)
+        public void Init(HeroDataSO data, BattleBoard board, TeamEnum team, TemplateActionRegistrySO templateActions = null)
         {
             _SOData = data;
             _board = board;
@@ -131,7 +132,7 @@ namespace MagicSchool
 
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
-            _skill = new HeroSkill(this, _SOData.Skill);
+            _skill = new HeroSkill(this, SkillLibrary.Resolve(_SOData, templateActions));
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

@@ -1,18 +1,23 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace MagicSchool
 {
     // effect that apply damage to recipients
-    [Serializable]
     public class AttackSkillEffect : SkillEffect
     {
-        [SerializeField] private float _damageAmount;
+        private float _damageAmount;
 
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
+        public AttackSkillEffect(EffectRecipientEnum recipient, float damageAmount, Cadence cadence = null,
+                                 List<SkillCondition> conditions = null, float amplifier = 0.3f)
+            : base(recipient, cadence, conditions, amplifier)
         {
-            foreach (IDamageable recipient in recipients)
+            _damageAmount = damageAmount;
+        }
+
+        public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
+        {
+            foreach (IEffectable recipient in recipients)
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
@@ -24,7 +29,7 @@ namespace MagicSchool
                 else dmg = _damageAmount;
 
                 // if pass specify condition, amplify the effect
-                dmg *= AmplifierFor(caster, recipient);
+                dmg *= AmplifierFor(recipient);
 
                 // apply damage
                 recipient.TakeDamage(Mathf.RoundToInt(dmg));

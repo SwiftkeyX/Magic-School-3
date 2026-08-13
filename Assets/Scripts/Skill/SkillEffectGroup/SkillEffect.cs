@@ -1,29 +1,39 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
-    [Serializable]
     public abstract class SkillEffect
     {
-        [SerializeField] protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
-        [SerializeField] protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
-        [SerializeReference] protected List<SkillCondition> _conditions;  // conditions for this effect. => if all satisfied, effect is amplified.
-        [ShowIf(nameof(_conditions))]
-        [SerializeField] protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
+        protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
+        protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
+        protected List<SkillCondition> _conditions;  // conditions for this effect. => if all satisfied, effect is amplified.
+        protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
+
+        protected SkillEffect(EffectRecipientEnum recipient, Cadence cadence = null,
+                              List<SkillCondition> conditions = null, float amplifier = 0.3f)
+        {
+            _recipient = recipient;
+            _cadence = cadence ?? new Cadence();
+            _conditions = conditions ?? new List<SkillCondition>();
+            _amplifier = amplifier;
+        }
 
         // ================================== getter ==================================
         public EffectRecipientEnum Recipient => _recipient;
         public Cadence Cadence => _cadence;
         public List<SkillCondition> Conditions => _conditions;
 
+        // the conditions for this effect, it need to know who cast it.
+        public void Init(IEffectable caster)
+        {
+            foreach (SkillCondition condition in _conditions) condition?.Init(caster);
+        }
+
         // check condition to each recipients.
         // If condition is met, the effect is amplified.
-        // FIXNOW: this should only know recipient too.
-        protected float AmplifierFor(IDamageable caster, IDamageable recipient)
+        protected float AmplifierFor(IEffectable recipient)
         {
-            if (SkillCondition.Ask(_conditions, caster, recipient) == ConditionResultEnum.ConditionIsMet)
+            if (SkillCondition.Ask(_conditions, recipient) == ConditionResultEnum.ConditionIsMet)
             {
                 return 1f + _amplifier;
             }
@@ -31,8 +41,6 @@ namespace MagicSchool
             return 1f;
         }
 
-        // FIXNOW: apply effect should only know recipients. It shouldn't know caster too.
-        // if caster was recipients, it should be send in as recipients.
-        public abstract void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients);
+        public abstract void ApplyEffect(IReadOnlyList<IEffectable> recipients);
     }
 }

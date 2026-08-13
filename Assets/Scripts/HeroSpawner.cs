@@ -5,10 +5,12 @@ namespace MagicSchool
     public class HeroSpawner
     {
         private readonly HeroMover _heroMover;
+        private readonly TemplateActionRegistrySO _templateActions;
 
-        public HeroSpawner(HeroMover heroMover, Bench bench, BattleBoardSeed seed)
+        public HeroSpawner(HeroMover heroMover, Bench bench, BattleBoardSeed seed, TemplateActionRegistrySO templateActions)
         {
             _heroMover = heroMover;
+            _templateActions = templateActions;
 
             if (bench != null) bench.OnSpawnRequested += SpawnHero;
             if (seed != null) seed.OnSpawnRequested += SpawnHero;
@@ -20,7 +22,7 @@ namespace MagicSchool
             // spawn hero
             GameObject heroPrefab = SceneHelper.Instantiate(data.Prefab);
             Hero hero = heroPrefab.GetComponent<Hero>();
-            hero.Init(data, board, team);
+            hero.Init(data, board, team, _templateActions);
 
             // move them to "placement"
             _heroMover.MoveThisHeroTo(hero, placement);

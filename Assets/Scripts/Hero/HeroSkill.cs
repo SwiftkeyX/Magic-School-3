@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
@@ -10,21 +9,22 @@ namespace MagicSchool
     /// </summary>
     public class HeroSkill
     {
-        private readonly Hero _me;
-        private readonly SkillSO _skill;
+        private readonly Hero _me;          
+        private readonly SkillDefinition _skill;
         private float _castTime;
 
         // ============================================== getter ==============================================
         public float GetCastTime() => _castTime;
 
-        // Some heroes (e.g. generic dummy/tank archetypes) have no SkillSO assigned.
+        // Some heroes (e.g. generic dummy/tank archetypes) have no skill at all.
         public bool HasSkill => _skill != null && _skill.ActiveSteps.Count > 0;
         public bool HasPassive => _skill != null && _skill.PassiveSteps.Count > 0;
 
-        public HeroSkill(Hero hero, SkillSO skill)
+        public HeroSkill(Hero hero, SkillDefinition skill)
         {
             _me = hero;
             _skill = skill;
+            _skill?.Init(_me);
         }
 
         // ============================================== active & passive skill ==============================================
@@ -57,7 +57,13 @@ namespace MagicSchool
 
             if (steps[0].Trigger != trigger) return false;
 
-            return FireStep(steps, 0);
+            bool played = FireStep(steps, 0);
+
+            // invoke Aatrox's combo counter
+            // FLAGGING: Don't sure if it should stay here. Let's look at it again when the pattern is more clear. 
+            if (played) _skill.InvokeTrigger(trigger);
+
+            return played;
         }
 
         // ============================================== Trigger condition ==============================================
@@ -69,8 +75,9 @@ namespace MagicSchool
             // if (isTargetDead) FireAction(IndexOfStep(step));
         }
 
-        // on event invoke, related Trigger is fired.
-        // return SkillStepContext - it is data from previous step that will be checked by this trigger
+        // This function create a event that was handed to TemplateAction.
+        // on event invoke, next TemplateAction is played, and related context is sent to be used for next TemplateAction.
+        // e.g. Projectile invoke "OnHit" event => Send projectile hit position to next TemplateAction
         private Action<SkillStepContext> TriggerNextStep(IReadOnlyList<SkillStep> steps, int nextIndex, TriggerEnum trigger)
         {
             // guard
@@ -105,14 +112,13 @@ namespace MagicSchool
             {
                 // check condition for current TemplateAction. 
                 // if condition is not met, skip this one, and go check the next template action.
-                // FIXNOW: send FindNearestEnemy() is just straight wrong.
-                // I try look into pattern more, and found that condition for template action don't need recipient.
-                // just make recipient = null here.
-                if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
+                if (SkillCondition.Ask(actionGroup.Conditions, _me) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
-                bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
-                    onExpired, onHit, contextFromPreviousStep);
+                // FLAGGING: Beside OnExpired, OnHit, there'll be more of it. 
+                // We'll need to group them and send them in 1 go via list.
+                // So the parameter didn't get clustered. 
+                bool played = TemplateAction.TryPlay(actionGroup, _me, onExpired, onHit, contextFromPreviousStep);
 
                 // if one of the template action is played, stop
                 if (played)

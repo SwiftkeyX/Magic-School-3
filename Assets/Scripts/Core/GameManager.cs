@@ -10,6 +10,7 @@ namespace MagicSchool
         [SerializeField] private BattleBoard _board;
         [SerializeField] private Bench _bench;
         [SerializeField] private BattlePlacementSO _placementSO;
+        [SerializeField] private TemplateActionRegistrySO _templateActions;     
         [SerializeField] private bool _seedMode;
 
         public GamePhaseEnum Phase { get; private set; } = GamePhaseEnum.Preparation;
@@ -26,7 +27,7 @@ namespace MagicSchool
 
             _heroMover = new HeroMover();
             _seed = new BattleBoardSeed(_placementSO, _board, _seedMode);
-            _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed);
+            _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
         }
 
         // The system moving a hero, as opposed to a hero walking itself during combat.

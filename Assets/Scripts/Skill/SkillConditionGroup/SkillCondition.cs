@@ -34,13 +34,31 @@ namespace MagicSchool
         // condition look at which hero?
         protected IDamageable Subjected(IDamageable recipient)
         {
-            if (_subject == ConditionSubjectEnum.Caster) return _caster;
+            if (_subject == ConditionSubjectEnum.Caster)
+            {
+                if (_caster == null)
+                {
+                    Debug.LogError($"[{GetType().Name}] asks about the caster but was never given one. " +
+                                   "SkillDefinition.Init() has to reach every condition it holds.");
+                }
 
-            else if (_subject == ConditionSubjectEnum.Recipient) return recipient;
+                return _caster;
+            }
+
+            else if (_subject == ConditionSubjectEnum.Recipient)
+            {
+                if (recipient == null)
+                {
+                    Debug.LogError($"[{GetType().Name}] asks about the recipient but was asked without one. " +
+                                   "Only a SkillEffect's conditions get a recipient, not a SkillActionGroup's.");
+                }
+
+                return recipient;
+            }
 
             else
             {
-                // logerror; 
+                Debug.LogError($"[{GetType().Name}] has no idea who {_subject} is meant to be.");
                 return null;
             }
         }
@@ -55,7 +73,7 @@ namespace MagicSchool
             foreach (SkillCondition condition in conditions)
             {
                 // guard
-                if (condition == null) { Debug.LogError(""); continue; }
+                if (condition == null) { Debug.LogError("[SkillCondition] a null condition sits in this list - skipped."); continue; }
 
                 askedAnything = true;
 

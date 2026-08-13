@@ -1,6 +1,8 @@
 using MagicSchool.Contracts;
+using MagicSchool.Heroes.Stats;
+using MagicSchool.Placements;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
     /// <summary>
     /// Hold every runtime data for a hero e.g. stat, placement.

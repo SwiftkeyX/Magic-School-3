@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Not cadence => apply effect when hitbox collide (OnTriggerEnter())

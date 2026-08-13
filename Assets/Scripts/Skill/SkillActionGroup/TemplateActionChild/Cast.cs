@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Cast is the template action for instant self-effects (e.g. self-buffs).

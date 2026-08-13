@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     // The actual modifier class 
     // To contain modifier type, its amount, its duration in 1 place

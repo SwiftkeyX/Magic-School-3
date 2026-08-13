@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Placements;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes.States
 {
     // share transition condition for statemachine
     public class Transition

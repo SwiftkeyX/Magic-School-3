@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     // effect that apply damage to recipients
     public class AttackSkillEffect : SkillEffect

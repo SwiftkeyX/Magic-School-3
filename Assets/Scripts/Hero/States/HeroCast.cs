@@ -1,7 +1,8 @@
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes.States
 {
     public class HeroCast : HeroState
     {

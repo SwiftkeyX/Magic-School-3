@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Core
 {
     /// <summary>
     /// Hides a field in the Inspector until a sibling field next to it is filled in.

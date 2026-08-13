@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace MagicSchool
+namespace MagicSchool.Player
 {
     /// <summary>
     /// Centralized input for world-space picking/dragging (Bench, Board, etc) and misc key

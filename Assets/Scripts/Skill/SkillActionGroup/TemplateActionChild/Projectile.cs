@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Projectile was aim toward the "target", what determined which recipients get hit is based on the projectile type.

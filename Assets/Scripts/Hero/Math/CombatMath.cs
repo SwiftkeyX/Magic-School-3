@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
     // Pure damage/heal math, kept out of Stat and HeroStateMachineBlackBoard so both stay
     // data + accessors rather than calculators.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Samira: a projectile at the current target that only counts its first hit, wounding whoever

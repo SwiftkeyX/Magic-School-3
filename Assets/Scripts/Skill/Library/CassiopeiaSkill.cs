@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Cassiopeia: a homing projectile at the furthest enemy, which hits hard and wounds whoever it

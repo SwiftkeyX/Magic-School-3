@@ -1,7 +1,7 @@
 using System;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Placements
 {
     // Which hex, named the way a designer thinks of the board: whose side, which column, which row.
     [Serializable]

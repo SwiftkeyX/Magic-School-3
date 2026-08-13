@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Which skill in SkillLibrary a hero uses. Set on HeroDataSO.

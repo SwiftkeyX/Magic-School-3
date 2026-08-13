@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Skil use A LOT OF enum. We group all of them here for readability.

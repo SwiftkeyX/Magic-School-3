@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Jhin: a piercing shot at the current target that damages everyone standing in its path.

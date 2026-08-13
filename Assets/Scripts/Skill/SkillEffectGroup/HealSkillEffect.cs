@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     // FLAGGING: I don't sure if it was generic enough to have a inheritance. Let see laterward.
     // effect that apply heal to recipients

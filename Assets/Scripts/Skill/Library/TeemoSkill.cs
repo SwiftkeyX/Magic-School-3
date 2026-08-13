@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Teemo: a homing shot at the furthest enemy which does nothing on its own - where it lands, a

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Aatrox: casting transforms him, and while transformed his auto attack is replaced by a three

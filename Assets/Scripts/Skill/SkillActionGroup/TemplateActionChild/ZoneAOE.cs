@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// ZoneAOE are template action that apply effect over time.

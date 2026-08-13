@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// ContactAOE are template action that can apply effect to contacted hero => can apply both "once" or "overtime".

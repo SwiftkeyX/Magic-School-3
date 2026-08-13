@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     public class HomingProjectile : Projectile
     {

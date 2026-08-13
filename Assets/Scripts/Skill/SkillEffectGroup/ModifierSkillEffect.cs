@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     // effect that apply modifer to a recipients
     // e.g. apply wound, apply buff, apply stun, etc...

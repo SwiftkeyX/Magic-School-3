@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using MagicSchool;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     public class FirstHitProjectile : Projectile
     {

@@ -1,8 +1,11 @@
 using UnityEngine;
 using MagicSchool.Engine;
 using MagicSchool.Contracts;
+using MagicSchool.Heroes;
+using MagicSchool.Placements;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Core
 {
     public class HeroSpawner
     {

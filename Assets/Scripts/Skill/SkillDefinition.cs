@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// A whole container for 1 skill.

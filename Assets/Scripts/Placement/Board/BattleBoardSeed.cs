@@ -1,8 +1,9 @@
 using System;
 using MagicSchool.Engine;
 using MagicSchool.Contracts;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Placements
 {
     // Spawn hero by skipping the bench logic part.
     // player normally go through bench logic first: buy hero => hero spawn on bench => drag hero to the board.

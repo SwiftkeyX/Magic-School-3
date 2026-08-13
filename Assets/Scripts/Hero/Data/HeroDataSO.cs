@@ -1,6 +1,8 @@
 using UnityEngine;
+using MagicSchool.Heroes.Stats;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
     /// <summary>
     /// SO for hero.

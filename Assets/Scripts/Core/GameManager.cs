@@ -1,8 +1,11 @@
 using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Placements;
+using MagicSchool.Player;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Core
 {
     public class GameManager : MonoBehaviour
     {

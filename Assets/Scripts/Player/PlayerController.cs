@@ -1,7 +1,10 @@
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Core;
+using MagicSchool.Heroes;
+using MagicSchool.Placements;
 
-namespace MagicSchool
+namespace MagicSchool.Player
 {
     public class PlayerController : MonoBehaviour
     {

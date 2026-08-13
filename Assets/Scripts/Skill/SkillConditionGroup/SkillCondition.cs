@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// A question a skill asks before it does something. One predicate, used in two places that do

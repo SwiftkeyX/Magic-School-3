@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
 
     /// <summary>

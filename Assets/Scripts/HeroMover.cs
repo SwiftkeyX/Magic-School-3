@@ -1,6 +1,7 @@
 using MagicSchool.Contracts;
+using MagicSchool.Placements;
 
-namespace MagicSchool
+namespace MagicSchool.Core
 {
     // There's 2 ways, hero can move:
     // 1) Hero move on their own while combat

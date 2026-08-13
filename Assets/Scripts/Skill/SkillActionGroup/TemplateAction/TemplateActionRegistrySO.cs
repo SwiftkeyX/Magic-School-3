@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// The one place a TemplateAction prefab is referenced from.

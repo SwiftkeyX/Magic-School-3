@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using MagicSchool.Heroes;
+using MagicSchool.Placements;
 
 namespace MagicSchool.UI
 {

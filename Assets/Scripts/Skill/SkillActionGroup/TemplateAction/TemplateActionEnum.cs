@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Which template action a skill wants to play.

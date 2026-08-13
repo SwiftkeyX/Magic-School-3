@@ -1,4 +1,5 @@
 using UnityEngine;
+using MagicSchool.Placements;
 
 namespace MagicSchool.Contracts
 {

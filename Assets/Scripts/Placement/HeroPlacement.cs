@@ -1,6 +1,7 @@
 using System;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Placements
 {
     // for battle setup: which hero? standing where?.
     [Serializable]

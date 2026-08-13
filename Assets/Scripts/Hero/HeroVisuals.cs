@@ -2,7 +2,7 @@ using UnityEngine;
 using MagicSchool.VFX;
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
     /// <summary>
     /// The presentation layer for hero - as opposed to data layer (HeroDataRuntime) or logic layer (the states).

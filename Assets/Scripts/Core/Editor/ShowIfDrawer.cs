@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Core
 {
     [CustomPropertyDrawer(typeof(ShowIfAttribute))]
     public class ShowIfDrawer : PropertyDrawer

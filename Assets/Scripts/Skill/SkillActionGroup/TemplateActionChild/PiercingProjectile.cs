@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using MagicSchool.Heroes;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// Travels in a straight line through everyone in its path - the aim target only sets the

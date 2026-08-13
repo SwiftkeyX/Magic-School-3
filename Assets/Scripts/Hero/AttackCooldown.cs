@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Heroes
 {
 
     public class AttackCooldown

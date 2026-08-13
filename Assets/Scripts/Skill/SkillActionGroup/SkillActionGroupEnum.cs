@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     // ActionSourceEnum/AimTargetEnum are serialized into SkillActionGroup (inside SkillSO assets) as
     // raw ints - always assign explicit values so inserting a new member later can't silently remap

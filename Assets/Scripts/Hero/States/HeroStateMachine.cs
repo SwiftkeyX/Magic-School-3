@@ -1,6 +1,7 @@
 using MagicSchool.Contracts;
+using MagicSchool.Skills;
 
-namespace MagicSchool
+namespace MagicSchool.Heroes.States
 {
     /// <summary>
     /// HeroStateMachine is state machine that control hero's behaviour.

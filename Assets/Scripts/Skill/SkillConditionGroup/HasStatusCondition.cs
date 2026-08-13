@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// "Is the subject carrying this status right now?"

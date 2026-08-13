@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Skills
 {
     /// <summary>
     /// What the step before this one produced, handed to the step it triggers.

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using MagicSchool.Heroes;
 
 namespace MagicSchool.UI
 {

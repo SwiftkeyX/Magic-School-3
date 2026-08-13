@@ -27,20 +27,37 @@ namespace MagicSchool
         }
 
         // When a hero auto attack a enemy, he'll pick that enemy as current target. 
-        // Which mean he'll stick to that target until something break them off:
-        // 1) If target is out of range, pick new target.
-        // 2) If target is dead, pick new target.
-        // FIXNOW: read its comment
+        // Which mean he'll stick to that target until something break them off.
+        // read IsStillEngageWith() for more detail. 
         public ICombatant CurrentTarget
         {
             get
             {
-                ICombatant engaged = _runtimeData.NearestEnemy;
+                ICombatant engaged = _runtimeData.CurrentTarget;
 
-                if (engaged != null && engaged.IsAlive && engaged.IsInCombat) return engaged;
+                if (IsStillEngagedWith(engaged)) return engaged;
 
-                return FindNearestEnemy();
+                // if current target is break off, find new target.
+                ICombatant fresh = FindNearestEnemy();
+                _runtimeData.SetCurrentTarget(fresh);
+
+                return fresh;
             }
+        }
+
+        // Hero'll pick new current target if: 
+        // 1) If target is out of range, pick new target.
+        // 2) If target is dead, pick new target.
+        private bool IsStillEngagedWith(ICombatant engaged)
+        {
+            // Is current target is dead?
+            if (engaged == null || !engaged.IsAlive || !engaged.IsInCombat) return false;
+
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null || engaged.CurrentHex == null) return false;
+
+            // Is current target is out of range?
+            return myHex.IsWithinRange(engaged.CurrentHex, _me.Range);
         }
 
         // Picks nearest enemy (if there are several nearest enemies, random it).

@@ -9,7 +9,7 @@ namespace MagicSchool
         private const float DashDuration = 0.2f;
         private const float DashDistance = 0.5f;
 
-        private ICombatant _nearestEnemy;
+        private ICombatant _currentTarget;
 
         private Vector3 _dashStart;
         private Vector3 _dashPeak;
@@ -35,7 +35,8 @@ namespace MagicSchool
 
         public override void OnUpdate()
         {
-            _nearestEnemy = _me.FindNearestEnemy();
+            // get current target
+            _currentTarget = _me.CurrentTarget;
 
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
             if (_me.StateType != StateType) return;
@@ -59,15 +60,15 @@ namespace MagicSchool
         protected override void CheckSwitchState()
         {
             // guard
-            if (_nearestEnemy == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
+            if (_currentTarget == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
 
             // resume attack
-            if (_transition.CanAttack(_nearestEnemy))
+            if (_transition.CanAttack(_currentTarget))
             {
                 return;
             }
 
-            if (_transition.CanWalk(_nearestEnemy))
+            if (_transition.CanWalk(_currentTarget))
             {
                 _me.ChangeState(HeroStateEnum.Walk);
                 return;
@@ -87,7 +88,7 @@ namespace MagicSchool
             {
                 // FlAGGING: attack animation got skip by skill which is not intended
                 // apply damage to target
-                _nearestEnemy.TakeDamage(_me.AttackDamage);
+                _currentTarget.TakeDamage(_me.AttackDamage);
 
                 // attack animation: dash toward the enemy, then back to where we started
                 AttackAnimation();
@@ -104,7 +105,7 @@ namespace MagicSchool
         {
             // attack animation: dash toward the enemy, then back to where we started
             _dashStart = _me.transform.position;
-            Vector3 toEnemy = _nearestEnemy.transform.position - _dashStart;
+            Vector3 toEnemy = _currentTarget.transform.position - _dashStart;
             Vector3 direction = toEnemy.sqrMagnitude > 0f ? toEnemy.normalized : Vector3.zero;
             _dashPeak = _dashStart + direction * DashDistance;
             _dashElapsed = 0f;

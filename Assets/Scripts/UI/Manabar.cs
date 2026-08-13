@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MagicSchool
+namespace MagicSchool.UI
 {
     // World-space mana bar - same setup and pattern as Healthbar, just reading mana instead of HP.
     // ExecuteAlways lets the offset be tweaked live in edit mode / Prefab Mode, without entering Play mode.

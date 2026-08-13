@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MagicSchool
+namespace MagicSchool.UI
 {
     // World-space health bar
     // ExecuteAlways lets the offset be tweaked live in edit mode / Prefab Mode, without entering Play mode.

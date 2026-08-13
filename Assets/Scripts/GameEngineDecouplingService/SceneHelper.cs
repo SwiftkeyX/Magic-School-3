@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Engine
 {
     /// <summary>
     /// Scene operations, wrapped so the plain (non-MonoBehaviour) classes don't call UnityEngine

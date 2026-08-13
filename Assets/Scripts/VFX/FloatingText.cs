@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.VFX
 {
     // Spawns above a hero, drifts upward, and fades out over its lifetime, then self-destroys.
     public class FloatingText : MonoBehaviour

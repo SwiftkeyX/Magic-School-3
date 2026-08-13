@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MagicSchool
+namespace MagicSchool.UI
 {
     /// <summary>
     /// Use a empty main screen panel, then add each panel later:

@@ -2,20 +2,12 @@ namespace MagicSchool
 {
     /// <summary>
     /// Skil use A LOT OF enum. We group all of them here for readability.
+    /// The two that Hero also speaks - TriggerEnum and ModifierEnum - live in Contracts/ instead,
+    /// so Hero doesn't have to depend on the whole skill system just to name a buff or a trigger.
     /// </summary>
 
     // These enums are serialized into SkillSO assets as raw ints - always assign explicit values so
     // inserting a new member later can't silently remap what an existing asset's stored int means.
-
-    // ================================================ Trigger ================================================
-    public enum TriggerEnum
-    {
-        OnCast = 0,
-        OnKill = 1,
-        OnExpired = 2,      // once the previous step expired
-        OnHit = 3,          // once the previous step hit someone 
-        OnAttack = 4,       // once hero auto attack
-    }
 
     // ================================================ Recipient ================================================
     public enum EffectRecipientEnum
@@ -24,29 +16,6 @@ namespace MagicSchool
         EnemiesInArea = 1,
         SameToAimTarget = 2,
         EnemiesInPath = 3,
-    }
-
-    // ================================================ Effect ================================================
-    public enum ModifierEnum
-    {
-        // ======================================= Buff =======================================
-        BonusHP = 0,
-        DamageReduction = 2,
-        AttackSpeed = 5,
-        Attack = 6,
-        Defend = 7,
-        AP = 8,
-        Omnivamp = 9,
-
-        // ======================================= Debuff =======================================
-        // ...
-
-        // ======================================= Status =======================================
-        Stun = 3,
-        Wound = 4,
-        Transformed = 10,
-        ManaBlocked = 11,
-        AutoAttackWasReplaced = 12,
     }
 
     // skill condition can either ask Caster or each Recipients

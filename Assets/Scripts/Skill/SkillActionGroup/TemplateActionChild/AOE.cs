@@ -33,10 +33,9 @@ namespace MagicSchool
             }
 
             // spawn on current target
-            // FIXLATER:: nearest enemy and current target are different target. Fix later.
             else if (source == ActionSourceEnum.Current)
             {
-                ICombatant target = _me.FindNearestEnemy();
+                ICombatant target = _me.CurrentTarget;
                 if (target == null) return false;
                 _source = target.transform.position;
             }
@@ -69,7 +68,7 @@ namespace MagicSchool
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                ICombatant target = _me.FindNearestEnemy();
+                ICombatant target = _me.CurrentTarget;
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }

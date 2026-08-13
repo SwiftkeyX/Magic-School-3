@@ -115,6 +115,7 @@ namespace MagicSchool
         public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
 
         // === ITargeter ===
+        public ICombatant CurrentTarget => _findEnemy.CurrentTarget;
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
         public ICombatant FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);

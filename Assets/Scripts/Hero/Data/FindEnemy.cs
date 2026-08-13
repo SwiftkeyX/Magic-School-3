@@ -26,6 +26,23 @@ namespace MagicSchool
             _board = board;
         }
 
+        // When a hero auto attack a enemy, he'll pick that enemy as current target. 
+        // Which mean he'll stick to that target until something break them off:
+        // 1) If target is out of range, pick new target.
+        // 2) If target is dead, pick new target.
+        // FIXNOW: read its comment
+        public ICombatant CurrentTarget
+        {
+            get
+            {
+                ICombatant engaged = _runtimeData.NearestEnemy;
+
+                if (engaged != null && engaged.IsAlive && engaged.IsInCombat) return engaged;
+
+                return FindNearestEnemy();
+            }
+        }
+
         // Picks nearest enemy (if there are several nearest enemies, random it).
         public ICombatant FindNearestEnemy()
         {
@@ -46,6 +63,7 @@ namespace MagicSchool
             return nearestEnemy;
         }
 
+
         // Picks furthest enemy (if there are several furthest enemies, random it).
         public ICombatant FindFurthestEnemy()
         {
@@ -59,7 +77,7 @@ namespace MagicSchool
             return tiedFurthest[Random.Range(0, tiedFurthest.Count)];
         }
 
-        // Pick the hex that are most cluster (measuring by inpu radius)
+        // Pick the hex that are most cluster (measuring by input radius)
         // FiXLATER: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
         public ICombatant FindClusteredEnemy(int radius = 2)
         {

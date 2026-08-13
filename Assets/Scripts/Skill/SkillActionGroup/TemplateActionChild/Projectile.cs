@@ -78,7 +78,7 @@ namespace MagicSchool
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                _target = _me.FindNearestEnemy();
+                _target = _me.CurrentTarget;
                 if (_target == null) return false;
             }
 

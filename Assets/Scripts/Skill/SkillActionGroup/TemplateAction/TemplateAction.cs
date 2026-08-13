@@ -34,17 +34,17 @@ namespace MagicSchool
         // ==================================== public method ====================================
         // try play template action. if play success, return true.
         // act as factory, since when this function is called, there is no real instance yet. 
-        public static bool TryPlay(TemplateAction prefab, ActionSourceEnum source, AimTargetEnum aimTarget, Hero caster, List<SkillEffect> effects,
-            Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
+        public static bool TryPlay(SkillActionGroup group, Hero caster, 
+        Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {
             // change skill prefab into scene instace
-            TemplateAction instance = Instantiate(prefab);
+            TemplateAction instance = Instantiate(group.TemplateAction);
 
             // config data from previous step
             instance._fromPreviousStep = fromPreviousStep;
 
             // init skill variable
-            if (!instance.TryConfigure(caster, effects, source, aimTarget))
+            if (!instance.TryConfigure(caster, group.Effects, group.Source, group.Target))
             {
                 // skill is not play
                 Destroy(instance.gameObject);
@@ -62,6 +62,8 @@ namespace MagicSchool
         // try initialize skill, if something went wrong, skill won't play
         private bool TryConfigure(Hero caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
         {
+            // Not Init() before TryPlay(). 
+            // because it need to instantiate the new instance first.
             Init(caster, effects);
 
             // find "source" using source enum

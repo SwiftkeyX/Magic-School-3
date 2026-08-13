@@ -116,9 +116,10 @@ namespace MagicSchool
                 if (SkillCondition.Ask(actionGroup.Conditions, _me) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
-                // ASKING: what is amount of paramter? could we just send ActionGroup in? 
-                bool played = TemplateAction.TryPlay(actionGroup.TemplateAction, actionGroup.Source, actionGroup.Target, _me, actionGroup.Effects,
-                    onExpired, onHit, contextFromPreviousStep);
+                // FLAGGING: Beside OnExpired, OnHit, there'll be more of it. 
+                // We'll need to group them and send them in 1 go via list.
+                // So the parameter didn't get clustered. 
+                bool played = TemplateAction.TryPlay(actionGroup, _me, onExpired, onHit, contextFromPreviousStep);
 
                 // if one of the template action is played, stop
                 if (played)

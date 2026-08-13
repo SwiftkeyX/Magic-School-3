@@ -31,18 +31,18 @@ namespace MagicSchool
             // if still casting, return
             if (_remaining > 0f) return;
 
-            ICombatant nearestEnemy = _me.FindNearestEnemy();
+            ICombatant currentTarget = _me.CurrentTarget;
 
             // guard
-            if (nearestEnemy == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
+            if (currentTarget == null) { _me.ChangeState(HeroStateEnum.Idle); return; }
 
-            if (_transition.CanAttack(nearestEnemy))
+            if (_transition.CanAttack(currentTarget))
             {
                 _me.ChangeState(HeroStateEnum.Attack);
                 return;
             }
 
-            if (_transition.CanWalk(nearestEnemy))
+            if (_transition.CanWalk(currentTarget))
             {
                 _me.ChangeState(HeroStateEnum.Walk);
                 return;

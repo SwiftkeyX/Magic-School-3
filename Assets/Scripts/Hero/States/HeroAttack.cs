@@ -35,7 +35,7 @@ namespace MagicSchool
 
         public override void OnUpdate()
         {
-            // get current target
+            // get current target. if current target is not available, return new target
             _currentTarget = _me.CurrentTarget;
 
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.

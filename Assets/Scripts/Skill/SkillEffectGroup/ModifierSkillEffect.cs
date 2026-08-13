@@ -17,14 +17,14 @@ namespace MagicSchool
             _modifiers = modifiers ?? new List<ModifierSpec>();
         }
 
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
                 // asked once per recipient BC each recipient may have different status which effect amplifier
-                float amplifier = AmplifierFor(caster, recipient);
+                float amplifier = AmplifierFor(recipient);
 
                 // add every modifier to recipient
                 foreach (ModifierSpec modifier in _modifiers)

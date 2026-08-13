@@ -19,18 +19,22 @@ namespace MagicSchool
     public abstract class SkillCondition
     {
         protected ConditionSubjectEnum _subject;
+        protected IDamageable _me;
 
-        public ConditionSubjectEnum Subject => _subject;
+        protected SkillCondition(ConditionSubjectEnum subject)
+        {
+            _subject = subject;
+        }
 
-        protected SkillCondition(ConditionSubjectEnum subject) => _subject = subject;
+        public void Init(IDamageable unit) => _me = unit;
 
         // the actual condition - read each child for more detail
-        protected abstract bool IsMet(IDamageable caster, IDamageable recipient);
+        protected abstract bool IsMet(IDamageable recipient);
 
         // condition look at which hero?
-        protected IDamageable Subjected(IDamageable caster, IDamageable recipient)
+        protected IDamageable Subjected(IDamageable recipient)
         {
-            if (_subject == ConditionSubjectEnum.Caster) return caster;
+            if (_subject == ConditionSubjectEnum.Caster) return _me;
 
             else if (_subject == ConditionSubjectEnum.Recipient) return recipient;
 
@@ -43,8 +47,7 @@ namespace MagicSchool
 
         // to tell the caller "Is all the condition met?"
         // ASKING: Is there a reason this need to be static?
-        // FIXNOW: we shouldn't have send caster in. Could we just dependency inject _me into here? 
-        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable caster, IDamageable recipient)
+        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable recipient = null)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;
 
@@ -58,7 +61,7 @@ namespace MagicSchool
                 askedAnything = true;
 
                 // if either condition isn't satisfied, return conditionNotMet
-                if (!condition.IsMet(caster, recipient)) return ConditionResultEnum.ConditionIsNotMet;
+                if (!condition.IsMet(recipient)) return ConditionResultEnum.ConditionIsNotMet;
             }
 
             return askedAnything

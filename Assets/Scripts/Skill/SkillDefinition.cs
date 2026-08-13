@@ -29,6 +29,11 @@ namespace MagicSchool
             PassiveSteps = passiveSteps ?? new List<SkillStep>();
         }
 
+        public void Init()
+        {
+            // give hero to SkillCondition here.
+        }
+
         public void InvokeTrigger(TriggerEnum trigger) => Triggered?.Invoke(trigger);
     }
 }

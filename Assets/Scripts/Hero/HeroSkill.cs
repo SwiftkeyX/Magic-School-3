@@ -25,6 +25,7 @@ namespace MagicSchool
         {
             _me = hero;
             _skill = skill;
+            _skill.Init();
         }
 
         // ============================================== active & passive skill ==============================================
@@ -112,10 +113,7 @@ namespace MagicSchool
             {
                 // check condition for current TemplateAction. 
                 // if condition is not met, skip this one, and go check the next template action.
-                // FIXNOW: send FindNearestEnemy() is just straight wrong.
-                // I try look into pattern more, and found that condition for template action don't need recipient.
-                // just make recipient = null here.
-                if (SkillCondition.Ask(actionGroup.Conditions, _me, _me.FindNearestEnemy()) == ConditionResultEnum.ConditionIsNotMet) continue;
+                if (SkillCondition.Ask(actionGroup.Conditions, _me) == ConditionResultEnum.ConditionIsNotMet) continue;
 
                 // try play the template action
                 // ASKING: what is amount of paramter? could we just send ActionGroup in? 

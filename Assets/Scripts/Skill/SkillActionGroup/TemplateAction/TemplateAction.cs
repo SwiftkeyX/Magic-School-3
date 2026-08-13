@@ -150,13 +150,13 @@ namespace MagicSchool
             switch (effect.Recipient)
             {
                 case EffectRecipientEnum.Self:
-                    effect.ApplyEffect(_me, new List<Hero> { _me });
+                    effect.ApplyEffect(new List<Hero> { _me });
                     break;
 
                 case EffectRecipientEnum.SameToAimTarget:
                 case EffectRecipientEnum.EnemiesInArea:
                 case EffectRecipientEnum.EnemiesInPath:
-                    effect.ApplyEffect(_me, recipients);
+                    effect.ApplyEffect(recipients);
                     break;
             }
         }
@@ -174,7 +174,7 @@ namespace MagicSchool
                 yield return wait;
                 elapsed += effect.Cadence.cadenceInterval;
 
-                effect.ApplyEffect(_me, recipients);
+                effect.ApplyEffect(recipients);
             }
 
             // destroy once duration is expired

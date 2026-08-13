@@ -20,7 +20,7 @@ namespace MagicSchool
             _duration = duration;
         }
 
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
             float healPerTick = _totalHealAmount / totalTicks;
@@ -29,7 +29,7 @@ namespace MagicSchool
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
-                recipient.Heal(healPerTick * AmplifierFor(caster, recipient));
+                recipient.Heal(healPerTick * AmplifierFor(recipient));
             }
         }
     }

@@ -15,7 +15,7 @@ namespace MagicSchool
             _damageAmount = damageAmount;
         }
 
-        public override void ApplyEffect(IDamageable caster, IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
         {
             foreach (IDamageable recipient in recipients)
             {
@@ -29,7 +29,7 @@ namespace MagicSchool
                 else dmg = _damageAmount;
 
                 // if pass specify condition, amplify the effect
-                dmg *= AmplifierFor(caster, recipient);
+                dmg *= AmplifierFor(recipient);
 
                 // apply damage
                 recipient.TakeDamage(Mathf.RoundToInt(dmg));

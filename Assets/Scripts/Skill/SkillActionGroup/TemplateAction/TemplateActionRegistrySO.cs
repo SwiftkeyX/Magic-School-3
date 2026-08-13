@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace MagicSchool
 {
-    // FIXLATER: Now this is one GameManager, I want it to be move to its own class later, 
-    // since it kinda confusing placing it on GameManager.
     /// <summary>
     /// The one place a TemplateAction prefab is referenced from.
     ///

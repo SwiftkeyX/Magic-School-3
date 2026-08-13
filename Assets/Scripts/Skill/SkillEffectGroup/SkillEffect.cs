@@ -24,14 +24,14 @@ namespace MagicSchool
         public List<SkillCondition> Conditions => _conditions;
 
         // the conditions for this effect, it need to know who cast it.
-        public void Init(IDamageable caster)
+        public void Init(IEffectable caster)
         {
             foreach (SkillCondition condition in _conditions) condition?.Init(caster);
         }
 
         // check condition to each recipients.
         // If condition is met, the effect is amplified.
-        protected float AmplifierFor(IDamageable recipient)
+        protected float AmplifierFor(IEffectable recipient)
         {
             if (SkillCondition.Ask(_conditions, recipient) == ConditionResultEnum.ConditionIsMet)
             {
@@ -41,6 +41,6 @@ namespace MagicSchool
             return 1f;
         }
 
-        public abstract void ApplyEffect(IReadOnlyList<IDamageable> recipients);
+        public abstract void ApplyEffect(IReadOnlyList<IEffectable> recipients);
     }
 }

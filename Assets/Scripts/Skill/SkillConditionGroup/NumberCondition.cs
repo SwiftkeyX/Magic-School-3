@@ -15,7 +15,7 @@ namespace MagicSchool
             _matchBeat = matchBeat;
         }
 
-        protected override bool IsMet(IDamageable recipient)
+        protected override bool IsMet(IEffectable recipient)
         {
             if (_combo == null)
             {

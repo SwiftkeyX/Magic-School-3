@@ -16,10 +16,10 @@ namespace MagicSchool
             _wantPresent = wantPresent;
         }
 
-        protected override bool IsMet(IDamageable recipient)
+        protected override bool IsMet(IEffectable recipient)
         {
             // ask which unit?
-            IDamageable subject = Subjected(recipient);
+            IEffectable subject = Subjected(recipient);
 
             // guard
             if (subject == null) return false;

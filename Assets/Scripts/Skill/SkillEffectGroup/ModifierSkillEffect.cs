@@ -17,9 +17,9 @@ namespace MagicSchool
             _modifiers = modifiers ?? new List<ModifierSpec>();
         }
 
-        public override void ApplyEffect(IReadOnlyList<IDamageable> recipients)
+        public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
-            foreach (IDamageable recipient in recipients)
+            foreach (IEffectable recipient in recipients)
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 

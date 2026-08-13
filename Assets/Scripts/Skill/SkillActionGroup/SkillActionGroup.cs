@@ -32,7 +32,7 @@ namespace MagicSchool
 
         // ============================================ Init ============================================
         // Inject caster into class that need it.
-        public void Init(IDamageable caster)
+        public void Init(IEffectable caster)
         {
             foreach (SkillCondition condition in _conditions) condition?.Init(caster);
 

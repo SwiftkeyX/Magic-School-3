@@ -24,7 +24,7 @@ namespace MagicSchool
         {
             // initialize local variable
             // FLAGGING: Cast always applies to the caster (for now)
-            List<IDamageable> self = new List<IDamageable> { _me };
+            List<IEffectable> self = new List<IEffectable> { _me };
 
             bool hasCadenceEffect = false;
             foreach (SkillEffect effect in _effects)

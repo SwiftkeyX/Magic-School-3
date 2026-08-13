@@ -147,12 +147,12 @@ namespace MagicSchool
 
         // ==================================== Effect & Recipient ====================================
         // apply effect to the recipients
-        protected void ApplyEffectToRecipients(SkillEffect effect, IReadOnlyList<IDamageable> recipients)
+        protected void ApplyEffectToRecipients(SkillEffect effect, IReadOnlyList<IEffectable> recipients)
         {
             switch (effect.Recipient)
             {
                 case EffectRecipientEnum.Self:
-                    effect.ApplyEffect(new List<IDamageable> { _me });
+                    effect.ApplyEffect(new List<IEffectable> { _me });
                     break;
 
                 case EffectRecipientEnum.SameToAimTarget:
@@ -166,7 +166,7 @@ namespace MagicSchool
         // Cadence Tick are use by several template action
         // so we unified thing by move it here. 
         // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
-        protected IEnumerator CadenceTick(HealSkillEffect effect, IReadOnlyList<IDamageable> recipients)
+        protected IEnumerator CadenceTick(HealSkillEffect effect, IReadOnlyList<IEffectable> recipients)
         {
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
             float elapsed = 0f;

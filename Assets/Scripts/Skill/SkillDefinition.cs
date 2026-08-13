@@ -19,7 +19,7 @@ namespace MagicSchool
         public IReadOnlyList<SkillStep> PassiveSteps { get; }
 
         // event to control skill behaviour e.g. combo counter, (no more usage yet) ...
-        public event Action<TriggerEnum> Triggered;    
+        public event Action<TriggerEnum> Triggered;
 
         public SkillDefinition(string skillName, List<SkillStep> activeSteps = null, List<SkillStep> passiveSteps = null)
         {
@@ -30,7 +30,7 @@ namespace MagicSchool
 
         // inject caster into class that need it.
         // E.g. SkillCondition
-        public void Init(IDamageable caster)
+        public void Init(IEffectable caster)
         {
             foreach (SkillStep step in ActiveSteps) step.Init(caster);
 

@@ -19,20 +19,20 @@ namespace MagicSchool
     public abstract class SkillCondition
     {
         protected ConditionSubjectEnum _subject;
-        protected IDamageable _caster;
+        protected IEffectable _caster;
 
         protected SkillCondition(ConditionSubjectEnum subject)
         {
             _subject = subject;
         }
 
-        public void Init(IDamageable caster) => _caster = caster;
+        public void Init(IEffectable caster) => _caster = caster;
 
         // the actual condition - read each child for more detail
-        protected abstract bool IsMet(IDamageable recipient);
+        protected abstract bool IsMet(IEffectable recipient);
 
         // condition look at which hero?
-        protected IDamageable Subjected(IDamageable recipient)
+        protected IEffectable Subjected(IEffectable recipient)
         {
             if (_subject == ConditionSubjectEnum.Caster)
             {
@@ -64,7 +64,7 @@ namespace MagicSchool
         }
 
         // to tell the caller "Is all the condition met?"
-        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable recipient = null)
+        public static ConditionResultEnum Ask(List<SkillCondition> conditions, IEffectable recipient = null)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;
 

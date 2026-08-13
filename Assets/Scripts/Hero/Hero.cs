@@ -7,8 +7,8 @@ namespace MagicSchool
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
     /// 
-    /// FLAGGING: We implement several interface that we thought would be useful e.g. IDamageable, IHeroStats, IPlaceable, ITargeter.
-    /// But only IDamageable see a real usage. Other was no usage at all.
+    /// FLAGGING: We implement several interface that we thought would be useful e.g. IEffectable, IHeroStats, IPlaceable, ITargeter.
+    /// But only IEffectable see a real usage. Other was no usage at all.
     /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
     public class Hero : MonoBehaviour, ICombatant, IHeroStats
@@ -73,7 +73,7 @@ namespace MagicSchool
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
         // ======================================== interface method ========================================
-        // === IDamageable ===
+        // === IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
         public void AddModifier(IModifier modifier) => Stat.AddModifier(modifier);
         public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);

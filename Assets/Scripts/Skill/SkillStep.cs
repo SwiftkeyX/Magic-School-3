@@ -29,7 +29,7 @@ namespace MagicSchool
 
         // ================================== init ==================================
         // pass the caster down to the groups this step holds
-        public void Init(IDamageable caster)
+        public void Init(IEffectable caster)
         {
             if (_actionGroups == null) return;
 

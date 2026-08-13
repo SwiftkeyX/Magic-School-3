@@ -1,3 +1,5 @@
+using MagicSchool.Contracts;
+
 namespace MagicSchool
 {
     // There's 2 ways, hero can move:

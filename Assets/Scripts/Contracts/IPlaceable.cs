@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MagicSchool
+namespace MagicSchool.Contracts
 {
     // contract for moving hero on the board e.g. when we move hero on our own
     public interface IPlaceable

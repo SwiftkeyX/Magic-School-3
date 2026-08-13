@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using MagicSchool.Contracts;
 
 namespace MagicSchool
 {

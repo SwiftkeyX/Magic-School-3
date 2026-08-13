@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Contracts
 {
     // Contract for anything that needs a unit fighting on the board, without needing the whole Hero.
     // E.g.

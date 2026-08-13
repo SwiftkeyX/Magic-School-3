@@ -1,3 +1,5 @@
+using MagicSchool.Contracts;
+
 namespace MagicSchool
 {
     public class HeroIdle : HeroState

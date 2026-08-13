@@ -1,5 +1,6 @@
 using UnityEngine;
 using MagicSchool.VFX;
+using MagicSchool.Contracts;
 
 namespace MagicSchool
 {

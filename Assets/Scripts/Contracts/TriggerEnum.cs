@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Contracts
 {
     // Serialized into SkillSO assets as a raw int - always assign explicit values so inserting a
     // new member later can't silently remap what an existing asset's stored int means.

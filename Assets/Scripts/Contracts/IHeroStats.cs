@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Contracts
 {
     // contract for hero stat.
     public interface IHeroStats

@@ -1,4 +1,5 @@
 using System;
+using MagicSchool.Contracts;
 
 namespace MagicSchool
 {

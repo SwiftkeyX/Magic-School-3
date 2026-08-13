@@ -1,5 +1,6 @@
 using System;
 using MagicSchool.Engine;
+using MagicSchool.Contracts;
 
 namespace MagicSchool
 {

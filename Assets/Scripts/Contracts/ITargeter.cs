@@ -1,4 +1,4 @@
-namespace MagicSchool
+namespace MagicSchool.Contracts
 {
     // What a template action needs to aim: ask the caster who to point at.
     public interface ITargeter

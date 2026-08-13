@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MagicSchool.Engine;
+using MagicSchool.Contracts;
 
 namespace MagicSchool
 {

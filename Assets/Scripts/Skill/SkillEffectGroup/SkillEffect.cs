@@ -23,6 +23,12 @@ namespace MagicSchool
         public Cadence Cadence => _cadence;
         public List<SkillCondition> Conditions => _conditions;
 
+        // the conditions for this effect, it need to know who cast it.
+        public void Init(IDamageable caster)
+        {
+            foreach (SkillCondition condition in _conditions) condition?.Init(caster);
+        }
+
         // check condition to each recipients.
         // If condition is met, the effect is amplified.
         protected float AmplifierFor(IDamageable recipient)

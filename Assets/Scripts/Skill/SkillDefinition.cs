@@ -8,7 +8,7 @@ namespace MagicSchool
     /// SkillDefinition contain list of SkillStep for both passive & active skill.
     /// skill are separated into step, those step are working together in order, to create a actual skill.
     /// </summary>
-    /// FIXLATER: don't use System.Action. Just use Action. apply this to entire project.
+    /// FIXNOW: don't use System.Action. Just use Action. apply this to entire project.
     public class SkillDefinition
     {
         public string SkillName { get; }
@@ -29,9 +29,13 @@ namespace MagicSchool
             PassiveSteps = passiveSteps ?? new List<SkillStep>();
         }
 
-        public void Init()
+        // inject caster into class that need it.
+        // E.g. SkillCondition
+        public void Init(IDamageable caster)
         {
-            // give hero to SkillCondition here.
+            foreach (SkillStep step in ActiveSteps) step.Init(caster);
+
+            foreach (SkillStep step in PassiveSteps) step.Init(caster);
         }
 
         public void InvokeTrigger(TriggerEnum trigger) => Triggered?.Invoke(trigger);

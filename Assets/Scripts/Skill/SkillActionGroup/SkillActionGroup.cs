@@ -30,6 +30,15 @@ namespace MagicSchool
             _effects = effects ?? new List<SkillEffect>();
         }
 
+        // ============================================ Init ============================================
+        // Inject caster into class that need it.
+        public void Init(IDamageable caster)
+        {
+            foreach (SkillCondition condition in _conditions) condition?.Init(caster);
+
+            foreach (SkillEffect effect in _effects) effect?.Init(caster);
+        }
+
         // ============================================ Getter ============================================
         public ActionSourceEnum Source => _source;
         public TemplateAction TemplateAction => _templateAction;

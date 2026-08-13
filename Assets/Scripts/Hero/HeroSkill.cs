@@ -25,7 +25,7 @@ namespace MagicSchool
         {
             _me = hero;
             _skill = skill;
-            _skill.Init();
+            _skill?.Init(_me);
         }
 
         // ============================================== active & passive skill ==============================================

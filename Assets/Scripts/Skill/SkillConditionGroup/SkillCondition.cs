@@ -19,14 +19,14 @@ namespace MagicSchool
     public abstract class SkillCondition
     {
         protected ConditionSubjectEnum _subject;
-        protected IDamageable _me;
+        protected IDamageable _caster;
 
         protected SkillCondition(ConditionSubjectEnum subject)
         {
             _subject = subject;
         }
 
-        public void Init(IDamageable unit) => _me = unit;
+        public void Init(IDamageable caster) => _caster = caster;
 
         // the actual condition - read each child for more detail
         protected abstract bool IsMet(IDamageable recipient);
@@ -34,7 +34,7 @@ namespace MagicSchool
         // condition look at which hero?
         protected IDamageable Subjected(IDamageable recipient)
         {
-            if (_subject == ConditionSubjectEnum.Caster) return _me;
+            if (_subject == ConditionSubjectEnum.Caster) return _caster;
 
             else if (_subject == ConditionSubjectEnum.Recipient) return recipient;
 
@@ -46,7 +46,6 @@ namespace MagicSchool
         }
 
         // to tell the caller "Is all the condition met?"
-        // ASKING: Is there a reason this need to be static?
         public static ConditionResultEnum Ask(List<SkillCondition> conditions, IDamageable recipient = null)
         {
             if (conditions == null) return ConditionResultEnum.NoConditionFound;

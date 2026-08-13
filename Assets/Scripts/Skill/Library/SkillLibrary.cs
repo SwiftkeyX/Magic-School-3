@@ -25,7 +25,7 @@ namespace MagicSchool
             };
 
         /// <summary>
-        /// Return a skill that match hero's TemplateAction
+        /// Return a skill that match hero's TemplateAction.
         /// </summary>
         public static SkillDefinition Resolve(HeroDataSO data, TemplateActionRegistrySO registry)
         {

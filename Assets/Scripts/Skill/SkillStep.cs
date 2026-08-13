@@ -26,5 +26,14 @@ namespace MagicSchool
             _trigger = trigger;
             _actionGroups = actionGroups;
         }
+
+        // ================================== init ==================================
+        // pass the caster down to the groups this step holds
+        public void Init(IDamageable caster)
+        {
+            if (_actionGroups == null) return;
+
+            foreach (SkillActionGroup actionGroup in _actionGroups) actionGroup?.Init(caster);
+        }
     }
 }

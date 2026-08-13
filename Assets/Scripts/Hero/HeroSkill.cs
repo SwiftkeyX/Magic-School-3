@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace MagicSchool
 {
@@ -10,7 +9,7 @@ namespace MagicSchool
     /// </summary>
     public class HeroSkill
     {
-        private readonly Hero _me;
+        private readonly Hero _me;          
         private readonly SkillDefinition _skill;
         private float _castTime;
 

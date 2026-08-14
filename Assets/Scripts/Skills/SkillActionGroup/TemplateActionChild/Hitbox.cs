@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -10,7 +9,7 @@ namespace MagicSchool.Skills
     public interface Hitbox
     {
         public void Init(ICombatant _caster);
-        public event Action<Hero> OnHit;
+        public event Action<ICombatant> OnHit;
         public void OnTriggerEnter2D(Collider2D other);
         public void OnTriggerExit2D(Collider2D other);
     }

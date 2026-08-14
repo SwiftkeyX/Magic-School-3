@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -14,9 +13,9 @@ namespace MagicSchool.Skills
     public class OnTickHitbox : Hitbox
     {
         private ICombatant _caster;
-        private readonly List<Hero> _heroesWhoWasHit = new List<Hero>();
+        private readonly List<ICombatant> _heroesWhoWasHit = new List<ICombatant>();
 
-        public event Action<Hero> OnHit;
+        public event Action<ICombatant> OnHit;
 
         public void Init(ICombatant caster)
         {
@@ -28,7 +27,7 @@ namespace MagicSchool.Skills
         {
             if (_caster == null) return;
 
-            Hero heroHit = other.GetComponent<Hero>();
+            ICombatant heroHit = other.GetComponent<ICombatant>();
 
             // not apply effect to myself, my team, the dead hero
             if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateEnum.Dead) return;
@@ -40,7 +39,7 @@ namespace MagicSchool.Skills
         // Remove hero who was not hit by the skill out of the list
         public void OnTriggerExit2D(Collider2D other)
         {
-            Hero hero = other.GetComponent<Hero>();
+            ICombatant hero = other.GetComponent<ICombatant>();
             if (hero != null) _heroesWhoWasHit.Remove(hero);
         }
 
@@ -49,7 +48,7 @@ namespace MagicSchool.Skills
         {
             _heroesWhoWasHit.RemoveAll(hero => hero == null || hero.StateType == HeroStateEnum.Dead);
 
-            foreach (Hero hero in _heroesWhoWasHit)
+            foreach (ICombatant hero in _heroesWhoWasHit)
             {
                 OnHit?.Invoke(hero);
             }

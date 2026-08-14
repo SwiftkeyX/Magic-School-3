@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using MagicSchool;
-using MagicSchool.Heroes;
+using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
@@ -19,9 +18,9 @@ namespace MagicSchool.Skills
         }
 
         // ======================================== private ==============================================
-        private void HandleHit(Hero hero)
+        private void HandleHit(ICombatant hero)
         {
-            List<Hero> recipients = new List<Hero> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { hero };
             foreach (SkillEffect effect in _effects)
             {
                 ApplyEffectToRecipients(effect, recipients);

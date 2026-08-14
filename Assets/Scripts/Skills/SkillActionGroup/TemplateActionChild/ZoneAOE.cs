@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MagicSchool.Heroes;
+using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
@@ -76,9 +76,9 @@ namespace MagicSchool.Skills
         }
 
         // a hero currently in the zone got ticked - apply every cadence effect to them
-        private void HandleTick(Hero hero)
+        private void HandleTick(ICombatant hero)
         {
-            List<Hero> recipients = new List<Hero> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { hero };
             foreach (SkillEffect effect in _effects)
             {
                 if (effect.Cadence.isCadence) ApplyEffectToRecipients(effect, recipients);

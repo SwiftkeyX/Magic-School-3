@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -18,7 +17,7 @@ namespace MagicSchool.Skills
     /// </summary>
     public class ContactAOE : AOE
     {
-        private readonly HashSet<(SkillEffect effect, Hero hero)> _triggeredOnce = new HashSet<(SkillEffect, Hero)>();
+        private readonly HashSet<(SkillEffect effect, ICombatant hero)> _triggeredOnce = new HashSet<(SkillEffect, ICombatant)>();
 
         // ======================================== override ==============================================
         protected override void Play()
@@ -38,9 +37,9 @@ namespace MagicSchool.Skills
         /// 1) Apply effect once if not cadence
         /// 2) Apply effect over time if cadence
         /// </summary>
-        private void HandleFirstHit(Hero hero)
+        private void HandleFirstHit(ICombatant hero)
         {
-            List<Hero> recipients = new List<Hero> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { hero };
             foreach (SkillEffect effect in _effects)
             {
                 // if not cadence, apply once
@@ -52,8 +51,8 @@ namespace MagicSchool.Skills
                 // if cadence true, apply effect multiple time
                 else if (_triggeredOnce.Add((effect, hero)))
                 {
-                    // run coroutine on target hero to apply that effect 
-                    hero.StartCoroutine(PerHeroCadenceTick(effect, hero));
+                    // run coroutine on target hero to apply that effect.
+                    if (hero is MonoBehaviour victim) victim.StartCoroutine(PerHeroCadenceTick(effect, hero));
                 }
             }
         }
@@ -61,10 +60,10 @@ namespace MagicSchool.Skills
         // FLAGGING: this is the poison DOT, and it should be its own Status class rather than a
         // coroutine hanging off the AOE that applied it.
         // Per hero cadence tick
-        private IEnumerator PerHeroCadenceTick(SkillEffect effect, Hero hero)
+        private IEnumerator PerHeroCadenceTick(SkillEffect effect, ICombatant hero)
         {
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
-            List<Hero> recipients = new List<Hero> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { hero };
             float elapsed = 0f;
 
             while (elapsed < effect.Cadence.cadenceDuration)

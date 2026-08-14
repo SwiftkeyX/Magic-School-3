@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -29,12 +28,12 @@ namespace MagicSchool.Skills
 
         // ======================================== private ==============================================
 
-        private void HandleHit(Hero hero)
+        private void HandleHit(ICombatant hero)
         {
             // if hero is hit isn't the target one, don't apply effect
-            if ((ICombatant)hero != _target) return;
+            if (hero != _target) return;
 
-            List<Hero> recipients = new List<Hero> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { hero };
             foreach (SkillEffect effect in _effects)
             {
                 ApplyEffectToRecipients(effect, recipients);

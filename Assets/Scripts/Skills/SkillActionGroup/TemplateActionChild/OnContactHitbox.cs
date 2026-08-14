@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -13,9 +12,9 @@ namespace MagicSchool.Skills
     public class OnContactHitbox : Hitbox
     {
         private ICombatant _caster;
-        private readonly HashSet<Hero> _triggeredOnce = new HashSet<Hero>();
+        private readonly HashSet<ICombatant> _triggeredOnce = new HashSet<ICombatant>();
 
-        public event Action<Hero> OnHit;
+        public event Action<ICombatant> OnHit;
 
         public void Init(ICombatant caster)
         {
@@ -31,7 +30,7 @@ namespace MagicSchool.Skills
         {
             if (_caster == null) return;
 
-            Hero heroHit = other.GetComponent<Hero>();
+            ICombatant heroHit = other.GetComponent<ICombatant>();
 
             // not collide with myself, my team, the dead hero
             if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateEnum.Dead) return;

@@ -86,6 +86,7 @@ namespace MagicSchool.Combat.Heroes.States
                 return true;
             }
 
+            // FLAGGING: the stun duration should be addition to previous exist stun running 
             bool notStun = CurrentType != HeroStateEnum.Stunned;
             if (_me.IsStunned && notStun)
             {

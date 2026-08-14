@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MagicSchool.Contracts;
 using MagicSchool.Skills;
 
-namespace MagicSchool.Heroes
+namespace MagicSchool.Combat.Heroes
 {
 
     /// <summary>

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     public class Hex : MonoBehaviour, IPlacement
     {

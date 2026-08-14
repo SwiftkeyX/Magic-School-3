@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     // Anything that can stand on a board hex
     public interface IHexPlaceable : IPlaceable

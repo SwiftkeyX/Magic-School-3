@@ -1,5 +1,5 @@
 using MagicSchool.Contracts;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.Core
 {

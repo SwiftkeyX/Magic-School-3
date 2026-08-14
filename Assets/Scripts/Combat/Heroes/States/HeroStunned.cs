@@ -1,7 +1,7 @@
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Heroes.States
+namespace MagicSchool.Combat.Heroes.States
 {
     public class HeroStunned : HeroState
     {

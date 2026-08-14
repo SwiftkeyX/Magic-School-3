@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     /// <summary>
     /// Keep list of placement for each hero on the board

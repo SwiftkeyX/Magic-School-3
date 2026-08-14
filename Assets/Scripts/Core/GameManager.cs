@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 using MagicSchool.Player;
 using MagicSchool.Skills;
 

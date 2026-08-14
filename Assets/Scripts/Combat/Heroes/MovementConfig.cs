@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MagicSchool.Heroes
+namespace MagicSchool.Combat.Heroes
 {
     /// <summary>
     /// How a hero animates moving: walk pacing plus the two curves.

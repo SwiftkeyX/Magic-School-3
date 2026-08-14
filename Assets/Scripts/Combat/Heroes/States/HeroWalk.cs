@@ -1,8 +1,8 @@
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 
-namespace MagicSchool.Heroes.States
+namespace MagicSchool.Combat.Heroes.States
 {
     // Walks one hex, one frame at a time - no coroutine, since the state machine already drives
     // everything off OnUpdate(). SetTarget must be called (by whoever transitions in, e.g.

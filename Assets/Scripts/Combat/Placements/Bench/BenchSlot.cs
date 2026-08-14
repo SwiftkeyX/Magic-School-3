@@ -1,7 +1,7 @@
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     public class BenchSlot : MonoBehaviour, IPlacement
     {

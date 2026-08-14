@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 
-namespace MagicSchool.Heroes
+namespace MagicSchool.Combat.Heroes
 {
     // Scans the board for a hero's nearest/furthest/most-clustered living enemy.
     public class FindEnemy

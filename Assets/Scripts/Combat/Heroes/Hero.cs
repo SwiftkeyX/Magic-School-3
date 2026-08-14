@@ -1,11 +1,11 @@
 using UnityEngine;
-using MagicSchool.Heroes.States;
-using MagicSchool.Heroes.Stats;
+using MagicSchool.Combat.Heroes.States;
+using MagicSchool.Combat.Heroes.Stats;
 using MagicSchool.Contracts;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 using MagicSchool.Skills;
 
-namespace MagicSchool.Heroes
+namespace MagicSchool.Combat.Heroes
 {
     /// <summary>
     /// Hero don't have any logic inside it BUT:

@@ -1,7 +1,7 @@
 using UnityEngine;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Placements;
 
-namespace MagicSchool.Heroes
+namespace MagicSchool.Combat.Heroes
 {
     /// FLAGGING: This is temp
     /// <summary>

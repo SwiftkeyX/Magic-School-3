@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Heroes.States
+namespace MagicSchool.Combat.Heroes.States
 {
     public class HeroDead : HeroState
     {

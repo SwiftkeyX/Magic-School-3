@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     // Finds the next step along the shortest unoccupied route between hexes, via A* search.
     public static class HexPathfinder

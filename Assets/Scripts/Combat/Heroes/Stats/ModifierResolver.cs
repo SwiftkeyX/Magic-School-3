@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Heroes.Stats
+namespace MagicSchool.Combat.Heroes.Stats
 {
     // 1) ModifierResolver are used to calculate final stat from modifier:
     // 1.1) stat modifier: they increase/decrease stat e.g. atk, def, as, mana, hp, etc...

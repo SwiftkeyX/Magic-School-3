@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
 
     /// <summary>

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Heroes.Stats
+namespace MagicSchool.Combat.Heroes.Stats
 {
     /// <summary>
     /// Stat of a hero.

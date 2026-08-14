@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using MagicSchool.Heroes;
+using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.UI
 {

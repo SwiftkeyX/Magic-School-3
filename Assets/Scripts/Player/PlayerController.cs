@@ -1,8 +1,8 @@
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Core;
-using MagicSchool.Heroes;
-using MagicSchool.Placements;
+using MagicSchool.Combat.Heroes;
+using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.Player
 {

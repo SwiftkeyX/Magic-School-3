@@ -4,9 +4,9 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Engine;
 using MagicSchool.Contracts;
-using MagicSchool.Heroes;
+using MagicSchool.Combat.Heroes;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Combat.Placements
 {
     public class Bench : MonoBehaviour
     {

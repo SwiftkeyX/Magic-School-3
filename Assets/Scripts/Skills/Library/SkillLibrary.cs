@@ -9,8 +9,9 @@ namespace MagicSchool.Skills
     /// </summary>
     public static class SkillLibrary
     {
+        // FIXLATER: I think TemplateActionRegistrySO should just stay here, no?
+        // I see it was forwarding around for no reason.
 
-        
         // a pair of TemplateAction & SkillDefinition
         // TemplateAction is a skill prefab used by hero, but hero don't know how this TemplateAction work.
         // How the TemplateAction work was put inside SkillDefinition.

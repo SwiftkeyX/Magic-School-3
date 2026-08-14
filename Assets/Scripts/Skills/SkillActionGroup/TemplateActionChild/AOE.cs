@@ -12,13 +12,13 @@ namespace MagicSchool.Skills
         public enum AOEOffsetEnum { Center, Tip }
         [SerializeField] private AOEOffsetEnum _offset;
 
-        // ======================================= protected =======================================
+        // ======================================= override =======================================
         protected override void Play()
         {
-            // resolve rotation AOE placement first
+            // resolve AOE's rotation first
             FaceAimTarget();
 
-            // resolve transform AOE placement second
+            // resolve AOE's transform second
             transform.position = GetSpawnPosition();
 
             SetLifeTime();
@@ -102,12 +102,12 @@ namespace MagicSchool.Skills
         // e.g. place the tip of box AOE at user, place the center of circle AOE at user
         protected override Vector3 GetSpawnPosition()
         {
+            // the skill's center was place on source 
             if (_offset == AOEOffsetEnum.Center) return _source;
 
+            // the skill's tip was place on source
             else if (_offset == AOEOffsetEnum.Tip)
             {
-                // Tip: the near end sits on the source and the body runs out toward the aim, so shift
-                // the centre out by half the shape's length. No direction to run along = nothing to do.
                 Vector3 facing = _aimTarget - _source;
                 if (facing.sqrMagnitude < 0.0001f) return _source;
                 return _source + facing.normalized * HalfLengthAlongFacing();
@@ -117,6 +117,7 @@ namespace MagicSchool.Skills
             return _source;
         }
 
+        // ======================================= abstract =======================================
         // When AOE hit someone, apply effect to recipient
         protected abstract void HandleAOEHit(ICombatant recipient);
 
@@ -152,7 +153,7 @@ namespace MagicSchool.Skills
             if (facing.sqrMagnitude < 0.0001f) return;
 
             float degrees = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, degrees - 90f);
+            transform.rotation = Quaternion.Euler(0f, 0f, degrees + 90f);
         }
     }
 }

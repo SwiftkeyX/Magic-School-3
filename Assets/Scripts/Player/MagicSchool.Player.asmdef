@@ -1,12 +1,11 @@
 {
-    "name": "MagicSchool.Gameplay",
+    "name": "MagicSchool.Player",
     "rootNamespace": "MagicSchool",
     "references": [
-        "GUID:d6cdac12259a42a4b886d8e6a5240b43",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
         "GUID:f48b491f9a3d1ee41b83e0e3c16f6360",
-        "GUID:5de339ba895850c43b893fd7ca14a036",
-        "GUID:81732514f3d7ca047a47d2b3fe719fcb"
+        "GUID:81732514f3d7ca047a47d2b3fe719fcb",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:44bf83f8ef0dd4f4a94766d111613117"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

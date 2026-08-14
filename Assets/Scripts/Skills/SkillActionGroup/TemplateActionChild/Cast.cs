@@ -14,6 +14,7 @@ namespace MagicSchool.Skills
     {
         private ICombatant _target;
 
+        // ======================================= override =======================================
         // source mean nothing to Cast.
         protected override bool ResolveSource(ActionSourceEnum source)
         {
@@ -103,12 +104,13 @@ namespace MagicSchool.Skills
                 }
             }
 
-            // This template action dies 
+            // After a duration, this template action dies 
             // with the lifetime of "longest duration thingy" live on this instance
             // thingy = all cadence effect & modifier
             ExpireAfter(Longest(durations));
         }
 
+        // ======================================= private ========================================
         // get the longest modifier duration
         private float LongestModifierDuration(SkillEffect effect)
         {

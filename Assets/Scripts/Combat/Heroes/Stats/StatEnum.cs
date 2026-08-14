@@ -10,7 +10,7 @@ namespace MagicSchool.Combat.Heroes.Stats
     // explicit values are only here to keep it that way if it ever does get serialized.
     public enum StatEnum
     {
-        HP = 0,
+        MAXHP = 0,
         Atk = 1,
         DF = 2,
         MG = 3,

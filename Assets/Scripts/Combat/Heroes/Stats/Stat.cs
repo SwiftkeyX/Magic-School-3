@@ -27,7 +27,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         // ========================================== modify stat getter ==========================================
         public float GetFinalStat(StatEnum type) => _statModifier.GetStatModifier(type, _base[type]);
 
-        public int HP => Mathf.RoundToInt(GetFinalStat(StatEnum.HP));
+        public int HP => Mathf.RoundToInt(GetFinalStat(StatEnum.MAXHP));
         public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.Atk));
         public int DF => Mathf.RoundToInt(GetFinalStat(StatEnum.DF));
         public int MG => Mathf.RoundToInt(GetFinalStat(StatEnum.MG));
@@ -58,7 +58,7 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         public Stat(HeroDataSO stat)
         {
-            _base[StatEnum.HP] = stat.HP;
+            _base[StatEnum.MAXHP] = stat.HP;
             _base[StatEnum.Atk] = stat.Atk;
             _base[StatEnum.DF] = stat.DF;
             _base[StatEnum.MG] = stat.MG;

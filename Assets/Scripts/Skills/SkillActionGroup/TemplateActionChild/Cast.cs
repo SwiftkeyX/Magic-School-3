@@ -13,6 +13,7 @@ namespace MagicSchool.Skills
     public class Cast : TemplateAction
     {
         private ICombatant _target;
+        private int _keepAlive;     // the amount of "thing" running on this TemplateAction
 
         // source mean nothing to Cast.
         protected override bool ResolveSource(ActionSourceEnum source)
@@ -71,7 +72,6 @@ namespace MagicSchool.Skills
 
         protected override Vector3 GetSpawnPosition() => _source;
 
-        private int _cadenceRunning;        // counting the amount of cadence effect still running
 
         protected override void Play()
         {
@@ -83,7 +83,6 @@ namespace MagicSchool.Skills
                 // e.g. galio heal
                 if (effect.Cadence.isCadence)
                 {
-                    _cadenceRunning++;
                     StartCoroutine(PerHeroCadenceTick(effect, _me));
                 }
 
@@ -91,11 +90,48 @@ namespace MagicSchool.Skills
                 else
                 {
                     effect.ApplyEffect(new List<IEffectable> { _target });
+
+                    // get longest effect duration
+                    float duration = LongestModifierDuration(effect);
+
+                    // set effect duration.
+                    if (duration > 0) StartCoroutine(ExpireAfterModifier(duration));
                 }
             }
 
-            // if there's still cadence effect run, don't destroy yet
-            if (_cadenceRunning == 0) DestroyMe();
+            // if there's still something running, don't destroy yet
+            if (_keepAlive == 0) DestroyMe();
+        }
+
+        // get the longest effect duration from this TemplateAction
+        private float LongestModifierDuration(SkillEffect effect)
+        {
+            if (!(effect is ModifierSkillEffect modifierEffect)) return 0f;
+
+            float longest = 0f;
+            foreach (ModifierSpec modifier in modifierEffect.Modifiers)
+            {
+                if (modifier == null) continue;
+
+                if (modifier.GetDuration() > longest) longest = modifier.GetDuration();
+            }
+
+            return longest;
+        }
+
+        private IEnumerator ExpireAfterModifier(float duration)
+        {
+            // another thing run
+            _keepAlive++;
+
+            // wait
+            yield return new WaitForSeconds(duration);
+
+            // another thing dies
+            _keepAlive--;
+
+            // if there's still something running, don't destroy yet
+            if (_keepAlive == 0) DestroyMe();
         }
 
         // Cadence Tick are use by several template action
@@ -103,6 +139,8 @@ namespace MagicSchool.Skills
         // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
         private IEnumerator PerHeroCadenceTick(SkillEffect effect, ICombatant hero)
         {
+            _keepAlive++;
+
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
             List<ICombatant> recipients = new List<ICombatant> { hero };
             float elapsed = 0f;
@@ -117,10 +155,10 @@ namespace MagicSchool.Skills
             }
 
             // one of cadence effect die
-            _cadenceRunning--;
+            _keepAlive--;
 
-            // if there's still cadence effect run, don't destroy yet
-            if (_cadenceRunning == 0) DestroyMe();
+            // if there's still something running, don't destroy yet
+            if (_keepAlive == 0) DestroyMe();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace MagicSchool.Heroes.States
         // if enemy is in attack range, not dead, transition to attack 
         public bool CanAttack(ICombatant nearestEnemy)
         {
-            return nearestEnemy != null && nearestEnemy.IsAlive && _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex, _me.Range);
+            return nearestEnemy != null && nearestEnemy.IsAlive && _me.CurrentHex.IsWithinRange(nearestEnemy.CurrentHex(), _me.Range);
         }
 
         // walk condition, read function's comment
@@ -38,7 +38,7 @@ namespace MagicSchool.Heroes.States
             if (IsEnemyArrivingNextToMe()) return false;
 
             // Find next hex that could lead this hero toward nearest enemy
-            Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex, _isHexBlocked);
+            Hex targetHex = HexPathfinder.FindValidHexToTarget(_me.CurrentHex, nearestEnemy.CurrentHex(), _isHexBlocked);
             if (targetHex == null) return false;
 
             // Do I wait for the blocker to move? (Read function's comment)
@@ -74,8 +74,8 @@ namespace MagicSchool.Heroes.States
         /// <returns = FALSE> I'll take a longer path </returns>
         private bool ShouldWaitForBlocker(ICombatant nearestEnemy, Hex targetHex)
         {
-            float distFromMeToEnemy = Vector3.Distance(_me.CurrentHex.transform.position, nearestEnemy.CurrentHex.transform.position);
-            float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex.transform.position);
+            float distFromMeToEnemy = Vector3.Distance(_me.CurrentHex.transform.position, nearestEnemy.CurrentHex().transform.position);
+            float distFromTargetHexToEnemy = Vector3.Distance(targetHex.transform.position, nearestEnemy.CurrentHex().transform.position);
             bool nextHexMakeMeFurtherFromEnemy = distFromTargetHexToEnemy >= distFromMeToEnemy;
 
             // if the next Hex make me closer to enemy, don't wait
@@ -97,7 +97,7 @@ namespace MagicSchool.Heroes.States
         {
             foreach (var neighbor in _me.CurrentHex.GetNeighbors())
             {
-                float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex.transform.position);
+                float neighborDist = Vector3.Distance(neighbor.transform.position, nearestEnemy.CurrentHex().transform.position);
                 if (neighborDist >= distFromMeToEnemy) continue;
 
                 ICombatant occupant = _me.WhoReservedThisHex(neighbor);

@@ -1,8 +1,8 @@
 using UnityEngine;
-using MagicSchool.Contracts;
-using MagicSchool.Core;
 using MagicSchool.Heroes.States;
 using MagicSchool.Heroes.Stats;
+using MagicSchool.Contracts;
+using MagicSchool.Core;
 using MagicSchool.Placements;
 using MagicSchool.Skills;
 
@@ -17,7 +17,7 @@ namespace MagicSchool.Heroes
     /// But only IEffectable see a real usage. Other was no usage at all.
     /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHeroStats
+    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;

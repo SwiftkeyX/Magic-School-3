@@ -56,10 +56,10 @@ namespace MagicSchool.Heroes
             if (engaged == null || !engaged.IsAlive || !engaged.IsInCombat) return false;
 
             Hex myHex = _me.CurrentHex;
-            if (myHex == null || engaged.CurrentHex == null) return false;
+            if (myHex == null || engaged.CurrentHex() == null) return false;
 
             // Is current target is out of range?
-            return myHex.IsWithinRange(engaged.CurrentHex, _me.Range);
+            return myHex.IsWithinRange(engaged.CurrentHex(), _me.Range);
         }
 
         // Picks nearest enemy (if there are several nearest enemies, random it).
@@ -108,8 +108,8 @@ namespace MagicSchool.Heroes
 
             foreach (ICombatant candidate in enemies)
             {
-                Hex candidateHex = candidate.CurrentHex;
-                int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex, radius));
+                Hex candidateHex = candidate.CurrentHex();
+                int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex(), radius));
 
                 if (count > bestCount)
                 {
@@ -155,7 +155,7 @@ namespace MagicSchool.Heroes
 
             _enemyDistanceCache = GetEnemiesBFS()
             // calculate distance from myself to each enemy
-            .Select(target => (target, dist: Vector3.Distance(myHex.transform.position, target.CurrentHex.transform.position)))
+            .Select(target => (target, dist: Vector3.Distance(myHex.transform.position, target.CurrentHex().transform.position)))
             // get a list of = (Hero : float)
             .ToList();
             _enemyDistanceCacheFrame = Time.frameCount;

@@ -1,7 +1,6 @@
 using UnityEngine;
-using MagicSchool.Contracts;
 
-namespace MagicSchool.Placements
+namespace MagicSchool.Contracts
 {
     /// <summary>
     /// Hex and Benchslot are used to place hero on it.

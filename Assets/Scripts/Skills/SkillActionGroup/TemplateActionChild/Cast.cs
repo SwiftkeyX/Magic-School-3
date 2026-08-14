@@ -12,13 +12,62 @@ namespace MagicSchool.Skills
     /// </summary>
     public class Cast : TemplateAction
     {
+        private ICombatant _target;
+
+        // source mean nothing to Cast.
         protected override bool ResolveSource(ActionSourceEnum source)
         {
-            _source = _me.transform.position;
+            if (source == ActionSourceEnum.Self)
+            {
+                _source = _me.transform.position;
+            }
+
+            // spawn on current target
+            else if (source == ActionSourceEnum.Current)
+            {
+                ICombatant target = _me.CurrentTarget;
+                if (target == null) return false;
+                _source = target.transform.position;
+            }
+
+            // else if () ...
+
+            // fallback
+            else _source = _me.transform.position;
+
             return true;
         }
 
-        protected override bool ResolveAimTarget(AimTargetEnum aimTarget) => true;
+        // aim = which unit the cast was targeting
+        protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
+        {
+            // aim skill at self
+            if (aimTarget == AimTargetEnum.Self)
+            {
+                _target = _me;
+            }
+
+            // aim skill at current target
+            else if (aimTarget == AimTargetEnum.Current)
+            {
+                _target = _me.CurrentTarget;
+                if (_target == null) return false;
+            }
+
+            // aim skill at furthest target
+            else if (aimTarget == AimTargetEnum.Furthest)
+            {
+                _target = _me.FindFurthestEnemy();
+                if (_target == null) return false;
+            }
+
+            // else if () ...
+
+            // fallback
+            else _target = _me;
+
+            return true;
+        }
 
         protected override Vector3 GetSpawnPosition() => _source;
 
@@ -26,10 +75,6 @@ namespace MagicSchool.Skills
 
         protected override void Play()
         {
-            // initialize local variable
-            // FLAGGING: Cast always applies to the caster (for now)
-            List<ICombatant> self = new List<ICombatant> { _me };
-
             foreach (SkillEffect effect in _effects)
             {
                 if (effect.Recipient != EffectRecipientEnum.Self) continue;
@@ -45,7 +90,7 @@ namespace MagicSchool.Skills
                 // if not cadence, apply effect once.
                 else
                 {
-                    effect.ApplyEffect(self);
+                    effect.ApplyEffect(new List<IEffectable> { _target });
                 }
             }
 
@@ -72,7 +117,7 @@ namespace MagicSchool.Skills
             }
 
             // one of cadence effect die
-            _cadenceRunning--; 
+            _cadenceRunning--;
 
             // if there's still cadence effect run, don't destroy yet
             if (_cadenceRunning == 0) DestroyMe();

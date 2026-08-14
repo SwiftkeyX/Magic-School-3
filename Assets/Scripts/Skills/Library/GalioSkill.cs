@@ -15,7 +15,6 @@ namespace MagicSchool.Skills
     {
         private const float BraceDuration = 2f;
         private const float TickInterval = 0.5f;
-        private const float TickWindow = 3f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -33,20 +32,27 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {
-                    new ModifierSkillEffect(EffectRecipientEnum.Self,
-                        new List<ModifierSpec> { new ModifierSpec(ModifierEnum.BonusHP, 150f, BraceDuration) },
-                        cadence: new Cadence(TickInterval, TickWindow),
-                        amplifier: 0.3f),
+                    new HealSkillEffect(
+                        recipient:       EffectRecipientEnum.Self,
+                        totalHealAmount: 200f,
+                        duration:        BraceDuration,
+                        cadence:         new Cadence(interval: TickInterval, duration: BraceDuration)),
 
-                    new HealSkillEffect(EffectRecipientEnum.Self, totalHealAmount: 200f, duration: BraceDuration,
-                        cadence: new Cadence(TickInterval, TickWindow)),
-
-                    new ModifierSkillEffect(EffectRecipientEnum.Self,
-                        new List<ModifierSpec> { new ModifierSpec(ModifierEnum.DamageReduction, 25f, BraceDuration) },
+                    new ModifierSkillEffect(
+                        recipient: EffectRecipientEnum.Self,
+                        modifiers: new List<ModifierSpec>
+                        {
+                            new ModifierSpec(
+                                modifier: ModifierEnum.DamageReduction,
+                                amount:   25f,
+                                duration: BraceDuration),
+                        },
                         amplifier: 0.3f),
                 });
 
-            return new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { brace });
+            return new SkillStep(
+                trigger: TriggerEnum.OnCast,
+                actionGroups: new List<SkillActionGroup> { brace });
         }
 
         // fired when the brace above expires
@@ -58,10 +64,14 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, 120f),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInArea,
+                        damageAmount: 120f),
                 });
 
-            return new SkillStep(TriggerEnum.OnExpired, new List<SkillActionGroup> { slam });
+            return new SkillStep(
+                trigger: TriggerEnum.OnExpired,
+                actionGroups: new List<SkillActionGroup> { slam });
         }
     }
 }

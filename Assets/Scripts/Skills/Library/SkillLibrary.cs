@@ -12,20 +12,21 @@ namespace MagicSchool.Skills
         // FIXLATER: I think TemplateActionRegistrySO should just stay here, no?
         // I see it was forwarding around for no reason.
 
-        // a pair of TemplateAction & SkillDefinition
+        // a pair of HeroEnum & SkillDefinition
         // TemplateAction is a skill prefab used by hero, but hero don't know how this TemplateAction work.
         // How the TemplateAction work was put inside SkillDefinition.
         private static readonly Dictionary<SkillIdEnum, Func<TemplateActionRegistrySO, SkillDefinition>> Builders =
             new Dictionary<SkillIdEnum, Func<TemplateActionRegistrySO, SkillDefinition>>
             {
-                { SkillIdEnum.Aatrox, AatroxSkill.Build },
+                { SkillIdEnum.Aatrox    , AatroxSkill.Build }    ,
                 { SkillIdEnum.Cassiopeia, CassiopeiaSkill.Build },
-                { SkillIdEnum.Galio, GalioSkill.Build },
-                { SkillIdEnum.Garen, GarenSkill.Build },
-                { SkillIdEnum.Jhin, JhinSkill.Build },
-                { SkillIdEnum.Karma, KarmaSkill.Build },
-                { SkillIdEnum.Samira, SamiraSkill.Build },
-                { SkillIdEnum.Teemo, TeemoSkill.Build },
+                { SkillIdEnum.Galio     , GalioSkill.Build }     ,
+                { SkillIdEnum.Garen     , GarenSkill.Build }     ,
+                { SkillIdEnum.Jhin      , JhinSkill.Build }      ,
+                { SkillIdEnum.Karma     , KarmaSkill.Build }     ,
+                { SkillIdEnum.Samira    , SamiraSkill.Build }    ,
+                { SkillIdEnum.Teemo     , TeemoSkill.Build }     ,
+                { SkillIdEnum.Warwick   , WarwickSkill.Build }   ,
             };
 
         /// <summary>

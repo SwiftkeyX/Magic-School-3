@@ -20,5 +20,6 @@ namespace MagicSchool.Skills
         Karma = 6,
         Samira = 7,
         Teemo = 8,
+        Warwick = 9,
     }
 }

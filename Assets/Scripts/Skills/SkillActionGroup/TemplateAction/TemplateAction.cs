@@ -164,26 +164,6 @@ namespace MagicSchool.Skills
             }
         }
 
-        // Cadence Tick are use by several template action
-        // so we unified thing by move it here. 
-        // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
-        protected IEnumerator CadenceTick(HealSkillEffect effect, IReadOnlyList<IEffectable> recipients)
-        {
-            WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
-            float elapsed = 0f;
-
-            while (elapsed < effect.Duration)
-            {
-                yield return wait;
-                elapsed += effect.Cadence.cadenceInterval;
-
-                effect.ApplyEffect(recipients);
-            }
-
-            // destroy once duration is expired
-            DestroyMe();
-        }
-
         // ===================================== helper =====================================
         protected virtual void SetLifeTime()
         {

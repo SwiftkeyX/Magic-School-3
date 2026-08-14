@@ -20,6 +20,8 @@ namespace MagicSchool.Player
 
         void Update()
         {
+            if (GameManager.Instance == null) return;
+
             TryStartCombat();
             PlayerMoveHero();
         }

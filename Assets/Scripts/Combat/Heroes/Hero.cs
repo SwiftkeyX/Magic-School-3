@@ -2,7 +2,6 @@ using UnityEngine;
 using MagicSchool.Heroes.States;
 using MagicSchool.Heroes.Stats;
 using MagicSchool.Contracts;
-using MagicSchool.Core;
 using MagicSchool.Placements;
 using MagicSchool.Skills;
 
@@ -52,6 +51,8 @@ namespace MagicSchool.Heroes
         // ======================================== board ========================================
         public ICombatant WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
         public bool IsHexReservedByOther(Hex hex) => _board.IsReservedByOther(hex, this);
+        public bool IsBattleOn => _board == null || _board.IsBattleOn;
+
         // A hero knows which board it belongs to, so HeroMover doesn't need telling.
         // Null-checked (not `?.`) because `?.` skips Unity's fake-null: a destroyed board would
         // pass the check and then throw. Guarded at all because a hero can exist before a board,
@@ -156,7 +157,7 @@ namespace MagicSchool.Heroes
             if (!IsInitialized) return;
 
             // if combat not start, return
-            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhaseEnum.Combat) return;
+            if (!IsBattleOn) return;
 
             // Some hero are not on BattleBoard but was in the bench. They don't consider in combat.
             if (!IsInCombat) return;

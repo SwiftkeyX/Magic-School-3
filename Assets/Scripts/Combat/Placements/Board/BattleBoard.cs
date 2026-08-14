@@ -29,6 +29,9 @@ namespace MagicSchool.Placements
         public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
         public IReadOnlyList<ICombatant> HeroesOnBoard => _heroesOnBoard;
 
+        public bool IsBattleOn { get; private set; }
+        public void SetBattleOn(bool isOn) => IsBattleOn = isOn;
+
         void Awake()
         {
             InitializeHex();

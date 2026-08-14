@@ -53,9 +53,18 @@ namespace MagicSchool.Core
 
         public void StartCombat()
         {
-            Phase = GamePhaseEnum.Combat;
+            SetPhase(GamePhaseEnum.Combat);
 
             _seed.SpawnHeroOnBoard();
+        }
+
+        // The board is the one thing heroes already hold a reference to, so the phase is pushed
+        // there rather than pulled back out of this singleton.
+        private void SetPhase(GamePhaseEnum phase)
+        {
+            Phase = phase;
+            
+            if (_board != null) _board.SetBattleOn(phase == GamePhaseEnum.Combat);
         }
 
         private void CheckForWinner()
@@ -67,7 +76,7 @@ namespace MagicSchool.Core
             if (blueAlive && redAlive) return;
 
             Winner = blueAlive ? TeamEnum.Blue : redAlive ? TeamEnum.Red : (TeamEnum?)null;
-            Phase = GamePhaseEnum.Result;
+            SetPhase(GamePhaseEnum.Result);
         }
     }
 }

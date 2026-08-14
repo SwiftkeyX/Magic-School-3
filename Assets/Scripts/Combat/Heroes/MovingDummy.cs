@@ -1,5 +1,4 @@
 using UnityEngine;
-using MagicSchool.Core;
 using MagicSchool.Placements;
 
 namespace MagicSchool.Heroes
@@ -27,10 +26,10 @@ namespace MagicSchool.Heroes
 
         void Update()
         {
-            // stand still until the battle is on, same as a hero
-            if (GameManager.Instance != null && GameManager.Instance.Phase != GamePhaseEnum.Combat) return;
-
             if (_me == null || !_me.IsInitialized || _me.CurrentHex == null) return;
+
+            // stand still until the battle is on, same as a hero
+            if (!_me.IsBattleOn) return;
 
             // between steps: line up the next one, or wait if there's nowhere to go
             if (_to == null && !TryStartStep()) return;

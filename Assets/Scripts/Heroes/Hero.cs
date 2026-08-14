@@ -138,7 +138,7 @@ namespace MagicSchool.Heroes
 
             _runtimeData = new HeroDataRuntime(_SOData);
             _visuals = GetComponent<HeroVisuals>();
-            _skill = new HeroSkill(this, SkillLibrary.Resolve(_SOData, templateActions));
+            _skill = new HeroSkill(this, SkillLibrary.Resolve(_SOData.SkillId, templateActions));
             _findEnemy = new FindEnemy(this, _runtimeData, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

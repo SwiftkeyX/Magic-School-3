@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MagicSchool.Core;
-using MagicSchool.Heroes;
 
 namespace MagicSchool.Skills
 {
@@ -11,6 +9,8 @@ namespace MagicSchool.Skills
     /// </summary>
     public static class SkillLibrary
     {
+
+        
         // a pair of TemplateAction & SkillDefinition
         // TemplateAction is a skill prefab used by hero, but hero don't know how this TemplateAction work.
         // How the TemplateAction work was put inside SkillDefinition.
@@ -28,25 +28,22 @@ namespace MagicSchool.Skills
             };
 
         /// <summary>
-        /// Return a skill that match hero's TemplateAction.
+        /// Return a skill that match skillID's TemplateAction.
         /// </summary>
-        public static SkillDefinition Resolve(HeroDataSO data, TemplateActionRegistrySO registry)
+        public static SkillDefinition Resolve(SkillIdEnum skillID, TemplateActionRegistrySO registry)
         {
-            if (data == null) return null;
-
             // no skill at all is normal - a dummy has none
-            if (data.SkillId == SkillIdEnum.None) return null;
+            if (skillID == SkillIdEnum.None) return null;
 
-            if (!Builders.TryGetValue(data.SkillId, out var build))
+            if (!Builders.TryGetValue(skillID, out var build))
             {
-                Debug.LogError($"[SkillLibrary] {data.Name} asks for {data.SkillId}, which nothing builds yet.", data);
+                Debug.LogError($"[SkillLibrary] {skillID} doesn't exist in the Library.");
                 return null;
             }
 
             if (registry == null)
             {
-                Debug.LogError($"[SkillLibrary] {data.Name} needs the template action registry to build {data.SkillId}, " +
-                               "but none was supplied - check GameManager.", data);
+                Debug.LogError($"[SkillLibrary] {skillID} didn't registry in TemplateActionRegistrySO yet.");
                 return null;
             }
 

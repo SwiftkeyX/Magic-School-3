@@ -11,7 +11,7 @@ namespace MagicSchool.Heroes
     /// </summary>
     public class HeroSkill
     {
-        private readonly Hero _me;          
+        private readonly ICombatant _me;
         private readonly SkillDefinition _skill;
         private float _castTime;
 
@@ -22,9 +22,9 @@ namespace MagicSchool.Heroes
         public bool HasSkill => _skill != null && _skill.ActiveSteps.Count > 0;
         public bool HasPassive => _skill != null && _skill.PassiveSteps.Count > 0;
 
-        public HeroSkill(Hero hero, SkillDefinition skill)
+        public HeroSkill(ICombatant me, SkillDefinition skill)
         {
-            _me = hero;
+            _me = me;
             _skill = skill;
             _skill?.Init(_me);
         }
@@ -42,9 +42,6 @@ namespace MagicSchool.Heroes
             if (steps[0].Trigger != TriggerEnum.OnCast) return false;
 
             if (!FireStep(steps, 0)) return false;
-
-            // if skill success, spend all mana
-            _me.SpendMana();
 
             return true;
         }

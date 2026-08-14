@@ -19,6 +19,9 @@ namespace MagicSchool.Heroes.States
 
             // if skill cast is success, pop skill effect
             _me.PlaySkillCastEffect("Skill Activated!");
+
+            // spend mana
+            _me.SpendMana();
         }
 
         public override void OnUpdate()

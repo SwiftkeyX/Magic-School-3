@@ -85,3 +85,14 @@ Aatrox (cont.)
 Warwick - test trigger OnAttack
 
 Cassiopeia - implement effect modifier +30% dmg amp when target is wounded
+
+
+# asmdefs
+1) Hero (The entire of Hero foldder) + Board
+2) Skill
+3) Player
+4) UI
+5) VFX
+6) Core
+
+Next is to break Skill from MagicSchool.Gameplay

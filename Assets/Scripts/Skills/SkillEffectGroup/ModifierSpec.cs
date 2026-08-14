@@ -23,6 +23,7 @@ namespace MagicSchool.Skills
         public float GetAmount() => _amount;
         public float GetDuration() => _duration;
 
+        // basically scale the modifier's value up 
         public IModifier Scaled(float multiplier)
         {
             // scale amount base on multiplier

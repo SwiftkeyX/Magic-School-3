@@ -4,9 +4,8 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
-    // FLAGGING: I don't sure if it was generic enough to have a inheritance. Let see laterward.
-    // effect that apply heal to recipients
-    // FIXNOW: Hey combine HealSkillEffect into ModifierSkillEffect.
+    // FLAGGING: Try combine into ModifierSkillEffect. Not working, since the ModifierSkillEffect already work well.
+    // It still look weird to me but it work well and clean. Lets leave it.
     public class HealSkillEffect : SkillEffect
     {
         private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
@@ -22,6 +21,8 @@ namespace MagicSchool.Skills
             _duration = duration;
         }
 
+        // heal the reciepient
+        // if the heal was cadence, it only heal the divided amount each time.
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));

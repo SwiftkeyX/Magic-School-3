@@ -25,14 +25,14 @@ namespace MagicSchool.Skills
 
             base.Play();
 
-            // one hitbox for the whole zone - every cadence effect on it shares one interval
+            // initialize hitbox
             OnTickHitbox hitbox = new OnTickHitbox();
-            hitbox.OnHit += HandleTick;
+            hitbox.OnHit += HandleAOEHit;
             hitbox.Init(_me);
             _hitbox = hitbox;
 
             // start applying effect every interval
-            StartCoroutine(CadenceTick(hitbox, _interval));
+            StartCoroutine(CadenceTick(hitbox));
         }
 
         // ZoneAOE have _lifetime as the same to cadence duration
@@ -45,8 +45,18 @@ namespace MagicSchool.Skills
             ExpireAfter(_lifetime);
         }
 
+        // a hero currently in the zone got ticked - apply every cadence effect to them
+        protected override void HandleAOEHit(ICombatant recipient)
+        {
+            List<ICombatant> recipients = new List<ICombatant> { recipient };
+            foreach (SkillEffect effect in _effects)
+            {
+                if (effect.Cadence.isCadence) ApplyEffectToRecipients(effect, recipients);
+            }
+        }
+
         // ======================================== private ==============================================
-        // Assign value to interval, and duration.
+        // Assign value to cadence interval, and cadence duration.
         // To guard - cadence effects on this zone must share one interval
         private void ResolveCadence()
         {
@@ -75,20 +85,10 @@ namespace MagicSchool.Skills
             }
         }
 
-        // a hero currently in the zone got ticked - apply every cadence effect to them
-        private void HandleTick(ICombatant hero)
-        {
-            List<ICombatant> recipients = new List<ICombatant> { hero };
-            foreach (SkillEffect effect in _effects)
-            {
-                if (effect.Cadence.isCadence) ApplyEffectToRecipients(effect, recipients);
-            }
-        }
-
         // Global cadence tick - on a fixed schedule from spawn, no initial collision needed to start ticking.
-        private IEnumerator CadenceTick(OnTickHitbox hitbox, float interval)
+        private IEnumerator CadenceTick(OnTickHitbox hitbox)
         {
-            WaitForSeconds wait = new WaitForSeconds(interval);
+            WaitForSeconds wait = new WaitForSeconds(_interval);
 
             while (true)
             {

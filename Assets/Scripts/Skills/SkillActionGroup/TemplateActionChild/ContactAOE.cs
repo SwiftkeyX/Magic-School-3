@@ -24,22 +24,21 @@ namespace MagicSchool.Skills
         {
             base.Play();
 
-            // initialize hitbox: dispatch once-or-cadence per hero, on their first contact only
+            // initialize hitbox
             OnContactHitbox onceHitbox = new OnContactHitbox();
-            onceHitbox.OnHit += HandleFirstHit;
+            onceHitbox.OnHit += HandleAOEHit;
             _hitbox = onceHitbox;
             _hitbox.Init(_me);
         }
 
-        // ======================================== private ==============================================
         /// <summary>
         /// When a hero who was hit on first contact:
         /// 1) Apply effect once if not cadence
         /// 2) Apply effect over time if cadence
         /// </summary>
-        private void HandleFirstHit(ICombatant hero)
+        protected override void HandleAOEHit(ICombatant recipient)
         {
-            List<ICombatant> recipients = new List<ICombatant> { hero };
+            List<ICombatant> recipients = new List<ICombatant> { recipient };
             foreach (SkillEffect effect in _effects)
             {
                 // if not cadence, apply once
@@ -49,13 +48,15 @@ namespace MagicSchool.Skills
                 }
 
                 // if cadence true, apply effect multiple time
-                else if (_triggeredOnce.Add((effect, hero)))
+                else if (_triggeredOnce.Add((effect, recipient)))
                 {
-                    // run coroutine on target hero to apply that effect.
-                    if (hero is MonoBehaviour victim) victim.StartCoroutine(PerHeroCadenceTick(effect, hero));
+                    // apply effect to each recipient. Each recipients got his own DOT coroutine.
+                    if (recipient is MonoBehaviour victim) victim.StartCoroutine(PerHeroCadenceTick(effect, recipient));
                 }
             }
         }
+
+        // ======================================== private ==============================================
 
         // FLAGGING: this is the poison DOT, and it should be its own Status class rather than a
         // coroutine hanging off the AOE that applied it.

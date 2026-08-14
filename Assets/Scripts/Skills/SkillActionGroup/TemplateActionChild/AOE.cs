@@ -117,6 +117,9 @@ namespace MagicSchool.Skills
             return _source;
         }
 
+        // When AOE hit someone, apply effect to recipient
+        protected abstract void HandleAOEHit(ICombatant recipient);
+
         // ======================================= private =======================================
         /// How far the offset of this shape will be? e.g.
         private float HalfLengthAlongFacing()

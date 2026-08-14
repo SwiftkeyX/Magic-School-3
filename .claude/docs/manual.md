@@ -71,8 +71,9 @@ Karma - test first hit projectile - AOE explode on impact
 Aatrox 
 => ConeAOE with Tip point option, is placing the wrong way. The point should be pointed to the opposite side.
 
-Structure Transition from SO to plain C#
-=> Try test if all hero work fine
+Warwick - test trigger OnAttack
+=> to get more familira with new skill system
+=> implement stun
 
 Aatrox (cont.)
 => Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
@@ -80,19 +81,4 @@ Aatrox (cont.)
 => Implement actual scaling (currently ad, ap does nothing to skill damage) 
 - the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
 
-
-
-Warwick - test trigger OnAttack
-
 Cassiopeia - implement effect modifier +30% dmg amp when target is wounded
-
-
-# asmdefs
-1) Hero (The entire of Hero foldder) + Board
-2) Skill
-3) Player
-4) UI
-5) VFX
-6) Core
-
-Next is to break Skill from MagicSchool.Gameplay

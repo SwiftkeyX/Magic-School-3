@@ -22,7 +22,6 @@ MonoBehaviour:
   _attackSpeed: 1.5
   _range: 1
   _startMana: 0
-  _maxMana: 50
+  _maxMana: 100
   _skillId: 3
-  _skill: {fileID: 11400000, guid: d898f04fc0245b441a7b91a75085810c, type: 2}
   _isDummy: 0

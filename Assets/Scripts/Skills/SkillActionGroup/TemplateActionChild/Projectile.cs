@@ -18,6 +18,7 @@ namespace MagicSchool.Skills
         private event Action<SkillStepContext> OnHit;        // Fire the first time projectile lands on someone
         private bool _hasReportedHit;
 
+        // Projectile have OnHit event
         protected override void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
         {
             base.SubscribeTriggers(onExpired, onHit);

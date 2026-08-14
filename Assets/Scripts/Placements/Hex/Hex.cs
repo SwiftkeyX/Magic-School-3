@@ -40,15 +40,14 @@ namespace MagicSchool.Placements
             this.EnterPlacementExtension(hero);
 
             // for hex, set reserve for the hex too
-            // (see reserve hex for explanation)
-            // Placement hands us the plain IPlaceable; only a hex-dweller has a reservation to set.
+            // FLAGGING: it kinda smelled but this is all the logic for IHexPlaceable. 
+            // So it would be overengineer if we go further than this.
             if (hero is IHexPlaceable hexDweller) hexDweller.SetReservedHex(this);
         }
 
         // unplace hero from Hex
         public void OnHeroUnplaced(IPlaceable hero)
         {
-            // what about setcurrenthex = null?
             if (hero is IHexPlaceable hexDweller) hexDweller.SetReservedHex(null);
         }
 

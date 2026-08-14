@@ -2,7 +2,6 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Placements
 {
-    // ASKING: Isn't it weird that we have IHexPlaceable, but no IBenchPlaceable?
     // Anything that can stand on a board hex
     public interface IHexPlaceable : IPlaceable
     {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4846732905941174554}
   - component: {fileID: 7833928236879553845}
   m_Layer: 0
-  m_Name: Cast
+  m_Name: Cast - Galio variant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b41096aa2495640ae6ec6ce09f75bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cast
-  _castTime: 0
+  _castTime: 2

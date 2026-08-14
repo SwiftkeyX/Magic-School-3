@@ -28,7 +28,7 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup brace = new SkillActionGroup(
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.Cast),
+                templateAction: registry.Get(TemplateActionEnum.CastGalioVariant),
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {

@@ -25,5 +25,6 @@ namespace MagicSchool.Skills
 
         // ==================================== Other ====================================
         Cast = 10,
+        CastGalioVariant = 11,
     }
 }

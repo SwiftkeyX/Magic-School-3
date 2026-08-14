@@ -20,7 +20,19 @@ namespace MagicSchool.Player
 
         void Update()
         {
+            TryStartCombat();
             PlayerMoveHero();
+        }
+
+        // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
+        // Lives on the player side so starting a battle is something input asks for, rather than
+        // something GameManager reaches into input to discover.
+        private void TryStartCombat()
+        {
+            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation) return;
+            if (!PlayerInputSystem.SpacePressedThisFrame) return;
+
+            GameManager.Instance.StartCombat();
         }
 
         private void PlayerMoveHero()

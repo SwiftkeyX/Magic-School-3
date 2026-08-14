@@ -2,7 +2,6 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
-using MagicSchool.Player;
 using MagicSchool.Skills;
 
 namespace MagicSchool.Core
@@ -39,12 +38,6 @@ namespace MagicSchool.Core
 
         void Update()
         {
-            // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
-            if (Phase == GamePhaseEnum.Preparation && PlayerInputSystem.SpacePressedThisFrame)
-            {
-                StartCombat();
-            }
-
             if (Phase == GamePhaseEnum.Combat)
             {
                 CheckForWinner();

@@ -70,8 +70,8 @@ namespace MagicSchool.Combat.Heroes
         public float GetCastTime() => _skill.GetCastTime();
 
         // ======================================== attack ========================================
-        public bool IsAttackReady => _attackCooldown.IsReady;
-        public void SpendAttack() => _attackCooldown.Spend(AttackSpeed);
+        public bool IsAttackReady => _attackCooldown.IsReady(AttackSpeed);
+        public void SpendAttack() => _attackCooldown.Spend();
 
         // ======================================== stat ========================================
         public void GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
@@ -165,7 +165,7 @@ namespace MagicSchool.Combat.Heroes
             TickModifiers(Time.deltaTime);
 
             // update auto attack cooldown
-            _attackCooldown.Tick(Time.deltaTime);
+            _attackCooldown.Tick(Time.deltaTime, AttackSpeed);
 
             _stateMachine.Tick();
         }

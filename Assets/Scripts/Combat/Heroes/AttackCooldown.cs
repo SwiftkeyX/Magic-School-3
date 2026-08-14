@@ -3,19 +3,19 @@ namespace MagicSchool.Combat.Heroes
 
     public class AttackCooldown
     {
-        private float _remaining;
-        public bool IsReady => _remaining <= 0f;
+        private float _elapsed;
+
+        public bool IsReady(float attackSpeed) => _elapsed >= 1f / attackSpeed;
 
         // update cooldown
-        public void Tick(float deltaTime)
+        public void Tick(float deltaTime, float attackSpeed)
         {
-            // stop at ready - a long walk shouldn't bank up attacks to spend on arrival
-            if (IsReady) return;
+            if (IsReady(attackSpeed)) return;
 
-            _remaining -= deltaTime;
+            _elapsed += deltaTime;
         }
 
-        // to attack
-        public void Spend(float attackSpeed) => _remaining += 1f / attackSpeed;
+        // after attack, attack go cooldown
+        public void Spend() => _elapsed = 0f;
     }
 }

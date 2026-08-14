@@ -39,13 +39,31 @@ namespace MagicSchool.Skills
         {
             List<ModifierSpec> modifiers = new List<ModifierSpec>
             {
-                new ModifierSpec(ModifierEnum.Omnivamp, 10f, TransformDuration),
-                new ModifierSpec(ModifierEnum.Attack, 80f, TransformDuration),
-                new ModifierSpec(ModifierEnum.Transformed, 0f, TransformDuration),
+                new ModifierSpec(
+                    modifier: ModifierEnum.Omnivamp,
+                    amount:   10f,
+                    duration: TransformDuration),
+
+                new ModifierSpec(
+                    modifier: ModifierEnum.Attack,
+                    amount:   80f,
+                    duration: TransformDuration),
+
+                new ModifierSpec(
+                    modifier: ModifierEnum.Transformed,
+                    amount:   0f,
+                    duration: TransformDuration),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
-                new ModifierSpec(ModifierEnum.ManaBlocked, 0f, TransformDuration),
-                new ModifierSpec(ModifierEnum.AutoAttackWasReplaced, 0f, TransformDuration),
+                new ModifierSpec(
+                    modifier: ModifierEnum.ManaBlocked,
+                    amount:   0f,
+                    duration: TransformDuration),
+
+                new ModifierSpec(
+                    modifier: ModifierEnum.AutoAttackWasReplaced,
+                    amount:   0f,
+                    duration: TransformDuration),
             };
 
             SkillActionGroup cast = new SkillActionGroup(
@@ -54,10 +72,14 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {
-                    new ModifierSkillEffect(EffectRecipientEnum.Self, modifiers),
+                    new ModifierSkillEffect(
+                        recipient: EffectRecipientEnum.Self,
+                        modifiers: modifiers),
                 });
 
-            return new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { cast });
+            return new SkillStep(
+                trigger: TriggerEnum.OnCast,
+                actionGroups: new List<SkillActionGroup> { cast });
         }
 
         // ============================== passive: the combo ==============================
@@ -65,12 +87,14 @@ namespace MagicSchool.Skills
         {
             List<SkillActionGroup> beats = new List<SkillActionGroup>
             {
-                Beat(registry, combo, TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
-                Beat(registry, combo, TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
-                Beat(registry, combo, TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
             };
 
-            return new SkillStep(TriggerEnum.OnAttack, beats);
+            return new SkillStep(
+                trigger: TriggerEnum.OnAttack,
+                actionGroups: beats);
         }
 
         // One beat of the combo: play this shape when transformed and the combo is on this count.
@@ -79,8 +103,15 @@ namespace MagicSchool.Skills
         {
             List<SkillCondition> conditions = new List<SkillCondition>
             {
-                new HasStatusCondition(ConditionSubjectEnum.Caster, ModifierEnum.Transformed, wantPresent: true),
-                new NumberCondition(ConditionSubjectEnum.Caster, combo, matchBeat: beat),
+                new HasStatusCondition(
+                    subject:     ConditionSubjectEnum.Caster,
+                    status:      ModifierEnum.Transformed,
+                    wantPresent: true),
+
+                new NumberCondition(
+                    subject:   ConditionSubjectEnum.Caster,
+                    combo:     combo,
+                    matchBeat: beat),
             };
 
             return new SkillActionGroup(
@@ -90,7 +121,9 @@ namespace MagicSchool.Skills
                 conditions: conditions,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, damage),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInArea,
+                        damageAmount: damage),
                 });
         }
     }

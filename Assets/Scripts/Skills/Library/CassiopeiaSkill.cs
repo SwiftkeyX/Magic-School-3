@@ -22,10 +22,19 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Furthest,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.SameToAimTarget, Damage),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.SameToAimTarget,
+                        damageAmount: Damage),
 
-                    new ModifierSkillEffect(EffectRecipientEnum.SameToAimTarget,
-                        new List<ModifierSpec> { new ModifierSpec(ModifierEnum.Wound, 0f, WoundDuration) },
+                    new ModifierSkillEffect(
+                        recipient: EffectRecipientEnum.SameToAimTarget,
+                        modifiers: new List<ModifierSpec>
+                        {
+                            new ModifierSpec(
+                                modifier: ModifierEnum.Wound,
+                                amount:   0f,
+                                duration: WoundDuration),
+                        },
                         amplifier: 0.3f),
                 });
 
@@ -33,7 +42,9 @@ namespace MagicSchool.Skills
                 skillName: "Skill",
                 activeSteps: new List<SkillStep>
                 {
-                    new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { cast }),
+                    new SkillStep(
+                        trigger: TriggerEnum.OnCast,
+                        actionGroups: new List<SkillActionGroup> { cast }),
                 });
         }
     }

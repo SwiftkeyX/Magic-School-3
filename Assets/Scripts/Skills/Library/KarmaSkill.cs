@@ -31,7 +31,9 @@ namespace MagicSchool.Skills
                 templateAction: registry.Get(TemplateActionEnum.FirstHitProjectile),
                 target: AimTargetEnum.Current);
 
-            return new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { dart });
+            return new SkillStep(
+                trigger: TriggerEnum.OnCast,
+                actionGroups: new List<SkillActionGroup> { dart });
         }
 
         private static SkillStep Explosion(TemplateActionRegistrySO registry)
@@ -42,10 +44,14 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.WhereProjectileHit,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, ExplosionDamage),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInArea,
+                        damageAmount: ExplosionDamage),
                 });
 
-            return new SkillStep(TriggerEnum.OnHit, new List<SkillActionGroup> { blast });
+            return new SkillStep(
+                trigger: TriggerEnum.OnHit,
+                actionGroups: new List<SkillActionGroup> { blast });
         }
     }
 }

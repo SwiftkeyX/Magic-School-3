@@ -34,7 +34,9 @@ namespace MagicSchool.Skills
                 templateAction: registry.Get(TemplateActionEnum.HomingProjectile),
                 target: AimTargetEnum.Furthest);
 
-            return new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { dart });
+            return new SkillStep(
+                trigger: TriggerEnum.OnCast,
+                actionGroups: new List<SkillActionGroup> { dart });
         }
 
         private static SkillStep Patch(TemplateActionRegistrySO registry)
@@ -45,15 +47,26 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.WhereProjectileHit,
                 effects: new List<SkillEffect>
                 {
-                    new ModifierSkillEffect(EffectRecipientEnum.EnemiesInArea,
-                        new List<ModifierSpec> { new ModifierSpec(ModifierEnum.Wound, 0f, WoundDuration) },
+                    new ModifierSkillEffect(
+                        recipient: EffectRecipientEnum.EnemiesInArea,
+                        modifiers: new List<ModifierSpec>
+                        {
+                            new ModifierSpec(
+                                modifier: ModifierEnum.Wound,
+                                amount:   0f,
+                                duration: WoundDuration),
+                        },
                         amplifier: 0.3f),
 
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, PoisonDamage,
-                        cadence: new Cadence(PoisonInterval, PoisonDuration)),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInArea,
+                        damageAmount: PoisonDamage,
+                        cadence:      new Cadence(interval: PoisonInterval, duration: PoisonDuration)),
                 });
 
-            return new SkillStep(TriggerEnum.OnHit, new List<SkillActionGroup> { patch });
+            return new SkillStep(
+                trigger: TriggerEnum.OnHit,
+                actionGroups: new List<SkillActionGroup> { patch });
         }
     }
 }

@@ -22,14 +22,18 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Current,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInPath, Damage),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInPath,
+                        damageAmount: Damage),
                 });
 
             return new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep>
                 {
-                    new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { shot }),
+                    new SkillStep(
+                        trigger: TriggerEnum.OnCast,
+                        actionGroups: new List<SkillActionGroup> { shot }),
                 });
         }
     }

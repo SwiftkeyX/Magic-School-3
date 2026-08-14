@@ -26,15 +26,19 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {
-                    new AttackSkillEffect(EffectRecipientEnum.EnemiesInArea, DamagePerTick,
-                        cadence: new Cadence(TickInterval, Duration)),
+                    new AttackSkillEffect(
+                        recipient:    EffectRecipientEnum.EnemiesInArea,
+                        damageAmount: DamagePerTick,
+                        cadence:      new Cadence(interval: TickInterval, duration: Duration)),
                 });
 
             return new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep>
                 {
-                    new SkillStep(TriggerEnum.OnCast, new List<SkillActionGroup> { spin }),
+                    new SkillStep(
+                        trigger: TriggerEnum.OnCast,
+                        actionGroups: new List<SkillActionGroup> { spin }),
                 });
         }
     }

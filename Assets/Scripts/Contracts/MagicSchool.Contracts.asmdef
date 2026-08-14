@@ -1,11 +1,7 @@
 {
-    "name": "MagicSchool.UI",
+    "name": "MagicSchool.Contracts",
     "rootNamespace": "MagicSchool",
-    "references": [
-        "GUID:3fcd5327773a32e4cbaa2e166810c968",
-        "GUID:2bafac87e7f4b9b418d9448d219b01ab",
-        "GUID:f48b491f9a3d1ee41b83e0e3c16f6360"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

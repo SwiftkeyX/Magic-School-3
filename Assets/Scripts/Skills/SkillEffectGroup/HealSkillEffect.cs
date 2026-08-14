@@ -6,6 +6,7 @@ namespace MagicSchool.Skills
 {
     // FLAGGING: I don't sure if it was generic enough to have a inheritance. Let see laterward.
     // effect that apply heal to recipients
+    // FIXNOW: Hey combine HealSkillEffect into ModifierSkillEffect.
     public class HealSkillEffect : SkillEffect
     {
         private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
@@ -13,7 +14,7 @@ namespace MagicSchool.Skills
 
         public float Duration => _duration;
 
-        public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration,
+        public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration = -1f,
                                Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)
             : base(recipient, cadence, conditions, amplifier)
         {

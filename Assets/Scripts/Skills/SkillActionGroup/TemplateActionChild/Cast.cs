@@ -13,7 +13,6 @@ namespace MagicSchool.Skills
     public class Cast : TemplateAction
     {
         private ICombatant _target;
-        private int _keepAlive;     // the amount of "thing" running on this TemplateAction
 
         // source mean nothing to Cast.
         protected override bool ResolveSource(ActionSourceEnum source)
@@ -75,6 +74,9 @@ namespace MagicSchool.Skills
 
         protected override void Play()
         {
+            // how long each effect keeps this cast relevant
+            List<float> durations = new List<float>();
+
             foreach (SkillEffect effect in _effects)
             {
                 if (effect.Recipient != EffectRecipientEnum.Self) continue;
@@ -83,64 +85,60 @@ namespace MagicSchool.Skills
                 // e.g. galio heal
                 if (effect.Cadence.isCadence)
                 {
+                    // apply effect overtime
                     StartCoroutine(PerHeroCadenceTick(effect, _me));
+
+                    // get longest cadence duration
+                    durations.Add(effect.Cadence.cadenceDuration);
                 }
 
                 // if not cadence, apply effect once.
                 else
                 {
+                    // apply effect once
                     effect.ApplyEffect(new List<IEffectable> { _target });
 
                     // get longest effect duration
-                    float duration = LongestModifierDuration(effect);
-
-                    // set effect duration.
-                    if (duration > 0) StartCoroutine(ExpireAfterModifier(duration));
+                    durations.Add(LongestModifierDuration(effect));
                 }
             }
 
-            // if there's still something running, don't destroy yet
-            if (_keepAlive == 0) DestroyMe();
+            // This template action dies 
+            // with the lifetime of "longest duration thingy" live on this instance
+            // thingy = all cadence effect & modifier
+            ExpireAfter(Longest(durations));
         }
 
-        // get the longest effect duration from this TemplateAction
+        // get the longest modifier duration
         private float LongestModifierDuration(SkillEffect effect)
         {
             if (!(effect is ModifierSkillEffect modifierEffect)) return 0f;
 
-            float longest = 0f;
+            List<float> durations = new List<float>();
             foreach (ModifierSpec modifier in modifierEffect.Modifiers)
             {
                 if (modifier == null) continue;
 
-                if (modifier.GetDuration() > longest) longest = modifier.GetDuration();
+                durations.Add(modifier.GetDuration());
+            }
+
+            return Longest(durations);
+        }
+
+        private static float Longest(List<float> durations)
+        {
+            float longest = 0f;
+            foreach (float duration in durations)
+            {
+                if (duration > longest) longest = duration;
             }
 
             return longest;
         }
 
-        private IEnumerator ExpireAfterModifier(float duration)
-        {
-            // another thing run
-            _keepAlive++;
-
-            // wait
-            yield return new WaitForSeconds(duration);
-
-            // another thing dies
-            _keepAlive--;
-
-            // if there's still something running, don't destroy yet
-            if (_keepAlive == 0) DestroyMe();
-        }
-
-        // Cadence Tick are use by several template action
-        // so we unified thing by move it here.
         // FLAGGING: But it should be move later since not all template action need it. maybe to interface?
         private IEnumerator PerHeroCadenceTick(SkillEffect effect, ICombatant hero)
         {
-            _keepAlive++;
-
             WaitForSeconds wait = new WaitForSeconds(effect.Cadence.cadenceInterval);
             List<ICombatant> recipients = new List<ICombatant> { hero };
             float elapsed = 0f;
@@ -153,12 +151,6 @@ namespace MagicSchool.Skills
                 if (hero == null || hero.StateType == HeroStateEnum.Dead) break;
                 ApplyEffectToRecipients(effect, recipients);
             }
-
-            // one of cadence effect die
-            _keepAlive--;
-
-            // if there's still something running, don't destroy yet
-            if (_keepAlive == 0) DestroyMe();
         }
     }
 }

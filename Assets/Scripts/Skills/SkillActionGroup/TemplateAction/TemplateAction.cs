@@ -101,7 +101,7 @@ namespace MagicSchool.Skills
 
 
         // ==================================== OnExpired event ====================================
-        // Every template action ends the same way => through here
+        // Every template action ends the same way => through DestroyMe() or ExpireAfter()
         // to make sure OnExpired always gets fired. 
         // Never call Destroy() on a template action directly.
         protected void DestroyMe()

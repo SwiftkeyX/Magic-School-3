@@ -6,7 +6,7 @@ namespace MagicSchool.Contracts
     /// Hex and Benchslot are used to place hero on it.
     /// We create interface for both of them.
     /// </summary>
-    public interface Placement
+    public interface IPlacement
     {
         Transform transform { get; }
 
@@ -21,7 +21,7 @@ namespace MagicSchool.Contracts
     public static class PlacementExtensions
     {
         // basically, set placement for the hero
-        public static void EnterPlacementExtension(this Placement placement, IPlaceable hero)
+        public static void EnterPlacementExtension(this IPlacement placement, IPlaceable hero)
         {
             hero.SetCurrentPlacement(placement);
             hero.transform.position = placement.transform.position;

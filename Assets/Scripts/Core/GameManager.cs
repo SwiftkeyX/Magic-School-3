@@ -14,7 +14,7 @@ namespace MagicSchool.Core
         [SerializeField] private BattleBoard _board;
         [SerializeField] private Bench _bench;
         [SerializeField] private BattlePlacementSO _placementSO;
-        [SerializeField] private TemplateActionRegistrySO _templateActions;     
+        [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _seedMode;
 
         public GamePhaseEnum Phase { get; private set; } = GamePhaseEnum.Preparation;
@@ -35,7 +35,7 @@ namespace MagicSchool.Core
         }
 
         // The system moving a hero, as opposed to a hero walking itself during combat.
-        public void MoveHero(ICombatant hero, Placement placement) => _heroMover.MoveThisHeroTo(hero, placement);
+        public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
 
         void Update()
         {

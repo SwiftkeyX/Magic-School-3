@@ -16,7 +16,7 @@ namespace MagicSchool.Placements
         // need to know which board, its heroes will fight on (there maybe several board at once).
         [SerializeField] private BattleBoard _board;
 
-        public event Action<HeroDataSO, TeamEnum, Placement, BattleBoard> OnSpawnRequested;
+        public event Action<HeroDataSO, TeamEnum, IPlacement, BattleBoard> OnSpawnRequested;
 
         /// <summary>
         /// Spawn hero on the bench. Returns false (and spawns nothing) if the bench is full.
@@ -25,7 +25,7 @@ namespace MagicSchool.Placements
         {
             // find the first slot that hasn't been used yet
             BenchSlot freeSlot = _benchSlots.FirstOrDefault(slot => !slot.Reserved);
-            
+
             if (freeSlot == null)
             {
                 DebugTool.LogWarning("Bench: no free slot to place hero.");

@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Placements
 {
-    public class BenchSlot : MonoBehaviour, Placement
+    public class BenchSlot : MonoBehaviour, IPlacement
     {
         private bool _reserved = false;
 

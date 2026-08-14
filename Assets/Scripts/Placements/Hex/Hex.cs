@@ -4,7 +4,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Placements
 {
-    public class Hex : MonoBehaviour, Placement
+    public class Hex : MonoBehaviour, IPlacement
     {
         private BattleBoard _board;
         private HexNumber _hexPlacement;

@@ -12,10 +12,10 @@ namespace MagicSchool.Core
     /// </summary>
     public class HeroMover
     {
-        public void MoveThisHeroTo(ICombatant hero, Placement placement)
+        public void MoveThisHeroTo(ICombatant hero, IPlacement placement)
         {
             // exit old placement
-            Placement oldPlacement = hero.CurrentPlacement;
+            IPlacement oldPlacement = hero.CurrentPlacement;
             if (oldPlacement != null) oldPlacement.OnHeroUnplaced(hero);
 
             // enter new placement

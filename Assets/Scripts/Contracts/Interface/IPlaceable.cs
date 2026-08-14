@@ -7,9 +7,9 @@ namespace MagicSchool.Contracts
     {
         Transform transform { get; }
 
-        Placement CurrentPlacement { get; }
+        IPlacement CurrentPlacement { get; }
         bool IsInCombat { get; }        // false when standing somewhere that isn't a Hex, e.g. the bench
 
-        void SetCurrentPlacement(Placement placement);
+        void SetCurrentPlacement(IPlacement placement);
     }
 }

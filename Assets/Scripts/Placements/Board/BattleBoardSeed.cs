@@ -16,7 +16,7 @@ namespace MagicSchool.Placements
         private readonly bool _seedMode;
 
         // Raised to ask for a hero. Fires BEFORE anything is spawned - HeroSpawner does the work.
-        public event Action<HeroDataSO, TeamEnum, Placement, BattleBoard> OnSpawnRequested;
+        public event Action<HeroDataSO, TeamEnum, IPlacement, BattleBoard> OnSpawnRequested;
 
         public BattleBoardSeed(BattlePlacementSO placementSO, BattleBoard board, bool seedMode)
         {

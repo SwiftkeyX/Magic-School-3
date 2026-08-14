@@ -110,7 +110,7 @@ namespace MagicSchool.Heroes
         // === IPlaceable ===
         public Hex CurrentHex => _runtimeData.CurrentPlacement as Hex;
         public Hex ReservedHex => _runtimeData.ReservedHex;
-        public Placement CurrentPlacement => _runtimeData.CurrentPlacement;
+        public IPlacement CurrentPlacement => _runtimeData.CurrentPlacement;
         public bool IsInCombat => _runtimeData.CurrentPlacement is Hex;
         public void SetReservedHex(Hex hex)
         {
@@ -118,7 +118,7 @@ namespace MagicSchool.Heroes
 
             _runtimeData.SetReservedHex(hex);
         }
-        public void SetCurrentPlacement(Placement placement) => _runtimeData.SetCurrentPlacement(placement);
+        public void SetCurrentPlacement(IPlacement placement) => _runtimeData.SetCurrentPlacement(placement);
 
         // === ITargeter ===
         public ICombatant CurrentTarget => _findEnemy.CurrentTarget;

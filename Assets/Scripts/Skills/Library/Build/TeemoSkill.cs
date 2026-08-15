@@ -61,9 +61,9 @@ namespace MagicSchool.Skills
                         amplifier: 0.3f),
 
                     new AttackSkillEffect(
-                        recipient:    EffectRecipientEnum.EnemiesInArea,
-                        damageAmount: PoisonDamage,
-                        cadence:      new Cadence(interval: PoisonInterval, duration: PoisonDuration)),
+                        recipient: EffectRecipientEnum.EnemiesInArea,
+                        damage:    new List<StatRatio> { (StatEnum.MG, PoisonDamage) },   // sheet: Teemo is AP
+                        cadence:   new Cadence(interval: PoisonInterval, duration: PoisonDuration)),
                 });
 
             return new SkillStep(

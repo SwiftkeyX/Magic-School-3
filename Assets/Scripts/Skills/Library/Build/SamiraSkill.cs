@@ -23,8 +23,8 @@ namespace MagicSchool.Skills
                 effects: new List<SkillEffect>
                 {
                     new AttackSkillEffect(
-                        recipient:    EffectRecipientEnum.SameToAimTarget,
-                        damageAmount: Damage),
+                        recipient: EffectRecipientEnum.SameToAimTarget,
+                        damage:    new List<StatRatio> { (StatEnum.Atk, Damage) }),   // sheet: Samira is AD
 
                     new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,

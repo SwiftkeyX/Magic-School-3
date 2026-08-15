@@ -123,8 +123,8 @@ namespace MagicSchool.Skills
                 effects: new List<SkillEffect>
                 {
                     new AttackSkillEffect(
-                        recipient:    EffectRecipientEnum.EnemiesInArea,
-                        damageAmount: damage),
+                        recipient: EffectRecipientEnum.EnemiesInArea,
+                        damage:    new List<StatRatio> { (StatEnum.Atk, damage) }),   // sheet: Aatrox is AD
                 });
         }
     }

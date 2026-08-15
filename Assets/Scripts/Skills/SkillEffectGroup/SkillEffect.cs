@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
@@ -7,8 +8,9 @@ namespace MagicSchool.Skills
     {
         protected EffectRecipientEnum _recipient;        // the list of recipients who get effect
         protected Cadence _cadence = new Cadence();      // Is effect reapply over time?
-        protected List<SkillCondition> _conditions;  // conditions for this effect. => if all satisfied, effect is amplified.
+        protected List<SkillCondition> _conditions;      // conditions for this effect. => if all satisfied, effect is amplified.
         protected float _amplifier = 0.3f;               // e.g. 0.3 = +30% when the conditions hold
+        protected IEffectable _caster;                   // whose stats the amounts scale off
 
         protected SkillEffect(EffectRecipientEnum recipient, Cadence cadence = null,
                               List<SkillCondition> conditions = null, float amplifier = 0.3f)
@@ -27,7 +29,34 @@ namespace MagicSchool.Skills
         // the conditions for this effect, it need to know who cast it.
         public void Init(IEffectable caster)
         {
+            _caster = caster;
+
             foreach (SkillCondition condition in _conditions) condition?.Init(caster);
+        }
+
+        // scale the total amount base on hero's stat & skill's ratio
+        protected float GetAmountAfterScaling(IReadOnlyList<StatRatio> ratios)
+        {
+            if (ratios == null || ratios.Count == 0) return 0f;
+
+            // FLAGGING: another class type check, let leave it for now.
+            // Somehow the effect always need stat from hero, maybe we'll have to include IHeroStats into ICombatant?
+            // guard
+            if (!(_caster is IHeroStats stats))
+            {
+                Debug.LogError($"[{GetType().Name}] scales off the caster's stats but was never given a caster " +
+                               "that has any. SkillDefinition.Init() has to reach every effect it holds.");
+                return 0f;
+            }
+
+            // scale stat base on ratio
+            float total = 0f;
+            foreach (StatRatio ratio in ratios)
+            {
+                total += stats.GetStat(ratio.Stat) * ratio.Percent / 100f;
+            }
+
+            return total;
         }
 
         // check condition to each recipients.

@@ -16,6 +16,10 @@ namespace MagicSchool.Skills
         private const float BraceDuration = 2f;
         private const float TickInterval = 0.5f;
 
+        // percentages of the caster's stat, the way the sheet writes them
+        private const float HealAmount = 200f;
+        private const float Damage = 120f;
+
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
@@ -33,10 +37,10 @@ namespace MagicSchool.Skills
                 effects: new List<SkillEffect>
                 {
                     new HealSkillEffect(
-                        recipient:       EffectRecipientEnum.Self,
-                        totalHealAmount: 200f,
-                        duration:        BraceDuration,
-                        cadence:         new Cadence(interval: TickInterval, duration: BraceDuration)),
+                        recipient: EffectRecipientEnum.Self,
+                        totalHeal: new List<StatRatio> { (StatEnum.MG, HealAmount) },   // sheet: Galio heals off AP
+                        duration:  BraceDuration,
+                        cadence:   new Cadence(interval: TickInterval, duration: BraceDuration)),
 
                     new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.Self,
@@ -67,8 +71,8 @@ namespace MagicSchool.Skills
                 effects: new List<SkillEffect>
                 {
                     new AttackSkillEffect(
-                        recipient:    EffectRecipientEnum.EnemiesInArea,
-                        damageAmount: 120f),
+                        recipient: EffectRecipientEnum.EnemiesInArea,
+                        damage:    new List<StatRatio> { (StatEnum.MG, Damage) }),   // sheet: Galio is AP
                 });
 
             return new SkillStep(

@@ -10,5 +10,6 @@ namespace MagicSchool.Contracts
         int AttackDamage { get; }
         float AttackSpeed { get; }
         int Range { get; }
+        float GetStat(StatEnum type);
     }
 }

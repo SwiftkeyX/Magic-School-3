@@ -67,7 +67,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         public float GetStatModifier(StatEnum type, float baseValue)
         {
             float flat = 0f;        // add flat stat
-            float percent = 0f;     // add percentage of the base stat, 0.8 = +80%
+            float percent = 0f;     // add percentage of the base stat, in percent points: 80f = +80%
 
             foreach (ActiveCustomModifier tracker in _active)
             {
@@ -94,7 +94,7 @@ namespace MagicSchool.Combat.Heroes.Stats
                 }
             }
 
-            return (baseValue + flat) * (1f + percent);
+            return (baseValue + flat) * (1f + percent / 100f);
         }
 
         // Return available status modifier

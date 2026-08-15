@@ -8,16 +8,16 @@ namespace MagicSchool.Skills
     // It still look weird to me but it work well and clean. Lets leave it.
     public class HealSkillEffect : SkillEffect
     {
-        private float _totalHealAmount;   // spread evenly across every cadence tick over _duration
-        private float _duration;
+        private readonly IReadOnlyList<StatRatio> _totalHeal;
+        private readonly float _duration;
 
         public float Duration => _duration;
 
-        public HealSkillEffect(EffectRecipientEnum recipient, float totalHealAmount, float duration = -1f,
+        public HealSkillEffect(EffectRecipientEnum recipient, IReadOnlyList<StatRatio> totalHeal, float duration = -1f,
                                Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)
             : base(recipient, cadence, conditions, amplifier)
         {
-            _totalHealAmount = totalHealAmount;
+            _totalHeal = totalHeal;
             _duration = duration;
         }
 
@@ -26,7 +26,7 @@ namespace MagicSchool.Skills
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
-            float healPerTick = _totalHealAmount / totalTicks;
+            float healPerTick = GetAmountAfterScaling(_totalHeal) / totalTicks;
 
             foreach (IEffectable recipient in recipients)
             {

@@ -6,7 +6,7 @@ namespace MagicSchool.Skills
     public static class WarwickSkill
     {
         // buff
-        private const float AttackSpeedBuff = 1f;  
+        private const float AttackSpeedBuff = 100f;   // +100%
         private const float BuffDuration = 2.5f;
 
         // stun
@@ -84,7 +84,8 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Self,
                 effects: new List<SkillEffect>
                 {
-                    new HealSkillEffect(EffectRecipientEnum.Self, HealOnAA),
+                    // sheet: 30% AP
+                    new HealSkillEffect(EffectRecipientEnum.Self, new List<StatRatio> { (StatEnum.MG, HealOnAA) }),
                 }
             );
 

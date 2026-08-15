@@ -68,17 +68,10 @@ Teemo - implement new trigger "OnProjectileHit"
 => Implement new aim target = "WhereProjectileHit"
 Karma - test first hit projectile - AOE explode on impact
 
-Aatrox 
-=> ConeAOE with Tip point option, is placing the wrong way. The point should be pointed to the opposite side.
-
-Warwick - test trigger OnAttack
-=> to get more familira with new skill system
-=> implement stun
-
 Aatrox (cont.)
-=> Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
 => It would be nice to see the progress bar of the skill's duration - the white progress bar just above healthbar 
 => Implement actual scaling (currently ad, ap does nothing to skill damage) 
 - the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
+=> Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
 
 Cassiopeia - implement effect modifier +30% dmg amp when target is wounded

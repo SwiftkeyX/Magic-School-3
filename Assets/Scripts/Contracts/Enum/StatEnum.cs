@@ -1,4 +1,4 @@
-namespace MagicSchool.Combat.Heroes.Stats
+namespace MagicSchool.Contracts
 {
     /// <summary>
     /// Every stat a hero has. Stat keys its base values by this instead of one field per stat,

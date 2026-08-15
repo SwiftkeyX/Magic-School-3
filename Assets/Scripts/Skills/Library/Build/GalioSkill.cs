@@ -43,9 +43,10 @@ namespace MagicSchool.Skills
                         modifiers: new List<ModifierSpec>
                         {
                             new ModifierSpec(
-                                modifier: ModifierEnum.DamageReduction,
-                                amount:   25f,
-                                duration: BraceDuration),
+                                modifier:    ModifierEnum.DamageReduction,
+                                scalingType: ScalingEnum.Flat,
+                                amount:      25f,
+                                duration:    BraceDuration),
                         },
                         amplifier: 0.3f),
                 });

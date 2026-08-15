@@ -40,30 +40,35 @@ namespace MagicSchool.Skills
             List<ModifierSpec> modifiers = new List<ModifierSpec>
             {
                 new ModifierSpec(
-                    modifier: ModifierEnum.Omnivamp,
-                    amount:   10f,
-                    duration: TransformDuration),
+                    modifier:    ModifierEnum.Omnivamp,
+                    scalingType: ScalingEnum.Flat,
+                    amount:      10f,
+                    duration:    TransformDuration),
 
                 new ModifierSpec(
-                    modifier: ModifierEnum.Attack,
-                    amount:   80f,
-                    duration: TransformDuration),
+                    modifier:    ModifierEnum.Attack,
+                    scalingType: ScalingEnum.Flat,
+                    amount:      80f,
+                    duration:    TransformDuration),
 
                 new ModifierSpec(
-                    modifier: ModifierEnum.Transformed,
-                    amount:   0f,
-                    duration: TransformDuration),
+                    modifier:    ModifierEnum.Transformed,
+                    scalingType: ScalingEnum.Flat,
+                    amount:      0f,
+                    duration:    TransformDuration),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
                 new ModifierSpec(
-                    modifier: ModifierEnum.ManaBlocked,
-                    amount:   0f,
-                    duration: TransformDuration),
+                    modifier:    ModifierEnum.ManaBlocked,
+                    scalingType: ScalingEnum.Flat,
+                    amount:      0f,
+                    duration:    TransformDuration),
 
                 new ModifierSpec(
-                    modifier: ModifierEnum.AutoAttackWasReplaced,
-                    amount:   0f,
-                    duration: TransformDuration),
+                    modifier:    ModifierEnum.AutoAttackWasReplaced,
+                    scalingType: ScalingEnum.Flat,
+                    amount:      0f,
+                    duration:    TransformDuration),
             };
 
             SkillActionGroup cast = new SkillActionGroup(

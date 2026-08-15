@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.Stats
@@ -60,7 +61,8 @@ namespace MagicSchool.Combat.Heroes.Stats
         // Consume base stat. Spit the final stat out.
         public float GetStatModifier(StatEnum type, float baseValue)
         {
-            float total = baseValue;    // get base stat from hero
+            float flat = 0f;        // add flat stat
+            float percent = 0f;     // add percentage of the base stat, 0.8 = +80%
 
             foreach (var tracker in _modifierTracker)
             {
@@ -69,25 +71,17 @@ namespace MagicSchool.Combat.Heroes.Stats
 
                 // let the modifier with correct stat pass.
                 if (target != type) continue;
-
-                // get scaling type
                 ScalingEnum scalingEnum = tracker.Value.Modifier.GetScalingEnum();
-                // stat is addition by flat amount
                 if (scalingEnum == ScalingEnum.Flat)
-                {
-                    total += tracker.Value.Modifier.GetAmount();
-                }
+                    flat += tracker.Value.Modifier.GetAmount();
 
-                // stat is addition by percentage
                 else if (scalingEnum == ScalingEnum.Percentage)
-                {
-                    // ASKING: I don't sure if this is how the scaling in LOL work. Could you look it up?
-                    total *= tracker.Value.Modifier.GetAmount();
-                }
+                    percent += tracker.Value.Modifier.GetAmount();
 
+                else { }
             }
 
-            return total;
+            return (baseValue + flat) * (1f + percent);
         }
 
         // Return available status modifier

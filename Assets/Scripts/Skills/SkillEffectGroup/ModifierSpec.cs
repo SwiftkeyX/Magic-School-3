@@ -8,9 +8,9 @@ namespace MagicSchool.Skills
     // Let leave it for now though, maybe it'll see more used?.
     public class ModifierSpec : IModifier
     {
-        private ModifierEnum _modifier;
-        private StatScale _scaling;
-        private float _duration;
+        private readonly ModifierEnum _modifier;
+        private readonly StatScale _scaling;
+        private readonly float _duration;
 
         public ModifierSpec(ModifierEnum modifier, ScalingEnum scalingType, float amount, float duration)
         {
@@ -24,23 +24,19 @@ namespace MagicSchool.Skills
         public float GetDuration() => _duration;
         public ScalingEnum GetScalingEnum() => _scaling.ScalingType;
 
-        // FIXLATER: The scaling should be resolve in ModifierResolver.
-        // // basically scale the modifier's value up 
-        // public IModifier Scaled(float multiplier)
-        // {
-        //     // scale amount base on multiplier
-        //     _scaling.Amount *= multiplier;
-
-        //     // return self
-        //     return this;
-        // }
+        // make copy of this instace with scaling
+        public ModifierSpec WithAmount(float amount) =>
+            new ModifierSpec(_modifier, _scaling.ScalingType, amount, _duration);
     }
 
-    // Scale the modifier's amount up base on which stat it scale on  
-    public class StatScale
+    // Specify scaling type the stat is using base on the modifier
+    // e.g. Stat is increase by flat amount + 50
+    // e.g. Stat is increase by percentage amount + 100 %  
+    public readonly struct StatScale
     {
-        public ScalingEnum ScalingType; // Is the scaling Flat or Percentage?
-        public float Amount;
+        public readonly ScalingEnum ScalingType; // Is the scaling Flat or Percentage?
+        public readonly float Amount;
+
         public StatScale(ScalingEnum scalingType, float amount)
         {
             ScalingType = scalingType;

@@ -52,9 +52,10 @@ namespace MagicSchool.Skills
                         modifiers: new List<ModifierSpec>
                         {
                             new ModifierSpec(
-                                modifier: ModifierEnum.Wound,
-                                amount:   0f,
-                                duration: WoundDuration),
+                                modifier:    ModifierEnum.Wound,
+                                scalingType: ScalingEnum.Flat,
+                                amount:      0f,
+                                duration:    WoundDuration),
                         },
                         amplifier: 0.3f),
 

@@ -32,7 +32,9 @@ namespace MagicSchool.Skills
                 {
                     if (modifier == null) continue;
 
-                    IModifier modifierAfterScale = modifier.Scaled(amplifier);
+                    // the original spec is shared by every cast.
+                    // so modifier with scaling need to be new instance.
+                    IModifier modifierAfterScale = modifier.WithAmount(modifier.GetAmount() * amplifier);
 
                     recipient.AddModifier(modifierAfterScale);
                 }

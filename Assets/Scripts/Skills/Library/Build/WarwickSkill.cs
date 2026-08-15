@@ -29,8 +29,10 @@ namespace MagicSchool.Skills
         private static SkillStep Cast(TemplateActionRegistrySO registry)
         {
             // increase as + 100%
-            CustomModifier modifiers = new CustomModifier(BuffDuration,
-                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage, AttackSpeedBuff));
+            CustomModifier modifiers = new CustomModifier(BuffDuration, new List<ModifierSpec>
+            {
+                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage, AttackSpeedBuff),
+            });
 
             // cast buff
             SkillActionGroup cast = new SkillActionGroup(
@@ -51,8 +53,10 @@ namespace MagicSchool.Skills
         private static SkillStep OnCastExpired(TemplateActionRegistrySO registry)
         {
             // stun
-            CustomModifier stun = new CustomModifier(StunDuration,
-                new ModifierSpec(ModifierEnum.Stun, ScalingEnum.Flat, 0f));
+            CustomModifier stun = new CustomModifier(StunDuration, new List<ModifierSpec>
+            {
+                new ModifierSpec(ModifierEnum.Stun, ScalingEnum.Flat, 0f),
+            });
 
             // aoe on self 
             SkillActionGroup AOE = new SkillActionGroup(

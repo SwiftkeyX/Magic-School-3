@@ -42,10 +42,13 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.Self,
                         modifier: new CustomModifier(
                             duration:  BraceDuration,
-                            modifiers: new ModifierSpec(
-                                modifier:    ModifierEnum.DamageReduction,
-                                scalingType: ScalingEnum.Flat,
-                                amount:      25f)),
+                            modifiers: new List<ModifierSpec>
+                            {
+                                new ModifierSpec(
+                                    modifier:    ModifierEnum.DamageReduction,
+                                    scalingType: ScalingEnum.Flat,
+                                    amount:      25f),
+                            }),
                         amplifier: 0.3f),
                 });
 

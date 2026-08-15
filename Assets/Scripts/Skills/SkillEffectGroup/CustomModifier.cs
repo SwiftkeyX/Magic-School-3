@@ -10,11 +10,10 @@ namespace MagicSchool.Skills
         public float GetDuration() => _duration;
         public IReadOnlyList<IModifier> GetModifiers() => _modifiers;
 
-        // FIXNOW: use list
-        public CustomModifier(float duration, params ModifierSpec[] modifiers)
+        public CustomModifier(float duration, IReadOnlyList<ModifierSpec> modifiers)
         {
             _duration = duration;
-            _modifiers = modifiers ?? new ModifierSpec[0];
+            _modifiers = modifiers ?? new List<ModifierSpec>();
         }
 
     }

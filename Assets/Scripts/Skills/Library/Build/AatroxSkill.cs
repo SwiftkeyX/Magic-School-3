@@ -38,8 +38,8 @@ namespace MagicSchool.Skills
         private static SkillStep Transform(TemplateActionRegistrySO registry)
         {
             // one group, one timer - the whole transform ends on the same tick
-            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration,
-
+            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration, new List<ModifierSpec>
+            {
                 new ModifierSpec(
                     modifier:    ModifierEnum.Omnivamp,
                     scalingType: ScalingEnum.Flat,
@@ -64,7 +64,8 @@ namespace MagicSchool.Skills
                 new ModifierSpec(
                     modifier:    ModifierEnum.AutoAttackWasReplaced,
                     scalingType: ScalingEnum.Flat,
-                    amount:      0f));
+                    amount:      0f),
+            });
 
             SkillActionGroup cast = new SkillActionGroup(
                 source: ActionSourceEnum.Self,

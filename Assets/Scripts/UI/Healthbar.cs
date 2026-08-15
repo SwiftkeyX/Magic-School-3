@@ -1,23 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
 using MagicSchool.Contracts;
-using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.UI
 {
-    // World-space health bar
-    // ExecuteAlways lets the offset be tweaked live in edit mode / Prefab Mode, without entering Play mode.
-    [ExecuteAlways]
-    public class Healthbar : MonoBehaviour
+    // World-space health bar - green for the player's side, red for the other one.
+    public class Healthbar : WorldBar
     {
-        [SerializeField] private Slider _slider;
-        [SerializeField] private Vector3 _offset = new Vector3(0f, 1f, 0f);
         private Image _image;
-        private Hero _hero;
 
-        void Awake()
+        // ====================================== override ======================================
+        // fill slider with hero's hp value
+        protected override float Fill => (float)_hero.CurrentHP / _hero.MaxHP;
+
+        // ====================================== life cycle ======================================
+        protected override void Awake()
         {
-            _hero = GetComponentInParent<Hero>();
+            base.Awake();
             _image = _slider.fillRect.GetComponent<Image>();
         }
 
@@ -26,15 +25,6 @@ namespace MagicSchool.UI
             if (_hero.Team == TeamEnum.Blue) _image.color = Color.green;
 
             else if (_hero.Team == TeamEnum.Red) _image.color = Color.red;
-        }
-
-        void LateUpdate()
-        {
-            if (_hero == null) _hero = GetComponentInParent<Hero>();
-            transform.position = _hero.transform.position + _offset;
-
-            if (_hero.IsInitialized)
-                _slider.value = (float)_hero.CurrentHP / _hero.MaxHP; 
         }
     }
 }

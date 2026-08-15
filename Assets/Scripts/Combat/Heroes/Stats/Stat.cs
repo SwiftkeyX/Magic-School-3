@@ -43,6 +43,9 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         public bool HasStatus(ModifierEnum type) => _statModifier.GetStatusModifier(type);
 
+        public int ActiveModifierCount => _statModifier.ActiveCount;
+        public float ModifierRemaining(int index) => _statModifier.GetRemainingDuration(index);
+
         public bool IsStunned => HasStatus(ModifierEnum.Stun);
         public bool IsWounded => HasStatus(ModifierEnum.Wound);
 
@@ -52,7 +55,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         public bool IsManaCapped() => _currentMana >= MaxMana;
         public void SpendMana() => _currentMana = 0;
 
-        public void AddModifier(IModifier modifier) => _statModifier.AddModifier(modifier);
+        public void AddModifier(ICustomModifier modifier, float amplifier) => _statModifier.AddModifier(modifier, amplifier);
         public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
 
 

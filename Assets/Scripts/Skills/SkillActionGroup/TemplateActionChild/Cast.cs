@@ -100,7 +100,7 @@ namespace MagicSchool.Skills
                     effect.ApplyEffect(new List<IEffectable> { _target });
 
                     // get longest effect duration
-                    durations.Add(LongestModifierDuration(effect));
+                    durations.Add(GetModifierDuration(effect));
                 }
             }
 
@@ -111,20 +111,17 @@ namespace MagicSchool.Skills
         }
 
         // ======================================= private ========================================
-        // get the longest modifier duration
-        private float LongestModifierDuration(SkillEffect effect)
+        // get duration from this effect's modifier
+        private float GetModifierDuration(SkillEffect effect)
         {
+            // if isn't modifier, return
             if (!(effect is ModifierSkillEffect modifierEffect)) return 0f;
+            
+            // guard
+            if (modifierEffect.Modifier == null) return 0f;
 
-            List<float> durations = new List<float>();
-            foreach (ModifierSpec modifier in modifierEffect.Modifiers)
-            {
-                if (modifier == null) continue;
-
-                durations.Add(modifier.GetDuration());
-            }
-
-            return Longest(durations);
+            // return modifer's duration
+            return modifierEffect.Modifier.GetDuration();
         }
 
         private static float Longest(List<float> durations)

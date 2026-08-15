@@ -6,7 +6,7 @@ namespace MagicSchool.Skills
     public static class WarwickSkill
     {
         // buff
-        private const float AttackSpeedBuff = 100f;  
+        private const float AttackSpeedBuff = 1f;  
         private const float BuffDuration = 2.5f;
 
         // stun
@@ -29,10 +29,8 @@ namespace MagicSchool.Skills
         private static SkillStep Cast(TemplateActionRegistrySO registry)
         {
             // increase as + 100%
-            List<ModifierSpec> modifiers = new List<ModifierSpec>
-            {
-                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage, AttackSpeedBuff, BuffDuration),
-            };   
+            CustomModifier modifiers = new CustomModifier(BuffDuration,
+                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage, AttackSpeedBuff));
 
             // cast buff
             SkillActionGroup cast = new SkillActionGroup(
@@ -53,10 +51,8 @@ namespace MagicSchool.Skills
         private static SkillStep OnCastExpired(TemplateActionRegistrySO registry)
         {
             // stun
-            List<ModifierSpec> stun = new List<ModifierSpec>
-            {
-                new ModifierSpec(ModifierEnum.Stun, ScalingEnum.Flat, 0f, StunDuration),
-            };
+            CustomModifier stun = new CustomModifier(StunDuration,
+                new ModifierSpec(ModifierEnum.Stun, ScalingEnum.Flat, 0f));
 
             // aoe on self 
             SkillActionGroup AOE = new SkillActionGroup(

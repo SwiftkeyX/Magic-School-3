@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.Stats
@@ -12,10 +11,7 @@ namespace MagicSchool.Combat.Heroes.Stats
     {
         private const float Permanent = -1f;
 
-        private readonly Dictionary<ModifierEnum, ModifierTracker> _modifierTracker = new Dictionary<ModifierEnum, ModifierTracker>();
-
-        // to track modifier that was expired
-        private readonly List<ModifierEnum> _expired = new List<ModifierEnum>();
+        private readonly List<ActiveCustomModifier> _active = new List<ActiveCustomModifier>();
 
         // pair of modifier & stat - tell which stat is increase by this modifier
         private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
@@ -31,73 +27,117 @@ namespace MagicSchool.Combat.Heroes.Stats
         // update all current modifier duration, removing any that just expired
         public void Tick(float deltaTime)
         {
-            _expired.Clear();
-
-            foreach (var tracker in _modifierTracker)
+            // backwards, so removing one of the modifier does not skip over the next
+            for (int i = _active.Count - 1; i >= 0; i--)
             {
                 // if permanent, skip timer
-                if (float.IsPositiveInfinity(tracker.Value.Remaining)) continue;
+                if (float.IsPositiveInfinity(_active[i].Remaining)) continue;
 
                 // update timer
-                tracker.Value.Remaining -= deltaTime;
+                _active[i].Remaining -= deltaTime;
 
-                // if modifier expired, keep it in expired list
-                if (tracker.Value.Remaining <= 0f) _expired.Add(tracker.Key);
+                // if the group expired, every modifier in it goes at once
+                if (_active[i].Remaining <= 0f) _active.RemoveAt(i);
             }
-
-            // remove expired modifier in 1 go
-            foreach (ModifierEnum type in _expired) _modifierTracker.Remove(type);
         }
 
         // =================================== setter ===================================
         // add new modifier
-        public void AddModifier(IModifier modifier)
+        // FLAGGING: amplifier should be unique to each modifier. But let leave it for now.
+        public void AddModifier(ICustomModifier modifier, float amplifier)
         {
-            _modifierTracker[modifier.GetModifierEnum()] = new ModifierTracker(modifier);
+            // if the same modifier is added again, refresh that modifier
+            for (int i = 0; i < _active.Count; i++)
+            {
+                // is new added modifier the same to current active one?
+                if (!ReferenceEquals(_active[i].Modifier, modifier)) continue;
+
+                // refresh modifier
+                _active[i] = new ActiveCustomModifier(modifier, amplifier);
+                return;
+            }
+
+            // add modifier
+            _active.Add(new ActiveCustomModifier(modifier, amplifier));
         }
 
         // =================================== getter ===================================
-        // Compute final stat after modifier.
+        // Compute final stat after calculating modifier.
         // Consume base stat. Spit the final stat out.
         public float GetStatModifier(StatEnum type, float baseValue)
         {
             float flat = 0f;        // add flat stat
             float percent = 0f;     // add percentage of the base stat, 0.8 = +80%
 
-            foreach (var tracker in _modifierTracker)
+            foreach (ActiveCustomModifier tracker in _active)
             {
-                // lookup modifier table - what stat is increase?
-                if (!_lookup.TryGetValue(tracker.Value.Modifier.GetModifierEnum(), out StatEnum target)) continue;
+                foreach (IModifier modifier in tracker.Modifier.GetModifiers())
+                {
+                    // lookup modifier table - what stat is increase?
+                    if (!_lookup.TryGetValue(modifier.GetModifierEnum(), out StatEnum target)) continue;
 
-                // let the modifier with correct stat pass.
-                if (target != type) continue;
-                ScalingEnum scalingEnum = tracker.Value.Modifier.GetScalingEnum();
-                if (scalingEnum == ScalingEnum.Flat)
-                    flat += tracker.Value.Modifier.GetAmount();
+                    // let the modifier with correct stat pass.
+                    if (target != type) continue;
 
-                else if (scalingEnum == ScalingEnum.Percentage)
-                    percent += tracker.Value.Modifier.GetAmount();
+                    // apply amplifier if exist e.g. +30% when the target was wounded
+                    float amount = modifier.GetAmount() * tracker.Amplifier;
 
-                else { }
+                    // scale stat e.g. flat +50, percentage +100%
+                    ScalingEnum scalingEnum = modifier.GetScalingEnum();
+                    if (scalingEnum == ScalingEnum.Flat)
+                        flat += amount;
+
+                    else if (scalingEnum == ScalingEnum.Percentage)
+                        percent += amount;
+
+                    else { }
+                }
             }
 
             return (baseValue + flat) * (1f + percent);
         }
 
         // Return available status modifier
-        public bool GetStatusModifier(ModifierEnum type) => _modifierTracker.ContainsKey(type);
+        public bool GetStatusModifier(ModifierEnum type)
+        {
+            foreach (ActiveCustomModifier tracker in _active)
+                foreach (IModifier modifier in tracker.Modifier.GetModifiers())
+                    if (modifier.GetModifierEnum() == type) return true;
+
+            return false;
+        }
+
+        // return the count of active modifier 
+        public int ActiveCount => _active.Count;
+
+        // get remaining duration of the active modifier
+        public float GetRemainingDuration(int index)
+        {
+            if (index < 0 || index >= _active.Count) return 0f;
+
+            ActiveCustomModifier tracker = _active[index];
+
+            if (float.IsPositiveInfinity(tracker.Remaining)) return 0f;
+
+            float duration = tracker.Modifier.GetDuration();
+            if (duration <= 0f) return 0f;
+
+            return tracker.Remaining / duration;
+        }
 
         // =================================== active modifier ===================================
-        // Current active modifer on the hero. To track how long this modifer last.
-        // Nested deliberately: nothing outside the resolver has any use for it.
-        private class ModifierTracker
+        // Contain current active group of modifiers on the hero. 
+        // To track how long this group last.
+        private class ActiveCustomModifier
         {
-            public readonly IModifier Modifier;      // Modifier = heal, buff, debuff, status, etc...
-            public float Remaining;                 // remember its duration
+            public readonly ICustomModifier Modifier;   // the group of modifier - buff, debuff, status, etc...
+            public readonly float Amplifier;            // what this application was scaled by, fixed at the moment it landed
+            public float Remaining;                     // remember its remaining duration of the modifier - The group share the same remaining
 
-            public ModifierTracker(IModifier source)
+            public ActiveCustomModifier(ICustomModifier source, float amplifier)
             {
                 Modifier = source;
+                Amplifier = amplifier;
 
                 float duration = source.GetDuration();
 

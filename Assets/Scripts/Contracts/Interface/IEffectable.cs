@@ -6,7 +6,7 @@ namespace MagicSchool.Contracts
     {
         void TakeDamage(int damage);
         void Heal(float amount);
-        void AddModifier(IModifier modifier);
+        void AddModifier(ICustomModifier modifier, float amplifier);
         bool HasStatus(ModifierEnum status);
 
         bool IsAlive { get; }

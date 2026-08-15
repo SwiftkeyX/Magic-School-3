@@ -37,39 +37,34 @@ namespace MagicSchool.Skills
         // ============================== active: the transform ==============================
         private static SkillStep Transform(TemplateActionRegistrySO registry)
         {
-            List<ModifierSpec> modifiers = new List<ModifierSpec>
-            {
+            // one group, one timer - the whole transform ends on the same tick
+            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration,
+
                 new ModifierSpec(
                     modifier:    ModifierEnum.Omnivamp,
                     scalingType: ScalingEnum.Flat,
-                    amount:      10f,
-                    duration:    TransformDuration),
+                    amount:      10f),
 
                 new ModifierSpec(
                     modifier:    ModifierEnum.Attack,
                     scalingType: ScalingEnum.Flat,
-                    amount:      80f,
-                    duration:    TransformDuration),
+                    amount:      80f),
 
                 new ModifierSpec(
                     modifier:    ModifierEnum.Transformed,
                     scalingType: ScalingEnum.Flat,
-                    amount:      0f,
-                    duration:    TransformDuration),
+                    amount:      0f),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
                 new ModifierSpec(
                     modifier:    ModifierEnum.ManaBlocked,
                     scalingType: ScalingEnum.Flat,
-                    amount:      0f,
-                    duration:    TransformDuration),
+                    amount:      0f),
 
                 new ModifierSpec(
                     modifier:    ModifierEnum.AutoAttackWasReplaced,
                     scalingType: ScalingEnum.Flat,
-                    amount:      0f,
-                    duration:    TransformDuration),
-            };
+                    amount:      0f));
 
             SkillActionGroup cast = new SkillActionGroup(
                 source: ActionSourceEnum.Self,
@@ -79,7 +74,7 @@ namespace MagicSchool.Skills
                 {
                     new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.Self,
-                        modifiers: modifiers),
+                        modifier:  WorldEnderBuff),
                 });
 
             return new SkillStep(

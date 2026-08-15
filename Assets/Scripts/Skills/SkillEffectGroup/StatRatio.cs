@@ -14,5 +14,13 @@ namespace MagicSchool.Skills
             Stat = stat;
             Percent = percent;
         }
+
+        // conversion rule NOT constructor.
+        // it change (stat, percent) to new type StatRatio(). It's here so the skill builder doesn't get too messy.
+        // E.g. { (StatEnum.Atk, 100f), (StatEnum.MG, 50f) } => +100% atk & +50% mg 
+        public static implicit operator StatRatio((StatEnum stat, float percent) pair)
+        {
+            return new StatRatio(pair.stat, pair.percent);
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace MagicSchool.Contracts
         public float GetAmount();
         public ModifierEnum GetModifierEnum();
         public float GetDuration();
+        public ScalingEnum GetScalingEnum();
     }
 }

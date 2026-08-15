@@ -67,11 +67,24 @@ namespace MagicSchool.Combat.Heroes.Stats
                 // lookup modifier table - what stat is increase?
                 if (!_lookup.TryGetValue(tracker.Value.Modifier.GetModifierEnum(), out StatEnum target)) continue;
 
-                // guard
+                // let the modifier with correct stat pass.
                 if (target != type) continue;
 
-                // increase base stat by modifier
-                total += tracker.Value.Modifier.GetAmount();
+                // get scaling type
+                ScalingEnum scalingEnum = tracker.Value.Modifier.GetScalingEnum();
+                // stat is addition by flat amount
+                if (scalingEnum == ScalingEnum.Flat)
+                {
+                    total += tracker.Value.Modifier.GetAmount();
+                }
+
+                // stat is addition by percentage
+                else if (scalingEnum == ScalingEnum.Percentage)
+                {
+                    // ASKING: I don't sure if this is how the scaling in LOL work. Could you look it up?
+                    total *= tracker.Value.Modifier.GetAmount();
+                }
+
             }
 
             return total;

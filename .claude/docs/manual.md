@@ -70,8 +70,14 @@ Karma - test first hit projectile - AOE explode on impact
 
 Aatrox (cont.)
 => It would be nice to see the progress bar of the skill's duration - the white progress bar just above healthbar 
-=> Implement actual scaling (currently ad, ap does nothing to skill damage) 
-- the flat stat only use by base stat of Hero BUT every skill scale of their hero stat either AD or AP (sometime other stat too) e.g. this skill have 1000% AD scaling
 => Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
 
+Hey, I forget about AttackSkillEffect. That still doesn't implement stat scaling.
+
+I don't sure. BUT I think the attack dash animation got override by walk animation. in Aatrox scene. 
+
 Cassiopeia - implement effect modifier +30% dmg amp when target is wounded
+Jhin - implement attack falloff per hit
+Samira - implement new debuff to her skill - reduce target's armor
+
+Poppy - implement "Recieving Projectile" and Shield

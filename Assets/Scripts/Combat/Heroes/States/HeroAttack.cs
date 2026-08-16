@@ -87,7 +87,7 @@ namespace MagicSchool.Combat.Heroes.States
             // other action may replace normal auto attack e.g. Aatrox
             if (!_me.HasStatus(ModifierEnum.AutoAttackWasReplaced))
             {
-                // FlAGGING: attack animation got skip by skill which is not intended
+                // FLAGGING: attack animation got skip by skill which is not intended
                 // apply damage to target
                 _currentTarget.TakeDamage(_me.AttackDamage);
 

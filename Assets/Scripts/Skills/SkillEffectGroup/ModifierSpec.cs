@@ -3,9 +3,6 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
-    // FIXLATER: Hey, I think adding the Scaling & the change of modifier make the skills module kinda messy.
-    // Do you think it's good to separate Modifier & Scaling as its own asmdef?
-
     // The actual modifier class 
     // To contain modifier type and its amount in 1 place.
     public class ModifierSpec : IModifier

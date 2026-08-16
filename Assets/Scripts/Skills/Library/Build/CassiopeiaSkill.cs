@@ -31,9 +31,9 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.SameToAimTarget,
                         modifier: new CustomModifier(
                             duration: WoundDuration,
-                            modifiers: new List<ModifierSpec>
+                            modifiers: new List<IModifier>
                             {
-                                new ModifierSpec(ModifierEnum.Wound),
+                                new StatusModifier(ModifierEnum.Wound),
                             }),
                         conditions: new List<SkillCondition> { amplifierCondition },
                         amplifier: WoundedAmplifier);

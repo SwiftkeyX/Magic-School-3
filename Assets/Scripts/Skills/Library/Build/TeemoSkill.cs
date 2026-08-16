@@ -51,9 +51,9 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.EnemiesInArea,
                         modifier: new CustomModifier(
                             duration:  WoundDuration,
-                            modifiers: new List<ModifierSpec>
+                            modifiers: new List<IModifier>
                             {
-                                new ModifierSpec(ModifierEnum.Wound),
+                                new StatusModifier(ModifierEnum.Wound),
                             }),
                         amplifier: 0.3f),
 

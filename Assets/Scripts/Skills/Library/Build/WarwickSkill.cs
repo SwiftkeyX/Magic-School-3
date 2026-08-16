@@ -29,10 +29,10 @@ namespace MagicSchool.Skills
         private static SkillStep Cast(TemplateActionRegistrySO registry)
         {
             // increase as + 100%
-            CustomModifier modifiers = new CustomModifier(BuffDuration, new List<ModifierSpec>
+            CustomModifier modifiers = new CustomModifier(BuffDuration, new List<IModifier>
             {
                 // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
-                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage,
+                new StatModifier(ModifierEnum.AttackSpeed, ScalingEnum.Percentage,
                                  new List<StatRatio> { (StatEnum.AttackSpeed, AttackSpeedBuff) }),
             });
 
@@ -55,9 +55,9 @@ namespace MagicSchool.Skills
         private static SkillStep OnCastExpired(TemplateActionRegistrySO registry)
         {
             // stun
-            CustomModifier stun = new CustomModifier(StunDuration, new List<ModifierSpec>
+            CustomModifier stun = new CustomModifier(StunDuration, new List<IModifier>
             {
-                new ModifierSpec(ModifierEnum.Stun),
+                new StatusModifier(ModifierEnum.Stun),
             });
 
             // aoe on self 

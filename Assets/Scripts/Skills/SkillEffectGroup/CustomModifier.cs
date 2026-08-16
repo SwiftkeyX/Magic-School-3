@@ -5,15 +5,15 @@ namespace MagicSchool.Skills
 {
     public class CustomModifier : ICustomModifier
     {
-        private readonly IReadOnlyList<ModifierSpec> _modifiers;
+        private readonly IReadOnlyList<IModifier> _modifiers;
         private readonly float _duration;
         public float GetDuration() => _duration;
         public IReadOnlyList<IModifier> GetModifiers() => _modifiers;
 
-        public CustomModifier(float duration, IReadOnlyList<ModifierSpec> modifiers)
+        public CustomModifier(float duration, IReadOnlyList<IModifier> modifiers)
         {
             _duration = duration;
-            _modifiers = modifiers ?? new List<ModifierSpec>();
+            _modifiers = modifiers ?? new List<IModifier>();
         }
 
     }

@@ -47,10 +47,10 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.Self,
                         modifier: new CustomModifier(
                             duration:  BraceDuration,
-                            modifiers: new List<ModifierSpec>
+                            modifiers: new List<IModifier>
                             {
                                 // sheet: a flat 25/25/35% - derived from nothing, so StatEnum.None
-                                new ModifierSpec(
+                                new StatModifier(
                                     modifier:    ModifierEnum.DamageReduction,
                                     scalingType: ScalingEnum.Percentage,
                                     ratios:      new List<StatRatio> { (StatEnum.None, DamageReductionPercent) }),

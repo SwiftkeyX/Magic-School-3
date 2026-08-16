@@ -16,7 +16,7 @@ namespace MagicSchool.Skills
 
         // how long the transform and everything that comes with it lasts
         private const float OmnivampFromAP = 10f;   // sheet: 10% AP omnivamp
-        private const float AttackFromAS   = 80f;   // sheet: 80% of bonus AS, converted to AD
+        private const float AttackFromAS = 80f;   // sheet: 80% of bonus AS, converted to AD
         private const float TransformDuration = 10f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -40,27 +40,27 @@ namespace MagicSchool.Skills
         private static SkillStep Transform(TemplateActionRegistrySO registry)
         {
             // one group, one timer - the whole transform ends on the same tick
-            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration, new List<ModifierSpec>
+            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration, new List<IModifier>
             {
                 // sheet: 10% Ability Power Omnivamp
-                new ModifierSpec(
+                new StatModifier(
                     modifier:    ModifierEnum.Omnivamp,
                     scalingType: ScalingEnum.Percentage,
                     ratios:      new List<StatRatio> { (StatEnum.MG, OmnivampFromAP) }),
 
                 // FIXLATER: the sheet says 80% of *bonus* AS, and that the bonus is consumed.
                 // IHeroStats only exposes the final stat, so this reads total AS for now.
-                new ModifierSpec(
+                new StatModifier(
                     modifier:    ModifierEnum.Attack,
                     scalingType: ScalingEnum.Percentage,
                     ratios:      new List<StatRatio> { (StatEnum.AttackSpeed, AttackFromAS) }),
 
-                new ModifierSpec(ModifierEnum.Transformed),
+                new StatusModifier(ModifierEnum.Transformed),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
-                new ModifierSpec(ModifierEnum.ManaBlocked),
+                new StatusModifier(ModifierEnum.ManaBlocked),
 
-                new ModifierSpec(ModifierEnum.AutoAttackWasReplaced),
+                new StatusModifier(ModifierEnum.AutoAttackWasReplaced),
             });
 
             SkillActionGroup cast = new SkillActionGroup(

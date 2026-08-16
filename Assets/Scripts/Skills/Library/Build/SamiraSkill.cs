@@ -25,9 +25,9 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.SameToAimTarget,
                         modifier: new CustomModifier(
                             duration: ShredDuration,
-                            modifiers: new List<ModifierSpec>
+                            modifiers: new List<IModifier>
                             {
-                                new ModifierSpec(
+                                new StatModifier(
                                     modifier:    ModifierEnum.DefendShred,
                                     scalingType: ScalingEnum.Percentage,
                                     ratios:      new List<StatRatio> { (StatEnum.MG, -ShredFromAP) }),

@@ -57,7 +57,7 @@ namespace MagicSchool.Combat.Heroes.Stats
                 if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
 
                 // refresh modifier
-                _activeModifiers[i] = new ActiveCustomModifier(modifier, amplifier, casterStats);
+                _activeModifiers[i].RefreshModifierDuration();
                 return;
             }
 

@@ -11,7 +11,7 @@ namespace MagicSchool.Combat.Heroes.Stats
     {
         private const float Permanent = -1f;
 
-        private readonly List<ActiveCustomModifier> _active = new List<ActiveCustomModifier>();
+        private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
 
         // pair of modifier & stat - tell which stat is increase by this modifier
         private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
@@ -34,16 +34,16 @@ namespace MagicSchool.Combat.Heroes.Stats
         public void Tick(float deltaTime)
         {
             // backwards, so removing one of the modifier does not skip over the next
-            for (int i = _active.Count - 1; i >= 0; i--)
+            for (int i = _activeModifiers.Count - 1; i >= 0; i--)
             {
                 // if permanent, skip timer
-                if (float.IsPositiveInfinity(_active[i].Remaining)) continue;
+                if (float.IsPositiveInfinity(_activeModifiers[i].Remaining)) continue;
 
                 // update timer
-                _active[i].Remaining -= deltaTime;
+                _activeModifiers[i].Remaining -= deltaTime;
 
                 // if the group expired, every modifier in it goes at once
-                if (_active[i].Remaining <= 0f) _active.RemoveAt(i);
+                if (_activeModifiers[i].Remaining <= 0f) _activeModifiers.RemoveAt(i);
             }
         }
 
@@ -53,18 +53,18 @@ namespace MagicSchool.Combat.Heroes.Stats
         public void AddModifier(ICustomModifier modifier, float amplifier)
         {
             // if the same modifier is added again, refresh that modifier
-            for (int i = 0; i < _active.Count; i++)
+            for (int i = 0; i < _activeModifiers.Count; i++)
             {
                 // is new added modifier the same to current active one?
-                if (!ReferenceEquals(_active[i].Modifier, modifier)) continue;
+                if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
 
                 // refresh modifier
-                _active[i] = new ActiveCustomModifier(modifier, amplifier);
+                _activeModifiers[i] = new ActiveCustomModifier(modifier, amplifier);
                 return;
             }
 
             // add modifier
-            _active.Add(new ActiveCustomModifier(modifier, amplifier));
+            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier));
         }
 
         // =================================== getter ===================================
@@ -75,9 +75,9 @@ namespace MagicSchool.Combat.Heroes.Stats
             float flat = 0f;        // add flat stat
             float percent = 0f;     // add percentage of the base stat, in percent points: 80f = +80%
 
-            foreach (ActiveCustomModifier tracker in _active)
+            foreach (ActiveCustomModifier tracker in _activeModifiers)
             {
-                foreach (IModifier modifier in tracker.Modifier.GetModifiers())
+                foreach (IModifier modifier in tracker.CustomModifier.GetModifiers())
                 {
                     // lookup modifier table - what stat is increase?
                     if (!_lookup.TryGetValue(modifier.GetModifierEnum(), out StatEnum target)) continue;
@@ -106,26 +106,26 @@ namespace MagicSchool.Combat.Heroes.Stats
         // Return available status modifier
         public bool GetStatusModifier(ModifierEnum type)
         {
-            foreach (ActiveCustomModifier tracker in _active)
-                foreach (IModifier modifier in tracker.Modifier.GetModifiers())
+            foreach (ActiveCustomModifier tracker in _activeModifiers)
+                foreach (IModifier modifier in tracker.CustomModifier.GetModifiers())
                     if (modifier.GetModifierEnum() == type) return true;
 
             return false;
         }
 
         // return the count of active modifier 
-        public int ActiveCount => _active.Count;
+        public int ActiveCount => _activeModifiers.Count;
 
         // get remaining duration of the active modifier
         public float GetRemainingDuration(int index)
         {
-            if (index < 0 || index >= _active.Count) return 0f;
+            if (index < 0 || index >= _activeModifiers.Count) return 0f;
 
-            ActiveCustomModifier tracker = _active[index];
+            ActiveCustomModifier tracker = _activeModifiers[index];
 
             if (float.IsPositiveInfinity(tracker.Remaining)) return 0f;
 
-            float duration = tracker.Modifier.GetDuration();
+            float duration = tracker.CustomModifier.GetDuration();
             if (duration <= 0f) return 0f;
 
             return tracker.Remaining / duration;
@@ -136,13 +136,13 @@ namespace MagicSchool.Combat.Heroes.Stats
         // To track how long this group last.
         private class ActiveCustomModifier
         {
-            public readonly ICustomModifier Modifier;   // the group of modifier - buff, debuff, status, etc...
+            public readonly ICustomModifier CustomModifier;   // the group of modifier - buff, debuff, status, etc...
             public readonly float Amplifier;            // what this application was scaled by, fixed at the moment it landed
             public float Remaining;                     // remember its remaining duration of the modifier - The group share the same remaining
 
             public ActiveCustomModifier(ICustomModifier source, float amplifier)
             {
-                Modifier = source;
+                CustomModifier = source;
                 Amplifier = amplifier;
 
                 float duration = source.GetDuration();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
@@ -7,31 +8,25 @@ namespace MagicSchool.Skills
     public class ModifierSpec : IModifier
     {
         private readonly ModifierEnum _modifier;
-        private readonly StatScale _scaling;
+        private readonly ScalingEnum _scalingType;
+        private readonly float _amount;      // the amount written straight in, when there is no ratio
+        private readonly Scaling _scaling;   // how to derive the amount instead, when there is
 
-        public ModifierSpec(ModifierEnum modifier, ScalingEnum scalingType, float amount)
+        // e.g. buff Atk by a written +50            => (Attack, Flat, amount: 50f)
+        // e.g. buff Atk by 50% of the caster's AP   => (Attack, Percentage, ratios: { (MG, 50f) })
+        public ModifierSpec(ModifierEnum modifier, ScalingEnum scalingType, float amount = 0f,
+                            IReadOnlyList<StatRatio> ratios = null)
         {
             _modifier = modifier;
-            _scaling = new StatScale(scalingType, amount);
+            _scalingType = scalingType;
+            _amount = amount;
+            _scaling = (ratios == null || ratios.Count == 0) ? null : new Scaling(scalingType, ratios);
         }
 
         public ModifierEnum GetModifierEnum() => _modifier;
-        public float GetAmount() => _scaling.Amount;
-        public ScalingEnum GetScalingEnum() => _scaling.ScalingType;
-    }
+        public ScalingEnum GetScalingEnum() => _scalingType;
 
-    // Specify scaling type the stat is using base on the modifier
-    // e.g. Stat is increase by flat amount + 50
-    // e.g. Stat is increase by percentage amount + 100 %  
-    public readonly struct StatScale
-    {
-        public readonly ScalingEnum ScalingType; // Is the scaling Flat or Percentage?
-        public readonly float Amount;
-
-        public StatScale(ScalingEnum scalingType, float amount)
-        {
-            ScalingType = scalingType;
-            Amount = amount;
-        }
+        public float GetBonusAmount(IHeroStats stats)
+            => _scaling == null ? _amount : _scaling.GetTotalAfterScaling(stats);
     }
 }

@@ -2,7 +2,7 @@ namespace MagicSchool.Contracts
 {
     public interface IModifier
     {
-        public float GetAmount();
+        public float GetBonusAmount(IHeroStats stats);
         public ModifierEnum GetModifierEnum();
         public ScalingEnum GetScalingEnum();
     }

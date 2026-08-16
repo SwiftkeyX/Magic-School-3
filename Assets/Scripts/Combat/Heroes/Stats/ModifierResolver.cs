@@ -50,7 +50,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         // =================================== setter ===================================
         // add new modifier
         // FLAGGING: amplifier should be unique to each modifier. But let leave it for now.
-        public void AddModifier(ICustomModifier modifier, float amplifier)
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats)
         {
             // if the same modifier is added again, refresh that modifier
             for (int i = 0; i < _activeModifiers.Count; i++)
@@ -59,48 +59,56 @@ namespace MagicSchool.Combat.Heroes.Stats
                 if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
 
                 // refresh modifier
-                _activeModifiers[i] = new ActiveCustomModifier(modifier, amplifier);
+                _activeModifiers[i] = new ActiveCustomModifier(modifier, amplifier, casterStats);
                 return;
             }
 
             // add modifier
-            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier));
+            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier, casterStats));
         }
 
         // =================================== getter ===================================
         // Compute final stat after calculating modifier.
         // Consume base stat. Spit the final stat out.
-        public float GetStatModifier(StatEnum type, float baseValue)
+        // FLAGGING: The stat are re-compute single time hero attack. Let cache this later.
+        public float GetStatModifier(StatEnum type, float baseStat)
         {
-            float flat = 0f;        // add flat stat
-            float percent = 0f;     // add percentage of the base stat, in percent points: 80f = +80%
+            float pureStatFromPercentageBonus = 0f;
 
-            foreach (ActiveCustomModifier tracker in _activeModifiers)
+            foreach (ActiveCustomModifier active in _activeModifiers)
             {
-                foreach (IModifier modifier in tracker.CustomModifier.GetModifiers())
+                IReadOnlyList<IModifier> modifiers = active.CustomModifier.GetModifiers();
+
+                for (int i = 0; i < modifiers.Count; i++)
                 {
+                    IModifier modifier = modifiers[i];
+
                     // lookup modifier table - what stat is increase?
                     if (!_lookup.TryGetValue(modifier.GetModifierEnum(), out StatEnum target)) continue;
 
                     // let the modifier with correct stat pass.
                     if (target != type) continue;
 
+                    // the amount was resolved when this modifier landed - read it back rather than
+                    // re-scale it, or a stat lookup would call GetStat again from inside itself
+                    float amountAfterScaling = active.BonusStat[i];
+
+                    // FIXLATER: Let's move amplifier into Scaling too.
                     // apply amplifier if exist e.g. +30% when the target was wounded
-                    float amount = modifier.GetAmount() * tracker.Amplifier;
+                    float amount = amountAfterScaling * active.Amplifier;
 
                     // scale stat e.g. flat +50, percentage +100%
+                    // the percentage is derived from StatRatio 
                     ScalingEnum scalingEnum = modifier.GetScalingEnum();
-                    if (scalingEnum == ScalingEnum.Flat)
-                        flat += amount;
 
-                    else if (scalingEnum == ScalingEnum.Percentage)
-                        percent += amount;
+                    if (scalingEnum == ScalingEnum.Percentage)
+                        pureStatFromPercentageBonus += amount;
 
                     else { }
                 }
             }
 
-            return (baseValue + flat) * (1f + percent / 100f);
+            return (baseStat + pureStatFromPercentageBonus);
         }
 
         // Return available status modifier
@@ -137,13 +145,21 @@ namespace MagicSchool.Combat.Heroes.Stats
         private class ActiveCustomModifier
         {
             public readonly ICustomModifier CustomModifier;   // the group of modifier - buff, debuff, status, etc...
-            public readonly float Amplifier;            // what this application was scaled by, fixed at the moment it landed
+            public readonly float Amplifier;            
+            public readonly float[] BonusStat;            //the amount of total stat that will be added to hero
             public float Remaining;                     // remember its remaining duration of the modifier - The group share the same remaining
 
-            public ActiveCustomModifier(ICustomModifier source, float amplifier)
+            public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats)
             {
                 CustomModifier = source;
                 Amplifier = amplifier;
+
+                // get bonus amount from each modifier
+                IReadOnlyList<IModifier> modifiers = source.GetModifiers();
+                BonusStat = new float[modifiers.Count];
+                // FIXLATER: I don't like sending casterStat. But it look like it work well.
+                // let me see a sec.
+                for (int i = 0; i < modifiers.Count; i++) BonusStat[i] = modifiers[i].GetBonusAmount(casterStats);
 
                 float duration = source.GetDuration();
 

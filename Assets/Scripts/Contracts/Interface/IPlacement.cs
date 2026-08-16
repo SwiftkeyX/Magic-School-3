@@ -11,10 +11,10 @@ namespace MagicSchool.Contracts
         Transform transform { get; }
 
         // Called once a hero's transform has been moved onto this placement
-        void OnHeroPlaced(IPlaceable hero);
+        void OnUnitPlaced(IPlaceable hero);
 
         // Called just before a hero already on this placement moves to a different one
-        void OnHeroUnplaced(IPlaceable hero);
+        void OnUnitUnplaced(IPlaceable hero);
     }
 
     // need somewhere to put the redundant code of each Placement logic, so we move it into dedicated Extension class

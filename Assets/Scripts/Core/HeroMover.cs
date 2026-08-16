@@ -16,10 +16,10 @@ namespace MagicSchool.Core
         {
             // exit old placement
             IPlacement oldPlacement = hero.CurrentPlacement;
-            if (oldPlacement != null) oldPlacement.OnHeroUnplaced(hero);
+            if (oldPlacement != null) oldPlacement.OnUnitUnplaced(hero);
 
             // enter new placement
-            placement.OnHeroPlaced(hero);
+            placement.OnUnitPlaced(hero);
 
             // if hero was placed on board, board must track that hero
             if (hero.IsInCombat) hero.TrackOnBoard();

@@ -12,7 +12,7 @@ namespace MagicSchool.Combat.Placements
 
         // A hero placed on a bench slot has no hex - just remember who's here so
         // OnHeroUnplaced can free the slot again once they leave.
-        public void OnHeroPlaced(IPlaceable hero)
+        public void OnUnitPlaced(IPlaceable hero)
         {
             this.EnterPlacementExtension(hero);
 
@@ -20,7 +20,7 @@ namespace MagicSchool.Combat.Placements
         }
 
         // The hero sitting here is moving to a different placement - free the slot.
-        public void OnHeroUnplaced(IPlaceable hero)
+        public void OnUnitUnplaced(IPlaceable hero)
         {
             _reserved = false;
         }

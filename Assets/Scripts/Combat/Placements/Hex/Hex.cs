@@ -34,7 +34,7 @@ namespace MagicSchool.Combat.Placements
 
         // ===================================== placement interface =====================================
         // place hero on Hex
-        public void OnHeroPlaced(IPlaceable hero)
+        public void OnUnitPlaced(IPlaceable hero)
         {
             // set placement for the hero normally
             this.EnterPlacementExtension(hero);
@@ -46,7 +46,7 @@ namespace MagicSchool.Combat.Placements
         }
 
         // unplace hero from Hex
-        public void OnHeroUnplaced(IPlaceable hero)
+        public void OnUnitUnplaced(IPlaceable hero)
         {
             if (hero is IHexPlaceable hexDweller) hexDweller.SetReservedHex(null);
         }

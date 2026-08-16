@@ -4,16 +4,16 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Samira: a projectile at the current target that only counts its first hit, wounding whoever
-    /// it lands on.
+    /// Samira: a projectile at the current target that only counts its first hit, permanently
+    /// shredding the armour of whoever it lands on.
     ///
     /// Ported from Assets/Data/Heroes/Skills/Samira.asset.
     /// </summary>
     public static class SamiraSkill
     {
         private const float Damage = 200f;
-        private const float DebuffDuration = 5f;
-        private const float ArmorShred = 10f;
+        private const float ShredDuration = -1f;
+        private const float ShredFromAP = 20f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -24,13 +24,13 @@ namespace MagicSchool.Skills
             var debuffArmor = new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
                         modifier: new CustomModifier(
-                            duration: DebuffDuration,
+                            duration: ShredDuration,
                             modifiers: new List<ModifierSpec>
                             {
                                 new ModifierSpec(
                                     modifier:    ModifierEnum.DefendShred,
                                     scalingType: ScalingEnum.Percentage,
-                                    amount:      ArmorShred),
+                                    ratios:      new List<StatRatio> { (StatEnum.MG, -ShredFromAP) }),
                             })
                         );
 

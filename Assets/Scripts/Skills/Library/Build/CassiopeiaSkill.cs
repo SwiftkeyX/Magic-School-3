@@ -22,7 +22,7 @@ namespace MagicSchool.Skills
         {
             var damage = new AttackSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
-                        damageRatios: new List<StatRatio> { (StatEnum.MG, Damage) });
+                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, Damage) }));
 
             var amplifierCondition = new HasStatusCondition(
                     subject: ConditionSubjectEnum.Caster,

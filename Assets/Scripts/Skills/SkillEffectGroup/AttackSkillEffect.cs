@@ -1,20 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
 
 namespace MagicSchool.Skills
 {
     // effect that apply damage to recipients
     public class AttackSkillEffect : SkillEffect
     {
-        private readonly Scaling _scaling;
+        private readonly IScaling _scaling;
 
-        public AttackSkillEffect(EffectRecipientEnum recipient, IReadOnlyList<StatRatio> damageRatios, Cadence cadence = null,
+        public AttackSkillEffect(EffectRecipientEnum recipient, IScaling scaling, Cadence cadence = null,
                                  List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)
         {
-            _scaling = new Scaling(ScalingEnum.Percentage, damageRatios);
+            _scaling = scaling;
         }
 
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)

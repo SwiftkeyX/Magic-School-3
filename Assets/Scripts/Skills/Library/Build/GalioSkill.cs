@@ -41,7 +41,7 @@ namespace MagicSchool.Skills
                 {
                     new HealSkillEffect(
                         recipient: EffectRecipientEnum.Self,
-                        totalHeal: new List<StatRatio> { (StatEnum.MG, HealAmount) },   // sheet: Galio heals off AP
+                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, HealAmount) }),   // sheet: Galio heals off AP
                         duration:  BraceDuration,
                         cadence:   new Cadence(interval: TickInterval, duration: BraceDuration)),
 
@@ -76,7 +76,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        damageRatios:    new List<StatRatio> { (StatEnum.MG, Damage) }),   // sheet: Galio is AP
+                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, Damage) })),   // sheet: Galio is AP
                 });
 
             return new SkillStep(

@@ -21,7 +21,7 @@ namespace MagicSchool.Skills
         {
             var damage = new AttackSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
-                        damageRatios: new List<StatRatio> { (StatEnum.Atk, Damage) });
+                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, Damage) }));
 
             var debuffArmor = new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,

@@ -89,7 +89,8 @@ namespace MagicSchool.Skills
                 effects: new List<SkillEffect>
                 {
                     // sheet: 30% AP
-                    new HealSkillEffect(EffectRecipientEnum.Self, new List<StatRatio> { (StatEnum.MG, HealOnAA) }),
+                    new HealSkillEffect(EffectRecipientEnum.Self,
+                                        new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, HealOnAA) })),
                 }
             );
 

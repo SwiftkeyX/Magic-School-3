@@ -8,13 +8,12 @@ namespace MagicSchool.StatScaling
     // the amount is derived from percentage, it need "StatRatio" to tell which stat it derived from.
     // e.g. atk stat = baseATK +200% AP
     // e.g. skill damage = 100% ATK + 50% AP
-    public class Scaling
+    public class Scaling : IScaling
     {
         private readonly ScalingEnum _scalingType; // Is the scaling Flat or Percentage?
         private readonly IReadOnlyList<StatRatio> _ratios;
 
         // =================================== getter ===================================
-        public ScalingEnum GetScalingEnum() => _scalingType;
 
         public Scaling(ScalingEnum scalingEnum, IReadOnlyList<StatRatio> ratios)
         {

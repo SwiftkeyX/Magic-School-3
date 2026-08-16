@@ -27,7 +27,7 @@ namespace MagicSchool.Skills
                         recipient: EffectRecipientEnum.EnemiesInPath,
                         // sheet says "744% AD & AP" - AD only until it is settled whether that is
                         // 744% of each or split between them. The list is what it goes in either way.
-                        damageRatios:    new List<StatRatio> { (StatEnum.Atk, Damage) }),
+                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, Damage) })),
                 });
 
             return new SkillDefinition(

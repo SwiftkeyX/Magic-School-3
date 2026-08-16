@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.Modifiers;
 
 namespace MagicSchool.Skills
 {
@@ -8,11 +7,11 @@ namespace MagicSchool.Skills
     // e.g. apply wound, apply buff, apply stun, etc...
     public class ModifierSkillEffect : SkillEffect
     {
-        private readonly CustomModifier _modifier;
+        private readonly ICustomModifier _modifier;
 
-        public CustomModifier Modifier => _modifier;
+        public ICustomModifier Modifier => _modifier;
  
-        public ModifierSkillEffect(EffectRecipientEnum recipient, CustomModifier modifier, Cadence cadence = null,
+        public ModifierSkillEffect(EffectRecipientEnum recipient, ICustomModifier modifier, Cadence cadence = null,
                                    List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)
         {

@@ -27,7 +27,7 @@ namespace MagicSchool.Core
             // spawn hero
             GameObject heroPrefab = SceneHelper.Instantiate(data.Prefab);
             Hero hero = heroPrefab.GetComponent<Hero>();
-            hero.Init(data, board, team, _templateActions);
+            hero.Init(data, board, team, SkillLibrary.Resolve(data.SkillId, _templateActions));
 
             // move them to "placement"
             _heroMover.MoveThisHeroTo(hero, placement);

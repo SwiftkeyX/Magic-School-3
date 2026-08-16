@@ -5,21 +5,9 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Skills
 {
     // Specify scaling type the stat is using base on the modifier.
-    // if the amount is increase by flat amount.
-    // e.g. atk stat = baseATK +50 flat amount
-    // if the amount is derived from percentage, it need "StatRatio" to tell which stat it derived from.
+    // the amount is derived from percentage, it need "StatRatio" to tell which stat it derived from.
     // e.g. atk stat = baseATK +200% AP
     // e.g. skill damage = 100% ATK + 50% AP
-
-
-    /// <summary>
-    /// FIXNOW: It's so confusing to do Scaling for both AttackSkillEffect & Modifier at the same time.
-    /// Let focus on making functionality first, by making Scaling work for only AttackSkillEffect.
-    /// It orignially work by only consuming StatRatio & IHeroStats, let see.
-    /// Scaling by AttackSkillEffect only use the Percentage one.
-    /// 
-    /// FIXNOW: I just re-lookup at tft-skill. The Flat bonus doesn't exist, it's all derived from hero stat in percentage.
-    /// </summary>
     public class Scaling
     {
         private readonly ScalingEnum _scalingType; // Is the scaling Flat or Percentage?

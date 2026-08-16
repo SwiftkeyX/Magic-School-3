@@ -34,32 +34,6 @@ namespace MagicSchool.Skills
             foreach (SkillCondition condition in _conditions) condition?.Init(caster);
         }
 
-        // FIXLATER: remove this after Scaling is working perfectly.
-        // scale the total amount base on hero's stat & skill's ratio
-        protected float GetAmountAfterScaling(IReadOnlyList<StatRatio> ratios)
-        {
-            if (ratios == null || ratios.Count == 0) return 0f;
-
-            // FLAGGING: another class type check, let leave it for now.
-            // Somehow the effect always need stat from hero, maybe we'll have to include IHeroStats into ICombatant?
-            // guard
-            if (!(_caster is IHeroStats stats))
-            {
-                Debug.LogError($"[{GetType().Name}] scales off the caster's stats but was never given a caster " +
-                               "that has any. SkillDefinition.Init() has to reach every effect it holds.");
-                return 0f;
-            }
-
-            // scale stat base on ratio
-            float total = 0f;
-            foreach (StatRatio ratio in ratios)
-            {
-                total += stats.GetStat(ratio.Stat) * ratio.Percent / 100f;
-            }
-
-            return total;
-        }
-
         // check condition to each recipients.
         // If condition is met, the effect is amplified.
         protected float AmplifierFor(IEffectable recipient)

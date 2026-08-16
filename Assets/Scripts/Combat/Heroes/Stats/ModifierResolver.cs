@@ -16,10 +16,16 @@ namespace MagicSchool.Combat.Heroes.Stats
         // pair of modifier & stat - tell which stat is increase by this modifier
         private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
         {
+            // buff
             { ModifierEnum.BonusHP        , StatEnum.MAXHP }          ,
             { ModifierEnum.Attack         , StatEnum.Atk }            ,
             { ModifierEnum.AttackSpeed    , StatEnum.AttackSpeed}     ,
+            { ModifierEnum.Defend         , StatEnum.DF }             ,
             { ModifierEnum.DamageReduction, StatEnum.DamageReduction },
+            // ...
+
+            // debuff
+            { ModifierEnum.DefendShred    , StatEnum.DF }             ,
             // ...
         };
 

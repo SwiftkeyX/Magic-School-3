@@ -46,7 +46,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        damage:    new List<StatRatio> { (StatEnum.MG, ExplosionDamage) }),   // sheet: Karma is AP
+                        damageRatios:    new List<StatRatio> { (StatEnum.MG, ExplosionDamage) }),   // sheet: Karma is AP
                 });
 
             return new SkillStep(

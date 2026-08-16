@@ -10,7 +10,7 @@ namespace MagicSchool.Skills
         private readonly CustomModifier _modifier;
 
         public CustomModifier Modifier => _modifier;
-
+ 
         public ModifierSkillEffect(EffectRecipientEnum recipient, CustomModifier modifier, Cadence cadence = null,
                                    List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)

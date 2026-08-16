@@ -24,7 +24,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
-                        damage:    new List<StatRatio> { (StatEnum.MG, Damage) }),    // sheet: Cassiopeia is AP
+                        damageRatios:    new List<StatRatio> { (StatEnum.MG, Damage) }),    // sheet: Cassiopeia is AP
 
                     new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,

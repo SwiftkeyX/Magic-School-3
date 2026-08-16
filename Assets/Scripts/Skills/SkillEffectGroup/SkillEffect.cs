@@ -34,6 +34,7 @@ namespace MagicSchool.Skills
             foreach (SkillCondition condition in _conditions) condition?.Init(caster);
         }
 
+        // FIXLATER: remove this after Scaling is working perfectly.
         // scale the total amount base on hero's stat & skill's ratio
         protected float GetAmountAfterScaling(IReadOnlyList<StatRatio> ratios)
         {

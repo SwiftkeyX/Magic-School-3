@@ -62,7 +62,7 @@ namespace MagicSchool.Skills
 
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        damage:    new List<StatRatio> { (StatEnum.MG, PoisonDamage) },   // sheet: Teemo is AP
+                        damageRatios:    new List<StatRatio> { (StatEnum.MG, PoisonDamage) },   // sheet: Teemo is AP
                         cadence:   new Cadence(interval: PoisonInterval, duration: PoisonDuration)),
                 });
 

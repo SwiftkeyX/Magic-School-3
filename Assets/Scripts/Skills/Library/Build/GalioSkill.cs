@@ -72,7 +72,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        damage:    new List<StatRatio> { (StatEnum.MG, Damage) }),   // sheet: Galio is AP
+                        damageRatios:    new List<StatRatio> { (StatEnum.MG, Damage) }),   // sheet: Galio is AP
                 });
 
             return new SkillStep(

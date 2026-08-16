@@ -7,19 +7,19 @@ namespace MagicSchool.Skills
     // effect that apply damage to recipients
     public class AttackSkillEffect : SkillEffect
     {
-        private readonly IReadOnlyList<StatRatio> _damage;
+        private readonly Scaling _scaling;
 
-        public AttackSkillEffect(EffectRecipientEnum recipient, IReadOnlyList<StatRatio> damage, Cadence cadence = null,
-                                 List<SkillCondition> conditions = null, float amplifier = 0.3f)
+        public AttackSkillEffect(EffectRecipientEnum recipient, IReadOnlyList<StatRatio> damageRatios, Cadence cadence = null,
+                                 List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)
         {
-            _damage = damage;
+            _scaling = new Scaling(damageRatios);
         }
 
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
             //' scale the damage
-            float damageAmount = GetAmountAfterScaling(_damage);
+            float damageAmount = _scaling.GetFinalAmount(_caster as IHeroStats);
 
             foreach (IEffectable recipient in recipients)
             {

@@ -28,7 +28,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        damage:    new List<StatRatio> { (StatEnum.Atk, DamagePerTick) },   // sheet: Garen is AD
+                        damageRatios:    new List<StatRatio> { (StatEnum.Atk, DamagePerTick) },   // sheet: Garen is AD
                         cadence:   new Cadence(interval: TickInterval, duration: Duration)),
                 });
 

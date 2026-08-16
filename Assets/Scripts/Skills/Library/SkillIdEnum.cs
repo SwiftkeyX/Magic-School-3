@@ -21,5 +21,6 @@ namespace MagicSchool.Skills
         Samira = 7,
         Teemo = 8,
         Warwick = 9,
+        Sona = 10,
     }
 }

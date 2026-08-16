@@ -24,6 +24,7 @@ namespace MagicSchool.Skills
                 { SkillIdEnum.Samira    , SamiraSkill.Build }    ,
                 { SkillIdEnum.Teemo     , TeemoSkill.Build }     ,
                 { SkillIdEnum.Warwick   , WarwickSkill.Build }   ,
+                { SkillIdEnum.Sona      , SonaSkill.Build }      ,
             };
 
         /// <summary>

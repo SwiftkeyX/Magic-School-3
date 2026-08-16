@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.Modifiers;
 
 namespace MagicSchool.Skills
 {

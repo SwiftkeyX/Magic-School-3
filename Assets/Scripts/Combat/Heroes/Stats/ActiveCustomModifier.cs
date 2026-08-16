@@ -4,7 +4,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.Stats
 {
-    // =================================== active modifier ===================================
+    // FIXLATER: This is also modifier, move it to the new module.
     // Contain current active group of modifiers on the hero. 
     // To track how long this group last.
     public class ActiveCustomModifier

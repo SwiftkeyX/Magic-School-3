@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Skills
+namespace MagicSchool.StatScaling
 {
     // Specify scaling type the stat is using base on the modifier.
     // the amount is derived from percentage, it need "StatRatio" to tell which stat it derived from.

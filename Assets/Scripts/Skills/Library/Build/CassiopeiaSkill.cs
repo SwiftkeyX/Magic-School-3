@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Codice.CM.Common;
 using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
+using MagicSchool.Modifiers;
 
 namespace MagicSchool.Skills
 {

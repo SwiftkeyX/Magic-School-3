@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Skills
+namespace MagicSchool.Modifiers
 {
     public class CustomModifier : ICustomModifier
     {

@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Skills
+namespace MagicSchool.Modifiers
 {
     public class StatusModifier : IModifier
     {

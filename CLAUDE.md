@@ -12,7 +12,9 @@ allowed to reference:
 MagicSchool.Contracts  -> (nothing)          leaf: interfaces + enums everyone shares
 MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper
 MagicSchool.VFX        -> (nothing)          leaf: FloatingText
-MagicSchool.Skills     -> Contracts
+MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
+MagicSchool.Modifiers  -> Contracts, StatScaling
+MagicSchool.Skills     -> Contracts, StatScaling, Modifiers
 MagicSchool.Combat     -> Contracts, Engine, Skills, VFX
 MagicSchool.UI         -> Contracts, Combat
 MagicSchool.Core       -> Contracts, Engine, Skills, Combat
@@ -27,6 +29,13 @@ Rules that aren't visible from any single file:
   (the hex-aware half is `IHexPlaceable`, over in Combat next to `Hex` itself), and why
   `GamePhaseEnum` stayed in Core — Combat only needed one bit of it, so `BattleBoard.IsBattleOn`
   carries it instead.
+- **`Modifiers` and `StatScaling` are separate from `Skills` on purpose.** A skill is only what
+  *grants* a modifier today; traits, items or augments would grant the same ones, and none of them
+  should have to reference `Skills` - and so `TemplateAction`, `SkillDefinition` and every hero
+  builder - just to say "+20 armour". `Combat` does not reference either module: `ModifierResolver`
+  and `Hero` only ever touch `ICustomModifier`/`IModifier`, which are in `Contracts`. The folder is
+  `StatScaling/` rather than `Scaling/` because namespaces follow the folder, and a namespace
+  `MagicSchool.Scaling` holding a class `Scaling` cannot be used unqualified.
 - **`Heroes/` and `Placements/` share one assembly on purpose.** A hero needs its hex and a hex
   tracks its occupant; that coupling is real, so `Combat` admits it rather than pretending otherwise.
   Splitting them was tried and doesn't work.

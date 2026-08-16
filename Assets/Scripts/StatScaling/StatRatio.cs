@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Skills
+namespace MagicSchool.StatScaling
 {
     // This is the stat ratio of the skill. Use in calculation.
     // e.g. Jhin's skill = 744% AD damage

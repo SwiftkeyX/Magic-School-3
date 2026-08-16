@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
 
-namespace MagicSchool.Skills
+namespace MagicSchool.Modifiers
 {
     // The actual modifier class 
     // To contain modifier type and its amount in 1 place.

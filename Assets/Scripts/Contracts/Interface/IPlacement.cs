@@ -2,19 +2,13 @@ using UnityEngine;
 
 namespace MagicSchool.Contracts
 {
-    /// <summary>
-    /// Hex and Benchslot are used to place hero on it.
-    /// We create interface for both of them.
-    /// </summary>
+    // IPlacement answer: what is the thing that a unit could stand on?
+    // e.g. BenchSlot and Hex
     public interface IPlacement
     {
         Transform transform { get; }
-
-        // Called once a hero's transform has been moved onto this placement
-        void OnUnitPlaced(IPlaceable hero);
-
-        // Called just before a hero already on this placement moves to a different one
-        void OnUnitUnplaced(IPlaceable hero);
+        void OnUnitPlaced(IPlaceable hero);     // to tell this placement that a unit have standing on it.
+        void OnUnitUnplaced(IPlaceable hero);   // to tell this placement that a unit is leaving this placement.
     }
 
     // need somewhere to put the redundant code of each Placement logic, so we move it into dedicated Extension class

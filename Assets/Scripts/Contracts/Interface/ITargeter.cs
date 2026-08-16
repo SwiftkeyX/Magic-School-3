@@ -1,6 +1,7 @@
 namespace MagicSchool.Contracts
 {
-    // What a template action needs to aim: ask the caster who to point at.
+    // ITargeter answer: Which enemy is the target base on specify condition.
+    // e.g. skill want to aim at the Nearest/furthest enemy
     public interface ITargeter
     {
         ICombatant CurrentTarget { get; }

@@ -7,6 +7,9 @@ namespace MagicSchool.Contracts
 
     // FLAGGING: maybe we have to rethink about the interface. 
     // ICombatant is overused which is a signal for it being god interface.
+
+    // ICombatant answer: ???
+    // it is a package that do so much thing. Read FLAGGING.
     public interface ICombatant : IPlaceable, IEffectable, ITargeter
     {
         TeamEnum Team { get; }

@@ -1,13 +1,15 @@
 namespace MagicSchool.Contracts
 {
-    // What a SkillEffect needs: damage, heal, and modifier.
-    // HasStatus is what a SkillCondition asks about - "is this one transformed / wounded / stunned".
+    // IEffectable answer: to make a unit that can be affected by a attack & skill.
+    // This unit can take damage, can be healed, can add modifier.
+    // e.g. heroA hit heroB - so it ask IEffectable to take damage.
+    // e.g. skill want to add a new modifier to a hit target - so it ask IEffectable to add new modifier.
     public interface IEffectable
     {
         void TakeDamage(int damage);
         void Heal(float amount);
         void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats);
-        bool HasStatus(ModifierEnum status);
+        bool HasStatus(ModifierEnum status);    // "is this one transformed / wounded / stunned".
 
         bool IsAlive { get; }
     }

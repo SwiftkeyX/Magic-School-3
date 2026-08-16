@@ -1,6 +1,6 @@
 namespace MagicSchool.Contracts
 {
-    // contract for hero stat.
+    // IHeroStats answer: how much is hero stat?
     public interface IHeroStats
     {
         int CurrentHP { get; }

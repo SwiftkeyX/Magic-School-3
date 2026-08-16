@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace MagicSchool.Contracts
 {
-    // contract for moving hero on the board e.g. when we move hero on our own
+    // IPlaceable answer: to move a unit (the hero) on the IPlacement (the board) 
+    // e.g. hero walk to the next hex
+    // e.g. player move hero by dragging
     public interface IPlaceable
     {
         Transform transform { get; }
-
-        IPlacement CurrentPlacement { get; }
-        bool IsInCombat { get; }        // false when standing somewhere that isn't a Hex, e.g. the bench
-
+        IPlacement CurrentPlacement { get; }    // the placement this unit is standing on
+        bool IsInCombat { get; }                // FLAGGING: this one shouldn't belong in this interface, no?
         void SetCurrentPlacement(IPlacement placement);
     }
 }

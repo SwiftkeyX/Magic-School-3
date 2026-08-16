@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -13,46 +12,34 @@ namespace MagicSchool.Skills
     /// </summary>
     public static class SamiraSkill
     {
-        private const float Damage = 200f;
+        private const float DamageRatio = 200f;
         private const float ShredDuration = -1f;
         private const float ShredFromAP = 20f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            var damage = new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.SameToAimTarget,
-                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, Damage) }));
+            SkillActionGroup shootProjectile = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.FirstHitProjectile,
+                target:   AimTargetEnum.Current,
 
-            var debuffArmor = new ModifierSkillEffect(
-                        recipient: EffectRecipientEnum.SameToAimTarget,
-                        modifier: new CustomModifier(
-                            duration: ShredDuration,
-                            modifiers: new List<IModifier>
-                            {
-                                new StatModifier(
-                                    modifier:    ModifierEnum.DefendShred,
-                                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, -ShredFromAP) })),
-                            })
-                        );
+                Damage(
+                    recipient: EffectRecipientEnum.SameToAimTarget,
+                    ratios:    (StatEnum.Atk, DamageRatio)),
 
-            SkillActionGroup shootProjectile = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.FirstHitProjectile),
-                target: AimTargetEnum.Current,
-                effects: new List<SkillEffect>
-                {
-                    damage,
-                    debuffArmor,
-                });
+                Apply(
+                    recipient: EffectRecipientEnum.SameToAimTarget,
+                    modifier:  Bundle(
+                        duration:  ShredDuration,
+                        modifiers: Buff(
+                            modifier: ModifierEnum.DefendShred,
+                            ratios:   (StatEnum.MG, -ShredFromAP))))
+            );
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep>
-                {
-                    new SkillStep(
-                        trigger: TriggerEnum.OnCast,
-                        actionGroups: new List<SkillActionGroup> { shootProjectile }),
-                });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) });
         }
     }
 }

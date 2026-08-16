@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Codice.CM.Common;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -14,51 +13,43 @@ namespace MagicSchool.Skills
     /// </summary>
     public static class CassiopeiaSkill
     {
-        private const float Damage = 1000f;
+        private const float DamageRatio = 1000f;
         private const float WoundDuration = 5f;
         private const float WoundedAmplifier = 0.3f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            var damage = new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.SameToAimTarget,
-                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, Damage) }));
+            List<SkillCondition> amplifierCondition = new List<SkillCondition>
+            {
+                new HasStatusCondition(
+                    subject:     ConditionSubjectEnum.Caster,
+                    status:      ModifierEnum.Transformed,
+                    wantPresent: true),
+            };
 
-            var amplifierCondition = new HasStatusCondition(
-                    subject: ConditionSubjectEnum.Caster,
-                    status: ModifierEnum.Transformed,
-                    wantPresent: true);
+            // homing projectile to furthest enemy
+            SkillActionGroup shootProjectile = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.HomingProjectile,
+                target:   AimTargetEnum.Furthest,
 
-            var wounded = new ModifierSkillEffect(
-                        recipient: EffectRecipientEnum.SameToAimTarget,
-                        modifier: new CustomModifier(
-                            duration: WoundDuration,
-                            modifiers: new List<IModifier>
-                            {
-                                new StatusModifier(ModifierEnum.Wound),
-                            }),
-                        conditions: new List<SkillCondition> { amplifierCondition },
-                        amplifier: WoundedAmplifier);
+                Damage(
+                    recipient: EffectRecipientEnum.SameToAimTarget,
+                    ratios:    (StatEnum.MG, DamageRatio)),
 
-            SkillActionGroup shootProjectile = new SkillActionGroup(
-                // homing projectile to furthest enemy
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.HomingProjectile),
-                target: AimTargetEnum.Furthest,
-                effects: new List<SkillEffect>
-                {
-                    damage,
-                    wounded,
-                });
+                ApplyWhen(
+                    recipient:  EffectRecipientEnum.SameToAimTarget,
+                    modifier:   Bundle(
+                        duration:  WoundDuration,
+                        modifiers: Status(ModifierEnum.Wound)),
+                    conditions: amplifierCondition,
+                    amplifier:  WoundedAmplifier)
+            );
 
             return new SkillDefinition(
                 skillName: "Twin Fang",
-                activeSteps: new List<SkillStep>
-                {
-                    new SkillStep(
-                        trigger: TriggerEnum.OnCast,
-                        actionGroups: new List<SkillActionGroup> { shootProjectile }),
-                });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) });
         }
     }
 }

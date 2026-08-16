@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -13,31 +13,20 @@ namespace MagicSchool.Skills
     /// </summary>
     public static class JhinSkill
     {
-        private const float Damage = 1000f;
+        private const float DamageRatio = 744f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup shot = new SkillActionGroup(
+            SkillActionGroup shot = ActionGroup(registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.PiercingProjectile),
+                action: TemplateActionEnum.PiercingProjectile,
                 target: AimTargetEnum.Current,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInPath,
-                        // sheet says "744% AD & AP" - AD only until it is settled whether that is
-                        // 744% of each or split between them. The list is what it goes in either way.
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, Damage) })),
-                });
+                Damage(EffectRecipientEnum.EnemiesInPath, (StatEnum.Atk, DamageRatio))
+            );
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep>
-                {
-                    new SkillStep(
-                        trigger: TriggerEnum.OnCast,
-                        actionGroups: new List<SkillActionGroup> { shot }),
-                });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shot) });
         }
     }
 }

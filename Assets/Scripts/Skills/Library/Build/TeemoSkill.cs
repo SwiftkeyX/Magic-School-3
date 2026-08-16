@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -31,43 +30,40 @@ namespace MagicSchool.Skills
 
         private static SkillStep Dart(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup dart = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.HomingProjectile),
-                target: AimTargetEnum.Furthest);
+            SkillActionGroup dart = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.HomingProjectile,
+                target:   AimTargetEnum.Furthest
+            );
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnCast,
-                actionGroups: new List<SkillActionGroup> { dart });
+            return Step(trigger: TriggerEnum.OnCast, groups: dart);
         }
 
         private static SkillStep Patch(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup patch = new SkillActionGroup(
-                source: ActionSourceEnum.WhereProjectileHit,
-                templateAction: registry.Get(TemplateActionEnum.CircleAOE),
-                target: AimTargetEnum.WhereProjectileHit,
-                effects: new List<SkillEffect>
-                {
-                    new ModifierSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        modifier: new CustomModifier(
-                            duration:  WoundDuration,
-                            modifiers: new List<IModifier>
-                            {
-                                new StatusModifier(ModifierEnum.Wound),
-                            }),
-                        amplifier: 0.3f),
+            SkillActionGroup patch = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.WhereProjectileHit,
+                action:   TemplateActionEnum.CircleAOE,
+                target:   AimTargetEnum.WhereProjectileHit,
 
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, PoisonDamage) }),   // sheet: Teemo is AP
-                        cadence:   new Cadence(interval: PoisonInterval, duration: PoisonDuration)),
-                });
+                Apply(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    modifier:  Bundle(
+                        duration:  WoundDuration,
+                        modifiers: Status(ModifierEnum.Wound)),
+                    amplifier: 0.3f),
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnHit,
-                actionGroups: new List<SkillActionGroup> { patch });
+                // sheet: Teemo is AP
+                DamageOverTime(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    interval:  PoisonInterval,
+                    duration:  PoisonDuration,
+                    ratios:    (StatEnum.MG, PoisonDamage))
+            );
+
+            return Step(trigger: TriggerEnum.OnHit, groups: patch);
         }
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -33,54 +32,47 @@ namespace MagicSchool.Skills
         // the cast itself - everything here lands on Galio
         private static SkillStep Brace(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup brace = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.CastGalioVariant),
-                target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new HealSkillEffect(
-                        recipient: EffectRecipientEnum.Self,
-                        scaling: new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, HealAmount) }),   // sheet: Galio heals off AP
+            SkillActionGroup brace = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.CastGalioVariant,
+                target:   AimTargetEnum.Self,
+
+                // sheet: Galio heals off AP
+                HealOverTime(
+                    recipient: EffectRecipientEnum.Self,
+                    duration:  BraceDuration,
+                    interval:  TickInterval,
+                    ratios:    (StatEnum.MG, HealAmount)),
+
+                Apply(
+                    recipient: EffectRecipientEnum.Self,
+                    modifier:  Bundle(
                         duration:  BraceDuration,
-                        cadence:   new Cadence(interval: TickInterval, duration: BraceDuration)),
+                        modifiers: Buff(
+                            modifier: ModifierEnum.DamageReduction,
+                            ratios:   (StatEnum.None, DamageReductionPercent)))
+                )
+            );
 
-                    new ModifierSkillEffect(
-                        recipient: EffectRecipientEnum.Self,
-                        modifier: new CustomModifier(
-                            duration:  BraceDuration,
-                            modifiers: new List<IModifier>
-                            {
-                                // sheet: a flat 25/25/35% - derived from nothing, so StatEnum.None
-                                new StatModifier(
-                                    modifier:    ModifierEnum.DamageReduction,
-                                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.None, DamageReductionPercent) })),
-                            }),
-                        amplifier: 0.3f),
-                });
-
-            return new SkillStep(
-                trigger: TriggerEnum.OnCast,
-                actionGroups: new List<SkillActionGroup> { brace });
+            return Step(trigger: TriggerEnum.OnCast, groups: brace);
         }
 
         // fired when the brace above expires
         private static SkillStep Slam(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup slam = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.CircleAOE),
-                target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, SlamDamage) })),   // sheet: Galio is AP
-                });
+            SkillActionGroup slam = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.CircleAOE,
+                target:   AimTargetEnum.Self,
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnExpired,
-                actionGroups: new List<SkillActionGroup> { slam });
+                Damage(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    ratios:    (StatEnum.MG, SlamDamage))
+            );
+
+            return Step(trigger: TriggerEnum.OnExpired, groups: slam);
         }
     }
 }

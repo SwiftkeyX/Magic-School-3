@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -16,7 +15,6 @@ namespace MagicSchool.Skills
     {
         private const int ComboLength = 3;
 
-        // how long the transform and everything that comes with it lasts
         private const float OmnivampFromAP = 10f;   // sheet: 10% AP omnivamp
         private const float AttackFromAS = 80f;   // sheet: 80% of bonus AS, converted to AD
         private const float TransformDuration = 10f;
@@ -42,41 +40,38 @@ namespace MagicSchool.Skills
         private static SkillStep Transform(TemplateActionRegistrySO registry)
         {
             // one group, one timer - the whole transform ends on the same tick
-            CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration, new List<IModifier>
-            {
+            ICustomModifier WorldEnderBuff = Bundle(duration: TransformDuration,
+
                 // sheet: 10% Ability Power Omnivamp
-                new StatModifier(
-                    modifier:    ModifierEnum.Omnivamp,
-                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, OmnivampFromAP) })),
+                Buff(
+                    modifier: ModifierEnum.Omnivamp,
+                    ratios: (StatEnum.MG, OmnivampFromAP)),
 
                 // FIXLATER: the sheet says 80% of *bonus* AS, and that the bonus is consumed.
                 // IHeroStats only exposes the final stat, so this reads total AS for now.
-                new StatModifier(
-                    modifier:    ModifierEnum.Attack,
-                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.AttackSpeed, AttackFromAS) })),
+                Buff(
+                    modifier: ModifierEnum.Attack,
+                    ratios: (StatEnum.AttackSpeed, AttackFromAS)),
 
-                new StatusModifier(ModifierEnum.Transformed),
+                Status(ModifierEnum.Transformed),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
-                new StatusModifier(ModifierEnum.ManaBlocked),
+                Status(ModifierEnum.ManaBlocked),
 
-                new StatusModifier(ModifierEnum.AutoAttackWasReplaced),
-            });
+                Status(ModifierEnum.AutoAttackWasReplaced)
+            );
 
-            SkillActionGroup cast = new SkillActionGroup(
+            SkillActionGroup cast = ActionGroup(
+                registry: registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.Cast),
+                action: TemplateActionEnum.Cast,
                 target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new ModifierSkillEffect(
-                        recipient: EffectRecipientEnum.Self,
-                        modifier:  WorldEnderBuff),
-                });
+                Apply(
+                    recipient: EffectRecipientEnum.Self,
+                    modifier: WorldEnderBuff)
+            );
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnCast,
-                actionGroups: new List<SkillActionGroup> { cast });
+            return Step(trigger: TriggerEnum.OnCast, groups: cast);
         }
 
         // ============================== passive: the combo ==============================
@@ -89,9 +84,7 @@ namespace MagicSchool.Skills
                 Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
             };
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnAttack,
-                actionGroups: beats);
+            return new SkillStep(trigger: TriggerEnum.OnAttack, actionGroups: beats);
         }
 
         // One beat of the combo: play this shape when transformed and the combo is on this count.
@@ -100,28 +93,30 @@ namespace MagicSchool.Skills
         {
             List<SkillCondition> conditions = new List<SkillCondition>
             {
+                // must have status transform
                 new HasStatusCondition(
                     subject:     ConditionSubjectEnum.Caster,
                     status:      ModifierEnum.Transformed,
                     wantPresent: true),
 
+                // ask the user
                 new NumberCondition(
                     subject:   ConditionSubjectEnum.Caster,
                     combo:     combo,
                     matchBeat: beat),
             };
 
-            return new SkillActionGroup(
+            return ActionGroupWhen(
+                registry: registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(action),
+                action: action,
                 target: AimTargetEnum.Current,
                 conditions: conditions,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, damage) })),   // sheet: Aatrox is AD
-                });
+                // sheet: Aatrox is AD
+                Damage(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    ratios: (StatEnum.Atk, damage))
+            );
         }
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -27,32 +27,30 @@ namespace MagicSchool.Skills
         // carries no effects of its own - it only exists to land somewhere
         private static SkillStep Dart(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup dart = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.FirstHitProjectile),
-                target: AimTargetEnum.Current);
+            SkillActionGroup dart = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.FirstHitProjectile,
+                target:   AimTargetEnum.Current
+            );
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnCast,
-                actionGroups: new List<SkillActionGroup> { dart });
+            return Step(trigger: TriggerEnum.OnCast, groups: dart);
         }
 
         private static SkillStep Explosion(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup blast = new SkillActionGroup(
-                source: ActionSourceEnum.WhereProjectileHit,
-                templateAction: registry.Get(TemplateActionEnum.CircleAOE),
-                target: AimTargetEnum.WhereProjectileHit,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, ExplosionDamage) })),   // sheet: Karma is AP
-                });
+            SkillActionGroup blast = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.WhereProjectileHit,
+                action:   TemplateActionEnum.CircleAOE,
+                target:   AimTargetEnum.WhereProjectileHit,
+                // sheet: Karma is AP
+                Damage(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    ratios:    (StatEnum.MG, ExplosionDamage))
+            );
 
-            return new SkillStep(
-                trigger: TriggerEnum.OnHit,
-                actionGroups: new List<SkillActionGroup> { blast });
+            return Step(trigger: TriggerEnum.OnHit, groups: blast);
         }
     }
 }

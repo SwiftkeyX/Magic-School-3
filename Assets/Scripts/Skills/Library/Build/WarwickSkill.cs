@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
-using MagicSchool.Modifiers;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -31,70 +30,49 @@ namespace MagicSchool.Skills
         private static SkillStep Cast(TemplateActionRegistrySO registry)
         {
             // increase as + 100%
-            CustomModifier modifiers = new CustomModifier(BuffDuration, new List<IModifier>
-            {
-                // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
-                new StatModifier(ModifierEnum.AttackSpeed,
-                                 new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.AttackSpeed, AttackSpeedBuff) })),
-            });
+            // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
+            ICustomModifier modifiers = Bundle(
+                duration: BuffDuration,
+                modifiers: Buff(ModifierEnum.AttackSpeed, (StatEnum.AttackSpeed, AttackSpeedBuff))
+            );
 
             // cast buff
-            SkillActionGroup cast = new SkillActionGroup(
+            SkillActionGroup cast = ActionGroup(registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.Cast),
+                action: TemplateActionEnum.Cast,
                 target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new ModifierSkillEffect(EffectRecipientEnum.Self, modifiers),
-                });
+                Apply(EffectRecipientEnum.Self, modifiers));
 
-            // trigger
-            TriggerEnum trigger = TriggerEnum.OnCast;
-
-            return new SkillStep(trigger, new List<SkillActionGroup> { cast });
+            return Step(trigger: TriggerEnum.OnCast, groups: cast);
         }
 
         private static SkillStep OnCastExpired(TemplateActionRegistrySO registry)
         {
             // stun
-            CustomModifier stun = new CustomModifier(StunDuration, new List<IModifier>
-            {
-                new StatusModifier(ModifierEnum.Stun),
-            });
+            ICustomModifier stun = Bundle(StunDuration, Status(ModifierEnum.Stun));
 
             // aoe on self 
-            SkillActionGroup AOE = new SkillActionGroup(
+            SkillActionGroup AOE = ActionGroup(registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.CircleAOE),
+                action: TemplateActionEnum.CircleAOE,
                 target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new ModifierSkillEffect(EffectRecipientEnum.EnemiesInArea, stun),
-                });
+                Apply(EffectRecipientEnum.EnemiesInArea, stun));
 
-            // trigger
-            TriggerEnum trigger = TriggerEnum.OnExpired;
-
-            return new SkillStep(trigger, new List<SkillActionGroup> { AOE });
+            return Step(trigger: TriggerEnum.OnExpired, groups: AOE);
         }
 
         // ============================== passive: the combo ==============================
         private static SkillStep OnAttack(TemplateActionRegistrySO registry)
         {
             // cast
-            SkillActionGroup cast = new SkillActionGroup(
+            SkillActionGroup cast = ActionGroup(registry,
                 source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.Cast),
+                action: TemplateActionEnum.Cast,
                 target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    // sheet: 30% AP
-                    new HealSkillEffect(EffectRecipientEnum.Self,
-                                        new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, HealOnAA) })),
-                }
-            );
+                // sheet: 30% AP
+                Heal(EffectRecipientEnum.Self, (StatEnum.MG, HealOnAA)));
 
-            return new SkillStep(TriggerEnum.OnAttack, new List<SkillActionGroup> { cast });
+            return Step(trigger: TriggerEnum.OnAttack, groups: cast);
         }
     }
 }

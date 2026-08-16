@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
+using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
@@ -21,26 +21,22 @@ namespace MagicSchool.Skills
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup spin = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.ZoneAOEGarenVariant),
-                target: AimTargetEnum.Self,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
-                        recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.Atk, DamagePerTick) }),   // sheet: Garen is AD
-                        cadence:   new Cadence(interval: TickInterval, duration: Duration)),
-                });
+            SkillActionGroup spin = ActionGroup(
+                registry: registry,
+                source:   ActionSourceEnum.Self,
+                action:   TemplateActionEnum.ZoneAOEGarenVariant,
+                target:   AimTargetEnum.Self,
+                
+                DamageOverTime(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    interval:  TickInterval,
+                    duration:  Duration,
+                    ratios:    (StatEnum.Atk, DamagePerTick))
+            );
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep>
-                {
-                    new SkillStep(
-                        trigger: TriggerEnum.OnCast,
-                        actionGroups: new List<SkillActionGroup> { spin }),
-                });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: spin) });
         }
     }
 }

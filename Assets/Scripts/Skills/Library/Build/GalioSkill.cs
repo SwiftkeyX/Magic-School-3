@@ -20,7 +20,7 @@ namespace MagicSchool.Skills
 
         // percentages of the caster's stat, the way the sheet writes them
         private const float HealAmount = 200f;
-        private const float Damage = 120f;
+        private const float SlamDamage = 120f;
         private const float DamageReductionPercent = 25f;   // sheet: 25/25/35%
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -76,7 +76,7 @@ namespace MagicSchool.Skills
                 {
                     new AttackSkillEffect(
                         recipient: EffectRecipientEnum.EnemiesInArea,
-                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, Damage) })),   // sheet: Galio is AP
+                        scaling:    new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, SlamDamage) })),   // sheet: Galio is AP
                 });
 
             return new SkillStep(

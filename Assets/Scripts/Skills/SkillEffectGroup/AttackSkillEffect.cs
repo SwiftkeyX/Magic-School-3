@@ -13,13 +13,13 @@ namespace MagicSchool.Skills
                                  List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)
         {
-            _scaling = new Scaling(damageRatios);
+            _scaling = new Scaling(ScalingEnum.Percentage, damageRatios);
         }
 
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
-            //' scale the damage
-            float damageAmount = _scaling.GetFinalAmount(_caster as IHeroStats);
+            // scale the damage e.g. skill damage = 500% AP
+            float damageAmount = _scaling.GetTotalAfterScaling(_caster as IHeroStats);
 
             foreach (IEffectable recipient in recipients)
             {

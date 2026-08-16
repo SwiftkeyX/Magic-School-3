@@ -17,6 +17,8 @@ namespace MagicSchool.Skills
     /// Let focus on making functionality first, by making Scaling work for only AttackSkillEffect.
     /// It orignially work by only consuming StatRatio & IHeroStats, let see.
     /// Scaling by AttackSkillEffect only use the Percentage one.
+    /// 
+    /// FIXNOW: I just re-lookup at tft-skill. The Flat bonus doesn't exist, it's all derived from hero stat in percentage.
     /// </summary>
     public class Scaling
     {
@@ -26,18 +28,13 @@ namespace MagicSchool.Skills
         // =================================== getter ===================================
         public ScalingEnum GetScalingEnum() => _scalingType;
 
-        public Scaling(IReadOnlyList<StatRatio> ratios)
+        public Scaling(ScalingEnum scalingEnum, IReadOnlyList<StatRatio> ratios)
         {
-            _scalingType = ScalingEnum.Percentage;
+            _scalingType = scalingEnum;
             _ratios = ratios;
         }
 
-        // The caster is a parameter, NOT a field held from the constructor.
-        // A skill is built once by a static Build() that has no caster to hand over - the caster
-        // only arrives later, through SkillDefinition.Init(). Reading it here also means the
-        // damage follows the caster's stats as they move during the fight, instead of freezing
-        // whatever they were at build time.
-        public float GetFinalAmount(IHeroStats stats)
+        public float GetTotalAfterScaling(IHeroStats stats)
         {
             // guard
             if (_ratios == null || _ratios.Count == 0) return 0f;
@@ -52,7 +49,7 @@ namespace MagicSchool.Skills
                 return 0f;
             }
 
-            float damageTotal = 0f;
+            float total = 0f;
 
             // scale amount base on ratio
             if (_scalingType == ScalingEnum.Percentage)
@@ -60,11 +57,11 @@ namespace MagicSchool.Skills
                 // e.g. skill dmg = 100% ATK + 50% AP
                 foreach (StatRatio ratio in _ratios)
                 {
-                    damageTotal += stats.GetStat(ratio.Stat) * ratio.Percent / 100f;
+                    total += stats.GetStat(ratio.Stat) * ratio.Percent / 100f;
                 }
             }
 
-            return damageTotal;
+            return total;
         }
     }
 

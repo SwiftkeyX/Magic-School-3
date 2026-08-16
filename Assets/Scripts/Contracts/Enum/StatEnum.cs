@@ -10,6 +10,8 @@ namespace MagicSchool.Contracts
     // explicit values are only here to keep it that way if it ever does get serialized.
     public enum StatEnum
     {
+        None = -1,
+
         MAXHP = 0,
         Atk = 1,
         DF = 2,

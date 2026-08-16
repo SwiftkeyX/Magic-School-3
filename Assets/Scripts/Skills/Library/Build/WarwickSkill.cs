@@ -31,7 +31,9 @@ namespace MagicSchool.Skills
             // increase as + 100%
             CustomModifier modifiers = new CustomModifier(BuffDuration, new List<ModifierSpec>
             {
-                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage, AttackSpeedBuff),
+                // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
+                new ModifierSpec(ModifierEnum.AttackSpeed, ScalingEnum.Percentage,
+                                 new List<StatRatio> { (StatEnum.AttackSpeed, AttackSpeedBuff) }),
             });
 
             // cast buff
@@ -55,7 +57,7 @@ namespace MagicSchool.Skills
             // stun
             CustomModifier stun = new CustomModifier(StunDuration, new List<ModifierSpec>
             {
-                new ModifierSpec(ModifierEnum.Stun, ScalingEnum.Flat, 0f),
+                new ModifierSpec(ModifierEnum.Stun),
             });
 
             // aoe on self 

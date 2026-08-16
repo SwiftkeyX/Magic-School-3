@@ -53,10 +53,7 @@ namespace MagicSchool.Skills
                             duration:  WoundDuration,
                             modifiers: new List<ModifierSpec>
                             {
-                                new ModifierSpec(
-                                    modifier:    ModifierEnum.Wound,
-                                    scalingType: ScalingEnum.Flat,
-                                    amount:      0f),
+                                new ModifierSpec(ModifierEnum.Wound),
                             }),
                         amplifier: 0.3f),
 

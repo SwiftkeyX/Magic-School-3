@@ -45,6 +45,10 @@ namespace MagicSchool.Skills
                 // e.g. skill dmg = 100% ATK + 50% AP
                 foreach (StatRatio ratio in _ratios)
                 {
+                    // If NONE, this modifier don't get bonus stat by derived from others. 
+                    if (ratio.Stat == StatEnum.None) { total += ratio.Percent; continue; }
+
+                    // get bonus stat by deriving from specify stat 
                     total += stats.GetStat(ratio.Stat) * ratio.Percent / 100f;
                 }
             }

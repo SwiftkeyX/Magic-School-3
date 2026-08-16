@@ -33,11 +33,7 @@ namespace MagicSchool.Skills
                             duration: WoundDuration,
                             modifiers: new List<ModifierSpec>
                             {
-                                // FIXLATER: the status like Wound or Stun don't need amount. Having it just add the confusion.
-                                new ModifierSpec(
-                                    modifier:    ModifierEnum.Wound,
-                                    scalingType: ScalingEnum.Flat,
-                                    amount:      0f),
+                                new ModifierSpec(ModifierEnum.Wound),
                             }),
                         conditions: new List<SkillCondition> { amplifierCondition },
                         amplifier: WoundedAmplifier);

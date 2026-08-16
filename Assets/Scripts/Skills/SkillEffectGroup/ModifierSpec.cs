@@ -3,30 +3,37 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
+    // FIXLATER: Hey, I think adding the Scaling & the change of modifier make the skills module kinda messy.
+    // Do you think it's good to separate Modifier & Scaling as its own asmdef?
+
     // The actual modifier class 
     // To contain modifier type and its amount in 1 place.
     public class ModifierSpec : IModifier
     {
         private readonly ModifierEnum _modifier;
         private readonly ScalingEnum _scalingType;
-        private readonly float _amount;      // the amount written straight in, when there is no ratio
-        private readonly Scaling _scaling;   // how to derive the amount instead, when there is
+        private readonly Scaling _scaling;
 
-        // e.g. buff Atk by a written +50            => (Attack, Flat, amount: 50f)
-        // e.g. buff Atk by 50% of the caster's AP   => (Attack, Percentage, ratios: { (MG, 50f) })
-        public ModifierSpec(ModifierEnum modifier, ScalingEnum scalingType, float amount = 0f,
-                            IReadOnlyList<StatRatio> ratios = null)
+        // e.g. buff Atk by 50% of the caster's AP  => (Attack, Percentage, { (MG, 50f) })
+        // e.g. a flat 25% damage reduction         => (DamageReduction, Percentage, { (None, 25f) })
+        // The two compose: { (None, 20f), (MG, 20f) } is "20 flat, plus 20% AP on top".
+        public ModifierSpec(ModifierEnum modifier, ScalingEnum scalingType, IReadOnlyList<StatRatio> ratios)
         {
             _modifier = modifier;
             _scalingType = scalingType;
-            _amount = amount;
-            _scaling = (ratios == null || ratios.Count == 0) ? null : new Scaling(scalingType, ratios);
+            _scaling = new Scaling(scalingType, ratios);
         }
+
+        // FIXLATER: Make a dictionary that list which one is a status, which one isn't
+        // If this modifier is status, there is no StatRatio. 
+        public ModifierSpec(ModifierEnum modifier)
+            : this(modifier, ScalingEnum.Percentage, null) { }
 
         public ModifierEnum GetModifierEnum() => _modifier;
         public ScalingEnum GetScalingEnum() => _scalingType;
 
-        public float GetBonusAmount(IHeroStats stats)
-            => _scaling == null ? _amount : _scaling.GetTotalAfterScaling(stats);
+        // return a pure bonus stat from this modifier 
+        // e.g. this modifier grant +100 ATK
+        public float GetBonusAmount(IHeroStats stats) => _scaling.GetTotalAfterScaling(stats);
     }
 }

@@ -15,6 +15,8 @@ namespace MagicSchool.Skills
         private const int ComboLength = 3;
 
         // how long the transform and everything that comes with it lasts
+        private const float OmnivampFromAP = 10f;   // sheet: 10% AP omnivamp
+        private const float AttackFromAS   = 80f;   // sheet: 80% of bonus AS, converted to AD
         private const float TransformDuration = 10f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -40,31 +42,25 @@ namespace MagicSchool.Skills
             // one group, one timer - the whole transform ends on the same tick
             CustomModifier WorldEnderBuff = new CustomModifier(TransformDuration, new List<ModifierSpec>
             {
+                // sheet: 10% Ability Power Omnivamp
                 new ModifierSpec(
                     modifier:    ModifierEnum.Omnivamp,
-                    scalingType: ScalingEnum.Flat,
-                    amount:      10f),
+                    scalingType: ScalingEnum.Percentage,
+                    ratios:      new List<StatRatio> { (StatEnum.MG, OmnivampFromAP) }),
 
+                // FIXLATER: the sheet says 80% of *bonus* AS, and that the bonus is consumed.
+                // IHeroStats only exposes the final stat, so this reads total AS for now.
                 new ModifierSpec(
                     modifier:    ModifierEnum.Attack,
-                    scalingType: ScalingEnum.Flat,
-                    amount:      80f),
+                    scalingType: ScalingEnum.Percentage,
+                    ratios:      new List<StatRatio> { (StatEnum.AttackSpeed, AttackFromAS) }),
 
-                new ModifierSpec(
-                    modifier:    ModifierEnum.Transformed,
-                    scalingType: ScalingEnum.Flat,
-                    amount:      0f),
+                new ModifierSpec(ModifierEnum.Transformed),
 
                 // no mana while transformed, and the combo below stands in for the auto attack
-                new ModifierSpec(
-                    modifier:    ModifierEnum.ManaBlocked,
-                    scalingType: ScalingEnum.Flat,
-                    amount:      0f),
+                new ModifierSpec(ModifierEnum.ManaBlocked),
 
-                new ModifierSpec(
-                    modifier:    ModifierEnum.AutoAttackWasReplaced,
-                    scalingType: ScalingEnum.Flat,
-                    amount:      0f),
+                new ModifierSpec(ModifierEnum.AutoAttackWasReplaced),
             });
 
             SkillActionGroup cast = new SkillActionGroup(

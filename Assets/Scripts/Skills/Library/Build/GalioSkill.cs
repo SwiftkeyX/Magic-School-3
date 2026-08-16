@@ -19,6 +19,7 @@ namespace MagicSchool.Skills
         // percentages of the caster's stat, the way the sheet writes them
         private const float HealAmount = 200f;
         private const float Damage = 120f;
+        private const float DamageReductionPercent = 25f;   // sheet: 25/25/35%
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -48,10 +49,11 @@ namespace MagicSchool.Skills
                             duration:  BraceDuration,
                             modifiers: new List<ModifierSpec>
                             {
+                                // sheet: a flat 25/25/35% - derived from nothing, so StatEnum.None
                                 new ModifierSpec(
                                     modifier:    ModifierEnum.DamageReduction,
-                                    scalingType: ScalingEnum.Flat,
-                                    amount:      25f),
+                                    scalingType: ScalingEnum.Percentage,
+                                    ratios:      new List<StatRatio> { (StatEnum.None, DamageReductionPercent) }),
                             }),
                         amplifier: 0.3f),
                 });

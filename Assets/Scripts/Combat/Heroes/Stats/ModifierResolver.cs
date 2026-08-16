@@ -9,8 +9,6 @@ namespace MagicSchool.Combat.Heroes.Stats
     // 2) ModifierResolver track which modifier will expired
     public class ModifierResolver
     {
-        private const float Permanent = -1f;
-
         private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
 
         // pair of modifier & stat - tell which stat is increase by this modifier
@@ -137,34 +135,6 @@ namespace MagicSchool.Combat.Heroes.Stats
             if (duration <= 0f) return 0f;
 
             return tracker.Remaining / duration;
-        }
-
-        // =================================== active modifier ===================================
-        // Contain current active group of modifiers on the hero. 
-        // To track how long this group last.
-        private class ActiveCustomModifier
-        {
-            public readonly ICustomModifier CustomModifier;   // the group of modifier - buff, debuff, status, etc...
-            public readonly float Amplifier;            
-            public readonly float[] BonusStat;            //the amount of total stat that will be added to hero
-            public float Remaining;                     // remember its remaining duration of the modifier - The group share the same remaining
-
-            public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats)
-            {
-                CustomModifier = source;
-                Amplifier = amplifier;
-
-                // get bonus amount from each modifier
-                IReadOnlyList<IModifier> modifiers = source.GetModifiers();
-                BonusStat = new float[modifiers.Count];
-                // FIXLATER: I don't like sending casterStat. But it look like it work well.
-                // let me see a sec.
-                for (int i = 0; i < modifiers.Count; i++) BonusStat[i] = modifiers[i].GetBonusAmount(casterStats);
-
-                float duration = source.GetDuration();
-
-                Remaining = (duration == Permanent) ? float.PositiveInfinity : duration;
-            }
         }
     }
 }

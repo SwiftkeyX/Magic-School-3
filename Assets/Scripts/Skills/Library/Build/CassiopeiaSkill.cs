@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Codice.CM.Common;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
@@ -13,40 +14,52 @@ namespace MagicSchool.Skills
     {
         private const float Damage = 1000f;
         private const float WoundDuration = 5f;
+        private const float WoundedAmplifier = 0.3f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
-            SkillActionGroup cast = new SkillActionGroup(
-                source: ActionSourceEnum.Self,
-                templateAction: registry.Get(TemplateActionEnum.HomingProjectile),
-                target: AimTargetEnum.Furthest,
-                effects: new List<SkillEffect>
-                {
-                    new AttackSkillEffect(
+            var damage = new AttackSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
-                        damageRatios:    new List<StatRatio> { (StatEnum.MG, Damage) }),    // sheet: Cassiopeia is AP
+                        damageRatios: new List<StatRatio> { (StatEnum.MG, Damage) });
 
-                    new ModifierSkillEffect(
+            var amplifierCondition = new HasStatusCondition(
+                    subject: ConditionSubjectEnum.Caster,
+                    status: ModifierEnum.Transformed,
+                    wantPresent: true);
+
+            var wounded = new ModifierSkillEffect(
                         recipient: EffectRecipientEnum.SameToAimTarget,
                         modifier: new CustomModifier(
-                            duration:  WoundDuration,
+                            duration: WoundDuration,
                             modifiers: new List<ModifierSpec>
                             {
+                                // FIXLATER: the status like Wound or Stun don't need amount. Having it just add the confusion.
                                 new ModifierSpec(
                                     modifier:    ModifierEnum.Wound,
                                     scalingType: ScalingEnum.Flat,
                                     amount:      0f),
                             }),
-                        amplifier: 0.3f),
+                        conditions: new List<SkillCondition> { amplifierCondition },
+                        amplifier: WoundedAmplifier);
+
+            SkillActionGroup shootProjectile = new SkillActionGroup(
+                // homing projectile to furthest enemy
+                source: ActionSourceEnum.Self,
+                templateAction: registry.Get(TemplateActionEnum.HomingProjectile),
+                target: AimTargetEnum.Furthest,
+                effects: new List<SkillEffect>
+                {
+                    damage,
+                    wounded,
                 });
 
             return new SkillDefinition(
-                skillName: "Skill",
+                skillName: "Twin Fang",
                 activeSteps: new List<SkillStep>
                 {
                     new SkillStep(
                         trigger: TriggerEnum.OnCast,
-                        actionGroups: new List<SkillActionGroup> { cast }),
+                        actionGroups: new List<SkillActionGroup> { shootProjectile }),
                 });
         }
     }

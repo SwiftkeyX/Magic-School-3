@@ -34,8 +34,8 @@ namespace MagicSchool.Skills
             CustomModifier modifiers = new CustomModifier(BuffDuration, new List<IModifier>
             {
                 // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
-                new StatModifier(ModifierEnum.AttackSpeed, ScalingEnum.Percentage,
-                                 new List<StatRatio> { (StatEnum.AttackSpeed, AttackSpeedBuff) }),
+                new StatModifier(ModifierEnum.AttackSpeed,
+                                 new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.AttackSpeed, AttackSpeedBuff) })),
             });
 
             // cast buff

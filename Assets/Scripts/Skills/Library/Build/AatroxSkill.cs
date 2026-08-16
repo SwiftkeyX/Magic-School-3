@@ -47,15 +47,13 @@ namespace MagicSchool.Skills
                 // sheet: 10% Ability Power Omnivamp
                 new StatModifier(
                     modifier:    ModifierEnum.Omnivamp,
-                    scalingType: ScalingEnum.Percentage,
-                    ratios:      new List<StatRatio> { (StatEnum.MG, OmnivampFromAP) }),
+                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, OmnivampFromAP) })),
 
                 // FIXLATER: the sheet says 80% of *bonus* AS, and that the bonus is consumed.
                 // IHeroStats only exposes the final stat, so this reads total AS for now.
                 new StatModifier(
                     modifier:    ModifierEnum.Attack,
-                    scalingType: ScalingEnum.Percentage,
-                    ratios:      new List<StatRatio> { (StatEnum.AttackSpeed, AttackFromAS) }),
+                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.AttackSpeed, AttackFromAS) })),
 
                 new StatusModifier(ModifierEnum.Transformed),
 

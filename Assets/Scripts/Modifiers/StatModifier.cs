@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
 
 namespace MagicSchool.Modifiers
 {
@@ -9,21 +7,16 @@ namespace MagicSchool.Modifiers
     public class StatModifier : IModifier
     {
         private readonly ModifierEnum _modifier;
-        private readonly ScalingEnum _scalingType;
-        private readonly Scaling _scaling;
+        private readonly IScaling _scaling;
 
-        // e.g. buff Atk by 50% of the caster's AP  => (Attack, Percentage, { (MG, 50f) })
-        // e.g. a flat 25% damage reduction         => (DamageReduction, Percentage, { (None, 25f) })
-        // The two compose: { (None, 20f), (MG, 20f) } is "20 flat, plus 20% AP on top".
-        public StatModifier(ModifierEnum modifier, ScalingEnum scalingType, IReadOnlyList<StatRatio> ratios)
+        public StatModifier(ModifierEnum modifier, IScaling scaling)
         {
             _modifier = modifier;
-            _scalingType = scalingType;
-            _scaling = new Scaling(scalingType, ratios);
+            _scaling = scaling;
         }
 
         public ModifierEnum GetModifierEnum() => _modifier;
-        public ScalingEnum GetScalingEnum() => _scalingType;
+        public ScalingEnum GetScalingEnum() => _scaling.GetScalingEnum();
 
         // return a pure bonus stat from this modifier 
         // e.g. this modifier grant +100 ATK

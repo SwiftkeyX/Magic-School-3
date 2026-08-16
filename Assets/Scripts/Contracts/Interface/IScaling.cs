@@ -6,6 +6,7 @@ namespace MagicSchool.Contracts
     // e.g. modifier buff to atk stat = 30% AP 
     public interface IScaling
     {
+        ScalingEnum GetScalingEnum();                       // how the total should be applied - flat, or as percentage points
         float GetTotalAfterScaling(IHeroStats stats);       // Get a total amount of stat/dmg/heal after the scaling calculation
     }
 }

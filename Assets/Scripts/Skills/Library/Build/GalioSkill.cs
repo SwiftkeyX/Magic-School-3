@@ -54,8 +54,7 @@ namespace MagicSchool.Skills
                                 // sheet: a flat 25/25/35% - derived from nothing, so StatEnum.None
                                 new StatModifier(
                                     modifier:    ModifierEnum.DamageReduction,
-                                    scalingType: ScalingEnum.Percentage,
-                                    ratios:      new List<StatRatio> { (StatEnum.None, DamageReductionPercent) }),
+                                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.None, DamageReductionPercent) })),
                             }),
                         amplifier: 0.3f),
                 });

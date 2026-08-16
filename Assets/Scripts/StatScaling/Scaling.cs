@@ -14,6 +14,7 @@ namespace MagicSchool.StatScaling
         private readonly IReadOnlyList<StatRatio> _ratios;
 
         // =================================== getter ===================================
+        public ScalingEnum GetScalingEnum() => _scalingType;
 
         public Scaling(ScalingEnum scalingEnum, IReadOnlyList<StatRatio> ratios)
         {

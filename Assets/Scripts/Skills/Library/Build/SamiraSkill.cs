@@ -31,8 +31,7 @@ namespace MagicSchool.Skills
                             {
                                 new StatModifier(
                                     modifier:    ModifierEnum.DefendShred,
-                                    scalingType: ScalingEnum.Percentage,
-                                    ratios:      new List<StatRatio> { (StatEnum.MG, -ShredFromAP) }),
+                                    scaling:     new Scaling(ScalingEnum.Percentage, new List<StatRatio> { (StatEnum.MG, -ShredFromAP) })),
                             })
                         );
 

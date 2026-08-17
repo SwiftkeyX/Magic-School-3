@@ -32,8 +32,8 @@ namespace MagicSchool.Skills
 
             ICombatant heroHit = other.GetComponent<ICombatant>();
 
-            // not collide with myself, my team, the dead hero
-            if (heroHit == null || heroHit.Team == _caster.Team || heroHit.StateType == HeroStateEnum.Dead) return;
+            // guard
+            if (heroHit == null) return;
 
             // only the first contact counts - re-entering after walking out doesn't hit again
             if (!_triggeredOnce.Add(heroHit)) return;

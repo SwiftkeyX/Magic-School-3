@@ -148,20 +148,50 @@ namespace MagicSchool.Skills
 
         // ==================================== Effect & Recipient ====================================
         // apply effect to the recipients
-        protected void ApplyEffectToRecipients(SkillEffect effect, IReadOnlyList<IEffectable> recipients)
+        protected void ApplyEffectToRecipients(SkillEffect effect, IReadOnlyList<ICombatant> recipients)
         {
-            switch (effect.Recipient)
-            {
-                case EffectRecipientEnum.Self:
-                    effect.ApplyEffect(new List<IEffectable> { _me });
-                    break;
+            var resolve = ResolveRecipient(effect.Recipient, recipients);
+            effect.ApplyEffect(resolve);
+        }
 
-                case EffectRecipientEnum.SameToAimTarget:
-                case EffectRecipientEnum.EnemiesInArea:
-                case EffectRecipientEnum.EnemiesInPath:
-                    effect.ApplyEffect(recipients);
-                    break;
+        // resolve the new recipient list according to recipientEnum specify
+        private IReadOnlyList<IEffectable> ResolveRecipient(EffectRecipientEnum effectRecipientEnum, IReadOnlyList<ICombatant> recipients)
+        {
+            bool shouldHitMyTeam = false;   // should this effect also hit my team? e.g. buff
+            bool shouldHitEnemy = false;    // should this effect hit enemy?
+
+            List<IEffectable> resolve = new List<IEffectable>();
+            // this effect hit me only
+            if (effectRecipientEnum == EffectRecipientEnum.Self)
+            {
+                resolve = new List<IEffectable> { _me };
             }
+
+            // this effect hit ally only
+            else if (effectRecipientEnum == EffectRecipientEnum.AlliesInPath)
+            {
+                shouldHitMyTeam = true;
+                shouldHitEnemy = false;
+            }
+
+            // else if {} ...
+
+            // default setting for all other enum
+            else
+            {
+                shouldHitMyTeam = false;
+                shouldHitEnemy = true;
+            }
+
+            // resolve a new list
+            foreach (var recipient in recipients)
+            {
+                if (shouldHitEnemy && _me.Team != recipient.Team) resolve.Add(recipient);
+
+                else if (shouldHitMyTeam && _me.Team == recipient.Team) resolve.Add(recipient);
+            }
+
+            return resolve;
         }
 
         // ===================================== helper =====================================
@@ -170,5 +200,6 @@ namespace MagicSchool.Skills
             _lifetime = 0.5f;
             ExpireAfter(_lifetime);
         }
+
     }
 }

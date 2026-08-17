@@ -13,6 +13,7 @@ namespace MagicSchool.Skills
     public static class SonaSkill
     {
         private const float DamageRatio = 170f;   // sheet: 170/255/420% AP
+        private const float ASbuff = 25f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -21,25 +22,29 @@ namespace MagicSchool.Skills
                 activeSteps: new List<SkillStep> { Wave(registry) });
         }
 
-        // FIXLATER: two parts of the sheet row are not expressible yet.
-        // 1) Scaling Type "Falloff per hit", -33% per enemy passed through. Nothing carries a
-        //    per-hit decay - Jhin's row wants the same thing.
-        // 2) "Allies in path are buffed instead" - +20/25/35% Attack Speed, Permanent.
-        //    EffectRecipientEnum has no allies member, only Self/EnemiesInArea/EnemiesInPath/
-        //    SameToAimTarget. And the buff is a share of the ALLY's attack speed, while a ratio
-        //    resolves against the caster, so AlliesInPath alone would not be enough.
         private static SkillStep Wave(TemplateActionRegistrySO registry)
         {
+            ICustomModifier ASBuff = Bundle(
+                duration: -1f,
+                Buff(
+                    modifier: ModifierEnum.AttackSpeed,
+                    ratios: (StatEnum.AttackSpeed, ASbuff))
+            );
+
             SkillActionGroup wave = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.PiercingProjectile,
-                target:   AimTargetEnum.ClusteredInLine,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
-                
-                // sheet: Sona is AP
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.PiercingProjectile,
+                target: AimTargetEnum.ClusteredInLine,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
+
+                // deal dmg to enemy & give buff to ally 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInPath,
-                    ratios:    (StatEnum.MG, DamageRatio))
+                    ratios: (StatEnum.MG, DamageRatio)),
+                Apply(
+                    recipient: EffectRecipientEnum.AlliesInPath,
+                    modifier: ASBuff
+                )
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: wave);

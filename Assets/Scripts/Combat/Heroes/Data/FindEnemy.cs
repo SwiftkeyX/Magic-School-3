@@ -22,7 +22,7 @@ namespace MagicSchool.Combat.Heroes
 
         private ICombatant _lastNearest;
         private ICombatant _currentTarget;
-        public ICombatant CurrentTarget => _currentTarget;
+        internal ICombatant CurrentTarget => _currentTarget;
 
         public FindEnemy(Hero me, BattleBoard board)
         {

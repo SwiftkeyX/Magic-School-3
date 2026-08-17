@@ -34,7 +34,8 @@ namespace MagicSchool.Skills
                 registry: registry,
                 source:   ActionSourceEnum.Self,
                 action:   TemplateActionEnum.PiercingProjectile,
-                target:   AimTargetEnum.Clustered,
+                target:   AimTargetEnum.ClusteredInLine,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
+                
                 // sheet: Sona is AP
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInPath,

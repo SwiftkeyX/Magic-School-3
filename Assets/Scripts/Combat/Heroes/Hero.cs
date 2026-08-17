@@ -128,7 +128,8 @@ namespace MagicSchool.Combat.Heroes
         public ICombatant CurrentTarget => _findEnemy.CurrentTarget;
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
-        public ICombatant FindClusteredEnemy(int radius = 2) => _findEnemy.FindClusteredEnemy(radius);
+        public ICombatant FindClusteredCircle(int radius = 2) => _findEnemy.FindClusteredCircle(radius);
+        public ICombatant FindClusteredLaser(float beamHalfWidth) => _findEnemy.FindClusteredLaser(beamHalfWidth);
 
 
         // ======================================== life cycle ========================================

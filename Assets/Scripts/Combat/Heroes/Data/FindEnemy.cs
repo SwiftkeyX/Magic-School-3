@@ -47,21 +47,6 @@ namespace MagicSchool.Combat.Heroes
             }
         }
 
-        // Hero'll pick new current target if: 
-        // 1) If target is out of range, pick new target.
-        // 2) If target is dead, pick new target.
-        private bool IsStillEngagedWith(ICombatant engaged)
-        {
-            // Is current target is dead?
-            if (engaged == null || !engaged.IsAlive || !engaged.IsInCombat) return false;
-
-            Hex myHex = _me.CurrentHex;
-            if (myHex == null || engaged.CurrentHex() == null) return false;
-
-            // Is current target is out of range?
-            return myHex.IsWithinRange(engaged.CurrentHex(), _me.Range);
-        }
-
         // Picks nearest enemy (if there are several nearest enemies, random it).
         public ICombatant FindNearestEnemy()
         {
@@ -98,7 +83,9 @@ namespace MagicSchool.Combat.Heroes
 
         // Pick the hex that are most cluster (measuring by input radius)
         // FLAGGING: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
-        public ICombatant FindClusteredEnemy(int radius = 2)
+        // FIXLATER: This logic also doesn't quite right. If we don't care about performance, 
+        // we can check every single hex, and enemy in its radius, that one would work right.
+        public ICombatant FindClusteredCircle(int radius = 2)
         {
             List<ICombatant> enemies = GetEnemiesBFS();
             if (enemies.Count == 0) return null;
@@ -106,6 +93,7 @@ namespace MagicSchool.Combat.Heroes
             ICombatant best = null;
             int bestCount = -1;
 
+            // look at each candidate enemy, look [x] hex radius from the candidate, how many enemy is with in the radius?
             foreach (ICombatant candidate in enemies)
             {
                 Hex candidateHex = candidate.CurrentHex();
@@ -119,6 +107,79 @@ namespace MagicSchool.Combat.Heroes
             }
 
             return best;
+        }
+
+        // Context: the laser will be shoot from me to a enemy.
+        // Pick the enemy that a laser'll go through the most enemies.
+        public ICombatant FindClusteredLaser(float beamHalfWidth)
+        {
+            List<ICombatant> enemies = GetEnemiesBFS();
+            if (enemies.Count == 0) return null;
+
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null) return null;
+
+            Vector3 origin = myHex.transform.position;
+
+            ICombatant best = null;
+            int bestCount = -1;
+            float bestDistance = float.MaxValue;
+
+            // aim at each enemy, and count how many hero caught in the beam
+            foreach (ICombatant candidate in enemies)
+            {
+                Vector3 toCandidate = candidate.CurrentHex().transform.position - origin;
+                float candidateDistance = toCandidate.magnitude;
+
+                // standing on top of me: no direction to aim in
+                if (candidateDistance <= Mathf.Epsilon) continue;
+
+                // get how many enemies would be caught in the beam
+                Vector3 direction = toCandidate / candidateDistance;
+                int count = enemies.Count(other => IsInLaser(origin, direction, other, beamHalfWidth));
+
+                // Is new candidate better than the current best candidate?
+                bool hitMoreEnemies = count > bestCount;
+                bool hitEquallyButShorterDistance = (count == bestCount && candidateDistance < bestDistance);
+                bool isBetter = hitMoreEnemies || hitEquallyButShorterDistance;
+                if (!isBetter) continue;
+
+                // get new best candidate
+                bestCount = count;
+                bestDistance = candidateDistance;
+                best = candidate;
+            }
+
+            return best;
+        }
+
+        // ========================================= private =========================================
+        // Hero'll pick new current target if: 
+        // 1) If target is out of range, pick new target.
+        // 2) If target is dead, pick new target.
+        private bool IsStillEngagedWith(ICombatant engaged)
+        {
+            // Is current target is dead?
+            if (engaged == null || !engaged.IsAlive || !engaged.IsInCombat) return false;
+
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null || engaged.CurrentHex() == null) return false;
+
+            // Is current target is out of range?
+            return myHex.IsWithinRange(engaged.CurrentHex(), _me.Range);
+        }
+
+        // Is this enemy close enough to the direction line to be caught by a shot travelling along it?
+        private bool IsInLaser(Vector3 origin, Vector3 direction, ICombatant target, float halfWidth)
+        {
+            Vector3 toTarget = target.CurrentHex().transform.position - origin;
+
+            // behind me - a projectile only travels one way, so these are never hit
+            float along = Vector3.Dot(toTarget, direction);
+            if (along < 0f) return false;
+
+            // distance from the enemy to the line, measured square to it
+            return (toTarget - direction * along).magnitude <= halfWidth;
         }
 
         // easy boolean logic to filter the enemy

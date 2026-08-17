@@ -20,6 +20,7 @@ namespace MagicSchool.Skills
         Furthest = 2,
         Clustered = 3,
         WhereProjectileHit = 4,
+        ClusteredInLine = 5,
 
         // ...
     }

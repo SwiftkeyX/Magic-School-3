@@ -10,6 +10,8 @@ namespace MagicSchool.Skills
     public abstract class Projectile : TemplateAction
     {
         [SerializeField] protected float _speed = 8f;
+        [SerializeField] protected float _size = 1f;
+        [SerializeField] protected float _beamHalfWidth = 0.8f;
         protected Vector3 _direction;
         protected ICombatant _target;
         const float PROJECTILELIFETIME = 10f;
@@ -43,8 +45,13 @@ namespace MagicSchool.Skills
             // starting position
             transform.position = GetSpawnPosition();
 
+            SetProjectileSize(_size);
+
             // find where the projectile shoot direction
             GetAimDirection();
+
+            // set rotation
+            FaceAimTarget();
 
             SetLifeTime();
         }
@@ -84,9 +91,17 @@ namespace MagicSchool.Skills
                 if (_target == null) return false;
             }
 
+            // aim skill at furthest enemy from self
             else if (aimTarget == AimTargetEnum.Furthest)
             {
                 _target = _me.FindFurthestEnemy();
+                if (_target == null) return false;
+            }
+
+            // aim down the line that passes through the most enemies
+            else if (aimTarget == AimTargetEnum.ClusteredInLine)
+            {
+                _target = _me.FindClusteredLaser(_beamHalfWidth);
                 if (_target == null) return false;
             }
 
@@ -104,11 +119,20 @@ namespace MagicSchool.Skills
 
         protected override Vector3 GetSpawnPosition() => _source;
 
+        // set object lifetime - this is for fallback despawn if it never reaches anyone
+        protected override void SetLifeTime()
+        {
+            _lifetime = PROJECTILELIFETIME;
+            ExpireAfter(_lifetime);
+        }
+
+        // =========================================== virtual ===========================================
         protected virtual void GetAimDirection()
         {
             // if target die beforehand, return => let projectile keep heading forward 
             if (!IsTargetAlive) return;
 
+            // destination = enemy position
             _aimTarget = _target.transform.position;
 
             // lock projectile shoot direction 
@@ -127,11 +151,21 @@ namespace MagicSchool.Skills
         }
 
         // ======================================== private ========================================
-        // set object lifetime - this is for fallback despawn if it never reaches anyone
-        protected override void SetLifeTime()
+        private const float Default = 1f;
+        private void SetProjectileSize(float size = Default)
         {
-            _lifetime = PROJECTILELIFETIME;
-            ExpireAfter(_lifetime);
+            this.transform.localScale = new Vector3(size, size, this.transform.localScale.z);
+        }
+
+        // FLAGGING: This is duplicated of AOE's method
+        // Point the AOE tip toward aim target
+        private void FaceAimTarget()
+        {
+            Vector3 facing = _aimTarget - _source;
+            if (facing.sqrMagnitude < 0.0001f) return;
+
+            float degrees = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, degrees + 90f);
         }
     }
 }

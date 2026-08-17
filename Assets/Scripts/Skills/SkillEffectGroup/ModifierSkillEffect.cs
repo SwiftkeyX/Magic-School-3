@@ -5,7 +5,7 @@ namespace MagicSchool.Skills
 {
     // effect that apply modifer to a recipients
     // e.g. apply wound, apply buff, apply stun, etc...
-    public class ModifierSkillEffect : SkillEffect
+    internal class ModifierSkillEffect : SkillEffect
     {
         private readonly ICustomModifier _modifier;
 

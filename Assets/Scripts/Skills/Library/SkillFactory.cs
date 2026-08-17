@@ -20,7 +20,7 @@ namespace MagicSchool.Skills
     /// This deliberately does NOT wrap SkillActionGroup or SkillStep. Those have not changed once,
     /// so wrapping them would buy nothing and cost a second vocabulary to learn.
     /// </summary>
-    public static class SkillFactory
+    internal static class SkillFactory
     {
         // ================================== damage ==================================
         // e.g. Damage(EnemiesInPath, (StatEnum.Atk, 1000f))  ->  1000% AD to everyone in the path

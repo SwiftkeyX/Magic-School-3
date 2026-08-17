@@ -13,7 +13,7 @@ namespace MagicSchool.Skills
     /// has been dropping on load for a while. Not carried over; git history has it if it is ever
     /// wanted back.
     /// </summary>
-    public static class GarenSkill
+    internal static class GarenSkill
     {
         private const float DamagePerTick = 80f;
         private const float TickInterval = 0.5f;

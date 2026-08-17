@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
-    public class FirstHitProjectile : Projectile
+    internal class FirstHitProjectile : Projectile
     {
         // ======================================== override method ==============================================
         protected override void Play()

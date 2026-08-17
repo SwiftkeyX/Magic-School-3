@@ -13,7 +13,7 @@ namespace MagicSchool.Skills
     ///
     /// Ported from Assets/Data/Heroes/Skills/Karma.asset.
     /// </summary>
-    public static class KarmaSkill
+    internal static class KarmaSkill
     {
         private const float ExplosionDamage = 200f;
 

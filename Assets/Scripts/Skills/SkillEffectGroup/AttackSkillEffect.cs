@@ -5,7 +5,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Skills
 {
     // effect that apply damage to recipients
-    public class AttackSkillEffect : SkillEffect
+    internal class AttackSkillEffect : SkillEffect
     {
         private readonly IScaling _scaling;
 

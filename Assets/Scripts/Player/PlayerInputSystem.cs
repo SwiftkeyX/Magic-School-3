@@ -10,7 +10,7 @@ namespace MagicSchool.Player
     /// read input through here (Mouse.current/Keyboard.current), never UnityEngine.Input,
     /// which compiles fine but throws InvalidOperationException at runtime under this setting.
     /// </summary>
-    public static class PlayerInputSystem
+    internal static class PlayerInputSystem
     {
         public static bool IsPointerDown => Mouse.current.leftButton.isPressed;
         public static bool PointerPressedThisFrame => Mouse.current.leftButton.wasPressedThisFrame;

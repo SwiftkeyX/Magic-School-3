@@ -8,7 +8,7 @@ namespace MagicSchool.Skills
     /// Travels in a straight line through everyone in its path - the aim target only sets the
     /// direction, it is not a destination, so the shot carries on past whoever it hits first.
     /// </summary>
-    public class PiercingProjectile : Projectile
+    internal class PiercingProjectile : Projectile
     {
         // ======================================== override method ==============================================
         protected override void Play()

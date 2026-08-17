@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MagicSchool.Combat.Placements
 {
     // Finds the next step along the shortest unoccupied route between hexes, via A* search.
-    public static class HexPathfinder
+    internal static class HexPathfinder
     {
         // The largest possible Euclidean distance between two adjacent hexes (matches the
         // 1.15x neighbor threshold in Hex.cs). Dividing the heuristic by this keeps it

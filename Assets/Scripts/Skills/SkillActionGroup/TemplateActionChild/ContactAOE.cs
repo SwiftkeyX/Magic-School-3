@@ -15,7 +15,7 @@ namespace MagicSchool.Skills
     /// Example
     /// e.g. Teemo
     /// </summary>
-    public class ContactAOE : AOE
+    internal class ContactAOE : AOE
     {
         private readonly HashSet<(SkillEffect effect, ICombatant hero)> _triggeredOnce = new HashSet<(SkillEffect, ICombatant)>();
 

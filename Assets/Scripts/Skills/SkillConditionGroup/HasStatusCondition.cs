@@ -6,7 +6,7 @@ namespace MagicSchool.Skills
     /// "Is the subject carrying this status right now?"
     /// E.g. transformed, wounded, stunned, ...
     /// </summary>
-    public class HasStatusCondition : SkillCondition
+    internal class HasStatusCondition : SkillCondition
     {
         private ModifierEnum _status;
         private bool _wantPresent = true;

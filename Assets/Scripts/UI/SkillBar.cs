@@ -5,7 +5,7 @@ namespace MagicSchool.UI
     /// e.g. the ten seconds Aatrox spends transformed. 
     /// A hero can carry several SkillBar at once.
     /// </summary>
-    public class SkillBar : WorldBar
+    internal class SkillBar : WorldBar
     {
         private int _index;
 

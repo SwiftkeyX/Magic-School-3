@@ -9,7 +9,7 @@ namespace MagicSchool.Skills
     /// Apply effect on contact e.g. projectile.
     /// Hitbox immediately trigger once it contact someone, the normal kind of logic for hitbox
     /// </summary>
-    public class OnContactHitbox : Hitbox
+    internal class OnContactHitbox : Hitbox
     {
         private ICombatant _caster;
         private readonly HashSet<ICombatant> _triggeredOnce = new HashSet<ICombatant>();

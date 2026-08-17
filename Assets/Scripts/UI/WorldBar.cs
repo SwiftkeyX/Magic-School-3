@@ -10,7 +10,7 @@ namespace MagicSchool.UI
 
     /// ExecuteAlways lets the offset be tweaked live in edit mode.
     [ExecuteAlways]
-    public abstract class WorldBar : MonoBehaviour
+    internal abstract class WorldBar : MonoBehaviour
     {
         [SerializeField] protected Slider _slider;
         [SerializeField] private Vector3 _offset = new Vector3(0f, 1f, 0f);

@@ -7,9 +7,9 @@ namespace MagicSchool.Skills
     /// <summary>
     /// AOE type for TemplateAction
     /// </summary>
-    public abstract class AOE : TemplateAction
+    internal abstract class AOE : TemplateAction
     {
-        public enum AOEOffsetEnum { Center, Tip }
+        internal enum AOEOffsetEnum { Center, Tip }
         [SerializeField] private AOEOffsetEnum _offset;
 
         // ======================================= override =======================================

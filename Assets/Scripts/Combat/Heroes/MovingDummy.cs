@@ -7,7 +7,7 @@ namespace MagicSchool.Combat.Heroes
     /// <summary>
     /// A dummy that patrols up and down its column, hex by hex, the same way a hero walks:
     /// </summary>
-    public class MovingDummy : MonoBehaviour
+    internal class MovingDummy : MonoBehaviour
     {
         [SerializeField] private float _speed = 1f;     // hexes per second, same units as a hero's move speed
 

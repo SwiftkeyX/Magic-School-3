@@ -11,7 +11,7 @@ namespace MagicSchool.Skills
     /// Ported from Assets/Data/Heroes/Skills/Aatrox.asset, which stays as the reference until this is
     /// verified against it.
     /// </summary>
-    public static class AatroxSkill
+    internal static class AatroxSkill
     {
         private const int ComboLength = 3;
 
@@ -48,8 +48,8 @@ namespace MagicSchool.Skills
                     modifier: ModifierEnum.Omnivamp,
                     ratios: (StatEnum.MG, OmnivampFromAP)),
 
-                // FIXLATER: the sheet says 80% of *bonus* AS, and that the bonus is consumed.
-                // IHeroStats only exposes the final stat, so this reads total AS for now.
+                // FLAGGING: it consume 80% AS. which is only convert to 0.5 atk.
+                // need change later
                 Buff(
                     modifier: ModifierEnum.Attack,
                     ratios: (StatEnum.AttackSpeed, AttackFromAS)),

@@ -14,7 +14,7 @@ namespace MagicSchool.Skills
     /// Ported from Assets/Data/Heroes/Skills/Teemo.asset. Its skill name reads "Blinding Dart", the
     /// same as Karma's - left as it was rather than guessed at.
     /// </summary>
-    public static class TeemoSkill
+    internal static class TeemoSkill
     {
         private const float WoundDuration = 3f;
         private const float PoisonDamage = 2000f;

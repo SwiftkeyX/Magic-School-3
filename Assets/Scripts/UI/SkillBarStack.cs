@@ -8,7 +8,7 @@ namespace MagicSchool.UI
     /// Draws one SkillBar per CustomModifier running on the hero, 
     /// stacked upward above the health bar. 
     /// </summary>
-    public class SkillBarStack : MonoBehaviour
+    internal class SkillBarStack : MonoBehaviour
     {
         [SerializeField] private SkillBar _first;                                   // the bar already on the prefab
         [SerializeField] private Vector3 _offset = new Vector3(0f, 0.8f, 0f);       // where the lowest bar sits

@@ -4,7 +4,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Skills
 {
 
-    public class NumberCondition : SkillCondition
+    internal class NumberCondition : SkillCondition
     {
         // shared with the other beats of this combo, on purpose
         private ComboTracker _combo;

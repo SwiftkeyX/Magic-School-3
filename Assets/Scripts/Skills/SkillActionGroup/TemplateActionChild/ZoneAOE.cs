@@ -10,7 +10,7 @@ namespace MagicSchool.Skills
     /// Effect here was apply to the recipients on standing in the effect, if they walk out of it, they don't get effect re-apply.
     /// e.g. Garen, Silco, Swain
     /// </summary>
-    public class ZoneAOE : AOE
+    internal class ZoneAOE : AOE
     {
         private float _interval;
         private float _duration;

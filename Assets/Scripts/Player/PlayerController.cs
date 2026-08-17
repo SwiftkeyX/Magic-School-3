@@ -6,7 +6,7 @@ using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.Player
 {
-    public class PlayerController : MonoBehaviour
+    internal class PlayerController : MonoBehaviour
     {
         [SerializeField] private Camera _cam;
         private bool _isHeroHolded = false;

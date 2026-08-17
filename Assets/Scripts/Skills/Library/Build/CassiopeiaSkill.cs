@@ -11,7 +11,7 @@ namespace MagicSchool.Skills
     ///
     /// Ported from Assets/Data/Heroes/Skills/Cassiopeia.asset.
     /// </summary>
-    public static class CassiopeiaSkill
+    internal static class CassiopeiaSkill
     {
         private const float DamageRatio = 1000f;
         private const float WoundDuration = 5f;

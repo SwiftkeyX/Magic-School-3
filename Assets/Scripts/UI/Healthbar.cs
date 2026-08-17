@@ -5,7 +5,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.UI
 {
     // World-space health bar - green for the player's side, red for the other one.
-    public class Healthbar : WorldBar
+    internal class Healthbar : WorldBar
     {
         private Image _image;
 

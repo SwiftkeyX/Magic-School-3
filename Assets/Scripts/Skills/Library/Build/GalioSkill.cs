@@ -12,7 +12,7 @@ namespace MagicSchool.Skills
     ///
     /// Ported from Assets/Data/Heroes/Skills/Galio.asset.
     /// </summary>
-    public static class GalioSkill
+    internal static class GalioSkill
     {
         private const float BraceDuration = 2f;
         private const float TickInterval = 0.5f;

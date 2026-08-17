@@ -10,7 +10,7 @@ namespace MagicSchool.Skills
     /// Sheet (Hero set 9): "Send a wave at the clustered enemy; damage falls off per enemy hit.
     /// Allies hit are buffed instead." Two of the three parts cannot be said yet - see FIXLATER.
     /// </summary>
-    public static class SonaSkill
+    internal static class SonaSkill
     {
         private const float DamageRatio = 170f;   // sheet: 170/255/420% AP
         private const float ASbuff = 25f;

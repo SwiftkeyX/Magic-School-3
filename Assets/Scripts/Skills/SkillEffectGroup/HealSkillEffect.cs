@@ -6,7 +6,7 @@ namespace MagicSchool.Skills
 {
     // FLAGGING: Try combine into ModifierSkillEffect. Not working, since the ModifierSkillEffect already work well.
     // It still look weird to me but it work well and clean. Lets leave it.
-    public class HealSkillEffect : SkillEffect
+    internal class HealSkillEffect : SkillEffect
     {
         private readonly IScaling _scaling;
         private readonly float _duration;

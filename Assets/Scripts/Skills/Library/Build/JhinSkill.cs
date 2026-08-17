@@ -11,7 +11,7 @@ namespace MagicSchool.Skills
     /// current schema and still carries a _size/shape pair - Jhin's shape reference was already
     /// broken (rid -2, a managed reference Unity cannot resolve at all). Not carried over.
     /// </summary>
-    public static class JhinSkill
+    internal static class JhinSkill
     {
         private const float DamageRatio = 744f;
 

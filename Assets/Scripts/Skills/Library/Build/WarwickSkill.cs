@@ -4,7 +4,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    public static class WarwickSkill
+    internal static class WarwickSkill
     {
         // buff
         private const float AttackSpeedBuff = 100f;   // +100%

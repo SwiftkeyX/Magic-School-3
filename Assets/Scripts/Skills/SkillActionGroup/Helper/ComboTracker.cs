@@ -7,7 +7,7 @@ namespace MagicSchool.Skills
     /// Some hero skill need a combo counter. e.g. Aatrox 3 hit combo.
     /// ComboTracker dedicate itself for being a counter.  
     /// </summary>
-    public class ComboTracker
+    internal class ComboTracker
     {
         private readonly int _length;
         private readonly TriggerEnum _advanceOn;

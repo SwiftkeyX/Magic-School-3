@@ -10,7 +10,7 @@ namespace MagicSchool.Skills
     /// Hitbox will trigger every fix interval (cadence interval), even hero walk into hitbox won't get damage, if the hitbox doesn't trigger.
     /// e.g. you walk into spike but you are fine, until the spike trigger itself
     /// </summary>
-    public class OnTickHitbox : Hitbox
+    internal class OnTickHitbox : Hitbox
     {
         private ICombatant _caster;
         private readonly List<ICombatant> _heroesWhoWasHit = new List<ICombatant>();

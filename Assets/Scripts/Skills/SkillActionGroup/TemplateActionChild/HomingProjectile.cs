@@ -4,7 +4,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Skills
 {
-    public class HomingProjectile : Projectile
+    internal class HomingProjectile : Projectile
     {
         // ======================================== override method ==============================================
         protected override void Play()

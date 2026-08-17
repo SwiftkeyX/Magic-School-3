@@ -10,7 +10,7 @@ namespace MagicSchool.Skills
     ///
     /// Ported from Assets/Data/Heroes/Skills/Samira.asset.
     /// </summary>
-    public static class SamiraSkill
+    internal static class SamiraSkill
     {
         private const float DamageRatio = 200f;
         private const float ShredDuration = -1f;

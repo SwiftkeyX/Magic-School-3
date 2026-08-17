@@ -9,7 +9,7 @@ namespace MagicSchool.Combat.Heroes
     /// This is still unstable though. I think it would be changed a lot from now.
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]
-    public class HeroVisuals : MonoBehaviour
+    internal class HeroVisuals : MonoBehaviour
     {
         private const float DeadAlpha = 0.3f;
 

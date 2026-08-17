@@ -12,7 +12,7 @@ namespace MagicSchool.UI
     /// 2) ...
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    public class ShopPanelController : MonoBehaviour
+    internal class ShopPanelController : MonoBehaviour
     {
         // ================= SerializeField ======================
         [SerializeField] private VisualTreeAsset _shopPanelAsset;

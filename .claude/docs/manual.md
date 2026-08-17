@@ -58,35 +58,54 @@ So just skil cast animation for now.
 
 
 # Plan
-Teemo - for testing circle AOE with DOT - also need to implement homing projectile here
-Cassiopeia - for testing homing projectile
-Jhin - implementing pierce projectile
-Samira - implementing first hit projectile
-Teemo - implement new trigger "OnProjectileHit" 
-=> we already have OnExpired which work exactly like what I want 
-=> But the CircleAOE doesn't consume where projectile expired but it consume enemy position directly which is not intended
-=> Implement new aim target = "WhereProjectileHit"
-Karma - test first hit projectile - AOE explode on impact
-
-Hey, I forget about AttackSkillEffect. That still doesn't implement stat scaling.
-
 Aatrox (cont.)
 => Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
 
 I don't sure. BUT I think the attack dash animation got override by walk animation. in Aatrox scene. 
 
-Cassiopeia - implement effect modifier +30% dmg amp when target is wounded
-Jhin - implement skill's attack falloff per hit => maybe it was too complicated? if yes, then let leave it.
-Samira - implement new debuff to her skill - reduce target's armor
 
 === implement new hero ===
-Poppy - implement "Recieving Projectile" and Shield
-Sona - use Pierce Projectile but with modified AOE size & buff ally who get hit
-- implement modified AOE size
-- implement ally as recipient
+Clustered (aimTarget)
+- when there's 2 clustered of enemies, the cluster target is always set to the same target as previous one, never set to the second one. 
+Which is not intented.
+- when there's no clustered, it should aim the current target instead.
+- when there's a tie clustered, it should prioritize the current target (if current target was 1 of the candidate)
+
 
 JarvanIV - jump into the cluster enemies. Stun AOE.
 - implement jump
 
-Shen - shield 2 lowest ally. Shield burst into AOE. OnExpired, shield burst into AOE, gain second shield.
+Shen - shield 2 lowest ally. OnExpired, shield burst into AOE, gain second shield.
 - implement aim on lowest ally.
+
+Akshan - shoot 6 projectile at the furthest enemy. Shoot in sequence.
+- implement new variable in template action, "Fire timing", "shoot in sequence"
+
+Ashe - shoot 8 arrow in a cone at once.
+- add to "Fire timing", "shoot at once"
+
+Gwen - do damage by spawn several cone AOE in sequence
+- implement AOE with "Fire timing"
+
+Kaisa - shoot 15 homing projectile in sequence.
+
+Jinx - shoot 5 homing projectile in sequince at random enemy in 2 hex of current target.
+- Implement new aim target, random (2 hex of current target)
+
+Fiora - do direct damage (like auto attack does) 4 time in sequence. random enemy in 2 hex of current target.
+While using skill become untargetable.
+- Implement new template action. "DirectDamage"
+- Implement new status, "Untargetable"
+
+
+# Not implement yet
+1. Aatrox's AS→AD conversion — reads total AS in attacks/sec, giving 0.56 AD; needs GetBaseStat on IHeroStats and a decision about what "bonus AS" means numerically.
+2. ScalingEnum.Flat still inert in GetStatModifier.
+
+Poppy - implement "Recieving Projectile" and Shield
+- receiving Projectile sound dump, let skip it for now.
+
+# Note
+2. _lookup missing AP and Omnivamp — both read as statuses and silently do nothing.
+
+3. Your original FIXLATER is still true, and swapping the ratio won't fix it. ModifierSkillEffect calls recipient.AddModifier(_modifier, AmplifierFor(recipient), _caster as IHeroStats) — the ratio resolves against the caster's stats. So (StatEnum.AttackSpeed, 25f) would give every ally +25% of Sona's 0.7 = +0.175 flat, not 25% of their own attack speed. Getting "+25% of the ally's AS" needs a modifier that resolves against the recipient, which nothing currently supports.

@@ -62,6 +62,13 @@ namespace MagicSchool.Skills
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
             => new StatModifier(modifier, Scale(ratios));
 
+        // 3) the buff will derived from the caster itself unless it consume "source" parameter.
+        // Sona's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
+        // BUT it have another pattern, you should know:
+        // Sona's skill (alternative) buff ally base on Sona's AP by +50%AP => This will get different result.
+        public static IModifier Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
+            => new StatModifier(modifier, Scale(source, ratios));
+
         // a modifier that give status 
         // e.g. Wound, Stun, Transformed
         public static IModifier Status(ModifierEnum status)
@@ -92,5 +99,8 @@ namespace MagicSchool.Skills
         // ================================== scaling ==================================
         public static IScaling Scale(params StatRatio[] ratios)
             => new Scaling(ScalingEnum.Percentage, ratios);
+
+        public static IScaling Scale(ScalingSourceEnum source, params StatRatio[] ratios)
+            => new Scaling(ScalingEnum.Percentage, ratios, source);
     }
 }

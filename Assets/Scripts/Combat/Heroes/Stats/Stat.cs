@@ -55,7 +55,8 @@ namespace MagicSchool.Combat.Heroes.Stats
         public bool IsManaCapped() => _currentMana >= MaxMana;
         public void SpendMana() => _currentMana = 0;
 
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats) => _statModifier.AddModifier(modifier, amplifier, casterStats);
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
+            => _statModifier.AddModifier(modifier, amplifier, casterStats, recipientStats);
         public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
 
 

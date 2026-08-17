@@ -10,18 +10,24 @@ namespace MagicSchool.StatScaling
     // e.g. skill damage = 100% ATK + 50% AP
     public class Scaling : IScaling
     {
-        private readonly ScalingEnum _scalingType; // Is the scaling Flat or Percentage?
+        private readonly ScalingEnum _scalingType;      // Is the scaling Flat or Percentage?
         private readonly IReadOnlyList<StatRatio> _ratios;
+        private readonly ScalingSourceEnum _source;     // whose stat will be scaling from
 
         // =================================== getter ===================================
         public ScalingEnum GetScalingEnum() => _scalingType;
+        public ScalingSourceEnum GetScalingSource() => _source;
 
-        public Scaling(ScalingEnum scalingEnum, IReadOnlyList<StatRatio> ratios)
+        public Scaling(ScalingEnum scalingEnum, IReadOnlyList<StatRatio> ratios,
+                       ScalingSourceEnum source = ScalingSourceEnum.Caster)
         {
             _scalingType = scalingEnum;
             _ratios = ratios;
+            _source = source;
         }
 
+        // scale the ratio base on the consuming stats.
+        // stats could be from the caster itself or other heroes. (most of the time, is "caster")
         public float GetTotalAfterScaling(IHeroStats stats)
         {
             // guard
@@ -32,7 +38,7 @@ namespace MagicSchool.StatScaling
             // guard
             if (stats == null)
             {
-                UnityEngine.Debug.LogError("[Scaling] scales off the caster's stats but was asked without any. " +
+                UnityEngine.Debug.LogError($"[Scaling] scales off the {_source}'s stats but was asked without any. " +
                                            "SkillDefinition.Init() has to reach every effect it holds.");
                 return 0f;
             }

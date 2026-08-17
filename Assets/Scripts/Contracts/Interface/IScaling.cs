@@ -7,6 +7,7 @@ namespace MagicSchool.Contracts
     public interface IScaling
     {
         ScalingEnum GetScalingEnum();                       // how the total should be applied - flat, or as percentage points
+        ScalingSourceEnum GetScalingSource();               // whose stats the ratios read - the caster, or the other being hit by the skill
         float GetTotalAfterScaling(IHeroStats stats);       // Get a total amount of stat/dmg/heal after the scaling calculation
     }
 }

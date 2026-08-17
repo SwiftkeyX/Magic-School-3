@@ -4,9 +4,8 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.Stats
 {
-    // FIXLATER: This is also modifier, move it to the new module.
     // Contain current active group of modifiers on the hero. 
-    // To track how long this group last.
+    // To track how long this group of modifiers last.
     public class ActiveCustomModifier
     {
         private const float Permanent = -1f;
@@ -16,7 +15,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         public float Remaining;                         // remember its remaining duration of the modifier - The group share the same remaining
         private float _maxDuration;                     // Max duration
 
-        public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats)
+        public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             CustomModifier = source;
             Amplifier = amplifier;
@@ -24,7 +23,24 @@ namespace MagicSchool.Combat.Heroes.Stats
             // get bonus stat from each modifier
             IReadOnlyList<IModifier> modifiers = source.GetModifiers();
             BonusStat = new float[modifiers.Count];
-            for (int i = 0; i < modifiers.Count; i++) BonusStat[i] = modifiers[i].GetBonusAmount(casterStats);
+            for (int i = 0; i < modifiers.Count; i++)
+            {
+                // the bonus stat could derive from caster itself or others hero that being hit by the skill.
+                IHeroStats from;
+                if (modifiers[i].GetScalingSource() == ScalingSourceEnum.Caster)
+                {
+                    from = casterStats;
+                }
+                else if (modifiers[i].GetScalingSource() == ScalingSourceEnum.Recipient)
+                {
+                    from = recipientStats;
+                }
+                // fallback
+                else from = casterStats;
+
+                // get bonus stat
+                BonusStat[i] = modifiers[i].GetBonusAmount(from);
+            }
 
             // get duration of the modifier
             _maxDuration = source.GetDuration();

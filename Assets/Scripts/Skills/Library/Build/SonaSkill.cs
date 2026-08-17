@@ -28,7 +28,8 @@ namespace MagicSchool.Skills
                 duration: -1f,
                 Buff(
                     modifier: ModifierEnum.AttackSpeed,
-                    ratios: (StatEnum.AttackSpeed, ASbuff))
+                    source:   ScalingSourceEnum.Recipient,
+                    ratios:   (StatEnum.AttackSpeed, ASbuff))
             );
 
             SkillActionGroup wave = ActionGroup(

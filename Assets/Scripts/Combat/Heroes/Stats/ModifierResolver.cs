@@ -48,7 +48,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         // =================================== setter ===================================
         // add new modifier
         // FLAGGING: amplifier should be unique to each modifier. But let leave it for now.
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats)
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             // if the same modifier is added again, refresh that modifier
             for (int i = 0; i < _activeModifiers.Count; i++)
@@ -62,7 +62,7 @@ namespace MagicSchool.Combat.Heroes.Stats
             }
 
             // add modifier
-            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier, casterStats));
+            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier, casterStats, recipientStats));
         }
 
         // =================================== getter ===================================

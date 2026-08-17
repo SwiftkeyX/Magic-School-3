@@ -46,6 +46,8 @@ namespace MagicSchool.Core
 
         public void StartCombat()
         {
+            if (Phase != GamePhaseEnum.Preparation) return;
+
             SetPhase(GamePhaseEnum.Combat);
 
             _seed.SpawnHeroOnBoard();

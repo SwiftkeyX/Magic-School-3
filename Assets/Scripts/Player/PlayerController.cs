@@ -31,7 +31,6 @@ namespace MagicSchool.Player
         // something GameManager reaches into input to discover.
         private void TryStartCombat()
         {
-            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation) return;
             if (!PlayerInputSystem.SpacePressedThisFrame) return;
 
             GameManager.Instance.StartCombat();

@@ -22,6 +22,7 @@ namespace MagicSchool.Skills
         FirstHitProjectile = 7,
         HomingProjectile = 8,
         PiercingProjectile = 9,
+        PiercingProjectileSonaVariant = 12,
 
         // ==================================== Other ====================================
         Cast = 10,

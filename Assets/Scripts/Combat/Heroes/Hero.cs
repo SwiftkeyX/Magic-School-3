@@ -26,6 +26,9 @@ namespace MagicSchool.Combat.Heroes
         private HeroVisuals _visuals;
         private HeroSkill _skill;
         private AttackCooldown _attackCooldown;
+        private Stat _stat;
+        private TeamEnum _team;
+        private bool _isDummy;                  // Temporary, tagged once at its source - see the FIXLATER on HeroDataSO._isDummy.
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;
@@ -34,15 +37,15 @@ namespace MagicSchool.Combat.Heroes
         [SerializeField] private AnimationCurve _attackCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
 
         // ======================================== Runtime data ========================================
-        private HeroDataRuntime _runtimeData;
-        private TeamEnum _team;
-        private Stat Stat => _runtimeData.Stat;
+        private Stat Stat => _stat;
+        private IPlacement _currentPlacement;   // placement hero stand on e.g. hex, benchslot
+        private Hex _reservedHex;               // hex that hero reserved. use while battle
 
         // ======================================== other getter ========================================
-        public bool IsInitialized => _runtimeData != null;
+        public bool IsInitialized => _stat != null;
         public TeamEnum Team => _team;
         public HeroStateEnum StateType => _stateMachine.CurrentType;
-        public bool IsDummy => _runtimeData.IsDummy;
+        public bool IsDummy => _isDummy;
 
         // ======================================== state ========================================
         public void ChangeState(HeroStateEnum next) => _stateMachine.ChangeState(next);
@@ -113,20 +116,20 @@ namespace MagicSchool.Combat.Heroes
         public float GetStat(StatEnum type) => Stat.GetFinalStat(type);
 
         // === IPlaceable ===
-        public Hex CurrentHex => _runtimeData.CurrentPlacement as Hex;
-        public Hex ReservedHex => _runtimeData.ReservedHex;
-        public IPlacement CurrentPlacement => _runtimeData.CurrentPlacement;
-        public bool IsInCombat => _runtimeData.CurrentPlacement is Hex;
+        public Hex CurrentHex => _currentPlacement as Hex;
+        public Hex ReservedHex => _reservedHex;
+        public IPlacement CurrentPlacement => _currentPlacement;
+        public bool IsInCombat => _currentPlacement is Hex;
         public void SetReservedHex(Hex hex)
         {
-            if (_board != null) _board.UpdateReservation(this, _runtimeData.ReservedHex, hex);
+            if (_board != null) _board.UpdateReservation(this, _reservedHex, hex);
 
-            _runtimeData.SetReservedHex(hex);
+            _reservedHex = hex;
         }
-        public void SetCurrentPlacement(IPlacement placement) => _runtimeData.SetCurrentPlacement(placement);
+        public void SetCurrentPlacement(IPlacement placement) => _currentPlacement = placement;
 
         // === ITargeter ===
-        public ICombatant CurrentTarget => _findEnemy.CurrentTarget;
+        public ICombatant FindCurrentTarget() => _findEnemy.FindCurrentTarget();
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
         public ICombatant FindClusteredCircle(int radius = 2) => _findEnemy.FindClusteredCircle(radius);
@@ -142,10 +145,12 @@ namespace MagicSchool.Combat.Heroes
             _board = board;
             _team = team;
 
-            _runtimeData = new HeroDataRuntime(_SOData);
+            _stat = new Stat(_SOData);
+            _isDummy = _SOData.IsDummy;
+
             _visuals = GetComponent<HeroVisuals>();
             _skill = new HeroSkill(this, skill);
-            _findEnemy = new FindEnemy(this, _runtimeData, _board);
+            _findEnemy = new FindEnemy(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }
@@ -184,7 +189,7 @@ namespace MagicSchool.Combat.Heroes
             if (!Application.isPlaying || !IsInitialized) return;
             if (StateType != HeroStateEnum.Attack) return;
 
-            ICombatant target = _runtimeData.CurrentTarget;
+            ICombatant target = _findEnemy.CurrentTarget;
             if (target == null || !target.IsAlive) return;
 
             Gizmos.color = Color.red;

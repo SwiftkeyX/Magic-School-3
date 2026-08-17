@@ -36,7 +36,7 @@ namespace MagicSchool.Skills
             // spawn on current target
             else if (source == ActionSourceEnum.Current)
             {
-                ICombatant target = _me.CurrentTarget;
+                ICombatant target = _me.FindCurrentTarget();
                 if (target == null) return false;
                 _source = target.transform.position;
             }
@@ -69,7 +69,7 @@ namespace MagicSchool.Skills
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                ICombatant target = _me.CurrentTarget;
+                ICombatant target = _me.FindCurrentTarget();
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }

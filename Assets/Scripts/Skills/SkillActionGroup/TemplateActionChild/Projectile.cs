@@ -87,7 +87,7 @@ namespace MagicSchool.Skills
             // aim skill at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
-                _target = _me.CurrentTarget;
+                _target = _me.FindCurrentTarget();
                 if (_target == null) return false;
             }
 

@@ -4,8 +4,7 @@ namespace MagicSchool.Contracts
     // e.g. skill want to aim at the Nearest/furthest enemy
     public interface ITargeter
     {
-        ICombatant CurrentTarget { get; }
-
+        ICombatant FindCurrentTarget();
         ICombatant FindNearestEnemy();
         ICombatant FindFurthestEnemy();
         ICombatant FindClusteredCircle(int radius = 2);

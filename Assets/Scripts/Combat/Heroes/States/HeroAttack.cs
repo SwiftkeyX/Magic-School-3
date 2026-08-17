@@ -37,7 +37,7 @@ namespace MagicSchool.Combat.Heroes.States
         public override void OnUpdate()
         {
             // get current target. if current target is not available, return new target
-            _currentTarget = _me.CurrentTarget;
+            _currentTarget = _me.FindCurrentTarget();
 
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
             if (_me.StateType != StateType) return;

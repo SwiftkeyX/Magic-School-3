@@ -5,7 +5,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Combat.Heroes
 {
     /// <summary>
-    /// The presentation layer for hero - as opposed to data layer (HeroDataRuntime) or logic layer (the states).
+    /// The presentation layer for hero - as opposed to the state Hero itself holds, or the logic layer (the states).
     /// This is still unstable though. I think it would be changed a lot from now.
     /// </summary>
     [RequireComponent(typeof(SpriteRenderer))]

@@ -12,7 +12,6 @@ namespace MagicSchool.Combat.Heroes
         private const float TieEpsilon = 0.01f;     // How close two enemies' distances have to be to count as tied.
 
         private readonly Hero _me;
-        private readonly HeroDataRuntime _runtimeData;
         private readonly BattleBoard _board;
 
         private List<ICombatant> _enemyBFSCache;
@@ -21,15 +20,13 @@ namespace MagicSchool.Combat.Heroes
         private List<(ICombatant target, float dist)> _enemyDistanceCache;
         private int _enemyDistanceCacheFrame = -1;
 
-        // Who FindNearestEnemy answered last time. Not one of the caches above - those hold a scan
-        // for the rest of the frame, and this has to outlive the frame to be worth anything. It is
-        // dropped when the remembered enemy stops being a candidate, which BreakTie already checks.
         private ICombatant _lastNearest;
+        private ICombatant _currentTarget;
+        public ICombatant CurrentTarget => _currentTarget;
 
-        public FindEnemy(Hero me, HeroDataRuntime runtimeData, BattleBoard board)
+        public FindEnemy(Hero me, BattleBoard board)
         {
             _me = me;
-            _runtimeData = runtimeData;
             _board = board;
         }
 
@@ -38,20 +35,15 @@ namespace MagicSchool.Combat.Heroes
         // When a hero auto attack a enemy, he'll pick that enemy as current target. 
         // Which mean he'll stick to that target until something break them off.
         // read IsStillEngageWith() for more detail. 
-        public ICombatant CurrentTarget
+        public ICombatant FindCurrentTarget()
         {
-            get
-            {
-                ICombatant engaged = _runtimeData.CurrentTarget;
+            if (IsStillEngagedWith(_currentTarget)) return _currentTarget;
 
-                if (IsStillEngagedWith(engaged)) return engaged;
+            // if current target is break off, find new target.
+            ICombatant fresh = FindNearestEnemy();
+            _currentTarget = fresh;
 
-                // if current target is break off, find new target.
-                ICombatant fresh = FindNearestEnemy();
-                _runtimeData.SetCurrentTarget(fresh);
-
-                return fresh;
-            }
+            return fresh;
         }
 
         // Picks nearest enemy
@@ -64,8 +56,8 @@ namespace MagicSchool.Combat.Heroes
             float nearestDist = enemyDistances.Min(e => e.dist);
             var tiedNearest = enemyDistances.Where(e => e.dist <= nearestDist + TieEpsilon).Select(e => e.target).ToList();
 
-            // Get last answer, or CurrentTarget if there isn't one yet
-            ICombatant preferred = _lastNearest ?? _runtimeData.CurrentTarget;
+            // Get last answer, or the engaged target if there isn't one yet
+            ICombatant preferred = _lastNearest ?? _currentTarget;
 
             // read function comment
             ICombatant nearestEnemy = BreakTie(tiedNearest, preferred);
@@ -85,7 +77,7 @@ namespace MagicSchool.Combat.Heroes
             float furthestDist = enemyDistances.Max(e => e.dist);
             var tiedFurthest = enemyDistances.Where(e => e.dist >= furthestDist - TieEpsilon).Select(e => e.target).ToList();
 
-            return BreakTie(tiedFurthest, _runtimeData.CurrentTarget);
+            return BreakTie(tiedFurthest, _currentTarget);
         }
 
         // Pick the hex that are most cluster (measuring by input radius)
@@ -116,7 +108,7 @@ namespace MagicSchool.Combat.Heroes
             // nobody is standing near anybody: there is no cluster to aim at, so hit what we already hit
             if (bestCount <= 0) return UseCurrentTargetOrNewTarget();
 
-            return BreakTie(best, _runtimeData.CurrentTarget);
+            return BreakTie(best, _currentTarget);
         }
 
         // Context: the laser will be shoot from me to a enemy.
@@ -149,14 +141,14 @@ namespace MagicSchool.Combat.Heroes
                 if (count > bestCount) { bestCount = count; best.Clear(); }
 
                 // keep every candidate that ties for best
-                if (count == bestCount) best.Add(candidate); 
+                if (count == bestCount) best.Add(candidate);
             }
 
             // the laser can't hit more than 1 target, so just shoot the target we have
             bool noOtherEnemyBesideTarget = (bestCount <= 0);
             if (noOtherEnemyBesideTarget) return UseCurrentTargetOrNewTarget();
 
-            return BreakTie(best, _runtimeData.CurrentTarget);
+            return BreakTie(best, _currentTarget);
         }
 
 
@@ -169,7 +161,7 @@ namespace MagicSchool.Combat.Heroes
             if (tied.Count == 1) return tied[0];
 
             // 1) if the tied list have prefered target, choose prefered target
-            // context: prefered target = CurrentTarget
+            // context: prefered target = who we are engaged with
             if (preferred != null && preferred.IsAlive && tied.Contains(preferred)) return preferred;
 
             // 2) the nearest in the tied
@@ -196,11 +188,11 @@ namespace MagicSchool.Combat.Heroes
             return tied[Random.Range(0, tied.Count)];
         }
 
-        // A twin to CurrentTarget getter
+        // A twin to FindCurrentTarget()
         // the difference is this function, don't set new target which is desirable. 
         private ICombatant UseCurrentTargetOrNewTarget()
         {
-            ICombatant engaged = _runtimeData.CurrentTarget;
+            ICombatant engaged = _currentTarget;
 
             if (engaged != null && engaged.IsAlive && engaged.IsInCombat) return engaged;
 
@@ -265,7 +257,7 @@ namespace MagicSchool.Combat.Heroes
             bool isCache = (_enemyDistanceCacheFrame == Time.frameCount);
             if (isCache) return _enemyDistanceCache;
 
-            Hex myHex = _runtimeData.CurrentPlacement as Hex;
+            Hex myHex = _me.CurrentHex;
 
             _enemyDistanceCache = GetEnemiesBFS()
             // calculate distance from myself to each enemy

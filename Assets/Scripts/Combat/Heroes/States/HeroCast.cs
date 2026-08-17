@@ -36,7 +36,7 @@ namespace MagicSchool.Combat.Heroes.States
             // if still casting, return
             if (_remaining > 0f) return;
 
-            ICombatant currentTarget = _me.CurrentTarget;
+            ICombatant currentTarget = _me.FindCurrentTarget();
 
             // guard
             if (currentTarget == null) { _me.ChangeState(HeroStateEnum.Idle); return; }

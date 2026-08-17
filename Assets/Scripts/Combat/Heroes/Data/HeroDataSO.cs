@@ -6,7 +6,7 @@ namespace MagicSchool.Combat.Heroes
 {
     /// <summary>
     /// SO for hero.
-    /// ONLY use to populated HeroDataRuntime AND SkillSO.
+    /// ONLY use to seed a Hero's runtime state AND SkillSO.
     /// </summary>
     [CreateAssetMenu(fileName = "HeroStat", menuName = "Magic School 3/Hero Stat")]
     public class HeroDataSO : ScriptableObject

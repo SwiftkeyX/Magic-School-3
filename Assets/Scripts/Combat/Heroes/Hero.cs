@@ -184,7 +184,7 @@ namespace MagicSchool.Combat.Heroes
             if (!Application.isPlaying || !IsInitialized) return;
             if (StateType != HeroStateEnum.Attack) return;
 
-            ICombatant target = _runtimeData.NearestEnemy;
+            ICombatant target = _runtimeData.CurrentTarget;
             if (target == null || !target.IsAlive) return;
 
             Gizmos.color = Color.red;

@@ -9,7 +9,7 @@ namespace MagicSchool.Combat.Heroes
     /// <summary>
     /// HeroSkill contain trigger condition for each hero skill.
     /// </summary>
-    public class HeroSkill
+    internal class HeroSkill
     {
         private readonly ICombatant _me;
         private readonly SkillDefinition _skill;

@@ -2,7 +2,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.States
 {
-    public class HeroDead : HeroState
+    internal class HeroDead : HeroState
     {
         public override HeroStateEnum StateType => HeroStateEnum.Dead;
 

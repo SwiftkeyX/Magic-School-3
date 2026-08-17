@@ -7,7 +7,7 @@ namespace MagicSchool.Combat.Heroes.States
     /// HeroStateMachine is state machine that control hero's behaviour.
     /// It's vanilla state machine, nothing special.
     /// </summary>
-    public class HeroStateMachine
+    internal class HeroStateMachine
     {
         private readonly Hero _me;
 

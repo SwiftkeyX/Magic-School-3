@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Combat.Heroes.States
 {
-    public class HeroAttack : HeroState
+    internal class HeroAttack : HeroState
     {
         public override HeroStateEnum StateType => HeroStateEnum.Attack;
         private const int ManaPerAttack = 10;

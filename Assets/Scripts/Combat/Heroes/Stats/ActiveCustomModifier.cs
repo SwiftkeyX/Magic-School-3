@@ -6,7 +6,7 @@ namespace MagicSchool.Combat.Heroes.Stats
 {
     // Contain current active group of modifiers on the hero. 
     // To track how long this group of modifiers last.
-    public class ActiveCustomModifier
+    internal class ActiveCustomModifier
     {
         private const float Permanent = -1f;
         public readonly ICustomModifier CustomModifier; // the group of modifier - buff, debuff, status, etc...

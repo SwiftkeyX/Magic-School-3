@@ -9,7 +9,7 @@ namespace MagicSchool.Combat.Heroes
     /// HeroWalk and HeroAttack ever read them, and they never change after Init. Handing them to
     /// those three states directly keeps them out of the API every other system sees.
     /// </summary>
-    public readonly struct MovementConfig
+    internal readonly struct MovementConfig
     {
         public readonly float MoveSpeed;
         public readonly AnimationCurve WalkCurve;

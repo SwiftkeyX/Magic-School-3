@@ -7,7 +7,7 @@ using MagicSchool.Combat.Placements;
 namespace MagicSchool.Combat.Heroes
 {
     // Scans the board for a hero's nearest/furthest/most-clustered living enemy.
-    public class FindEnemy
+    internal class FindEnemy
     {
         private const float TieEpsilon = 0.01f;     // How close two enemies' distances have to be to count as tied.
 

@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Combat.Heroes.States
 {
 
-    public abstract class HeroState
+    internal abstract class HeroState
     {
         protected readonly Hero _me;
         protected readonly Transition _transition;

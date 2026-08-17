@@ -7,7 +7,7 @@ namespace MagicSchool.Combat.Heroes.Stats
     // 1.1) stat modifier: they increase/decrease stat e.g. atk, def, as, mana, hp, etc...
     // 1.2) status modifier: they don't relate to stat e.g. stun, wound, untargetable, disarm, etc...
     // 2) ModifierResolver track which modifier will expired
-    public class ModifierResolver
+    internal class ModifierResolver
     {
         private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
 

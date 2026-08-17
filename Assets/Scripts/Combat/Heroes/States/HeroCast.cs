@@ -4,7 +4,7 @@ using MagicSchool.Skills;
 
 namespace MagicSchool.Combat.Heroes.States
 {
-    public class HeroCast : HeroState
+    internal class HeroCast : HeroState
     {
         public override HeroStateEnum StateType => HeroStateEnum.Cast;
 

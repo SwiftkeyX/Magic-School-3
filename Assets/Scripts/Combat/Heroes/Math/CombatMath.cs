@@ -4,7 +4,7 @@ namespace MagicSchool.Combat.Heroes
 {
     // Pure damage/heal math, kept out of Stat and HeroStateMachineBlackBoard so both stay
     // data + accessors rather than calculators.
-    public static class CombatMath
+    internal static class CombatMath
     {
         // EHP = HP * (1 + DF / 100) -> raw damage is worth less HP the more DF you have,
         // so divide by that same factor to get how much HP the hit actually removes.

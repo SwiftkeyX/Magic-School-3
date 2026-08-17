@@ -10,7 +10,7 @@ namespace MagicSchool.Combat.Heroes.Stats
     /// This class should only contain data and its getter & setter only.
     /// NO LOGIC.
     /// </summary>
-    public class Stat
+    internal class Stat
     {
         // ========================================== dependency ==========================================
         private readonly ModifierResolver _statModifier = new ModifierResolver();

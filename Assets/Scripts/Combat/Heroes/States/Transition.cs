@@ -7,7 +7,7 @@ using MagicSchool.Skills;
 namespace MagicSchool.Combat.Heroes.States
 {
     // share transition condition for statemachine
-    public class Transition
+    internal class Transition
     {
         private readonly Hero _me;
 

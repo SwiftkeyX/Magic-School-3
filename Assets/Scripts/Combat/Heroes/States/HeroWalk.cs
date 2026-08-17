@@ -7,7 +7,7 @@ namespace MagicSchool.Combat.Heroes.States
     // Walks one hex, one frame at a time - no coroutine, since the state machine already drives
     // everything off OnUpdate(). SetTarget must be called (by whoever transitions in, e.g.
     // HeroIdle via Hero.BeginWalkTo) before this state becomes current.
-    public class HeroWalk : HeroState
+    internal class HeroWalk : HeroState
     {
         public override HeroStateEnum StateType => HeroStateEnum.Walk;
 

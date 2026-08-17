@@ -1,7 +1,7 @@
 namespace MagicSchool.Combat.Heroes
 {
 
-    public class AttackCooldown
+    internal class AttackCooldown
     {
         private float _elapsed;
 

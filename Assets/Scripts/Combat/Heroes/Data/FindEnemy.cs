@@ -21,6 +21,11 @@ namespace MagicSchool.Combat.Heroes
         private List<(ICombatant target, float dist)> _enemyDistanceCache;
         private int _enemyDistanceCacheFrame = -1;
 
+        // Who FindNearestEnemy answered last time. Not one of the caches above - those hold a scan
+        // for the rest of the frame, and this has to outlive the frame to be worth anything. It is
+        // dropped when the remembered enemy stops being a candidate, which BreakTie already checks.
+        private ICombatant _lastNearest;
+
         public FindEnemy(Hero me, HeroDataRuntime runtimeData, BattleBoard board)
         {
             _me = me;
@@ -59,13 +64,12 @@ namespace MagicSchool.Combat.Heroes
             float nearestDist = enemyDistances.Min(e => e.dist);
             var tiedNearest = enemyDistances.Where(e => e.dist <= nearestDist + TieEpsilon).Select(e => e.target).ToList();
 
-            // ASKING: do _runtimeData.NearestEnemy is any used? could we delete it?
-            // Get CurrentTarget
-            ICombatant preferred = _runtimeData.NearestEnemy ?? _runtimeData.CurrentTarget;
+            // Get last answer, or CurrentTarget if there isn't one yet
+            ICombatant preferred = _lastNearest ?? _runtimeData.CurrentTarget;
 
             // read function comment
             ICombatant nearestEnemy = BreakTie(tiedNearest, preferred);
-            _runtimeData.SetNearestEnemy(nearestEnemy);
+            _lastNearest = nearestEnemy;
 
             return nearestEnemy;
         }

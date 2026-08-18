@@ -10,11 +10,11 @@ allowed to reference:
 
 ```
 MagicSchool.Contracts  -> (nothing)          leaf: interfaces + enums everyone shares
-MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper
+MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper, CurveMotion
 MagicSchool.VFX        -> (nothing)          leaf: FloatingText
 MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
 MagicSchool.Modifiers  -> Contracts
-MagicSchool.Skills     -> Contracts, StatScaling, Modifiers
+MagicSchool.Skills     -> Contracts, Engine, StatScaling, Modifiers
 MagicSchool.Combat     -> Contracts, Engine, Skills, VFX
 MagicSchool.UI         -> Contracts, Combat
 MagicSchool.Core       -> Contracts, Engine, Skills, Combat

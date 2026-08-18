@@ -11,6 +11,10 @@ namespace MagicSchool.Combat.Heroes
     /// Hero don't have any logic inside it BUT:
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
+    /// 
+    /// FLAGGING: We implement several interface that we thought would be useful e.g. IEffectable, IHeroStats, IPlaceable, ITargeter.
+    /// But only IEffectable see a real usage. Other was no usage at all.
+    /// We decide to leave it here, since it should have benefit when we implement other unit e.g. summon, etc...
     /// </summary>
     public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats
     {
@@ -123,11 +127,6 @@ namespace MagicSchool.Combat.Heroes
             _reservedHex = hex;
         }
         public void SetCurrentPlacement(IPlacement placement) => _currentPlacement = placement;
-
-        // Where a jump/dash can land next to someone - the nearest hex beside them that nobody
-        // else has reserved. Null when they're boxed in.
-        public IPlacement FindFreePlacementNextTo(IPlaceable target)
-            => HexFinder.FindFreeHexNextTo(target.CurrentHex(), CurrentHex, IsHexReservedByOther);
 
         // === ITargeter ===
         public ICombatant FindCurrentTarget() => _findEnemy.FindCurrentTarget();

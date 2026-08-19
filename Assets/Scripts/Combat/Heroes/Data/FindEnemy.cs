@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
-using NUnit.Framework;
 
 namespace MagicSchool.Combat.Heroes
 {
@@ -187,6 +186,7 @@ namespace MagicSchool.Combat.Heroes
 
         // when choosing a target, it could have several best candidate (a tied)
         // This is the protocol to solve when there's a tied target.
+        // FLAGGING: The breaktie() logic for FindEnemy should be reconsider again. since the FindClustered doesn't hold the same logic anymore.
         private ICombatant BreakTie(List<ICombatant> tied, ICombatant preferred)
         {
             if (tied.Count == 1) return tied[0];

@@ -101,7 +101,8 @@ namespace MagicSchool.Skills
             // aim down the line that passes through the most enemies
             else if (aimTarget == AimTargetEnum.ClusteredLaser)
             {
-                _target = _me.FindClusteredLaser(_beamHalfWidth);
+                int finalDistance = (int)(_speed * PROJECTILELIFETIME);
+                _target = _me.FindClusteredLaser(finalDistance, _beamHalfWidth);
                 if (_target == null) return false;
             }
 

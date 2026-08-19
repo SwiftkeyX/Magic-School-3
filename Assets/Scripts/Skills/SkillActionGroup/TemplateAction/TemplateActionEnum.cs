@@ -30,5 +30,6 @@ namespace MagicSchool.Skills
         Cast = 10,
         CastGalioVariant = 11,
         Move = 13,
+        MoveSionVariant = 16,
     }
 }

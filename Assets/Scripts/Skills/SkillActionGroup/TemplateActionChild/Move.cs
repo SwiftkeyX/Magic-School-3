@@ -20,9 +20,15 @@ namespace MagicSchool.Skills
         [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
         [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
 
+        // FIXLATER: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
         // how move was resolve, kinda need the effectRange of the other skill step involve
         // e.g. move into clustered, OnExpired do AOE stun => We need the AOE stun to measure where is clustered
         [SerializeField] private float _effectRange = 2.25f;
+
+        // FIXLATER: The AOE's radius from Charge (next step) was also use here. But it was not actually fetch from one. 
+        // similar to _effectRange. Charging in have hitbox so we need a width here for finding where is clustered.
+        // Match it to the AOE riding along: CircleAOESticky is 2.5f => width = 1.25f
+        [SerializeField] private float _laneHalfWidth = 1.25f;
 
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
@@ -78,7 +84,7 @@ namespace MagicSchool.Skills
             if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
                 // ask for the hex to land on.
-                _landing = _me.FindClusteredLanding(_jumpRange, _effectRange, isJump: true);
+                _landing = _me.FindClusteredCircle(_jumpRange, _effectRange, isJump: true);
                 if (_landing == null) return false;     // nothing in reach is worth jumping to, so don't cast
 
                 _aimTarget = _landing.transform.position;
@@ -87,14 +93,10 @@ namespace MagicSchool.Skills
 
             else if (aimTarget == AimTargetEnum.ClusteredLaser)
             {
-                // ask for the hex to land on.
-                ICombatant target = _me.FindClusteredLaser(1.5f);
-                if (target == null) return false;     // nothing in reach is worth jumping to, so don't cast
+                _landing = _me.FindClusteredCharge(_jumpRange, _laneHalfWidth);
+                if (_landing == null) return false;     // nothing worth charging at, so don't cast
 
-                // ASKING: could you make him charge into target and landing around 4 hex max from his original hex? 
-                // ...
-
-                _aimTarget = target.transform.position;
+                _aimTarget = _landing.transform.position;
                 return true;
             }
 

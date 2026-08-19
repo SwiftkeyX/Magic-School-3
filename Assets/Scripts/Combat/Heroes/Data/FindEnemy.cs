@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace MagicSchool.Combat.Heroes
         // 1) a blastRadius hit most enemies
         // 2) placement is within my reach range.
         // 3) if this is a jump, a placement is also need to be free, for me to land
-        public IPlacement FindClusteredLanding(int reachRange, float blastRadius, bool isJump)
+        public IPlacement FindClusteredCircle(int reachRange, float blastRadius, bool isJump)
         {
             // Find all the hex that was free in reach range
             List<Hex> candidates = null;
@@ -102,13 +103,37 @@ namespace MagicSchool.Combat.Heroes
                 // FLAGGING: later
             }
 
-            var best = FindClustered(blastRadius, candidates);
-            return best;
+            // guard
+            if (candidates == null || candidates.Count == 0) return null;
+
+            // Is this hex hit by the blastRadius?
+            Func<Hex, int> isHit = hex => CountWithin(hex.transform.position, blastRadius);
+            return PickBestHex(candidates, isHit);
         }
 
-        // Context: the laser will be shoot from me to a enemy.
+        // Context: the caster is about to charge in a straight line, with a hitbox riding on him.
+        // Pick the placement where caster'll be landing. And hit the most enemies along the way.
+        public IPlacement FindClusteredCharge(int reachRange, float chargeHalfWidth)
+        {
+            List<ICombatant> enemies = GetEnemiesBFS();
+            if (enemies.Count == 0) return null;
+
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null) return null;
+
+            Vector3 origin = myHex.transform.position;
+
+            // standing still is not a charge - there would be no path to sweep
+            List<Hex> landings = HexFinder.FindFreeHexesWithin(myHex, reachRange, _me.IsHexReservedByOther).ToList();
+
+            // Is this hex hit by the charge?
+            Func<Hex, int> isHit = hex => CountSwept(origin, hex.transform.position, chargeHalfWidth);
+            return PickBestHex(landings, isHit);
+        }
+
+        // Context: the laser will be shoot from caster to a enemy.
         // Pick the enemy that a laser'll go through the most enemies.
-        public ICombatant FindClusteredLaser(float beamHalfWidth)
+        public ICombatant FindClusteredLaser(int reachRange, float beamHalfWidth)
         {
             List<ICombatant> enemies = GetEnemiesBFS();
             if (enemies.Count == 0) return null;
@@ -130,7 +155,8 @@ namespace MagicSchool.Combat.Heroes
                 if (candidateDistance <= Mathf.Epsilon) continue;
 
                 Vector3 direction = toCandidate / candidateDistance;
-                int count = enemies.Count(other => other != candidate && IsInLaser(origin, direction, other, beamHalfWidth));
+                Vector3 end = origin + direction * reachRange;
+                int count = CountSwept(origin, end, beamHalfWidth, except: candidate);
 
                 // found better candidate
                 if (count > bestCount) { bestCount = count; best.Clear(); }
@@ -148,42 +174,6 @@ namespace MagicSchool.Combat.Heroes
 
 
         // ========================================= private ========================================= 
-        // Pick a placement where a blastRadius hit most enemies
-        private IPlacement FindClustered(float blastRadius, List<Hex> candidates)
-        {
-            // FLAGGING: enemies should be cache for a frame
-            List<ICombatant> enemies = GetEnemiesBFS();
-            if (enemies.Count == 0) return null;
-
-            // guard
-            if (candidates == null || candidates.Count == 0) return null;
-
-            Vector3 origin = _me.CurrentHex.transform.position;
-            Hex best = null;
-            int bestCount = 0;
-            float ShortestDistance = 0f;
-
-            foreach (Hex landing in candidates)
-            {
-                // count the enemies with in the blast radius
-                Vector3 centre = landing.transform.position;
-                int count = enemies.Count(enemy => Vector3.Distance(centre, enemy.CurrentHex().transform.position) <= blastRadius);
-                if (count == 0) continue;
-
-                // more enemies caught wins; a tie goes to the shorter one
-                // shorter one = the distance from me to the target is shorter
-                float newDistance = Vector3.Distance(origin, centre);
-                if (count < bestCount) continue;
-                if (count == bestCount && newDistance >= ShortestDistance) continue;
-
-                best = landing;
-                bestCount = count;
-                ShortestDistance = newDistance;
-            }
-
-            return best;
-        }
-
         // when choosing a target, it could have several best candidate (a tied)
         // This is the protocol to solve when there's a tied target.
         // FLAGGING: The breaktie() logic for FindEnemy should be reconsider again. since the FindClustered doesn't hold the same logic anymore.
@@ -216,7 +206,7 @@ namespace MagicSchool.Combat.Heroes
             }
 
             // 3) if nothing work, random between the tied
-            return tied[Random.Range(0, tied.Count)];
+            return tied[UnityEngine.Random.Range(0, tied.Count)];   // spelt out: `using System` makes a bare Random ambiguous
         }
 
         // A twin to FindCurrentTarget()
@@ -245,17 +235,70 @@ namespace MagicSchool.Combat.Heroes
             return myHex.IsWithinRange(engaged.CurrentHex(), _me.Range);
         }
 
-        // Is this enemy close enough to the direction line to be caught by a shot travelling along it?
-        private bool IsInLaser(Vector3 origin, Vector3 direction, ICombatant target, float halfWidth)
+        // Pick the best Hex depend on:
+        // 1) the consume function => read the caller's comment.
+        // 2) if the tie happen, choose the one with shorter distance. (distance between me & target hex)
+        private Hex PickBestHex(IReadOnlyList<Hex> candidates, Func<Hex, int> countCaughtFrom)
         {
-            Vector3 toTarget = target.CurrentHex().transform.position - origin;
+            Hex myHex = _me.CurrentHex;
+            if (myHex == null || candidates == null) return null;
 
-            // behind me - a projectile only travels one way, so these are never hit
-            float along = Vector3.Dot(toTarget, direction);
-            if (along < 0f) return false;
+            Vector3 origin = myHex.transform.position;
+            Hex best = null;
+            int bestCount = 0;
+            float bestDistance = 0f;
 
-            // distance from the enemy to the line, measured square to it
-            return (toTarget - direction * along).magnitude <= halfWidth;
+            foreach (Hex candidate in candidates)
+            {
+                int count = countCaughtFrom(candidate);
+                if (count == 0) continue;
+
+                float distance = Vector3.Distance(origin, candidate.transform.position);
+
+                if (count < bestCount) continue;
+                if (count == bestCount && distance >= bestDistance) continue;
+
+                best = candidate;
+                bestCount = count;
+                bestDistance = distance;
+            }
+
+            return best;
+        }
+
+        // How many enemy hit with in the radius?
+        private int CountWithin(Vector3 centre, float radius)
+        {
+            return GetEnemiesBFS().Count(enemy => Vector3.Distance(centre, enemy.CurrentHex().transform.position) <= radius);
+        }
+
+        // How many enemy hit by the [x] width laser?
+        private int CountSwept(Vector3 from, Vector3 to, float halfWidth, ICombatant except = null)
+        {
+            return GetEnemiesBFS().Count(enemy => enemy != except && IsSweptOnTheWay(from, to, enemy, halfWidth));
+        }
+
+        // Is this enemy close enough to the path of a laser/charge to be hit by it?
+        private bool IsSweptOnTheWay(Vector3 from, Vector3 to, ICombatant enemy, float halfWidth)
+        {
+            Hex enemyHex = enemy.CurrentHex();
+            if (enemyHex == null) return false;
+
+            Vector3 path = to - from;
+            float pathLength = path.magnitude;
+            if (pathLength <= Mathf.Epsilon) return false;
+
+            Vector3 direction = path / pathLength;
+            Vector3 toEnemy = enemyHex.transform.position - from;
+
+            // how far along the charge the enemy stands - behind is not swept, past the end counts
+            // as being at the end, which is where the caster comes to a stop on top of them
+            float along = Vector3.Dot(toEnemy, direction);
+            if (along <= 0f) return false;
+
+            along = Mathf.Min(along, pathLength);
+
+            return (toEnemy - direction * along).magnitude <= halfWidth;
         }
 
         // easy boolean logic to filter the enemy

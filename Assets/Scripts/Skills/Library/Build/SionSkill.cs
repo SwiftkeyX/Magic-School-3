@@ -23,7 +23,7 @@ namespace MagicSchool.Skills
             SkillActionGroup move = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.Move,
+                action: TemplateActionEnum.MoveSionVariant,
                 // FIXLATER: He actually target more like clusterd laser.
                 target: AimTargetEnum.ClusteredLaser
             );

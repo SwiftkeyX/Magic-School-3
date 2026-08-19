@@ -128,7 +128,7 @@ namespace MagicSchool.Combat.Tests
             _board.AddHero(TeamEnum.Red, Blue(0, 0));                  // straight up, alone
 
             // the three on the line tie at two others caught, so the tie-break takes the nearest
-            Assert.That(me.FindClusteredLaser(beamHalfWidth: 0.3f), Is.EqualTo(onTheLine));
+            Assert.That(me.FindClusteredLaser(reachRange: 20, beamHalfWidth: 0.3f), Is.EqualTo(onTheLine));
         }
 
         // ================================== FindClusteredLanding ==================================
@@ -141,7 +141,7 @@ namespace MagicSchool.Combat.Tests
 
             // Blue(2,2) sits 1.118 from both - the reachable hex that covers the pair, and it is
             // empty, which is the answer a list of enemies could never have given.
-            IPlacement landing = me.FindClusteredLanding(reachRange: 2, blastRadius: 1.2f, isJump: true);
+            IPlacement landing = me.FindClusteredCircle(reachRange: 2, blastRadius: 1.2f, isJump: true);
 
             Assert.That(landing, Is.EqualTo(Blue(2, 2)));
         }
@@ -154,7 +154,7 @@ namespace MagicSchool.Combat.Tests
             _board.AddHero(TeamEnum.Red, Blue(3, 3));
 
             // one hop only: every hex it could reach is 2.0 or more from either enemy
-            IPlacement landing = me.FindClusteredLanding(reachRange: 1, blastRadius: 1.2f, isJump: true);
+            IPlacement landing = me.FindClusteredCircle(reachRange: 1, blastRadius: 1.2f, isJump: true);
 
             Assert.That(landing, Is.Null, "holding the cast beats jumping somewhere that hits nobody");
         }
@@ -167,7 +167,7 @@ namespace MagicSchool.Combat.Tests
             _board.AddHero(TeamEnum.Red, Blue(3, 3));
 
             // the same board as the null case above, two hops instead of one
-            IPlacement landing = me.FindClusteredLanding(reachRange: 2, blastRadius: 1.2f, isJump: true);
+            IPlacement landing = me.FindClusteredCircle(reachRange: 2, blastRadius: 1.2f, isJump: true);
 
             Assert.That(landing, Is.EqualTo(Blue(2, 2)));
         }
@@ -180,12 +180,67 @@ namespace MagicSchool.Combat.Tests
             Hero second = _board.AddHero(TeamEnum.Red, Blue(3, 3));
             Hero third = _board.AddHero(TeamEnum.Red, Blue(3, 4));     // a column of three
 
-            IPlacement landing = me.FindClusteredLanding(reachRange: 3, blastRadius: 1.2f, isJump: true);
+            IPlacement landing = me.FindClusteredCircle(reachRange: 3, blastRadius: 1.2f, isJump: true);
 
             Assert.That(landing, Is.Not.Null);
             Assert.That(landing, Is.Not.EqualTo(first.CurrentPlacement));
             Assert.That(landing, Is.Not.EqualTo(second.CurrentPlacement));
             Assert.That(landing, Is.Not.EqualTo(third.CurrentPlacement));
+        }
+
+        // ================================== FindClusteredCharge ==================================
+        [Test]
+        public void ClusteredCharge_ends_on_the_hex_whose_path_sweeps_the_most_enemies()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+
+            // a row of three straight across from me, and one lone enemy off the other way
+            _board.AddHero(TeamEnum.Red, Blue(1, 3));
+            _board.AddHero(TeamEnum.Red, Blue(2, 3));
+            _board.AddHero(TeamEnum.Red, Blue(3, 3));
+            _board.AddHero(TeamEnum.Red, Blue(0, 0));
+
+            IPlacement landing = me.FindClusteredCharge(reachRange: 4, chargeHalfWidth: 1.25f);
+
+            // whatever hex it picks, the charge has to run through the row rather than at the loner
+            Assert.That(landing, Is.Not.Null);
+            Assert.That(landing.transform.position.x, Is.GreaterThan(me.transform.position.x),
+                        "should have charged along the row, not away from it");
+        }
+
+        [Test]
+        public void ClusteredCharge_is_null_when_no_path_in_reach_sweeps_anyone()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 0));
+            _board.AddHero(TeamEnum.Red, Red(3, 6));                   // the far corner of the board
+
+            IPlacement landing = me.FindClusteredCharge(reachRange: 2, chargeHalfWidth: 1.25f);
+
+            Assert.That(landing, Is.Null, "charging at nobody is worse than holding the cast");
+        }
+
+        [Test]
+        public void ClusteredCharge_does_not_score_enemies_it_could_never_reach()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+
+            // a pair close enough to run through, and three more massed on the far side
+            _board.AddHero(TeamEnum.Red, Blue(1, 3));
+            _board.AddHero(TeamEnum.Red, Blue(1, 4));
+            _board.AddHero(TeamEnum.Red, Red(1, 3));
+            _board.AddHero(TeamEnum.Red, Red(2, 3));
+            _board.AddHero(TeamEnum.Red, Red(3, 3));
+
+            // Two hops of reach. Aiming down an unbounded line would point at the three, because
+            // that line catches the most - and then the charge would stop three hexes short of
+            // them having hit nobody. Scoring the charge itself takes the pair it can run through.
+            //
+            // A narrow lane on purpose: at the hitbox's real 1.25 several paths clip both of the
+            // pair and the tie-break picks whichever is shortest, which is right in game and
+            // useless to assert on. At 0.6 exactly one path runs through both.
+            IPlacement landing = me.FindClusteredCharge(reachRange: 2, chargeHalfWidth: 0.6f);
+
+            Assert.That(landing, Is.EqualTo(Blue(2, 3)));
         }
 
         [Test]
@@ -196,7 +251,7 @@ namespace MagicSchool.Combat.Tests
             _board.AddHero(TeamEnum.Red, Red(1, 3));                   // same prize, far side of the board
 
             // one enemy caught either way, so the near one wins
-            IPlacement landing = me.FindClusteredLanding(reachRange: 4, blastRadius: 1.2f, isJump: true);
+            IPlacement landing = me.FindClusteredCircle(reachRange: 4, blastRadius: 1.2f, isJump: true);
 
             Assert.That(landing, Is.Not.Null);
             float toNear = Vector3.Distance(landing.transform.position, near.transform.position);

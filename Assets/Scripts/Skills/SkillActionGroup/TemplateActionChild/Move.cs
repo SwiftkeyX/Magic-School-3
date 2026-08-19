@@ -17,13 +17,16 @@ namespace MagicSchool.Skills
     /// </summary>
     internal class Move : TemplateAction
     {
-        [SerializeField] private int _moveRange = 2;                // hex radius the cluster is measured over
+        [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
         [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
-        // Progress along the path over the jump, same role as Hero's walk curve. Tune the arc here:
-        // a slow-out/fast-in shape reads as a leap, a straight line reads as a slide.
+        
+        // how move was resolve, kinda need the effectRange of the other skill step involve
+        // e.g. move into clustered, OnExpired do AOE stun => We need the AOE stun to measure where is clustered
+        [SerializeField] private float _effectRange = 2.25f;        
+        
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-        private IPlacement _landing;    // hex the caster ends up on, resolved before the cast is allowed to play
+        private IPlacement _landing;    // hex the caster ends up on after moving
         private CurveMotion _jump;
         private bool _isJumping;
 
@@ -74,12 +77,9 @@ namespace MagicSchool.Skills
             // source move at a hex which is most clustered with enemies
             if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
-                ICombatant target = _me.FindClusteredCircle(radius: _moveRange);
-                if (target == null) return false;
-
-                // land NEXT to the cluster, not on top of it - the hex that enemy stands on is taken
-                _landing = _me.FindFreePlacementNextTo(target);
-                if (_landing == null) return false;     // the cluster is walled in: nowhere to land, so don't cast
+                // ask for the hex to land on.
+                _landing = _me.FindClusteredLanding(_jumpRange, _effectRange);
+                if (_landing == null) return false;     // nothing in reach is worth jumping to, so don't cast
 
                 _aimTarget = _landing.transform.position;
                 return true;

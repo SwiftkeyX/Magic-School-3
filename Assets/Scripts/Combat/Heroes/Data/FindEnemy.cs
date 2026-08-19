@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
+using NUnit.Framework;
 
 namespace MagicSchool.Combat.Heroes
 {
@@ -80,35 +81,30 @@ namespace MagicSchool.Combat.Heroes
             return BreakTie(tiedFurthest, _currentTarget);
         }
 
-        // Pick the hex that are most cluster (measuring by input radius)
-        // FLAGGING: This one use IsWithInRange() instead of checking distance like the others. This isn't test yet.
-        // FIXLATER: This logic also doesn't quite right. If we don't care about performance, 
-        // we can check every single hex, and enemy in its radius, that one would work right.
-        public ICombatant FindClusteredCircle(int radius = 2)
+        // Pick a placement where:
+        // 1) a blastRadius hit most enemies
+        // 2) placement is within my reach range.
+        // 3) if this is a jump, a placement is also need to be free, for me to land
+        public IPlacement FindClusteredLanding(int reachRange, float blastRadius, bool isJump)
         {
-            List<ICombatant> enemies = GetEnemiesBFS();
-            if (enemies.Count == 0) return null;
+            // Find all the hex that was free in reach range
+            List<Hex> candidates = null;
 
-            List<ICombatant> best = new List<ICombatant>();
-            int bestCount = -1;
-
-            // look at each candidate enemy, look [x] hex radius from the candidate, how many enemy is with in the radius?
-            foreach (ICombatant candidate in enemies)
+            // if this was a jump, the candidates could only land on free hex.
+            // free hex = hex where no one standing on
+            if (isJump)
             {
-                Hex candidateHex = candidate.CurrentHex();
-                int count = enemies.Count(other => other != candidate && candidateHex.IsWithinRange(other.CurrentHex(), radius));
-
-                // found better candidate
-                if (count > bestCount) { bestCount = count; best.Clear(); }
-
-                // keep every candidate that ties for best
-                if (count == bestCount) best.Add(candidate);
+                candidates = HexFinder.FindFreeHexesWithin(_me.CurrentHex, reachRange, _me.IsHexReservedByOther);
             }
 
-            // nobody is standing near anybody: there is no cluster to aim at, so hit what we already hit
-            if (bestCount <= 0) return UseCurrentTargetOrNewTarget();
+            // if not, the candidates hex could land on any hex with in reach range.
+            else
+            {
+                // FLAGGING: later
+            }
 
-            return BreakTie(best, _currentTarget);
+            var best = FindClustered(blastRadius, candidates);
+            return best;
         }
 
         // Context: the laser will be shoot from me to a enemy.
@@ -153,6 +149,38 @@ namespace MagicSchool.Combat.Heroes
 
 
         // ========================================= private ========================================= 
+        // Pick a placement where a blastRadius hit most enemies
+        private IPlacement FindClustered(float blastRadius, List<Hex> candidates)
+        {
+            // FLAGGING: enemies should be cache for a frame
+            List<ICombatant> enemies = GetEnemiesBFS();
+            if (enemies.Count == 0) return null;
+
+            Vector3 origin = _me.CurrentHex.transform.position;
+            Hex best = null;
+            int bestCount = 0;
+            float ShortestDistance = 0f;
+
+            foreach (Hex landing in candidates)
+            {
+                // count the enemies with in the blast radius
+                Vector3 centre = landing.transform.position;
+                int count = enemies.Count(enemy => Vector3.Distance(centre, enemy.CurrentHex().transform.position) <= blastRadius);
+                if (count == 0) continue;
+
+                // more enemies caught wins; a tie goes to the shorter one
+                // shorter one = the distance from me to the target is shorter
+                float newDistance = Vector3.Distance(origin, centre);
+                if (count < bestCount) continue;
+                if (count == bestCount && newDistance >= ShortestDistance) continue;
+
+                best = landing;
+                bestCount = count;
+                ShortestDistance = newDistance;
+            }
+
+            return best;
+        }
 
         // when choosing a target, it could have several best candidate (a tied)
         // This is the protocol to solve when there's a tied target.

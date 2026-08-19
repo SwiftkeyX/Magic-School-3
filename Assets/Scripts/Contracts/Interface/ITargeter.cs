@@ -7,7 +7,7 @@ namespace MagicSchool.Contracts
         ICombatant FindCurrentTarget();
         ICombatant FindNearestEnemy();
         ICombatant FindFurthestEnemy();
-        ICombatant FindClusteredCircle(int radius = 2);
         ICombatant FindClusteredLaser(float beamHalfWidth);
+        IPlacement FindClusteredLanding(int jumpRange, float blastRadius);
     }
 }

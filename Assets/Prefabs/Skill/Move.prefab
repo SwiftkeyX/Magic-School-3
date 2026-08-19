@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: MagicSchool.Skills::MagicSchool.Skills.Move
   _castTime: 0
-  _moveRange: 2
+  _jumpRange: 2
+  _effectRange: 2.25
   _jumpDuration: 0.5
   _jumpCurve:
     serializedVersion: 2

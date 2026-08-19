@@ -4,7 +4,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal static class JarvanIV
+    internal static class JarvanIVSkill
     {
         private const float StunDuration = 2f;
         private const float LandingDamage = 200f;

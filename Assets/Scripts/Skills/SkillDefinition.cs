@@ -38,6 +38,7 @@ namespace MagicSchool.Skills
             foreach (SkillStep step in PassiveSteps) step.Init(caster);
         }
 
+        // invoke the event, listener read if the trigger type match their's
         public void InvokeTrigger(TriggerEnum trigger) => Triggered?.Invoke(trigger);
     }
 }

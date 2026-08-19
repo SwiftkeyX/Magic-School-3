@@ -7,6 +7,11 @@ namespace MagicSchool.Skills
     /// Some hero skill need a combo counter. e.g. Aatrox 3 hit combo.
     /// ComboTracker dedicate itself for being a counter.  
     /// </summary>
+
+    /// FLAGGING: this is very confusing btw. The combotracker now are used only be Aatrox.
+    /// It use is:
+    /// 1) if OnAttack is invoke, the passive skill of Aatrox'll active.
+    /// 2) After OnAttack + Aatrox's active, the ComboTracker.Count() should also be called.
     internal class ComboTracker
     {
         private readonly int _length;

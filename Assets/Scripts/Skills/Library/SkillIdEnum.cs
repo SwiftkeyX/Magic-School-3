@@ -23,5 +23,6 @@ namespace MagicSchool.Skills
         Warwick = 9,
         Sona = 10,
         JarvanIV = 11,
+        Sion = 12,
     }
 }

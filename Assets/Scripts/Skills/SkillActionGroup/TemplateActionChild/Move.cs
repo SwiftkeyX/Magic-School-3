@@ -19,11 +19,11 @@ namespace MagicSchool.Skills
     {
         [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
         [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
-        
+
         // how move was resolve, kinda need the effectRange of the other skill step involve
         // e.g. move into clustered, OnExpired do AOE stun => We need the AOE stun to measure where is clustered
-        [SerializeField] private float _effectRange = 2.25f;        
-        
+        [SerializeField] private float _effectRange = 2.25f;
+
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         private IPlacement _landing;    // hex the caster ends up on after moving
@@ -82,6 +82,19 @@ namespace MagicSchool.Skills
                 if (_landing == null) return false;     // nothing in reach is worth jumping to, so don't cast
 
                 _aimTarget = _landing.transform.position;
+                return true;
+            }
+
+            else if (aimTarget == AimTargetEnum.ClusteredLaser)
+            {
+                // ask for the hex to land on.
+                ICombatant target = _me.FindClusteredLaser(1.5f);
+                if (target == null) return false;     // nothing in reach is worth jumping to, so don't cast
+
+                // ASKING: could you make him charge into target and landing around 4 hex max from his original hex? 
+                // ...
+
+                _aimTarget = target.transform.position;
                 return true;
             }
 

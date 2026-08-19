@@ -55,7 +55,8 @@ Which is not intented.
 JarvanIV - jump (2 hex maximum) into the cluster enemies. Stun AOE.
 - implement jump
 
-Sion - move into clustered, range 2 hex, enemy who is in the way get knocked up
+Sion - move into clustered, range 4 hex, enemy who is in the way get knocked up.
+- while moving, he have his AOE on himself activate, enemy who touch it get knock up.
 
 Shen - shield 2 lowest ally. OnExpired, shield burst into AOE, gain second shield.
 - implement aim on lowest ally.

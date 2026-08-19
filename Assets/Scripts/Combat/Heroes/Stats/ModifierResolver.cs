@@ -47,7 +47,6 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         // =================================== setter ===================================
         // add new modifier
-        // FLAGGING: amplifier should be unique to each modifier. But let leave it for now.
         public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             // if the same modifier is added again, refresh the modifier
@@ -56,6 +55,8 @@ namespace MagicSchool.Combat.Heroes.Stats
                 // is new added modifier the same to current active one?
                 if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
 
+                // FLAGGING: Depend on skill, some skill can be stacked, while some skill refresh cleanly.
+                // Now only refresh exist. We'll do this later when pattern is more clear.
                 // refresh modifier
                 _activeModifiers.RemoveAt(i);
                 break;

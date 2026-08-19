@@ -9,10 +9,12 @@ namespace MagicSchool.Combat.Heroes.Stats
     internal class ActiveCustomModifier
     {
         private const float Permanent = -1f;
-        public readonly ICustomModifier CustomModifier; // the group of modifier - buff, debuff, status, etc...
-        public readonly float[] BonusStat;              //the amount of total stat that will be added to hero, amplifier included
-        public float Remaining;                         // remember its remaining duration of the modifier - The group share the same remaining
-        private float _maxDuration;                     // Max duration
+        private float _remaining;
+
+        // ============================================ getter ============================================
+        public readonly ICustomModifier CustomModifier;     // the group of modifier - buff, debuff, status, etc...
+        public readonly float[] BonusStat;                  //the amount of total stat that will be added to hero, amplifier included
+        public float Remaining => _remaining;               // remember its remaining duration of the modifier - The group share the same remaining
 
         public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
@@ -41,13 +43,14 @@ namespace MagicSchool.Combat.Heroes.Stats
                 BonusStat[i] = modifiers[i].GetBonusAmount(from) * amplifier;
             }
 
-            // get duration of the modifier
-            _maxDuration = source.GetDuration();
-
-            Remaining = StartingRemaining(_maxDuration);
+            // start the modifier's timer
+            _remaining = StartingRemaining(source.GetDuration());
         }
 
-        public void RefreshModifierDuration() => Remaining = StartingRemaining(_maxDuration);
+        public void Tick(float deltaTime)
+        {
+            _remaining -= deltaTime;
+        }
 
         private static float StartingRemaining(float duration)
             => (duration == Permanent) ? float.PositiveInfinity : duration;

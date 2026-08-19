@@ -38,7 +38,7 @@ namespace MagicSchool.Combat.Heroes.Stats
                 if (float.IsPositiveInfinity(_activeModifiers[i].Remaining)) continue;
 
                 // update timer
-                _activeModifiers[i].Remaining -= deltaTime;
+                _activeModifiers[i].Tick(deltaTime);
 
                 // if the group expired, every modifier in it goes at once
                 if (_activeModifiers[i].Remaining <= 0f) _activeModifiers.RemoveAt(i);
@@ -50,15 +50,15 @@ namespace MagicSchool.Combat.Heroes.Stats
         // FLAGGING: amplifier should be unique to each modifier. But let leave it for now.
         public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
-            // if the same modifier is added again, refresh that modifier
+            // if the same modifier is added again, refresh the modifier
             for (int i = 0; i < _activeModifiers.Count; i++)
             {
                 // is new added modifier the same to current active one?
                 if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
 
                 // refresh modifier
-                _activeModifiers[i].RefreshModifierDuration();
-                return;
+                _activeModifiers.RemoveAt(i);
+                break;
             }
 
             // add modifier

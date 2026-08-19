@@ -22,5 +22,6 @@ namespace MagicSchool.Skills
         Teemo = 8,
         Warwick = 9,
         Sona = 10,
+        JarvanIV = 11,
     }
 }

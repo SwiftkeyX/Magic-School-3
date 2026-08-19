@@ -14,6 +14,7 @@ namespace MagicSchool.Skills
         BoxAOETip = 1,
         CircleAOE = 2,
         CircleAOETip = 3,
+        CircleAOEJarvanIvVariant = 14,
         TriangleAOETip = 4,
         ZoneAOE = 5,
         ZoneAOEGarenVariant = 6,
@@ -27,5 +28,6 @@ namespace MagicSchool.Skills
         // ==================================== Other ====================================
         Cast = 10,
         CastGalioVariant = 11,
+        Move = 13,
     }
 }

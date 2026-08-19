@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
+using System;
 
 namespace MagicSchool.Skills
 {
@@ -11,6 +12,7 @@ namespace MagicSchool.Skills
     {
         internal enum AOEOffsetEnum { Center, Tip }
         [SerializeField] private AOEOffsetEnum _offset;
+        [SerializeField] private Sticky _sticky;
 
         // ======================================= override =======================================
         protected override void Play()
@@ -31,6 +33,7 @@ namespace MagicSchool.Skills
             if (source == ActionSourceEnum.Self)
             {
                 _source = _me.transform.position;
+                if (_sticky.IsSticky) _sticky.Source = _me;
             }
 
             // spawn on current target
@@ -39,13 +42,16 @@ namespace MagicSchool.Skills
                 ICombatant target = _me.FindCurrentTarget();
                 if (target == null) return false;
                 _source = target.transform.position;
+                if (_sticky.IsSticky) _sticky.Source = target;
             }
 
-            // e.g. Teemo's and Karma's dart exploding on impact rather than back at the caster
+            // spawn on where the previous projectile hit
+            // e.g. Karma's dart exploding on impact
             else if (source == ActionSourceEnum.WhereProjectileHit)
             {
                 if (_fromPreviousStep?.Position == null) return false;
                 _source = _fromPreviousStep.Position.Value;
+                if (_sticky.IsSticky) _sticky.Source = null;
             }
 
             // else if () ...
@@ -121,6 +127,16 @@ namespace MagicSchool.Skills
         // When AOE hit someone, apply effect to recipient
         protected abstract void HandleAOEHit(ICombatant recipient);
 
+        // ======================================= virtual =======================================
+        protected virtual void Update()
+        {
+            // if sticky, the AOE should always follow the _source. 
+            if (_sticky.IsSticky)
+            {
+                transform.position = _sticky.Source.transform.position;
+            }
+        }
+
         // ======================================= private =======================================
         /// How far the offset of this shape will be? e.g.
         private float HalfLengthAlongFacing()
@@ -133,7 +149,7 @@ namespace MagicSchool.Skills
 
             // CIRCLEAOE - a circle's radius. 
             else if (hitbox is CircleCollider2D circle) localHalf = circle.radius;
-            
+
             // else if {} ...
 
             // fallback
@@ -155,5 +171,12 @@ namespace MagicSchool.Skills
             float degrees = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, degrees + 90f);
         }
+    }
+
+    [Serializable]
+    internal struct Sticky
+    {
+        [SerializeField] internal bool IsSticky;
+        internal ICombatant Source;
     }
 }

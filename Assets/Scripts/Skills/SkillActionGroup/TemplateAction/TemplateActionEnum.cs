@@ -13,6 +13,7 @@ namespace MagicSchool.Skills
         // ==================================== AOE ====================================
         BoxAOETip = 1,
         CircleAOE = 2,
+        CircleAOESticky = 15,
         CircleAOETip = 3,
         CircleAOEJarvanIvVariant = 14,
         TriangleAOETip = 4,

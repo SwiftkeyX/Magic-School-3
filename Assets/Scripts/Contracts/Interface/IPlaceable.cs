@@ -11,5 +11,6 @@ namespace MagicSchool.Contracts
         IPlacement CurrentPlacement { get; }    // the placement this unit is standing on
         bool IsInCombat { get; }                // FLAGGING: this one shouldn't belong in this interface, no?
         void SetCurrentPlacement(IPlacement placement);
+        IPlacement FindFreePlacementNextTo(IPlaceable target);
     }
 }

@@ -28,15 +28,15 @@ namespace MagicSchool.Skills
                 duration: -1f,
                 Buff(
                     modifier: ModifierEnum.AttackSpeed,
-                    source:   ScalingSourceEnum.Recipient,
-                    ratios:   (StatEnum.AttackSpeed, ASbuff))
+                    source: ScalingSourceEnum.Recipient,
+                    ratios: (StatEnum.AttackSpeed, ASbuff))
             );
 
             SkillActionGroup wave = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.PiercingProjectile,
-                target: AimTargetEnum.ClusteredInLine,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
+                target: AimTargetEnum.ClusteredLaser,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
 
                 // deal dmg to enemy & give buff to ally 
                 Damage(

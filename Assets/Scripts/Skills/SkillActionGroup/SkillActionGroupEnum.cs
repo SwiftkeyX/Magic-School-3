@@ -18,9 +18,9 @@ namespace MagicSchool.Skills
         Self = 0,
         Current = 1,
         Furthest = 2,
-        Clustered = 3,
+        ClusteredCircle = 3,
+        ClusteredLaser = 5,
         WhereProjectileHit = 4,
-        ClusteredInLine = 5,
 
         // ...
     }

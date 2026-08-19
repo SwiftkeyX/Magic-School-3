@@ -32,10 +32,10 @@ namespace MagicSchool.Combat.Heroes.States
             // walk according the movement's curve
             _me.transform.position = _step.Tick(Time.deltaTime);
 
-            // if walk is finished, set new placement, check switch state
+            // if walk is finished, hand the hero over to the hex it stepped onto, check switch state
             if (_step.IsFinished)
             {
-                _me.SetCurrentPlacement(_targetHex);
+                ArriveAt(_targetHex);
             }
 
             CheckSwitchState();
@@ -68,6 +68,19 @@ namespace MagicSchool.Combat.Heroes.States
                 _me.ChangeState(HeroStateEnum.Idle);
                 return;
             }
+        }
+
+        // A unit arrive at new hex
+        // un owner to previous hex, set new owner to the new hex.
+        // NOTE: this use same pattern as HeroMover & Move Template action 
+        private void ArriveAt(Hex hex)
+        {
+            // guard
+            if (_me.CurrentHex == hex) return;      
+
+            IPlacement previous = _me.CurrentPlacement;
+            if (previous != null) previous.OnUnitUnplaced(_me);
+            hex.OnUnitPlaced(_me);
         }
 
         private void StartStepTo(Hex hex)

@@ -45,7 +45,7 @@ namespace MagicSchool.Combat.Heroes.States
             if (ShouldWaitForBlocker(nearestEnemy, targetHex)) return false;
 
             // finally, walk, reset the hold
-            _me.SetReservedHex(targetHex);
+            targetHex.OnUnitReserved(_me);
             _holdSince = -1f;
             return true;
         }

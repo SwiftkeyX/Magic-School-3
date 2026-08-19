@@ -40,9 +40,10 @@ namespace MagicSchool.Combat.Heroes
 
             if (t < 1f) return;
 
-            // arrive - the hex is only really ours once we're standing on it
-            _me.transform.position = _to.transform.position;
-            _me.SetCurrentPlacement(_to);
+            // arrive - the hex is only really ours once we're standing on it. OnUnitPlaced does
+            // the snap to the centre for us, same as it does for a walking hero.
+            _from.OnUnitUnplaced(_me);
+            _to.OnUnitPlaced(_me);
             _to = null;
         }
 
@@ -68,7 +69,7 @@ namespace MagicSchool.Combat.Heroes
             _duration = 1f / _speed;
 
             // claim it before moving, exactly as a walking hero does
-            _me.SetReservedHex(next);
+            next.OnUnitReserved(_me);
             return true;
         }
 

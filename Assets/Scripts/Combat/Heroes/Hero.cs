@@ -128,7 +128,7 @@ namespace MagicSchool.Combat.Heroes
         public ICombatant FindCurrentTarget() => _findEnemy.FindCurrentTarget();
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy() => _findEnemy.FindFurthestEnemy();
-        public IPlacement FindClusteredLanding(int jumpRange, float blastRadius) => _findEnemy.FindClusteredLanding(jumpRange, blastRadius);
+        public IPlacement FindClusteredLanding(int reachRange, float blastRadius, bool isJump) => _findEnemy.FindClusteredLanding(reachRange, blastRadius, isJump);
         public ICombatant FindClusteredLaser(float beamHalfWidth) => _findEnemy.FindClusteredLaser(beamHalfWidth);
 
 

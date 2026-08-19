@@ -156,6 +156,9 @@ namespace MagicSchool.Combat.Heroes
             List<ICombatant> enemies = GetEnemiesBFS();
             if (enemies.Count == 0) return null;
 
+            // guard
+            if (candidates == null || candidates.Count == 0) return null;
+
             Vector3 origin = _me.CurrentHex.transform.position;
             Hex best = null;
             int bestCount = 0;

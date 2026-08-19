@@ -78,7 +78,7 @@ namespace MagicSchool.Skills
             if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
                 // ask for the hex to land on.
-                _landing = _me.FindClusteredLanding(_jumpRange, _effectRange);
+                _landing = _me.FindClusteredLanding(_jumpRange, _effectRange, isJump: true);
                 if (_landing == null) return false;     // nothing in reach is worth jumping to, so don't cast
 
                 _aimTarget = _landing.transform.position;

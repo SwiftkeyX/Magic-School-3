@@ -8,6 +8,6 @@ namespace MagicSchool.Contracts
         ICombatant FindNearestEnemy();
         ICombatant FindFurthestEnemy();
         ICombatant FindClusteredLaser(float beamHalfWidth);
-        IPlacement FindClusteredLanding(int jumpRange, float blastRadius);
+        IPlacement FindClusteredLanding(int reachRange, float blastRadius, bool isJump);
     }
 }

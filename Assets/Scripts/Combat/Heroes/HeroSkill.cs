@@ -42,10 +42,13 @@ namespace MagicSchool.Combat.Heroes
             // OnCast skill is always step 0
             if (steps[0].Trigger != TriggerEnum.OnCast) return false;
 
-            // fire OnCast skill first, then fire OnCastStart second
-            bool played = FireStep(steps, 0) && TriggerOnCastStart(steps);
+            // fire OnCast skill first
+            if (!FireStep(steps, 0)) return false;
 
-            return played;
+            // then fire OnCastStart second
+            TriggerOnCastStart(steps);
+
+            return true;
         }
 
         // passive skill could always be triggered if the condition is true  
@@ -92,17 +95,14 @@ namespace MagicSchool.Combat.Heroes
 
         // if OnCastStart available, it always start right after OnCast do
         // p.s. OnCastStart's order is always = 1 in steps list
-        private bool TriggerOnCastStart(IReadOnlyList<SkillStep> steps)
+        private void TriggerOnCastStart(IReadOnlyList<SkillStep> steps)
         {
-            bool played = false;
+            // guard
+            if (steps.Count <= 1) return;
 
-            // if not available, return true, so the bool for OnCast don't get mess up by skill that doesn't available.
-            if (steps[1].Trigger != TriggerEnum.OnCastStart) played = true;
+            if (steps[1].Trigger != TriggerEnum.OnCastStart) return;
 
-            // if available, fire it
-            else if (steps[1].Trigger == TriggerEnum.OnCastStart) played = FireStep(steps, 1);
-
-            return played;
+            FireStep(steps, 1);
         }
 
         // ============================================== helper ==============================================

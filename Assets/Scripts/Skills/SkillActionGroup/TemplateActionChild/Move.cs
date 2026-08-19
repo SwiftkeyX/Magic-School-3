@@ -125,7 +125,6 @@ namespace MagicSchool.Skills
         {
             IPlacement previous = _me.CurrentPlacement;
 
-            // ASKING: I just notice HeroWalk don't use IPlaceable interface, should they also use one?
             if (previous != null) previous.OnUnitUnplaced(_me);
             _landing.OnUnitPlaced(_me);
         }

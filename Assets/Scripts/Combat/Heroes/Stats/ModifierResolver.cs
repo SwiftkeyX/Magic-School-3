@@ -87,20 +87,12 @@ namespace MagicSchool.Combat.Heroes.Stats
                     // let the modifier with correct stat pass.
                     if (target != type) continue;
 
-                    // the amount was resolved when this modifier landed - read it back rather than
-                    // re-scale it, or a stat lookup would call GetStat again from inside itself
-                    float amountAfterScaling = active.BonusStat[i];
-
-                    // FIXLATER: Let's move amplifier into Scaling too.
-                    // apply amplifier if exist e.g. +30% when the target was wounded
-                    float amount = amountAfterScaling * active.Amplifier;
-
                     // scale stat e.g. flat +50, percentage +100%
                     // the percentage is derived from StatRatio 
                     ScalingEnum scalingEnum = modifier.GetScalingEnum();
 
                     if (scalingEnum == ScalingEnum.Percentage)
-                        pureStatFromPercentageBonus += amount;
+                        pureStatFromPercentageBonus += active.BonusStat[i];
 
                     else { }
                 }

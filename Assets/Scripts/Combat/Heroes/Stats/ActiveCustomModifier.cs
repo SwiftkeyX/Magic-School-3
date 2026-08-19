@@ -10,15 +10,13 @@ namespace MagicSchool.Combat.Heroes.Stats
     {
         private const float Permanent = -1f;
         public readonly ICustomModifier CustomModifier; // the group of modifier - buff, debuff, status, etc...
-        public readonly float Amplifier;
-        public readonly float[] BonusStat;              //the amount of total stat that will be added to hero
+        public readonly float[] BonusStat;              //the amount of total stat that will be added to hero, amplifier included
         public float Remaining;                         // remember its remaining duration of the modifier - The group share the same remaining
         private float _maxDuration;                     // Max duration
 
         public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             CustomModifier = source;
-            Amplifier = amplifier;
 
             // get bonus stat from each modifier
             IReadOnlyList<IModifier> modifiers = source.GetModifiers();
@@ -38,8 +36,9 @@ namespace MagicSchool.Combat.Heroes.Stats
                 // fallback
                 else from = casterStats;
 
-                // get bonus stat
-                BonusStat[i] = modifiers[i].GetBonusAmount(from);
+                // get bonus stat, amplified if the effect's conditions is true.
+                // e.g. +30% when the target was wounded.
+                BonusStat[i] = modifiers[i].GetBonusAmount(from) * amplifier;
             }
 
             // get duration of the modifier

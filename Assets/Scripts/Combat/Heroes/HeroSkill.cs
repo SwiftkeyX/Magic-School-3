@@ -30,8 +30,9 @@ namespace MagicSchool.Combat.Heroes
         }
 
         // ============================================== active & passive skill ==============================================
-        // mana is full, active skill is trigger. 
-        // Returns true if the skill cast successfully.
+        // mana is full, OnCast skill is trigger. 
+        // p.s. OnCast & OnCastStart are different, OnCast => active skill, OnCastStart => another skill that activate right after OnCast
+        // p.s.2. OnCast's order is always = 0 in steps list
         public bool TriggerOnCastSkill(bool isManaCapped)
         {
             if (!isManaCapped || !HasSkill) return false;
@@ -41,24 +42,25 @@ namespace MagicSchool.Combat.Heroes
             // OnCast skill is always step 0
             if (steps[0].Trigger != TriggerEnum.OnCast) return false;
 
-            if (!FireStep(steps, 0)) return false;
+            // fire OnCast skill first, then fire OnCastStart second
+            bool played = FireStep(steps, 0) && TriggerOnCastStart(steps);
 
-            return true;
+            return played;
         }
 
         // passive skill could always be triggered if the condition is true  
-        // Returns true if the skill cast successfully.
         public bool TriggerPassiveSkill(TriggerEnum trigger)
         {
             if (!HasPassive) return false;
 
             IReadOnlyList<SkillStep> steps = _skill.PassiveSteps;
 
+            // if any trigger is matched to parameter, fired that passive skill
             if (steps[0].Trigger != trigger) return false;
 
             bool played = FireStep(steps, 0);
 
-            // invoke Aatrox's combo counter
+            // after fire previous step, invoke Aatrox's combo counter
             // FLAGGING: Don't sure if it should stay here. Let's look at it again when the pattern is more clear. 
             if (played) _skill.InvokeTrigger(trigger);
 
@@ -75,7 +77,7 @@ namespace MagicSchool.Combat.Heroes
         }
 
         // This function create a event that was handed to TemplateAction.
-        // on event invoke, next TemplateAction is played, and related context is sent to be used for next TemplateAction.
+        // on event invoke, next TemplateAction is played (if available), and related context is sent to be used for next TemplateAction.
         // e.g. Projectile invoke "OnHit" event => Send projectile hit position to next TemplateAction
         private Action<SkillStepContext> TriggerNextStep(IReadOnlyList<SkillStep> steps, int nextIndex, TriggerEnum trigger)
         {
@@ -86,6 +88,21 @@ namespace MagicSchool.Combat.Heroes
             if (steps[nextIndex].Trigger != trigger) return null;
 
             return context => FireStep(steps, nextIndex, context);
+        }
+
+        // if OnCastStart available, it always start right after OnCast do
+        // p.s. OnCastStart's order is always = 1 in steps list
+        private bool TriggerOnCastStart(IReadOnlyList<SkillStep> steps)
+        {
+            bool played = false;
+
+            // if not available, return true, so the bool for OnCast don't get mess up by skill that doesn't available.
+            if (steps[1].Trigger != TriggerEnum.OnCastStart) played = true;
+
+            // if available, fire it
+            else if (steps[1].Trigger == TriggerEnum.OnCastStart) played = FireStep(steps, 1);
+
+            return played;
         }
 
         // ============================================== helper ==============================================

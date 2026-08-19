@@ -5,6 +5,7 @@ namespace MagicSchool.Contracts
     public enum TriggerEnum
     {
         OnCast = 0,
+        OnCastStart = 5,    // once the OnCast trigger, this is also trigger
         OnKill = 1,
         OnExpired = 2,      // once the previous step expired
         OnHit = 3,          // once the previous step hit someone 

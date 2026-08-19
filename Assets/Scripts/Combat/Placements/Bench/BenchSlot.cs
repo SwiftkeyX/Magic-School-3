@@ -10,6 +10,13 @@ namespace MagicSchool.Combat.Placements
         // ==================== getter ===================
         public bool Reserved => _reserved;
 
+        // A hero on its way here holds the slot, same as one already standing on it - otherwise
+        // a second hero could be sent to a slot that's about to be occupied.
+        public void OnUnitReserved(IPlaceable hero)
+        {
+            _reserved = true;
+        }
+
         // A hero placed on a bench slot has no hex - just remember who's here so
         // OnHeroUnplaced can free the slot again once they leave.
         public void OnUnitPlaced(IPlaceable hero)

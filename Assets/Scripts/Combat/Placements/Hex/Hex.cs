@@ -33,6 +33,13 @@ namespace MagicSchool.Combat.Placements
         }
 
         // ===================================== placement interface =====================================
+        // A hero commits to this hex before it gets here - reserve it so nobody else walks in,
+        // but leave CurrentPlacement (and the hero's position) alone until it actually arrives.
+        public void OnUnitReserved(IPlaceable hero)
+        {
+            if (hero is IHexPlaceable hexDweller) hexDweller.SetReservedHex(this);
+        }
+
         // place hero on Hex
         public void OnUnitPlaced(IPlaceable hero)
         {
@@ -48,7 +55,10 @@ namespace MagicSchool.Combat.Placements
         // unplace hero from Hex
         public void OnUnitUnplaced(IPlaceable hero)
         {
-            if (hero is IHexPlaceable hexDweller) hexDweller.SetReservedHex(null);
+            // Only drop the reservation if it's still MINE. A hero that already claimed where it's
+            // going (a jump, a walk) leaves this hex holding the next one - clearing blindly here
+            // would throw that claim away and let someone else take the landing spot.
+            if (hero is IHexPlaceable hexDweller && hexDweller.ReservedHex == this) hexDweller.SetReservedHex(null);
         }
 
 

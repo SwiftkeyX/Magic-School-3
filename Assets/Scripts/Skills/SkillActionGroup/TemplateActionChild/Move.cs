@@ -33,16 +33,10 @@ namespace MagicSchool.Skills
             // this instance is only a driver, so park it on the caster - it never gets seen
             transform.position = GetSpawnPosition();
 
-            // Reserved the landing hex (even before landing there)
-            // so nobody walk into it.
-            TakeLandingPlacement();
+            // Reserved the landing hex before the actual jump
+            // this ensure nobody else take our landing hex
+            _landing.OnUnitReserved(_me);
 
-            // ASKING: I don't think this is a good idea, no? Let the CurveMotion finish execute itself, then we set placement afterward.
-            // The reserved should be set beforehand though. 
-            // OnUnitPlaced above already snapped the caster onto the landing hex - board state is
-            // deliberately one jump ahead of the visual. Rewind the visual to the take-off point
-            // and let Update() carry it back over.
-            _me.transform.position = _source;
             _jump = new CurveMotion(
                 start: _source,
                 end: _landing.transform.position,
@@ -119,13 +113,14 @@ namespace MagicSchool.Skills
 
             _isJumping = false;
 
-            // die where the caster landed, so OnExpired hands the landing spot to the next step
+            // after finish landing, set current placement there
+            TakeLandingPlacement();
+
+            // die where the caster landed, so OnExpired hands the "landing spot" to the next step
             transform.position = _jump.End;
             DestroyMe();
         }
 
-        // Hand the caster over to the landing hex: leaving frees the old hex's reservation,
-        // arriving takes the new one. Same two calls HeroMover makes when the system moves a hero.
         private void TakeLandingPlacement()
         {
             IPlacement previous = _me.CurrentPlacement;

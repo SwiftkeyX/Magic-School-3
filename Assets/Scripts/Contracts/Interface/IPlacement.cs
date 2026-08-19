@@ -7,6 +7,7 @@ namespace MagicSchool.Contracts
     public interface IPlacement
     {
         Transform transform { get; }
+        void OnUnitReserved(IPlaceable hero);    // to tell this placement that a unit is on its way here - hold it for them.
         void OnUnitPlaced(IPlaceable hero);     // to tell this placement that a unit have standing on it.
         void OnUnitUnplaced(IPlaceable hero);   // to tell this placement that a unit is leaving this placement.
     }

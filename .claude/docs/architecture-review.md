@@ -65,10 +65,6 @@ checklist item.
 
   Missing rather than wrong: every script is now in `namespace MagicSchool`.
 
-- [ ] **`Preparation` is named after a phase but has no phase logic** — it's a spawner and a mover
-  bundled under a phase's name, with different callers for each. Tagged `ASKING` in
-  `Preparation.cs:8`.
-
 - [ ] **asmdefs — blocked, and not on effort.** Measured from compiled IL,
   `{ <root>, Board, Core, Hero, Player, Skill }` form one strongly connected component, and Unity
   hard-errors on circular assembly references. No ordering of asmdefs works; breaking the cycle

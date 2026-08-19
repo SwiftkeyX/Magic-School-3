@@ -1,5 +1,6 @@
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Engine;
 using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.Combat.Heroes.States
@@ -12,10 +13,7 @@ namespace MagicSchool.Combat.Heroes.States
         public override HeroStateEnum StateType => HeroStateEnum.Walk;
 
         private Hex _targetHex;
-        private Vector3 _start;
-        private Vector3 _end;
-        private float _duration;
-        private float _elapsed;
+        private CurveMotion _step;
 
         private readonly MovementConfig _movement;
 
@@ -32,15 +30,11 @@ namespace MagicSchool.Combat.Heroes.States
         public override void OnUpdate()
         {
             // walk according the movement's curve
-            _elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(_elapsed / _duration);
-            _me.transform.position = Vector3.Lerp(_start, _end, _movement.WalkCurve.Evaluate(t));
+            _me.transform.position = _step.Tick(Time.deltaTime);
 
             // if walk is finished, set new placement, check switch state
-            bool isWalkingFinished = _elapsed >= _duration;
-            if (isWalkingFinished)
+            if (_step.IsFinished)
             {
-                _me.transform.position = _end;
                 _me.SetCurrentPlacement(_targetHex);
             }
 
@@ -50,8 +44,7 @@ namespace MagicSchool.Combat.Heroes.States
         protected override void CheckSwitchState()
         {
             // if walk isn't finished, return
-            bool isWalkingFinished = _elapsed >= _duration;
-            if (!isWalkingFinished) return;
+            if (!_step.IsFinished) return;
 
             ICombatant nearestEnemy = _me.FindNearestEnemy();
 
@@ -80,10 +73,11 @@ namespace MagicSchool.Combat.Heroes.States
         private void StartStepTo(Hex hex)
         {
             _targetHex = hex;
-            _start = _me.transform.position;
-            _end = hex.transform.position;
-            _duration = 1f / _movement.MoveSpeed;
-            _elapsed = 0f;
+            _step = new CurveMotion(
+                start: _me.transform.position,
+                end: hex.transform.position,
+                duration: 1f / _movement.MoveSpeed,
+                curve: _movement.WalkCurve);
         }
 
         // FLAGGING: This look completely like OnEnter() BUT later OnEnter() maybe have animation and other logic

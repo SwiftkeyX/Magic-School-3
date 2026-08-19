@@ -46,6 +46,9 @@ namespace MagicSchool.Combat.Heroes
             if (!FireStep(steps, 0)) return false;
 
             // then fire OnCastStart second
+            // FIXLATER: nothing guard from OnCast to fire TriggerNextStep with index = 1.
+            // Eventhough the index = 1 may already be played because of the OnCastStart existing.
+            // I suggest using _isPlay dictionary to lookup if each step already been played or not?
             TriggerOnCastStart(steps);
 
             return true;
@@ -119,6 +122,9 @@ namespace MagicSchool.Combat.Heroes
         private bool PlayAction(IReadOnlyList<SkillStep> steps, int stepIndex, SkillStepContext contextFromPreviousStep)
         {
             // initial event - this is handed to template action that's going to be played
+            // FIXLATER: nothing guard the TriggerNextStep from being called several time.
+            // e.g. The OnHit could be called on Projectile, and OnExpired could also be called from the same Projectile too.
+            // I don't sure if this really a problem. What do you think?
             Action<SkillStepContext> onExpired = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnExpired);
             Action<SkillStepContext> onHit = TriggerNextStep(steps, stepIndex + 1, TriggerEnum.OnHit);
 

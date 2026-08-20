@@ -34,6 +34,8 @@ namespace MagicSchool.Skills
             return new Rider(me, host);
         }
 
+        internal Vector3 HostFacing => _host == null ? Vector3.zero : _host.Facing;
+
         private Rider(TemplateAction me, TemplateAction host)
         {
             _me = me;

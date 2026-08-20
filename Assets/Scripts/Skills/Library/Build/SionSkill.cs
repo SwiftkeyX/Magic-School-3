@@ -44,7 +44,7 @@ namespace MagicSchool.Skills
             SkillActionGroup charge = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.CircleAOESticky,  
+                action: TemplateActionEnum.HalfCircleAOESticky,  
                 target: AimTargetEnum.Self,
 
                 Damage(

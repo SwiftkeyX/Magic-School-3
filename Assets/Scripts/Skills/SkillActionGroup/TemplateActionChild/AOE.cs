@@ -17,6 +17,8 @@ namespace MagicSchool.Skills
         // ======================================= override =======================================
         protected override void Play()
         {
+            InitRider();
+
             // resolve AOE's rotation first
             FaceAimTarget();
 
@@ -24,8 +26,6 @@ namespace MagicSchool.Skills
             transform.position = GetSpawnPosition();
 
             SetLifeTime();
-
-            InitRider();
         }
 
         // source = where AOE spawn.
@@ -174,7 +174,19 @@ namespace MagicSchool.Skills
         // Point the AOE tip toward aim target
         private void FaceAimTarget()
         {
-            Vector3 facing = _aimTarget - _source;
+            if (_rider == null)
+            {
+                FaceTowards(_aimTarget - _source);
+            }
+
+            else
+            {
+                FaceTowards(_rider.HostFacing);
+            }
+        }
+
+        private void FaceTowards(Vector3 facing)
+        {
             if (facing.sqrMagnitude < 0.0001f) return;
 
             float degrees = Mathf.Atan2(facing.y, facing.x) * Mathf.Rad2Deg;

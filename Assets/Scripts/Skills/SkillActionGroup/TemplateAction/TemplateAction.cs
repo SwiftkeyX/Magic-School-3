@@ -34,6 +34,7 @@ namespace MagicSchool.Skills
         // ==================================== getter ====================================
         public float CastTime => _castTime;
         internal ICombatant Caster => _me;
+        internal Vector3 Facing => _aimTarget - _source;    // which direction this template action facing at
 
         // ==================================== public method ====================================
         // try play template action. if play success, return true.

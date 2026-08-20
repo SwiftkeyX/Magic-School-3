@@ -9,8 +9,6 @@ namespace MagicSchool.Skills
     internal static class SionSkill
     {
         private const int ChargeRange = 4;              // hexes he can cross
-        // the hitbox that rides him is HalfCircleAOESticky, 1.25 across - the charge is aimed by
-        // what that will sweep, so the two numbers are one number
         private const float HitboxHalfWidth = 1.25f;
         private const float KnockedUpDuration = 2f;
         private const float CollideDamage = 200f;
@@ -28,8 +26,8 @@ namespace MagicSchool.Skills
                 registry: registry,
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.Move,
-                tuning: Tune(range: ChargeRange, laneHalfWidth: HitboxHalfWidth),
-                target: AimTargetEnum.ClusteredLaser
+                target: AimTargetEnum.ClusteredLaser,
+                tuning: Tune(range: ChargeRange, laneHalfWidth: HitboxHalfWidth)
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: move);

@@ -17,6 +17,7 @@ namespace MagicSchool.Skills
     {
         private const float DamagePerTick = 80f;
         private const float TickInterval = 0.5f;
+        // the spin lasts this long and he cannot attack through it, so it is one number
         private const float Duration = 4f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -24,8 +25,9 @@ namespace MagicSchool.Skills
             SkillActionGroup spin = ActionGroup(
                 registry: registry,
                 source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.ZoneAOEGarenVariant,
+                action:   TemplateActionEnum.ZoneAOE,  
                 target:   AimTargetEnum.Self,
+                tuning:   Tune(castTime: Duration, sticky: true),
                 
                 DamageOverTime(
                     recipient: EffectRecipientEnum.EnemiesInArea,

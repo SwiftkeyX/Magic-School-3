@@ -10,14 +10,13 @@ namespace MagicSchool.Skills
     public abstract class Projectile : TemplateAction
     {
         [SerializeField] protected float _speed = 8f;
+        // FIXLATER: Projectile should be able to set size like AOE too.
         [SerializeField] protected float _size = 1f;
         [SerializeField] protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
 
-        // FLAGGING: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
-        // how move was resolve, kinda need the effectRange of the other skill step involve
-        [SerializeField] protected float _effectRange = 1.25f;
-        // FLAGGING: similar to _effectRange
-        [SerializeField] protected float _beamHalfWidth = 0.8f;
+        // FIXLATER: same to Move.cs
+        protected float _effectRange = 1.25f;
+        protected float _beamHalfWidth = 0.8f;
 
         protected Vector3 _direction;
         protected ICombatant _target;   // who the projectile is aiming at?

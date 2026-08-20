@@ -9,6 +9,9 @@ namespace MagicSchool.Skills
         private const float StunDuration = 2f;
         private const float LandingDamage = 200f;
 
+        private const float LandingSize = 4.5f;
+        private static readonly float LandingRadius = Reach(LandingSize);
+
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
@@ -22,7 +25,8 @@ namespace MagicSchool.Skills
                 registry: registry,
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.Move,
-                target: AimTargetEnum.ClusteredCircle
+                target: AimTargetEnum.ClusteredCircle,
+                tuning: Tune(effectRange: LandingRadius)
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: jump);
@@ -40,8 +44,9 @@ namespace MagicSchool.Skills
             SkillActionGroup landing = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.CircleAOEJarvanIvVariant,
+                action: TemplateActionEnum.CircleAOE,
                 target: AimTargetEnum.Self,
+                tuning: Tune(size: LandingSize),
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,

@@ -4,31 +4,14 @@ using MagicSchool.Engine;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Moves the caster itself - the jump half of a Jarvan-style dive.
-    ///
-    /// Unlike every other template action, the instance spawned here isn't the thing that does the
-    /// work: it is a driver that pushes the CASTER's transform for _jumpDuration and then dies. Its
-    /// OnExpired fires at the landing spot, so the next skill step (the AoE you land in) chains off
-    /// it the same way a projectile's does.
-    ///
-    /// The travel itself is the same CurveMotion HeroWalk steps a hex with - only the curve and the
-    /// duration differ, which is what makes it read as a jump instead of a walk.
-    /// </summary>
     internal class Move : TemplateAction
     {
         [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
         [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
 
-        // FLAGGING: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
-        // how move was resolve, kinda need the effectRange of the other skill step involve
-        // e.g. move into clustered, OnExpired do AOE stun => We need the AOE stun to measure where is clustered
-        [SerializeField] private float _effectRange = 2.25f;
-
-        // FLAGGING: The AOE's radius from Charge (next step) was also use here. But it was not actually fetch from one. 
-        // similar to _effectRange. Charging in have hitbox so we need a width here for finding where is clustered.
-        // Match it to the AOE riding along: CircleAOESticky is 2.5f => width = 1.25f
-        [SerializeField] private float _laneHalfWidth = 1.25f;
+        // FIXLATER: those two are kinda the same. We only need 1 of them since we use of them per hero. 
+        private float _effectRange = 2.25f;
+        private float _laneHalfWidth = 1.25f;
 
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 

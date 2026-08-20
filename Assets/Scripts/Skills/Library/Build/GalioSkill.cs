@@ -14,6 +14,7 @@ namespace MagicSchool.Skills
     /// </summary>
     internal static class GalioSkill
     {
+        // he is braced and locked out of attacking for the same stretch, so it is said once
         private const float BraceDuration = 2f;
         private const float TickInterval = 0.5f;
 
@@ -35,8 +36,9 @@ namespace MagicSchool.Skills
             SkillActionGroup brace = ActionGroup(
                 registry: registry,
                 source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.CastGalioVariant,
+                action:   TemplateActionEnum.Cast,
                 target:   AimTargetEnum.Self,
+                tuning:   Tune(castTime: BraceDuration),
 
                 // sheet: Galio heals off AP
                 HealOverTime(

@@ -154,10 +154,12 @@ namespace MagicSchool.Skills
         protected virtual void GetAimDirection()
         {
             // if target die beforehand, return => let projectile keep heading forward 
-            if (_target == null) return;
+            if (_target != null && !IsTargetAlive) return;
 
-            // destination = enemy position
-            _aimTarget = _target.transform.position;
+            if (_aimAt == null) return;
+
+            // destination = whatever it was aimed at, read fresh so a moving one stays tracked
+            _aimTarget = _aimAt.position;
 
             // lock projectile shoot direction 
             _direction = (_aimTarget - transform.position).normalized;

@@ -13,17 +13,19 @@ namespace MagicSchool.Skills
     /// </summary>
     public abstract class TemplateAction : MonoBehaviour
     {
+        // ==================================== universal to template action ====================================
         [SerializeField] protected float _castTime;                 // how long the caster is locked out of auto attacking
         protected ICombatant _me;
         protected List<SkillEffect> _effects;
         protected Hitbox _hitbox;
         protected Vector3 _source;
         protected Vector3 _aimTarget;
-
-        // ==================================== universal to template action ====================================
-        private event Action<SkillStepContext> OnExpired;     // Fire when a template action lifetime runout
+        // === OnExpired ===
+        internal event Action<SkillStepContext> OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime;
         private bool _hasExpired;
+        // === Rider ===
+        private protected Rider _rider;
 
         // ==================================== from the step before ====================================
         // whatever the previous step produced, this'll be used by next step, to check trigger's condition
@@ -31,6 +33,7 @@ namespace MagicSchool.Skills
 
         // ==================================== getter ====================================
         public float CastTime => _castTime;
+        internal ICombatant Caster => _me;
 
         // ==================================== public method ====================================
         // try play template action. if play success, return true.
@@ -59,6 +62,10 @@ namespace MagicSchool.Skills
             instance.Play();
             return true;
         }
+
+        // Public version of DestroyMe()
+        // There's only 1 used: To let Rider called.
+        public void EndNow() => DestroyMe();
 
         // try initialize skill, if something went wrong, skill won't play
         private bool TryConfigure(ICombatant caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
@@ -93,12 +100,26 @@ namespace MagicSchool.Skills
         protected abstract bool ResolveAimTarget(AimTargetEnum aimTarget);
 
         // where this template action's instance should sit once source/aim are resolved.
-        // 1) an AOE spawns at the aim target, 
-        // 2) a projectile spawns at its source and travels from there.
+        // e.g. an AOE spawns at the source and point the tip toward the aim target, 
+        // e.g.2. projectile spawns at the source and was shooted to aim target.
         protected abstract Vector3 GetSpawnPosition();
 
+        // hard to explain => read each template action
         protected abstract void Play();
 
+
+        // ===================================== virtual =====================================
+        // To set who is the host of me, the rider.
+        // Most actions ride nothing, so doing nothing is the right default
+        protected virtual void InitRider() { }
+
+        // life time can be override becuase each template action use different life time
+        // e.g. AOE usually have short lifetime, projectile have long lifetime, etc...
+        protected virtual void SetLifeTime()
+        {
+            _lifetime = 0.5f;
+            ExpireAfter(_lifetime);
+        }
 
         // ==================================== OnExpired event ====================================
         // Every template action ends the same way => through DestroyMe() or ExpireAfter()
@@ -133,10 +154,12 @@ namespace MagicSchool.Skills
         }
 
         // ==================================== Trigger wiring ====================================
-        // OnExpired is the only trigger every template action can raise 
-        // it was fired when the template action dies
+        // Each template action have its own event.
+        // e.g. Projectile have OnHit event which is fire when it hit someone
         protected virtual void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
         {
+            // OnExpired is the only trigger every template action can raise 
+            // it was fired when the template action dies
             OnExpired += onExpired;
         }
 
@@ -193,13 +216,5 @@ namespace MagicSchool.Skills
 
             return resolve;
         }
-
-        // ===================================== helper =====================================
-        protected virtual void SetLifeTime()
-        {
-            _lifetime = 0.5f;
-            ExpireAfter(_lifetime);
-        }
-
     }
 }

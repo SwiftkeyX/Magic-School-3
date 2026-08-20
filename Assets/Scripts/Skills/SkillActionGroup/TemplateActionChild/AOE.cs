@@ -24,6 +24,8 @@ namespace MagicSchool.Skills
             transform.position = GetSpawnPosition();
 
             SetLifeTime();
+
+            InitRider();
         }
 
         // source = where AOE spawn.
@@ -121,6 +123,13 @@ namespace MagicSchool.Skills
 
             // fallback - an unhandled offset still belongs on the source, not out at (1,1,1)
             return _source;
+        }
+
+        // The AOE could rides Move
+        // e.g. Sion's AOE dies when his Move dies
+        protected override void InitRider()
+        {
+            _rider = Rider.FindHostFor(this, _me);
         }
 
         // ======================================= abstract =======================================

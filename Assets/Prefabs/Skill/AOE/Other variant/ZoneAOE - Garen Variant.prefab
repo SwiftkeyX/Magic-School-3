@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: _castTime
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1395724406477609479, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
+      propertyPath: _sticky.IsSticky
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4910936322477073377, guid: 70389d98b9cea2c4d8959d520ca5fc2a, type: 3}
       propertyPath: m_Name
       value: ZoneAOE - Garen Variant

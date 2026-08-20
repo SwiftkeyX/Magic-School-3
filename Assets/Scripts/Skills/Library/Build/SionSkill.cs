@@ -24,7 +24,6 @@ namespace MagicSchool.Skills
                 registry: registry,
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.MoveSionVariant,
-                // FIXLATER: He actually target more like clusterd laser.
                 target: AimTargetEnum.ClusteredLaser
             );
 

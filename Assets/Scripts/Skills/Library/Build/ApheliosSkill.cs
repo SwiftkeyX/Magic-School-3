@@ -20,7 +20,7 @@ namespace MagicSchool.Skills
             SkillActionGroup shoot = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.HomingProjectile,
+                action: TemplateActionEnum.HomingProjectileApheliosVariant,  
                 target: AimTargetEnum.ClusteredCircle
             );
 

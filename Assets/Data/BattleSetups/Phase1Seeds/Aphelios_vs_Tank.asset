@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Aphelios_vs_Tank
   m_EditorClassIdentifier: Assembly-CSharp::BattlePlacementSO
   _heroesPlacement:
-  - dataSO: {fileID: 11400000, guid: 0b00076b3dc75394d8144c4dbe4989b8, type: 2}
+  - dataSO: {fileID: 11400000, guid: ae7dbc09b43826d49bf4777dd185c50b, type: 2}
     hexPlacement:
       team: 0
       column: 3

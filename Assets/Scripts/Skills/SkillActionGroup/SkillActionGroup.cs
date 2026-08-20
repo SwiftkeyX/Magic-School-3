@@ -13,7 +13,7 @@ namespace MagicSchool.Skills
         private TemplateAction _templateAction;
         private AimTargetEnum _target;
         private List<SkillCondition> _conditions;
-        private Tuning _tuning;         // this hero's numbers for it, null where the prefab decides
+        private Tuning _tuning;         
 
         // public Offset _offset;
         // ...

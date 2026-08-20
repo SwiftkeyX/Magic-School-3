@@ -13,8 +13,29 @@ namespace MagicSchool.Skills
         internal enum AOEOffsetEnum { Center, Tip }
         [SerializeField] private AOEOffsetEnum _offset;
         [SerializeField] private Sticky _sticky;
+        [SerializeField] private float _duration = 0.5f;    // how long the blast stays up before it expires
+
+        // ASKING: What is this for?
+        private bool _durationIsTuned;
+        protected bool DurationIsTuned => _durationIsTuned;
 
         // ======================================= override =======================================
+        protected override void ApplyTuning(Tuning tuning)
+        {
+            base.ApplyTuning(tuning);
+            if (tuning == null) return;
+
+            if (tuning.Size.HasValue) SetSize(tuning.Size.Value);
+
+            if (tuning.Sticky.HasValue) _sticky.IsSticky = tuning.Sticky.Value;
+
+            if (tuning.Duration.HasValue)
+            {
+                _duration = tuning.Duration.Value;
+                _durationIsTuned = true;
+            }
+        }
+
         protected override void Play()
         {
             InitRider();
@@ -26,6 +47,12 @@ namespace MagicSchool.Skills
             transform.position = GetSpawnPosition();
 
             SetLifeTime();
+        }
+
+        protected override void SetLifeTime()
+        {
+            _lifetime = _duration;
+            ExpireAfter(_lifetime);
         }
 
         // source = where AOE spawn.
@@ -146,6 +173,12 @@ namespace MagicSchool.Skills
         }
 
         // ======================================= private =======================================
+        // Scale the whole thing - sprite and collider
+        private void SetSize(float size)
+        {
+            transform.localScale = new Vector3(size, size, transform.localScale.z);
+        }
+
         /// How far the offset of this shape will be? e.g.
         private float HalfLengthAlongFacing()
         {

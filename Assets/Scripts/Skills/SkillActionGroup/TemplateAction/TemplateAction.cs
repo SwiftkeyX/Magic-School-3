@@ -48,7 +48,7 @@ namespace MagicSchool.Skills
             // config data from previous step
             instance._fromPreviousStep = fromPreviousStep;
 
-            // this hero's numbers, before anything reads them - resolving the aim already does
+            // Apply tuning that specific to this hero
             instance.ApplyTuning(group.Tuning);
 
             // init skill variable
@@ -111,8 +111,7 @@ namespace MagicSchool.Skills
         // hard to explain => read each template action
         protected abstract void Play();
 
-        // Take the numbers the skill asked for. Each action reads the ones it owns and ignores the
-        // rest; anything the skill left null keeps whatever the prefab was authored with.
+        // ...
         protected virtual void ApplyTuning(Tuning tuning)
         {
             if (tuning == null) return;

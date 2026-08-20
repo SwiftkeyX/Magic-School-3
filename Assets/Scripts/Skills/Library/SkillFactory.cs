@@ -101,16 +101,25 @@ namespace MagicSchool.Skills
 
         // what this hero's version of the action is worth. Anything left out keeps the prefab's own
         // value, so only the numbers a skill actually has an opinion about get spelled out here.
-        public static Tuning Tune(float? castTime = null, int? range = null, float? duration = null,
-                                  float? effectRange = null, float? laneHalfWidth = null)
+        public static Tuning Tune(float? castTime = null, int? range = null, float? size = null,
+                                  float? duration = null, float? effectRange = null, float? laneHalfWidth = null,
+                                  bool? sticky = null)
             => new Tuning
             {
                 CastTime = castTime,
                 Range = range,
+                Size = size,
                 Duration = duration,
                 EffectRange = effectRange,
                 LaneHalfWidth = laneHalfWidth,
+                Sticky = sticky,
             };
+
+        // How far a blast of this size actually reaches, in world units.
+        private const float AuthoredRadius = 0.5f;
+        
+        // size of the AOE, etc...
+        public static float Reach(float size) => size * AuthoredRadius;
 
         // a step inside template action
         // step are working in order, each step will be played if it was trigger.

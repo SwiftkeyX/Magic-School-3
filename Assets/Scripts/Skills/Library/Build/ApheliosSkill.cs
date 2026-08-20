@@ -7,6 +7,8 @@ namespace MagicSchool.Skills
     internal class ApheliosSkill
     {
         private const float ExplodeDmg = 240f;
+        // CircleAOE2Hex reaches this far, and the shot is aimed by where that would catch the most
+        private const float BlastRadius = 2.5f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -20,7 +22,8 @@ namespace MagicSchool.Skills
             SkillActionGroup shoot = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.HomingProjectileApheliosVariant,  
+                action: TemplateActionEnum.HomingProjectile,
+                tuning: Tune(effectRange: BlastRadius),
                 target: AimTargetEnum.ClusteredCircle
             );
 

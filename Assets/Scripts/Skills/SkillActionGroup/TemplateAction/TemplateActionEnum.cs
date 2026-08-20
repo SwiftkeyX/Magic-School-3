@@ -25,7 +25,6 @@ namespace MagicSchool.Skills
         // ==================================== Projectile ====================================
         FirstHitProjectile = 7,
         HomingProjectile = 8,
-        HomingProjectileApheliosVariant = 19,
         PiercingProjectile = 9,
         PiercingProjectileSonaVariant = 12,
 
@@ -33,6 +32,5 @@ namespace MagicSchool.Skills
         Cast = 10,
         CastGalioVariant = 11,
         Move = 13,
-        MoveSionVariant = 16,
     }
 }

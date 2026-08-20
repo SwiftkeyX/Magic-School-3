@@ -35,7 +35,7 @@ namespace MagicSchool.Skills
             if (source == ActionSourceEnum.Self)
             {
                 _source = _me.transform.position;
-                if (_sticky.IsSticky) _sticky.Source = _me;
+                if (_sticky.IsSticky) _sticky.Source = _me.transform;
             }
 
             // spawn on current target
@@ -44,7 +44,7 @@ namespace MagicSchool.Skills
                 ICombatant target = _me.FindCurrentTarget();
                 if (target == null) return false;
                 _source = target.transform.position;
-                if (_sticky.IsSticky) _sticky.Source = target;
+                if (_sticky.IsSticky) _sticky.Source = target.transform;
             }
 
             // spawn on where the previous projectile hit
@@ -140,10 +140,9 @@ namespace MagicSchool.Skills
         protected virtual void Update()
         {
             // if sticky, the AOE should always follow the _source. 
-            if (_sticky.IsSticky)
-            {
-                transform.position = _sticky.Source.transform.position;
-            }
+            // Source is a Transform so that a hero dying takes it with them: Unity reports a
+            // destroyed object as null, which an ICombatant reference would never have done.
+            if (_sticky.IsSticky && _sticky.Source != null) transform.position = _sticky.Source.position;
         }
 
         // ======================================= private =======================================
@@ -198,6 +197,6 @@ namespace MagicSchool.Skills
     internal struct Sticky
     {
         [SerializeField] internal bool IsSticky;
-        internal ICombatant Source;
+        internal Transform Source;      // what to sit on top of - null once it stops existing
     }
 }

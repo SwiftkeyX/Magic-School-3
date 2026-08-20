@@ -24,5 +24,6 @@ namespace MagicSchool.Skills
         Sona = 10,
         JarvanIV = 11,
         Sion = 12,
+        Aphelios = 13,  
     }
 }

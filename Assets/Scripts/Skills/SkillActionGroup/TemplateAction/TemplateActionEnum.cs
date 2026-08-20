@@ -14,6 +14,7 @@ namespace MagicSchool.Skills
         BoxAOETip = 1,
         CircleAOE = 2,
         CircleAOESticky = 15,
+        CircleAOE2Hex = 18,
         HalfCircleAOESticky = 17,
         CircleAOETip = 3,
         CircleAOEJarvanIvVariant = 14,

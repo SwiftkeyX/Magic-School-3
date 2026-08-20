@@ -38,6 +38,8 @@ namespace MagicSchool.Skills
             foreach (SkillStep step in PassiveSteps) step.Init(caster);
         }
 
+        // FLAGGING: I don't like using this function, it don't tell anything about the event that was fired.
+        // it too generic.
         // invoke the event, listener read if the trigger type match their's
         public void InvokeTrigger(TriggerEnum trigger) => Triggered?.Invoke(trigger);
     }

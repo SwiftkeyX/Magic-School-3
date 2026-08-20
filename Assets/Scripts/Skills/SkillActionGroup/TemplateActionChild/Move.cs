@@ -20,12 +20,12 @@ namespace MagicSchool.Skills
         [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
         [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
 
-        // FIXLATER: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
+        // FLAGGING: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
         // how move was resolve, kinda need the effectRange of the other skill step involve
         // e.g. move into clustered, OnExpired do AOE stun => We need the AOE stun to measure where is clustered
         [SerializeField] private float _effectRange = 2.25f;
 
-        // FIXLATER: The AOE's radius from Charge (next step) was also use here. But it was not actually fetch from one. 
+        // FLAGGING: The AOE's radius from Charge (next step) was also use here. But it was not actually fetch from one. 
         // similar to _effectRange. Charging in have hitbox so we need a width here for finding where is clustered.
         // Match it to the AOE riding along: CircleAOESticky is 2.5f => width = 1.25f
         [SerializeField] private float _laneHalfWidth = 1.25f;

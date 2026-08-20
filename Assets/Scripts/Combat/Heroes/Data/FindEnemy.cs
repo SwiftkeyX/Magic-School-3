@@ -87,6 +87,9 @@ namespace MagicSchool.Combat.Heroes
         // 3) if this is a jump, a placement is also need to be free, for me to land
         public IPlacement FindClusteredCircle(int reachRange, float blastRadius, bool isJump)
         {
+            List<ICombatant> enemies = GetEnemiesBFS();
+            if (enemies.Count == 0) return null;
+            
             // Find all the hex that was free in reach range
             List<Hex> candidates = null;
 

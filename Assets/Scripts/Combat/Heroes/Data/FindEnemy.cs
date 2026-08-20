@@ -100,10 +100,10 @@ namespace MagicSchool.Combat.Heroes
                 candidates = HexFinder.FindFreeHexesWithin(_me.CurrentHex, reachRange, _me.IsHexReservedByOther);
             }
 
-            // if not, the candidates hex could land on any hex with in reach range.
+            // if not a jump, the candidates hex could land on any hex with in reach range.
             else
             {
-                // FLAGGING: later
+                candidates = HexFinder.FindHexesWithin(_me.CurrentHex, reachRange);
             }
 
             // guard

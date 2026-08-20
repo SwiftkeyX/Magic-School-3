@@ -6,6 +6,8 @@ namespace MagicSchool.Skills
 {
     internal class HomingProjectile : Projectile
     {
+        private const float ArrivalDistance = 0.15f;
+
         // ======================================== override method ==============================================
         protected override void Play()
         {
@@ -24,6 +26,20 @@ namespace MagicSchool.Skills
             GetAimDirection();
 
             base.Update();
+
+            ExplodeOnArrival();
+        }
+
+        // Context: HomingProjectile could target the hex instead of hero, so sometime it don't collide with anything 
+        // Resolve that by counting the projectile arrival as collision
+        private void ExplodeOnArrival()
+        {
+            if (_target != null || _aimAt == null) return;
+
+            if (Vector3.Distance(transform.position, _aimAt.position) > ArrivalDistance) return;
+
+            ReportHitPosition();
+            DestroyMe();
         }
 
         // ======================================== private ==============================================

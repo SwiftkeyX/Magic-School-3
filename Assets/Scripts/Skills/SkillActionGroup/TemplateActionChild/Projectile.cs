@@ -11,9 +11,17 @@ namespace MagicSchool.Skills
     {
         [SerializeField] protected float _speed = 8f;
         [SerializeField] protected float _size = 1f;
+        [SerializeField] protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
+
+        // FLAGGING: The AOE's radius from next step was also use here. But it was not actually fetch from one. 
+        // how move was resolve, kinda need the effectRange of the other skill step involve
+        [SerializeField] protected float _effectRange = 1.25f;
+        // FLAGGING: similar to _effectRange
         [SerializeField] protected float _beamHalfWidth = 0.8f;
+
         protected Vector3 _direction;
-        protected ICombatant _target;
+        protected ICombatant _target;   // who the projectile is aiming at?
+        protected Transform _aimAt;     // what will projectile fly at?
         const float PROJECTILELIFETIME = 10f;
 
         // ==================================== OnHit event ====================================
@@ -89,6 +97,8 @@ namespace MagicSchool.Skills
             {
                 _target = _me.FindCurrentTarget();
                 if (_target == null) return false;
+
+                _aimAt = _target.transform;
             }
 
             // aim skill at furthest enemy from self
@@ -96,6 +106,8 @@ namespace MagicSchool.Skills
             {
                 _target = _me.FindFurthestEnemy();
                 if (_target == null) return false;
+
+                _aimAt = _target.transform;
             }
 
             // aim down the line that passes through the most enemies
@@ -104,6 +116,17 @@ namespace MagicSchool.Skills
                 int finalDistance = (int)(_speed * PROJECTILELIFETIME);
                 _target = _me.FindClusteredLaser(finalDistance, _beamHalfWidth);
                 if (_target == null) return false;
+
+                _aimAt = _target.transform;
+            }
+
+            // aim at clustered that measure by specify radius
+            else if (aimTarget == AimTargetEnum.ClusteredCircle)
+            {
+                IPlacement blastCentre = _me.FindClusteredCircle(_aimRange, _effectRange, isJump: false);
+                if (blastCentre == null) return false;
+
+                _aimAt = blastCentre.transform;
             }
 
             // else if () ...
@@ -131,7 +154,7 @@ namespace MagicSchool.Skills
         protected virtual void GetAimDirection()
         {
             // if target die beforehand, return => let projectile keep heading forward 
-            if (!IsTargetAlive) return;
+            if (_target == null) return;
 
             // destination = enemy position
             _aimTarget = _target.transform.position;
@@ -146,6 +169,7 @@ namespace MagicSchool.Skills
             }
         }
 
+        // update projectile position to make it visually fly at target
         protected virtual void Update()
         {
             transform.position += _direction * (_speed * Time.deltaTime);

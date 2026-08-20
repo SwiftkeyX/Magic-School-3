@@ -48,6 +48,16 @@ namespace MagicSchool.Skills
         protected bool IsTargetAlive => _target != null && _target.IsAlive;
 
         // ======================================== override method ========================================
+        protected override void ApplyTuning(Tuning tuning)
+        {
+            base.ApplyTuning(tuning);
+            if (tuning == null) return;
+
+            if (tuning.Range.HasValue) _aimRange = tuning.Range.Value;
+            if (tuning.EffectRange.HasValue) _effectRange = tuning.EffectRange.Value;
+            if (tuning.LaneHalfWidth.HasValue) _beamHalfWidth = tuning.LaneHalfWidth.Value;
+        }
+
         protected override void Play()
         {
             // starting position

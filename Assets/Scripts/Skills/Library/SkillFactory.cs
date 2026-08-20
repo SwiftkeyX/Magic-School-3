@@ -82,6 +82,14 @@ namespace MagicSchool.Skills
             => new SkillActionGroup(source, registry.Get(action), target,
                                     effects: new List<SkillEffect>(effects));
 
+        // the same, with this hero's numbers for the action
+        public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
+                                                   TemplateActionEnum action, AimTargetEnum target,
+                                                   Tuning tuning,
+                                                   params SkillEffect[] effects)
+            => new SkillActionGroup(source, registry.Get(action), target,
+                                    effects: new List<SkillEffect>(effects), tuning: tuning);
+
         // a template action with condition
         // conditin need to be true, in order this template action to play. 
         public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
@@ -90,6 +98,19 @@ namespace MagicSchool.Skills
                                                        params SkillEffect[] effects)
             => new SkillActionGroup(source, registry.Get(action), target,
                                     conditions: conditions, effects: new List<SkillEffect>(effects));
+
+        // what this hero's version of the action is worth. Anything left out keeps the prefab's own
+        // value, so only the numbers a skill actually has an opinion about get spelled out here.
+        public static Tuning Tune(float? castTime = null, int? range = null, float? duration = null,
+                                  float? effectRange = null, float? laneHalfWidth = null)
+            => new Tuning
+            {
+                CastTime = castTime,
+                Range = range,
+                Duration = duration,
+                EffectRange = effectRange,
+                LaneHalfWidth = laneHalfWidth,
+            };
 
         // a step inside template action
         // step are working in order, each step will be played if it was trigger.

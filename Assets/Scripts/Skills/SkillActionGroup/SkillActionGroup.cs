@@ -13,6 +13,7 @@ namespace MagicSchool.Skills
         private TemplateAction _templateAction;
         private AimTargetEnum _target;
         private List<SkillCondition> _conditions;
+        private Tuning _tuning;         // this hero's numbers for it, null where the prefab decides
 
         // public Offset _offset;
         // ...
@@ -20,11 +21,13 @@ namespace MagicSchool.Skills
         private List<SkillEffect> _effects;    // 1 template action = have several effect
 
         public SkillActionGroup(ActionSourceEnum source, TemplateAction templateAction, AimTargetEnum target,
-                                List<SkillCondition> conditions = null, List<SkillEffect> effects = null)
+                                List<SkillCondition> conditions = null, List<SkillEffect> effects = null,
+                                Tuning tuning = null)
         {
             _source = source;
             _templateAction = templateAction;
             _target = target;
+            _tuning = tuning;
 
             // empty rather than null, matching what the serialiser writes for an unused list
             _conditions = conditions ?? new List<SkillCondition>();
@@ -44,6 +47,7 @@ namespace MagicSchool.Skills
         public ActionSourceEnum Source => _source;
         public TemplateAction TemplateAction => _templateAction;
         public AimTargetEnum Target => _target;
+        public Tuning Tuning => _tuning;
         public List<SkillCondition> Conditions => _conditions;
         public List<SkillEffect> Effects => _effects;
     }

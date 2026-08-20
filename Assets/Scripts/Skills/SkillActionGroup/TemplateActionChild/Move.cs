@@ -37,6 +37,17 @@ namespace MagicSchool.Skills
         private bool _isJumping;
 
         // ======================================== override ========================================
+        protected override void ApplyTuning(Tuning tuning)
+        {
+            base.ApplyTuning(tuning);
+            if (tuning == null) return;
+
+            if (tuning.Range.HasValue) _jumpRange = tuning.Range.Value;
+            if (tuning.Duration.HasValue) _jumpDuration = tuning.Duration.Value;
+            if (tuning.EffectRange.HasValue) _effectRange = tuning.EffectRange.Value;
+            if (tuning.LaneHalfWidth.HasValue) _laneHalfWidth = tuning.LaneHalfWidth.Value;
+        }
+
         protected override void Play()
         {
             // this instance is only a driver, so park it on the caster - it never gets seen

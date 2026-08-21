@@ -6,7 +6,9 @@ namespace MagicSchool.Skills
 {
     internal class AkshanSkill
     {
-        private const 
+        private const float DamagePerShot = 125f;
+        private const int ShotCount = 6;
+        private const float IntervalBetweenShot = 0.1f;
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
@@ -23,11 +25,11 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
                 target: AimTargetEnum.Furthest,
-                tuning: TuneFireTimingRunner(6, FireTimingModeEnum.Sequence, 0.1f, tune),
+                tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune),
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    ratios: (StatEnum.Atk, 125f)
+                    ratios: (StatEnum.Atk, DamagePerShot)
                 )
             );
 

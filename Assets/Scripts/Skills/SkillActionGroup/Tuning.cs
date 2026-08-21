@@ -30,4 +30,12 @@ namespace MagicSchool.Skills
         public float? Spread;            // ClusteredCircle's blast radius, or ClusteredLaser's beam half-width
         public float? Size;              // how big projectile is
     }
+
+    public class FireTimingRunnerTuning : Tuning
+    {
+        public int? Count;                  // number of repeat time
+        public FireTimingModeEnum? Mode;    // fire once or in sequence
+        public float? Interval;             // delay between shots - only read when Mode is Sequence
+        public Tuning InnerTuning;          // tune for the template action that'll be fired 
+    }
 }

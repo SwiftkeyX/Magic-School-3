@@ -9,16 +9,17 @@ namespace MagicSchool.Skills
     /// </summary>
     public abstract class Projectile : TemplateAction<ProjectileTuning>
     {
-        [SerializeField] protected float _speed = 8f;
-        protected float _size = 1f;
-        protected int _reachRange = int.MaxValue;    // how far a projectile can reach, in hexes, default to global range
-        protected float _spread = 1f;              // how wide the AOE (next SkillStep) will be spread
-
+        const float PROJECTILELIFETIME = 10f;
         protected Vector3 _direction;
         protected ICombatant _target;   // who the projectile is aiming at?
         protected Transform _aimAt;     // what will projectile fly at?
-        
-        const float PROJECTILELIFETIME = 10f;
+
+        // =================================== Tune able ======================================
+        [SerializeField] protected float _speed = 8f;
+        protected float _size = 1f;                  // projectile size
+        protected int _reachRange = int.MaxValue;    // how far a projectile can reach, in hexes, default to global range
+        protected float _spread = 1f;                // how wide the AOE (next SkillStep) will be spread
+
 
         // ==================================== OnHit event ====================================
         private event Action<SkillStepContext> OnHit;        // Fire the first time projectile lands on someone

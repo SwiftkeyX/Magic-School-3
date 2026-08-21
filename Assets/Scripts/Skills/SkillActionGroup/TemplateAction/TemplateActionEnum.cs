@@ -23,6 +23,9 @@ namespace MagicSchool.Skills
         HomingProjectile = 8,
         PiercingProjectile = 9,
 
+        // ==================================== FireTimingRunner ====================================
+        FireTimingRunnerHomingProjectile = 18,
+
         // ==================================== Other ====================================
         Cast = 10,
         Move = 13,

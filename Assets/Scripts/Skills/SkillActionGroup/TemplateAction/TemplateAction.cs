@@ -20,10 +20,12 @@ namespace MagicSchool.Skills
         protected Hitbox _hitbox;
         protected Vector3 _source;
         protected Vector3 _aimTarget;
+
         // === OnExpired ===
         internal event Action<SkillStepContext> OnExpired;     // Fire when a template action lifetime runout
         protected float _lifetime;
         private bool _hasExpired;
+
         // === Rider ===
         private protected Rider _rider;
 
@@ -38,7 +40,7 @@ namespace MagicSchool.Skills
 
         // ==================================== public method ====================================
         // try play template action. if play success, return true.
-        // act as factory, since when this function is called, there is no real instance yet. 
+        // act as factory, since when this function is called, there is no real instance yet.
         public static bool TryPlay(SkillActionGroup group, ICombatant caster,
         Action<SkillStepContext> onExpired = null, Action<SkillStepContext> onHit = null, SkillStepContext fromPreviousStep = null)
         {
@@ -71,27 +73,6 @@ namespace MagicSchool.Skills
         // There's only 1 used: To let Rider called.
         public void EndNow() => DestroyMe();
 
-        // try initialize skill, if something went wrong, skill won't play
-        private bool TryConfigure(ICombatant caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
-        {
-            // Not Init() before TryPlay(). 
-            // because it need to instantiate the new instance first.
-            Init(caster, effects);
-
-            // find "source" using source enum
-            if (!ResolveSource(source)) return false;
-
-            // find "aim" using aim enum
-            if (!ResolveAimTarget(aimTarget)) return false;
-
-            return true;
-        }
-
-        private void Init(ICombatant caster, List<SkillEffect> effects)
-        {
-            _me = caster;
-            _effects = effects;
-        }
 
 
         // ==================================== abstract method ====================================
@@ -228,6 +209,30 @@ namespace MagicSchool.Skills
 
             return resolve;
         }
+
+        // ==================================== helper ====================================
+        // try initialize skill, if something went wrong, skill won't play
+        private bool TryConfigure(ICombatant caster, List<SkillEffect> effects, ActionSourceEnum source, AimTargetEnum aimTarget)
+        {
+            // Not Init() before TryPlay(). 
+            // because it need to instantiate the new instance first.
+            Init(caster, effects);
+
+            // find "source" using source enum
+            if (!ResolveSource(source)) return false;
+
+            // find "aim" using aim enum
+            if (!ResolveAimTarget(aimTarget)) return false;
+
+            return true;
+        }
+
+        private void Init(ICombatant caster, List<SkillEffect> effects)
+        {
+            _me = caster;
+            _effects = effects;
+        }
+
     }
 
     // Template action but with type casting for Tuning

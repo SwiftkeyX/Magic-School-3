@@ -102,18 +102,23 @@ namespace MagicSchool.Skills
         // tuning a template action
         public static Tuning Tune(float? castTime = null)
             => new Tuning { CastTime = castTime };
-        
+
         public static AOETuning TuneAOE(float? castTime = null, float? duration = null, float? size = null,
                                         bool? sticky = null, AOEOffsetEnum? offset = null, int? range = null)
-            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky, Offset = offset, Range = range };
-        
+            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky,
+                               Offset = offset, Range = range };
+
         public static MoveTuning TuneMove(float? castTime = null, int? range = null,
                                           float? duration = null, float? spread = null)
             => new MoveTuning { CastTime = castTime, Range = range, Duration = duration, Spread = spread };
-        
+
         public static ProjectileTuning TuneProjectile(float? castTime = null, int? range = null,
                                                       float? spread = null, float? size = null)
             => new ProjectileTuning { CastTime = castTime, Range = range, Spread = spread, Size = size };
+
+        public static FireTimingRunnerTuning TuneFireTimingRunner(int count, FireTimingModeEnum mode,
+                                                                   float interval = 0f, Tuning innerTuning = null)
+            => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval, InnerTuning = innerTuning };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

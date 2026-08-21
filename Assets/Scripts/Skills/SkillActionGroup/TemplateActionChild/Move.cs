@@ -6,15 +6,10 @@ namespace MagicSchool.Skills
 {
     internal class Move : TemplateAction
     {
-        [SerializeField] private int _jumpRange = 2;                // how many hexes the jump may cross
-        [SerializeField] private float _jumpDuration = 0.5f;        // whole trip, however far it is - a jump isn't paced per hex like a walk
-
-        // FIXLATER: those two are kinda the same. We only need 1 of them since we use of them per hero. 
-        private float _effectRange = 2.25f;
-        private float _laneHalfWidth = 1.25f;
-
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-
+        private int _jumpRange = 2;                
+        private float _jumpDuration = 0.5f;        
+        private float _spread = 2.25f;
         private IPlacement _landing;    // hex the caster ends up on after moving
         private CurveMotion _jump;
         private bool _isJumping;
@@ -27,8 +22,8 @@ namespace MagicSchool.Skills
 
             if (tuning.Range.HasValue) _jumpRange = tuning.Range.Value;
             if (tuning.Duration.HasValue) _jumpDuration = tuning.Duration.Value;
-            if (tuning.EffectRange.HasValue) _effectRange = tuning.EffectRange.Value;
-            if (tuning.LaneHalfWidth.HasValue) _laneHalfWidth = tuning.LaneHalfWidth.Value;
+            if (tuning.EffectRange.HasValue) _spread = tuning.EffectRange.Value;
+            if (tuning.LaneHalfWidth.HasValue) _spread = tuning.LaneHalfWidth.Value;
         }
 
         protected override void Play()
@@ -78,7 +73,7 @@ namespace MagicSchool.Skills
             if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
                 // ask for the hex to land on.
-                _landing = _me.FindClusteredCircle(_jumpRange, _effectRange, isJump: true);
+                _landing = _me.FindClusteredCircle(_jumpRange, _spread, isJump: true);
                 if (_landing == null) return false;     // nothing in reach is worth jumping to, so don't cast
 
                 _aimTarget = _landing.transform.position;
@@ -87,7 +82,7 @@ namespace MagicSchool.Skills
 
             else if (aimTarget == AimTargetEnum.ClusteredLaser)
             {
-                _landing = _me.FindClusteredCharge(_jumpRange, _laneHalfWidth);
+                _landing = _me.FindClusteredCharge(_jumpRange, _spread);
                 if (_landing == null) return false;     // nothing worth charging at, so don't cast
 
                 _aimTarget = _landing.transform.position;

@@ -15,6 +15,8 @@ namespace MagicSchool.Skills
     /// happens to be visible, and the aim that looks for the best spot to put it can be handed the
     /// same constant instead of a second field hoping to agree with it.
     /// </summary>
+    /// 
+    /// FIXLATER: let tuning know what type of template action we use, then use only the variable that matter for that template action
     public class Tuning
     {
         public float? CastTime;          // how long the caster is locked out of auto attacking

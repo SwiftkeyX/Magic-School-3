@@ -12,11 +12,10 @@ namespace MagicSchool.Skills
         [SerializeField] protected float _speed = 8f;
         // FIXLATER: Projectile should be able to set size like AOE too.
         [SerializeField] protected float _size = 1f;
-        [SerializeField] protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
 
-        // FIXLATER: same to Move.cs
-        protected float _effectRange = 1.25f;
-        protected float _beamHalfWidth = 0.8f;
+        // FIXLATER: aimRange for Projectile = global
+        protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
+        protected float _spread = 1.25f;
 
         protected Vector3 _direction;
         protected ICombatant _target;   // who the projectile is aiming at?
@@ -53,8 +52,8 @@ namespace MagicSchool.Skills
             if (tuning == null) return;
 
             if (tuning.Range.HasValue) _aimRange = tuning.Range.Value;
-            if (tuning.EffectRange.HasValue) _effectRange = tuning.EffectRange.Value;
-            if (tuning.LaneHalfWidth.HasValue) _beamHalfWidth = tuning.LaneHalfWidth.Value;
+            if (tuning.EffectRange.HasValue) _spread = tuning.EffectRange.Value;
+            if (tuning.LaneHalfWidth.HasValue) _spread = tuning.LaneHalfWidth.Value;
         }
 
         protected override void Play()
@@ -123,7 +122,7 @@ namespace MagicSchool.Skills
             else if (aimTarget == AimTargetEnum.ClusteredLaser)
             {
                 int finalDistance = (int)(_speed * PROJECTILELIFETIME);
-                _target = _me.FindClusteredLaser(finalDistance, _beamHalfWidth);
+                _target = _me.FindClusteredLaser(finalDistance, _spread);
                 if (_target == null) return false;
 
                 _aimAt = _target.transform;
@@ -132,7 +131,7 @@ namespace MagicSchool.Skills
             // aim at clustered that measure by specify radius
             else if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
-                IPlacement blastCentre = _me.FindClusteredCircle(_aimRange, _effectRange, isJump: false);
+                IPlacement blastCentre = _me.FindClusteredCircle(_aimRange, _spread, isJump: false);
                 if (blastCentre == null) return false;
 
                 _aimAt = blastCentre.transform;

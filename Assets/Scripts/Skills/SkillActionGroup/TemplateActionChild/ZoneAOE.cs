@@ -13,7 +13,6 @@ namespace MagicSchool.Skills
     internal class ZoneAOE : AOE
     {
         private float _interval;
-        private float _cadenceDuration;     // FIXLATER: _duration & _cadenceDuration are the same, no?
         const float VALUENOTASSIGN = -1f;
 
         // ======================================== override ==============================================
@@ -39,9 +38,9 @@ namespace MagicSchool.Skills
         protected override void SetLifeTime()
         {
             // guard
-            if (DurationIsTuned || _cadenceDuration == VALUENOTASSIGN) { base.SetLifeTime(); return; }
+            if (_duration == VALUENOTASSIGN) { base.SetLifeTime(); return; }
 
-            _lifetime = _cadenceDuration;
+            _lifetime = _duration;
             ExpireAfter(_lifetime);
         }
 
@@ -61,7 +60,7 @@ namespace MagicSchool.Skills
         private void ResolveCadence()
         {
             _interval = VALUENOTASSIGN;
-            _cadenceDuration = VALUENOTASSIGN;
+            _duration = VALUENOTASSIGN;
             foreach (SkillEffect effect in _effects)
             {
                 if (!effect.Cadence.isCadence) continue;
@@ -70,7 +69,7 @@ namespace MagicSchool.Skills
                 if (_interval == VALUENOTASSIGN)
                 {
                     _interval = effect.Cadence.cadenceInterval;
-                    _cadenceDuration = effect.Cadence.cadenceDuration;
+                    _duration = effect.Cadence.cadenceDuration;
                 }
 
                 // if interval/duration value is assign already, we don't want 2 value, so log error.
@@ -79,8 +78,8 @@ namespace MagicSchool.Skills
                     if (effect.Cadence.cadenceInterval != _interval)
                         Debug.LogError($"{name}: cadence effects on the same zone must share one interval, found {_interval} and {effect.Cadence.cadenceInterval} - only {_interval} will be used", this);
 
-                    if (effect.Cadence.cadenceDuration != _cadenceDuration)
-                        Debug.LogError($"{name}: cadence effects on the same zone must share one duration, found {_cadenceDuration} and {effect.Cadence.cadenceDuration} - only {_cadenceDuration} will be used", this);
+                    if (effect.Cadence.cadenceDuration != _duration)
+                        Debug.LogError($"{name}: cadence effects on the same zone must share one duration, found {_duration} and {effect.Cadence.cadenceDuration} - only {_duration} will be used", this);
                 }
             }
         }

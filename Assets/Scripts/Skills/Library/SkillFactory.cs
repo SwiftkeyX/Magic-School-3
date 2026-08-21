@@ -99,8 +99,11 @@ namespace MagicSchool.Skills
             => new SkillActionGroup(source, registry.Get(action), target,
                                     conditions: conditions, effects: new List<SkillEffect>(effects));
 
-        // what this hero's version of the action is worth. Anything left out keeps the prefab's own
-        // value, so only the numbers a skill actually has an opinion about get spelled out here.
+        // tuning a template action
+        // e.g. cast time = time hero cast his skill, he can't AA while doing so, default 0.5 sec
+        // e.g. range = skill range check, how far can the center of skill go away from the caster
+        // e.g. duration = time before the skill expired, usage => 4 sec of AOE doing damage continuously before expired 
+        // ...
         public static Tuning Tune(float? castTime = null, int? range = null, float? size = null,
                                   float? duration = null, float? effectRange = null, float? laneHalfWidth = null,
                                   bool? sticky = null)

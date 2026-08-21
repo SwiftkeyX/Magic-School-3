@@ -11,13 +11,10 @@ namespace MagicSchool.Skills
     internal abstract class AOE : TemplateAction
     {
         internal enum AOEOffsetEnum { Center, Tip }
+        protected float _duration = 0.5f;    // how long the blast stays up before it expires
+        // FIXLATER: offset should be tune able too.
         [SerializeField] private AOEOffsetEnum _offset;
-        [SerializeField] private Sticky _sticky;
-        [SerializeField] private float _duration = 0.5f;    // how long the blast stays up before it expires
-
-        // ASKING: What is this for?
-        private bool _durationIsTuned;
-        protected bool DurationIsTuned => _durationIsTuned;
+        private Sticky _sticky;
 
         // ======================================= override =======================================
         protected override void ApplyTuning(Tuning tuning)
@@ -32,7 +29,6 @@ namespace MagicSchool.Skills
             if (tuning.Duration.HasValue)
             {
                 _duration = tuning.Duration.Value;
-                _durationIsTuned = true;
             }
         }
 
@@ -82,6 +78,8 @@ namespace MagicSchool.Skills
                 _source = _fromPreviousStep.Position.Value;
                 if (_sticky.IsSticky) _sticky.Source = null;
             }
+
+            // FIXLATER: Implement Clustered circle
 
             // else if () ...
 

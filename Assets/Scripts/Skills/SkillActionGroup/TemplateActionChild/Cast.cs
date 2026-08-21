@@ -15,6 +15,36 @@ namespace MagicSchool.Skills
         private ICombatant _target;
 
         // ======================================= override =======================================
+        protected override void Play()
+        {
+            // how long each effect keeps this cast relevant
+            List<float> durations = new List<float>();
+
+            foreach (SkillEffect effect in _effects)
+            {
+                // if cadence, apply effect over time.
+                // e.g. galio heal
+                if (effect.Cadence.isCadence)
+                {
+                    // apply effect overtime
+                    StartCoroutine(PerHeroCadenceTick(effect, _target));
+                }
+
+                // if not cadence, apply effect once.
+                else
+                {
+                    // apply effect once
+                    effect.ApplyEffect(new List<IEffectable> { _target });
+                }
+
+                durations.Add(GetModifierDuration(effect));
+            }
+
+            // After a longest effect duration die, this template action also dies
+            // this is to make sure, this template action'll last until the effect really truly dies.
+            ExpireAfter(Longest(durations));
+        }
+
         // source mean nothing to Cast.
         protected override bool ResolveSource(ActionSourceEnum source)
         {
@@ -73,42 +103,6 @@ namespace MagicSchool.Skills
         protected override Vector3 GetSpawnPosition() => _source;
 
 
-        protected override void Play()
-        {
-            // how long each effect keeps this cast relevant
-            List<float> durations = new List<float>();
-
-            foreach (SkillEffect effect in _effects)
-            {
-                if (effect.Recipient != EffectRecipientEnum.Self) continue;
-
-                // if cadence, apply effect over time.
-                // e.g. galio heal
-                if (effect.Cadence.isCadence)
-                {
-                    // apply effect overtime
-                    StartCoroutine(PerHeroCadenceTick(effect, _me));
-
-                    // get longest cadence duration
-                    durations.Add(effect.Cadence.cadenceDuration);
-                }
-
-                // if not cadence, apply effect once.
-                else
-                {
-                    // apply effect once
-                    effect.ApplyEffect(new List<IEffectable> { _target });
-
-                    // get longest effect duration
-                    durations.Add(GetModifierDuration(effect));
-                }
-            }
-
-            // After a duration, this template action dies 
-            // with the lifetime of "longest duration thingy" live on this instance
-            // thingy = all cadence effect & modifier
-            ExpireAfter(Longest(durations));
-        }
 
         // ======================================= private ========================================
         // get duration from this effect's modifier
@@ -116,9 +110,12 @@ namespace MagicSchool.Skills
         {
             // if isn't modifier, return
             if (!(effect is ModifierSkillEffect modifierEffect)) return 0f;
-            
+
             // guard
             if (modifierEffect.Modifier == null) return 0f;
+
+            // if cadence, return cadenceDuration
+            if (effect.Cadence.isCadence) return effect.Cadence.cadenceDuration;
 
             // return modifer's duration
             return modifierEffect.Modifier.GetDuration();

@@ -33,8 +33,6 @@ MonoBehaviour:
     Prefab: {fileID: 6440614205257948553, guid: c31b480a1c907174b88ef052c8bfc312, type: 3}
   - Action: 10
     Prefab: {fileID: 7833928236879553845, guid: 60ff3249ba80ef944bbda97d9c1dff58, type: 3}
-  - Action: 12
-    Prefab: {fileID: 6440614205257948553, guid: 6438548fd06b9794481f238fd450a78b, type: 3}
   - Action: 13
     Prefab: {fileID: -3016799722535468411, guid: 47fb6d1847bc7e747be575faa89eb54f, type: 3}
   - Action: 17

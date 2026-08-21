@@ -15,6 +15,7 @@ namespace MagicSchool.Skills
     {
         private const float DamageRatio = 170f;   // sheet: 170/255/420% AP
         private const float ASbuff = 25f;
+        private const float WaveSize = 2f;        // Sona's wave is the one projectile bigger than default
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -38,6 +39,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.PiercingProjectile,
                 target: AimTargetEnum.ClusteredLaser,   // A/B: swap to AimTargetEnum.Clustered for the old, radial pick
+                tuning: TuneProjectile(size: WaveSize),
 
                 // deal dmg to enemy & give buff to ally 
                 Damage(

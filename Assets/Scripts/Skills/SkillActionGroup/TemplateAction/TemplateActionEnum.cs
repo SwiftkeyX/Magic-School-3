@@ -11,12 +11,12 @@ namespace MagicSchool.Skills
         None = 0,
 
         // ==================================== AOE ====================================
-        BoxAOETip = 1,
+        BoxAOE = 1,
         CircleAOE = 2,
         CircleAOESticky = 15,
         HalfCircleAOESticky = 17,
         CircleAOETip = 3,
-        TriangleAOETip = 4,
+        TriangleAOE = 4,
         ZoneAOE = 5,
 
         // ==================================== Projectile ====================================

@@ -80,10 +80,9 @@ namespace MagicSchool.Skills
         {
             List<SkillActionGroup> beats = new List<SkillActionGroup>
             {
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOE, beat: 3, damage: 400f,
-                     tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOE,      beat: 1, damage: 200f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOE, beat: 2, damage: 300f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOE,   beat: 3, damage: 400f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
             };
 
             return new SkillStep(trigger: TriggerEnum.OnAttack, actionGroups: beats);

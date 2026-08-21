@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6460741894444086702}
   - component: {fileID: 2115596131323804181}
   m_Layer: 0
-  m_Name: TriangleAOE - tip
+  m_Name: TriangleAOE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,4 +156,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleAOE
   _castTime: 0.5
-  _offset: 1
+  _offset: 0

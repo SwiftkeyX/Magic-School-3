@@ -24,7 +24,7 @@ namespace MagicSchool.Combat.Heroes
         private AttackCooldown _attackCooldown;
         private Stat _stat;
         private TeamEnum _team;
-        private bool _isDummy;                  // Temporary, tagged once at its source - see the FIXLATER on HeroDataSO._isDummy.
+        private bool _isDummy;                  // Temporary, tagged once at its source - see the FLAGGING on HeroDataSO._isDummy.
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;

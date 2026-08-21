@@ -8,7 +8,8 @@ namespace MagicSchool.Skills
     /// Sona: a wave through the clustered enemy, damaging everyone it passes through.
     ///
     /// Sheet (Hero set 9): "Send a wave at the clustered enemy; damage falls off per enemy hit.
-    /// Allies hit are buffed instead." Two of the three parts cannot be said yet - see FIXLATER.
+    /// Allies hit are buffed instead." Two of the three parts cannot be said yet: falloff isn't
+    /// implemented (DamageRatio is a flat hit, not per-enemy), only the ally buff is done.
     /// </summary>
     internal static class SonaSkill
     {

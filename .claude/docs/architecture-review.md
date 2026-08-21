@@ -34,7 +34,7 @@ checklist item.
 
 - [ ] **Mana is consumed before the cast is validated.** `Stat.AddMana` zeroes mana the instant
   it caps, but `TemplateAction.Spawn` can bail with no valid target and spawn nothing — mana
-  spent, no skill. Tagged `FIXLATER` at `Skill/SkillActionGroup/TemplateAction.cs:31`.
+  spent, no skill. See `TemplateAction.TryPlay` in `Skill/SkillActionGroup/TemplateAction.cs`.
 
 - [ ] **`Board/HexPathfinder.cs:51` can throw.** `while (cameFrom[step] != startHex)` assumes
   `startHex` isn't itself a goal hex — but the mover's own hex is never blocked to itself, so it

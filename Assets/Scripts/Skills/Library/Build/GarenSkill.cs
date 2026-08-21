@@ -27,7 +27,7 @@ namespace MagicSchool.Skills
                 source:   ActionSourceEnum.Self,
                 action:   TemplateActionEnum.ZoneAOE,  
                 target:   AimTargetEnum.Self,
-                tuning:   Tune(castTime: Duration, sticky: true),
+                tuning:   TuneAOE(castTime: Duration, sticky: true),
                 
                 DamageOverTime(
                     recipient: EffectRecipientEnum.EnemiesInArea,

@@ -20,16 +20,13 @@ namespace MagicSchool.Skills
         protected override void ApplyTuning(Tuning tuning)
         {
             base.ApplyTuning(tuning);
-            if (tuning == null) return;
+            if (tuning is not AOETuning aoeTuning) return;
 
-            if (tuning.Size.HasValue) SetSize(tuning.Size.Value);
+            if (aoeTuning.Size.HasValue) SetSize(aoeTuning.Size.Value);
 
-            if (tuning.Sticky.HasValue) _sticky.IsSticky = tuning.Sticky.Value;
+            if (aoeTuning.Sticky.HasValue) _sticky.IsSticky = aoeTuning.Sticky.Value;
 
-            if (tuning.Duration.HasValue)
-            {
-                _duration = tuning.Duration.Value;
-            }
+            if (aoeTuning.Duration.HasValue) _duration = aoeTuning.Duration.Value;
         }
 
         protected override void Play()
@@ -79,7 +76,13 @@ namespace MagicSchool.Skills
                 if (_sticky.IsSticky) _sticky.Source = null;
             }
 
-            // FIXLATER: Implement Clustered circle
+            // aim at clustered that measure by specify radius
+            else if (source == ActionSourceEnum.ClusteredCircle)
+            {
+                IPlacement target = _me.FindClusteredCircle(4, 4f, false);
+                if (target == null) return false;
+                _source = target.transform.position;
+            }
 
             // else if () ...
 
@@ -224,6 +227,7 @@ namespace MagicSchool.Skills
         }
     }
 
+    // FIXLATER: move to its own file
     [Serializable]
     internal struct Sticky
     {

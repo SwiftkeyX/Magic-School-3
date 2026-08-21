@@ -26,7 +26,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.Move,
                 target: AimTargetEnum.ClusteredCircle,
-                tuning: Tune(effectRange: LandingRadius)
+                tuning: TuneMove(spread: LandingRadius)
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: jump);
@@ -46,7 +46,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.CircleAOE,
                 target: AimTargetEnum.Self,
-                tuning: Tune(size: LandingSize),
+                tuning: TuneAOE(size: LandingSize),
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,

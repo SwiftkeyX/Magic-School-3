@@ -5,21 +5,6 @@ using MagicSchool.Modifiers;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// The pieces a hero's skill is assembled from.
-    ///
-    /// Every hero used to spell out the same construction - a Scaling wrapping a List of StatRatio,
-    /// a CustomModifier wrapping a List of IModifier - so any change to those constructors was a
-    /// nine file edit. That happened six times while the modifier work was going on, and only four
-    /// of the forty-odd builder edits in that stretch were about a hero at all.
-    ///
-    /// So the construction lives here and the hero files keep what is actually theirs: which stat,
-    /// what percent, how long. Add `using static MagicSchool.Skills.SkillFactory;` and they read as
-    /// Damage(EnemiesInPath, (StatEnum.Atk, 1000f)).
-    ///
-    /// This deliberately does NOT wrap SkillActionGroup or SkillStep. Those have not changed once,
-    /// so wrapping them would buy nothing and cost a second vocabulary to learn.
-    /// </summary>
     internal static class SkillFactory
     {
         // ================================== damage ==================================
@@ -100,23 +85,19 @@ namespace MagicSchool.Skills
                                     conditions: conditions, effects: new List<SkillEffect>(effects));
 
         // tuning a template action
-        // e.g. cast time = time hero cast his skill, he can't AA while doing so, default 0.5 sec
-        // e.g. range = skill range check, how far can the center of skill go away from the caster
-        // e.g. duration = time before the skill expired, usage => 4 sec of AOE doing damage continuously before expired 
-        // ...
-        public static Tuning Tune(float? castTime = null, int? range = null, float? size = null,
-                                  float? duration = null, float? effectRange = null, float? laneHalfWidth = null,
-                                  bool? sticky = null)
-            => new Tuning
-            {
-                CastTime = castTime,
-                Range = range,
-                Size = size,
-                Duration = duration,
-                EffectRange = effectRange,
-                LaneHalfWidth = laneHalfWidth,
-                Sticky = sticky,
-            };
+        public static Tuning Tune(float? castTime = null)
+            => new Tuning { CastTime = castTime };
+        
+        public static AOETuning TuneAOE(float? castTime = null, float? duration = null,
+                                        float? size = null, bool? sticky = null)
+            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky };
+        
+        public static MoveTuning TuneMove(float? castTime = null, int? range = null,
+                                          float? duration = null, float? spread = null)
+            => new MoveTuning { CastTime = castTime, Range = range, Duration = duration, Spread = spread };
+        
+        public static ProjectileTuning TuneProjectile(float? castTime = null, int? range = null, float? spread = null)
+            => new ProjectileTuning { CastTime = castTime, Range = range, Spread = spread };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

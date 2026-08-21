@@ -27,7 +27,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.Move,
                 target: AimTargetEnum.ClusteredLaser,
-                tuning: Tune(range: ChargeRange, laneHalfWidth: HitboxHalfWidth)
+                tuning: TuneMove(range: ChargeRange, spread: HitboxHalfWidth)
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: move);

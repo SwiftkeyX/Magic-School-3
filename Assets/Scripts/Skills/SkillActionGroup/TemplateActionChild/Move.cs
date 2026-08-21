@@ -18,12 +18,11 @@ namespace MagicSchool.Skills
         protected override void ApplyTuning(Tuning tuning)
         {
             base.ApplyTuning(tuning);
-            if (tuning == null) return;
+            if (tuning is not MoveTuning moveTuning) return;
 
-            if (tuning.Range.HasValue) _jumpRange = tuning.Range.Value;
-            if (tuning.Duration.HasValue) _jumpDuration = tuning.Duration.Value;
-            if (tuning.EffectRange.HasValue) _spread = tuning.EffectRange.Value;
-            if (tuning.LaneHalfWidth.HasValue) _spread = tuning.LaneHalfWidth.Value;
+            if (moveTuning.Range.HasValue) _jumpRange = moveTuning.Range.Value;
+            if (moveTuning.Duration.HasValue) _jumpDuration = moveTuning.Duration.Value;
+            if (moveTuning.Spread.HasValue) _spread = moveTuning.Spread.Value;
         }
 
         protected override void Play()

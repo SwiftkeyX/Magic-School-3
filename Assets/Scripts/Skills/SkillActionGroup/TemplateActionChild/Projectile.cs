@@ -46,14 +46,14 @@ namespace MagicSchool.Skills
         protected bool IsTargetAlive => _target != null && _target.IsAlive;
 
         // ======================================== override method ========================================
+        // FIXLATER: the cast type loo ugly. Could we do something about it?
         protected override void ApplyTuning(Tuning tuning)
         {
             base.ApplyTuning(tuning);
-            if (tuning == null) return;
+            if (tuning is not ProjectileTuning projectileTuning) return;
 
-            if (tuning.Range.HasValue) _aimRange = tuning.Range.Value;
-            if (tuning.EffectRange.HasValue) _spread = tuning.EffectRange.Value;
-            if (tuning.LaneHalfWidth.HasValue) _spread = tuning.LaneHalfWidth.Value;
+            if (projectileTuning.Range.HasValue) _aimRange = projectileTuning.Range.Value;
+            if (projectileTuning.Spread.HasValue) _spread = projectileTuning.Spread.Value;
         }
 
         protected override void Play()

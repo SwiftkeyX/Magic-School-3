@@ -68,10 +68,10 @@ namespace MagicSchool.Combat.Heroes
         }
 
 
-        // Picks furthest enemy
-        public ICombatant FindFurthestEnemy()
+        // Picks furthest enemy within reachRange
+        public ICombatant FindFurthestEnemy(int reachRange)
         {
-            var enemyDistances = GetEnemyDistance();
+            var enemyDistances = GetEnemyDistance().Where(e => e.dist <= reachRange).ToList();
 
             if (enemyDistances.Count == 0) return null;
 

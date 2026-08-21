@@ -11,14 +11,13 @@ namespace MagicSchool.Skills
     {
         [SerializeField] protected float _speed = 8f;
         protected float _size = 1f;
-
-        // FIXLATER: aimRange for Projectile = global
-        protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
-        protected float _spread = 1.25f;
+        protected int _reachRange = int.MaxValue;    // how far a projectile can reach, in hexes, default to global range
+        protected float _spread = 1f;              // how wide the AOE (next SkillStep) will be spread
 
         protected Vector3 _direction;
         protected ICombatant _target;   // who the projectile is aiming at?
         protected Transform _aimAt;     // what will projectile fly at?
+        
         const float PROJECTILELIFETIME = 10f;
 
         // ==================================== OnHit event ====================================
@@ -51,7 +50,7 @@ namespace MagicSchool.Skills
             base.ApplyTuning(tuning);
             if (tuning is not ProjectileTuning projectileTuning) return;
 
-            if (projectileTuning.Range.HasValue) _aimRange = projectileTuning.Range.Value;
+            if (projectileTuning.Range.HasValue) _reachRange = projectileTuning.Range.Value;
             if (projectileTuning.Spread.HasValue) _spread = projectileTuning.Spread.Value;
             if (projectileTuning.Size.HasValue) _size = projectileTuning.Size.Value;
         }
@@ -109,29 +108,28 @@ namespace MagicSchool.Skills
                 _aimAt = _target.transform;
             }
 
-            // aim skill at furthest enemy from self
+            // aim skill at furthest enemy from self (furthest in _aimRange)
             else if (aimTarget == AimTargetEnum.Furthest)
             {
-                _target = _me.FindFurthestEnemy();
+                _target = _me.FindFurthestEnemy(_reachRange);
                 if (_target == null) return false;
 
                 _aimAt = _target.transform;
             }
 
-            // aim down the line that passes through the most enemies
+            // aim down the line that passes through the most enemies (clustered in _aimRange)
             else if (aimTarget == AimTargetEnum.ClusteredLaser)
             {
-                int finalDistance = (int)(_speed * PROJECTILELIFETIME);
-                _target = _me.FindClusteredLaser(finalDistance, _spread);
+                _target = _me.FindClusteredLaser(_reachRange, _spread);
                 if (_target == null) return false;
 
                 _aimAt = _target.transform;
             }
 
-            // aim at clustered that measure by specify radius
+            // aim at clustered that measure by specify radius (clustered in _aimRange)
             else if (aimTarget == AimTargetEnum.ClusteredCircle)
             {
-                IPlacement blastCentre = _me.FindClusteredCircle(_aimRange, _spread, isJump: false);
+                IPlacement blastCentre = _me.FindClusteredCircle(_reachRange, _spread, isJump: false);
                 if (blastCentre == null) return false;
 
                 _aimAt = blastCentre.transform;

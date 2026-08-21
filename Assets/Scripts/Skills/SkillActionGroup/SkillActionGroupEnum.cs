@@ -11,6 +11,7 @@ namespace MagicSchool.Skills
         WhereProjectileHit = 3,     // spawn where the previous step's projectile landed
         Current = 4,
         ClusteredCircle = 5,
+        Furthest = 6,
         // ...
     }
 

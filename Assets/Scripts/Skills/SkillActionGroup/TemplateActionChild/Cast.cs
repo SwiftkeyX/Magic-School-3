@@ -58,7 +58,7 @@ namespace MagicSchool.Skills
             // aim skill at furthest target
             else if (aimTarget == AimTargetEnum.Furthest)
             {
-                _target = _me.FindFurthestEnemy();
+                _target = _me.FindFurthestEnemy(int.MaxValue);
                 if (_target == null) return false;
             }
 

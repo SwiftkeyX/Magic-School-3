@@ -15,6 +15,9 @@ namespace MagicSchool.Skills
         protected float _duration = 0.5f;    // how long the blast stays up before it expires
         private AOEOffsetEnum _offset;
         private Sticky _sticky;
+        // FIXLATER: implent 2 var for AOE
+        private int _reachRange = int.MaxValue;
+        private int _spread;    // FIXLATER: spread here is = to AOE's size
 
         // ======================================= override =======================================
         protected override void ApplyTuning(Tuning tuning)
@@ -69,6 +72,14 @@ namespace MagicSchool.Skills
                 if (_sticky.IsSticky) _sticky.Source = target.transform;
             }
 
+            // point at furthest target
+            else if (source == ActionSourceEnum.Furthest)
+            {
+                ICombatant target = _me.FindFurthestEnemy(_reachRange);
+                if (target == null) return false;
+                _aimTarget = target.transform.position;
+            }
+
             // spawn on where the previous projectile hit
             // e.g. Karma's dart exploding on impact
             else if (source == ActionSourceEnum.WhereProjectileHit)
@@ -81,7 +92,7 @@ namespace MagicSchool.Skills
             // aim at clustered that measure by specify radius
             else if (source == ActionSourceEnum.ClusteredCircle)
             {
-                IPlacement target = _me.FindClusteredCircle(4, 4f, false);
+                IPlacement target = _me.FindClusteredCircle(_reachRange, _spread, false);
                 if (target == null) return false;
                 _source = target.transform.position;
             }
@@ -98,13 +109,13 @@ namespace MagicSchool.Skills
         // e.g. ConeAOE's tip point at current enemy
         protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
         {
-            // aim skill at self
+            // point at self
             if (aimTarget == AimTargetEnum.Self)
             {
                 _aimTarget = _me.transform.position;
             }
 
-            // aim skill at current target
+            // point at current target
             else if (aimTarget == AimTargetEnum.Current)
             {
                 ICombatant target = _me.FindCurrentTarget();
@@ -112,15 +123,15 @@ namespace MagicSchool.Skills
                 _aimTarget = target.transform.position;
             }
 
-            // aim skill at furthest target
+            // point at furthest target
             else if (aimTarget == AimTargetEnum.Furthest)
             {
-                ICombatant target = _me.FindFurthestEnemy();
+                ICombatant target = _me.FindFurthestEnemy(_reachRange);
                 if (target == null) return false;
                 _aimTarget = target.transform.position;
             }
 
-            // aim skill at previous projectile hit position
+            // point at previous projectile hit position
             else if (aimTarget == AimTargetEnum.WhereProjectileHit)
             {
                 if (_fromPreviousStep?.Position == null) return false;
@@ -229,11 +240,4 @@ namespace MagicSchool.Skills
         }
     }
 
-    // FIXLATER: move to its own file
-    [Serializable]
-    internal struct Sticky
-    {
-        [SerializeField] internal bool IsSticky;
-        internal Transform Source;      // what to sit on top of - null once it stops existing
-    }
 }

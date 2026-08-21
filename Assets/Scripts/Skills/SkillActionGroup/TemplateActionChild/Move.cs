@@ -9,7 +9,7 @@ namespace MagicSchool.Skills
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         private int _jumpRange = 2;                
         private float _jumpDuration = 0.5f;        
-        private float _spread = 2.25f;
+        private float _spread = 1f;
         private IPlacement _landing;    // hex the caster ends up on after moving
         private CurveMotion _jump;
         private bool _isJumping;

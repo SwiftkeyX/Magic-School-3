@@ -26,6 +26,9 @@ namespace MagicSchool.Combat.Placements
 
             for (int step = 0; step < radius; step++)
             {
+                // nothing left to expand from - stop instead of counting down an unbounded radius
+                if (frontier.Count == 0) break;
+
                 var nextFrontier = new List<Hex>();
                 foreach (Hex hex in frontier)
                 {

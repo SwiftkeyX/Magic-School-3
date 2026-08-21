@@ -76,7 +76,26 @@ namespace MagicSchool.Combat.Tests
             _board.AddHero(TeamEnum.Red, Blue(1, 3));
             Hero far = _board.AddHero(TeamEnum.Red, Blue(3, 3));
 
-            Assert.That(me.FindFurthestEnemy(), Is.EqualTo(far));
+            Assert.That(me.FindFurthestEnemy(int.MaxValue), Is.EqualTo(far));
+        }
+
+        [Test]
+        public void FurthestEnemy_within_reachRange_skips_one_that_is_further_but_out_of_reach()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+            Hero near = _board.AddHero(TeamEnum.Red, Blue(1, 3));     // 1.118 away - in reach
+            _board.AddHero(TeamEnum.Red, Blue(3, 3));                 // 3.04 away - out of reach
+
+            Assert.That(me.FindFurthestEnemy(reachRange: 2), Is.EqualTo(near));
+        }
+
+        [Test]
+        public void FurthestEnemy_is_null_when_nobody_is_within_reachRange()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+            _board.AddHero(TeamEnum.Red, Blue(3, 3));                 // 3.04 away - out of reach
+
+            Assert.That(me.FindFurthestEnemy(reachRange: 2), Is.Null);
         }
 
         // =================================== FindCurrentTarget ===================================

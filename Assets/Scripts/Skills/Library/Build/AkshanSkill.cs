@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.StatScaling;
 using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills

@@ -104,8 +104,8 @@ namespace MagicSchool.Skills
             => new Tuning { CastTime = castTime };
         
         public static AOETuning TuneAOE(float? castTime = null, float? duration = null, float? size = null,
-                                        bool? sticky = null, AOEOffsetEnum? offset = null)
-            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky, Offset = offset };
+                                        bool? sticky = null, AOEOffsetEnum? offset = null, int? range = null)
+            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky, Offset = offset, Range = range };
         
         public static MoveTuning TuneMove(float? castTime = null, int? range = null,
                                           float? duration = null, float? spread = null)

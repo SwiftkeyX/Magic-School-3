@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
-using System;
 
 namespace MagicSchool.Skills
 {
@@ -15,9 +13,7 @@ namespace MagicSchool.Skills
         protected float _duration = 0.5f;    // how long the blast stays up before it expires
         private AOEOffsetEnum _offset;
         private Sticky _sticky;
-        // FIXLATER: implent 2 var for AOE
-        private int _reachRange = int.MaxValue;
-        private int _spread;    // FIXLATER: spread here is = to AOE's size
+        private int _reachRange = int.MaxValue;   // how far a AOE can reach, in hexes, default to global range (Not a size)
 
         // ======================================= override =======================================
         protected override void ApplyTuning(Tuning tuning)
@@ -32,6 +28,8 @@ namespace MagicSchool.Skills
             if (aoeTuning.Duration.HasValue) _duration = aoeTuning.Duration.Value;
 
             if (aoeTuning.Offset.HasValue) _offset = aoeTuning.Offset.Value;
+
+            if (aoeTuning.Range.HasValue) _reachRange = aoeTuning.Range.Value;
         }
 
         protected override void Play()
@@ -92,7 +90,7 @@ namespace MagicSchool.Skills
             // aim at clustered that measure by specify radius
             else if (source == ActionSourceEnum.ClusteredCircle)
             {
-                IPlacement target = _me.FindClusteredCircle(_reachRange, _spread, false);
+                IPlacement target = _me.FindClusteredCircle(_reachRange, SkillFactory.Reach(transform.localScale.y), isJump: false);
                 if (target == null) return false;
                 _source = target.transform.position;
             }

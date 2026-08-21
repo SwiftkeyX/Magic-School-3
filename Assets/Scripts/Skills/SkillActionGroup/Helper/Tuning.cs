@@ -14,6 +14,7 @@ namespace MagicSchool.Skills
         public float? Size;              // how big the AOE is
         public bool? Sticky;             // does AOE follow something e.g. garen's skill
         public AOEOffsetEnum? Offset;    // the offset this AOE will be placing
+        public int? Range;               // how far a AOE can reach (not a size)
     }
 
     public class MoveTuning : Tuning

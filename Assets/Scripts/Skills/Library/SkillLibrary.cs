@@ -29,6 +29,7 @@ namespace MagicSchool.Skills
                 { SkillIdEnum.Sion      , SionSkill.Build }      ,
                 { SkillIdEnum.Aphelios  , ApheliosSkill.Build }  ,
                 { SkillIdEnum.Akshan    , AkshanSkill.Build }    ,
+                { SkillIdEnum.Jinx      , JinxSkill.Build }      ,
             };
 
         /// <summary>

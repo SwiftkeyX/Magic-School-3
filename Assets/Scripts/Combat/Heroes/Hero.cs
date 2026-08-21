@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Combat.Heroes.States;
 using MagicSchool.Combat.Heroes.Stats;
@@ -131,6 +132,7 @@ namespace MagicSchool.Combat.Heroes
         public IPlacement FindClusteredCircle(int reachRange, float blastRadius, bool isJump) => _findEnemy.FindClusteredCircle(reachRange, blastRadius, isJump);
         public IPlacement FindClusteredCharge(int reachRange, float chargeHalfWidth) => _findEnemy.FindClusteredCharge(reachRange, chargeHalfWidth);
         public ICombatant FindClusteredLaser(int reachRange, float beamHalfWidth) => _findEnemy.FindClusteredLaser(reachRange, beamHalfWidth);
+        public IReadOnlyList<ICombatant> FindEnemiesNear(ICombatant target, int reachRange) => _findEnemy.FindEnemiesNear(target, reachRange);
 
 
         // ======================================== life cycle ========================================

@@ -175,6 +175,17 @@ namespace MagicSchool.Combat.Heroes
             return BreakTie(best, _currentTarget);
         }
 
+        // Find all enemies within reachRange of target's hex
+        public IReadOnlyList<ICombatant> FindEnemiesNear(ICombatant target, int reachRange)
+        {
+            Hex targetHex = target?.CurrentHex();
+            if (targetHex == null) return Array.Empty<ICombatant>();
+
+            HashSet<Hex> nearby = new HashSet<Hex>(HexFinder.FindHexesWithin(targetHex, reachRange));
+
+            return GetEnemiesBFS().Where(enemy => enemy.CurrentHex() != null && nearby.Contains(enemy.CurrentHex())).ToList();
+        }
+
 
         // ========================================= private ========================================= 
         // when choosing a target, it could have several best candidate (a tied)

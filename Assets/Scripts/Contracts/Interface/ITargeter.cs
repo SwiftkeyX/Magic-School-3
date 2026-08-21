@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MagicSchool.Contracts
 {
     // ITargeter answer: Which enemy is the target base on specify condition.
@@ -10,5 +12,6 @@ namespace MagicSchool.Contracts
         IPlacement FindClusteredCircle(int reachRange, float blastRadius, bool isJump);
         ICombatant FindClusteredLaser(int reachRange, float beamHalfWidth);
         IPlacement FindClusteredCharge(int reachRange, float chargeHalfWidth);
+        IReadOnlyList<ICombatant> FindEnemiesNear(ICombatant target, int reachRange);
     }
 }

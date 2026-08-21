@@ -150,6 +150,54 @@ namespace MagicSchool.Combat.Tests
             Assert.That(me.FindClusteredLaser(reachRange: 20, beamHalfWidth: 0.3f), Is.EqualTo(onTheLine));
         }
 
+        // ================================== FindEnemiesNear ==================================
+        [Test]
+        public void EnemiesNear_is_centred_on_the_target_not_the_caster()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 0));               // far from everything below
+            Hero target = _board.AddHero(TeamEnum.Red, Blue(3, 3));
+            Hero nearTarget = _board.AddHero(TeamEnum.Red, Blue(3, 2));        // 1.0 from target, out of me's reach
+
+            var found = me.FindEnemiesNear(target, reachRange: 1);
+
+            Assert.That(found, Is.EquivalentTo(new[] { target, nearTarget }));
+        }
+
+        [Test]
+        public void EnemiesNear_excludes_allies_of_the_caster_even_next_to_the_target()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+            Hero target = _board.AddHero(TeamEnum.Red, Blue(2, 3));
+            _board.AddHero(TeamEnum.Blue, Blue(1, 3));                        // my ally, 1.118 from target
+
+            var found = me.FindEnemiesNear(target, reachRange: 2);
+
+            Assert.That(found, Is.EqualTo(new[] { target }));
+        }
+
+        [Test]
+        public void EnemiesNear_excludes_enemies_outside_reachRange()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 0));
+            Hero target = _board.AddHero(TeamEnum.Red, Blue(0, 3));
+            _board.AddHero(TeamEnum.Red, Blue(3, 3));                         // 3 hexes from the target
+
+            var found = me.FindEnemiesNear(target, reachRange: 1);
+
+            Assert.That(found, Is.EqualTo(new[] { target }));
+        }
+
+        [Test]
+        public void EnemiesNear_is_empty_when_the_target_is_off_the_board()
+        {
+            Hero me = _board.AddHero(TeamEnum.Blue, Blue(0, 3));
+            Hero benchedTarget = _board.AddBenchedHero(TeamEnum.Red);
+
+            var found = me.FindEnemiesNear(benchedTarget, reachRange: 5);
+
+            Assert.That(found, Is.Empty);
+        }
+
         // ================================== FindClusteredLanding ==================================
         [Test]
         public void ClusteredLanding_moves_to_the_hex_whose_blast_catches_the_pair()

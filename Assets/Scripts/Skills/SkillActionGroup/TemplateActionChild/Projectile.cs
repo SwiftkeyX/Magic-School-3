@@ -132,9 +132,19 @@ namespace MagicSchool.Skills
                 _aimAt = blastCentre.transform;
             }
 
+            // this shot's target was already chosen for it
+            // e.g. FireTimingRunner's pseudo-random 
+            else if (aimTarget == AimTargetEnum.Assigned)
+            {
+                _target = _fromPreviousStep?.Target;
+                if (_target == null) return false;
+
+                _aimAt = _target.transform;
+            }
+
             // else if () ...
 
-            // nothing to shoot at, so don't shoot 
+            // nothing to shoot at, so don't shoot
             else
             {
                 Debug.LogWarning($"[Scriptable Object] Projectile can't aim at {aimTarget}", this);

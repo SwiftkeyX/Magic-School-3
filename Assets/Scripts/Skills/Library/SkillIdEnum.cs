@@ -26,5 +26,6 @@ namespace MagicSchool.Skills
         Sion = 12,
         Aphelios = 13,  
         Akshan = 14,
+        Jinx = 15,
     }
 }

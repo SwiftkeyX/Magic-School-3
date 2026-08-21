@@ -36,6 +36,9 @@ namespace MagicSchool.Skills
         public int? Count;                  // number of repeat time
         public FireTimingModeEnum? Mode;    // fire once or in sequence
         public float? Interval;             // delay between shots - only read when Mode is Sequence
-        public Tuning InnerTuning;          // tune for the template action that'll be fired 
+        public Tuning InnerTuning;          // tune for the template action that'll be fired
+        // FIXLATER: it was ugly, is there a way to clean this?
+        public int? RandomPoolRadius;       // only read when aimed with AimTargetEnum.Random - how
+                                            // many hexes from the current target the pool reaches
     }
 }

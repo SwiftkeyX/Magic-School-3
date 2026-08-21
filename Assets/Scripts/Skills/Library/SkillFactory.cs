@@ -117,8 +117,10 @@ namespace MagicSchool.Skills
             => new ProjectileTuning { CastTime = castTime, Range = range, Spread = spread, Size = size };
 
         public static FireTimingRunnerTuning TuneFireTimingRunner(int count, FireTimingModeEnum mode,
-                                                                   float interval = 0f, Tuning innerTuning = null)
-            => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval, InnerTuning = innerTuning };
+                                                                   float interval = 0f, Tuning innerTuning = null,
+                                                                   int? randomPoolRadius = null)
+            => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval,
+                                            InnerTuning = innerTuning, RandomPoolRadius = randomPoolRadius };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

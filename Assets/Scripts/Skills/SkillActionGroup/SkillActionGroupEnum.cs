@@ -23,6 +23,8 @@ namespace MagicSchool.Skills
         ClusteredCircle = 3,
         ClusteredLaser = 5,
         WhereProjectileHit = 4,
+        Random = 6,
+        Assigned = 7,
 
         // ...
     }

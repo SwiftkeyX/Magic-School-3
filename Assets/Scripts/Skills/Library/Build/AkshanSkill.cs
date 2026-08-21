@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
 using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
     internal class AkshanSkill
     {
-        private const float DamagePerShot = 125f;
+        private const float ADDamagePerShot = 125f;
+        private const float MGDamagePerShot = 125f;
         private const int ShotCount = 6;
         private const float IntervalBetweenShot = 0.1f;
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -29,7 +31,7 @@ namespace MagicSchool.Skills
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    ratios: (StatEnum.Atk, DamagePerShot)
+                    (StatEnum.Atk, ADDamagePerShot), (StatEnum.MG, MGDamagePerShot)
                 )
             );
 

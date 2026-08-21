@@ -15,7 +15,6 @@ namespace MagicSchool.Skills
         CircleAOE = 2,
         CircleAOESticky = 15,
         HalfCircleAOESticky = 17,
-        CircleAOETip = 3,   // ASKING: Why we still have tip version?
         TriangleAOE = 4,
         ZoneAOE = 5,
 

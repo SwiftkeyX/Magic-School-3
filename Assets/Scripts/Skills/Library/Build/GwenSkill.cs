@@ -1,0 +1,41 @@
+using System.Collections.Generic;
+using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
+using static MagicSchool.Skills.SkillFactory;
+
+namespace MagicSchool.Skills
+{
+    internal class GwenSkill
+    {
+        private const float MGDamagePerSnip = 100f;   // sheet: 100/150/400% AP
+        private const int SnipCount = 3;
+        private const float IntervalBetweenSnip = 0.2f;
+
+        public static SkillDefinition Build(TemplateActionRegistrySO registry)
+        {
+            return new SkillDefinition(
+                skillName: "Skill",
+                activeSteps: new List<SkillStep> { Snip(registry) });
+        }
+
+        private static SkillStep Snip(TemplateActionRegistrySO registry)
+        {
+            AOETuning tune = TuneAOE(offset: AOEOffsetEnum.Tip);
+
+            SkillActionGroup snip = ActionGroup(
+                registry: registry,
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.FireTimingRunnerTriangleAOE,
+                target: AimTargetEnum.Current,
+                tuning: TuneFireTimingRunner(SnipCount, FireTimingModeEnum.Sequence, IntervalBetweenSnip, tune),
+
+                Damage(
+                    recipient: EffectRecipientEnum.EnemiesInArea,
+                    (StatEnum.MG, MGDamagePerSnip)
+                )
+            );
+
+            return Step(trigger: TriggerEnum.OnCast, groups: snip);
+        }
+    }
+}

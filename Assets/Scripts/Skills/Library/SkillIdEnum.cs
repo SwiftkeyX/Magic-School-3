@@ -27,5 +27,6 @@ namespace MagicSchool.Skills
         Aphelios = 13,  
         Akshan = 14,
         Jinx = 15,
+        Gwen = 16,
     }
 }

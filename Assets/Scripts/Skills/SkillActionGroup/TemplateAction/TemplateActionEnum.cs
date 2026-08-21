@@ -25,6 +25,7 @@ namespace MagicSchool.Skills
 
         // ==================================== FireTimingRunner ====================================
         FireTimingRunnerHomingProjectile = 18,
+        FireTimingRunnerTriangleAOE = 19,
 
         // ==================================== Other ====================================
         Cast = 10,

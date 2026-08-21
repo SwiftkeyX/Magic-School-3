@@ -5,14 +5,14 @@ using System;
 
 namespace MagicSchool.Skills
 {
+    public enum AOEOffsetEnum { Center, Tip }
+
     /// <summary>
     /// AOE type for TemplateAction
     /// </summary>
     internal abstract class AOE : TemplateAction
     {
-        internal enum AOEOffsetEnum { Center, Tip }
         protected float _duration = 0.5f;    // how long the blast stays up before it expires
-        // FIXLATER: offset should be tune able too.
         [SerializeField] private AOEOffsetEnum _offset;
         private Sticky _sticky;
 
@@ -27,6 +27,8 @@ namespace MagicSchool.Skills
             if (aoeTuning.Sticky.HasValue) _sticky.IsSticky = aoeTuning.Sticky.Value;
 
             if (aoeTuning.Duration.HasValue) _duration = aoeTuning.Duration.Value;
+
+            if (aoeTuning.Offset.HasValue) _offset = aoeTuning.Offset.Value;
         }
 
         protected override void Play()

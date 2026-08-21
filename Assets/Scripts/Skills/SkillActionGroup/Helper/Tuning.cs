@@ -13,6 +13,7 @@ namespace MagicSchool.Skills
         public float? Duration;          // how long the blast stays up before it expires
         public float? Size;              // how wide the action is, as a scale on the prefab's collider
         public bool? Sticky;             // does it ride whatever it spawned on, or stay put?
+        public AOEOffsetEnum? Offset;    // is the source the blast's centre, or its tip?
     }
 
     public class MoveTuning : Tuning

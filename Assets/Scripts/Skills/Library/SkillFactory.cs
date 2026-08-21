@@ -60,6 +60,7 @@ namespace MagicSchool.Skills
             => new StatusModifier(status);
 
         // ================================== ActionGroup ==================================
+        // FIXLATER: there's too much duplicate of ActionGroup function here, could we group them into 1?
         // a template action
         public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                    TemplateActionEnum action, AimTargetEnum target,
@@ -76,7 +77,7 @@ namespace MagicSchool.Skills
                                     effects: new List<SkillEffect>(effects), tuning: tuning);
 
         // a template action with condition
-        // conditin need to be true, in order this template action to play. 
+        // conditin need to be true, in order this template action to play.
         public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                        TemplateActionEnum action, AimTargetEnum target,
                                                        List<SkillCondition> conditions,
@@ -84,13 +85,27 @@ namespace MagicSchool.Skills
             => new SkillActionGroup(source, registry.Get(action), target,
                                     conditions: conditions, effects: new List<SkillEffect>(effects));
 
+        // the same, with this hero's numbers for the action
+        public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
+                                                       TemplateActionEnum action, AimTargetEnum target,
+                                                       List<SkillCondition> conditions, Tuning tuning,
+                                                       params SkillEffect[] effects)
+            => new SkillActionGroup(source, registry.Get(action), target,
+                                    conditions: conditions, effects: new List<SkillEffect>(effects), tuning: tuning);
+
+        // a step inside template action
+        // step are working in order, each step will be played if it was trigger.
+        public static SkillStep Step(TriggerEnum trigger, params SkillActionGroup[] groups)
+            => new SkillStep(trigger, new List<SkillActionGroup>(groups));
+        
+        // ================================== Tune ==================================
         // tuning a template action
         public static Tuning Tune(float? castTime = null)
             => new Tuning { CastTime = castTime };
         
-        public static AOETuning TuneAOE(float? castTime = null, float? duration = null,
-                                        float? size = null, bool? sticky = null)
-            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky };
+        public static AOETuning TuneAOE(float? castTime = null, float? duration = null, float? size = null,
+                                        bool? sticky = null, AOEOffsetEnum? offset = null)
+            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky, Offset = offset };
         
         public static MoveTuning TuneMove(float? castTime = null, int? range = null,
                                           float? duration = null, float? spread = null)
@@ -105,10 +120,6 @@ namespace MagicSchool.Skills
         // size of the AOE, etc...
         public static float Reach(float size) => size * AuthoredRadius;
 
-        // a step inside template action
-        // step are working in order, each step will be played if it was trigger.
-        public static SkillStep Step(TriggerEnum trigger, params SkillActionGroup[] groups)
-            => new SkillStep(trigger, new List<SkillActionGroup>(groups));
 
         // ================================== scaling ==================================
         public static IScaling Scale(params StatRatio[] ratios)

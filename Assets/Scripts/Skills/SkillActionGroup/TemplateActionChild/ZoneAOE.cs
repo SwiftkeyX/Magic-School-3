@@ -57,6 +57,7 @@ namespace MagicSchool.Skills
         // ======================================== private ==============================================
         // Assign value to cadence interval, and cadence duration.
         // To guard - cadence effects on this zone must share one interval
+        // FLAGGING: cadenceDuration override the _duration that maybe was tuned. I don't sure if this a problem.
         private void ResolveCadence()
         {
             _interval = VALUENOTASSIGN;

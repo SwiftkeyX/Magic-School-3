@@ -82,7 +82,8 @@ namespace MagicSchool.Skills
             {
                 Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOETip,      beat: 1, damage: 200f),
                 Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOETip, beat: 2, damage: 300f),
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOETip,   beat: 3, damage: 400f),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOE, beat: 3, damage: 400f,
+                     tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
             };
 
             return new SkillStep(trigger: TriggerEnum.OnAttack, actionGroups: beats);
@@ -90,7 +91,8 @@ namespace MagicSchool.Skills
 
         // One beat of the combo: play this shape when transformed and the combo is on this count.
         private static SkillActionGroup Beat(TemplateActionRegistrySO registry, ComboTracker combo,
-                                             TemplateActionEnum action, int beat, float damage)
+                                             TemplateActionEnum action, int beat, float damage,
+                                             Tuning tuning = null)
         {
             List<SkillCondition> conditions = new List<SkillCondition>
             {
@@ -113,6 +115,7 @@ namespace MagicSchool.Skills
                 action: action,
                 target: AimTargetEnum.Current,
                 conditions: conditions,
+                tuning: tuning,
                 // sheet: Aatrox is AD
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,

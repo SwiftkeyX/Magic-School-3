@@ -28,5 +28,6 @@ namespace MagicSchool.Skills
         Akshan = 14,
         Jinx = 15,
         Gwen = 16,
+        Fiora = 17,
     }
 }

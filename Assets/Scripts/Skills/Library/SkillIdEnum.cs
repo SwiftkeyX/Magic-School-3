@@ -25,5 +25,6 @@ namespace MagicSchool.Skills
         JarvanIV = 11,
         Sion = 12,
         Aphelios = 13,  
+        Akshan = 14,
     }
 }

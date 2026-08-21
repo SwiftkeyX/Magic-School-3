@@ -24,6 +24,14 @@ namespace MagicSchool.Skills
         private float _interval;
         private Tuning _innerTuning;
 
+        // ======================================= Event =======================================
+        protected override void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
+        {
+            _onExpired = onExpired;
+            _onHit = onHit;
+        }
+
+
         // ======================================= override =======================================
         protected override void ApplyTypedTuning(FireTimingRunnerTuning tuning)
         {
@@ -31,28 +39,6 @@ namespace MagicSchool.Skills
             if (tuning.Mode.HasValue) _mode = tuning.Mode.Value;
             if (tuning.Interval.HasValue) _interval = tuning.Interval.Value;
             if (tuning.InnerTuning != null) _innerTuning = tuning.InnerTuning;
-        }
-
-        // FireTimingRunner has no source/aim of its own - it only remembers what it was told,
-        // so each inner shot can resolve the real thing independently.
-        protected override bool ResolveSource(ActionSourceEnum source)
-        {
-            _innerSource = source;
-            return true;
-        }
-
-        protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
-        {
-            _innerAimTarget = aimTarget;
-            return true;
-        }
-
-        protected override Vector3 GetSpawnPosition() => _me.transform.position;
-
-        protected override void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
-        {
-            _onExpired = onExpired;
-            _onHit = onHit;
         }
 
         protected override void Play()
@@ -71,11 +57,34 @@ namespace MagicSchool.Skills
             }
         }
 
+        // FireTimingRunner has no source/aim of its own - it only remembers what it was told,
+        // so each inner shot can resolve the real thing independently.
+        protected override bool ResolveSource(ActionSourceEnum source)
+        {
+            _innerSource = source;
+            return true;
+        }
+
+        protected override bool ResolveAimTarget(AimTargetEnum aimTarget)
+        {
+            _innerAimTarget = aimTarget;
+            return true;
+        }
+
+        protected override Vector3 GetSpawnPosition() => _me.transform.position;
+
+
         // ======================================= private =======================================
         private void FireOnce()
         {
-            SkillActionGroup innerGroup = new SkillActionGroup(_innerSource, _innerPrefab, _innerAimTarget,
-                effects: _effects, tuning: _innerTuning);
+            // copy/paste to create a desired template action
+            SkillActionGroup innerGroup = new SkillActionGroup(
+                source: _innerSource,
+                templateAction: _innerPrefab,
+                target: _innerAimTarget,
+                effects: _effects,
+                tuning: _innerTuning
+            );
 
             TemplateAction.TryPlay(innerGroup, _me, _onExpired, _onHit, _fromPreviousStep);
         }

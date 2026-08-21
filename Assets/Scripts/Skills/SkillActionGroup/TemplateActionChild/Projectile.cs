@@ -10,8 +10,7 @@ namespace MagicSchool.Skills
     public abstract class Projectile : TemplateAction
     {
         [SerializeField] protected float _speed = 8f;
-        // FIXLATER: Projectile should be able to set size like AOE too.
-        [SerializeField] protected float _size = 1f;
+        protected float _size = 1f;
 
         // FIXLATER: aimRange for Projectile = global
         protected int _aimRange = 4;               // how far out, in hexes, a hex-aimed shot may look
@@ -54,6 +53,7 @@ namespace MagicSchool.Skills
 
             if (projectileTuning.Range.HasValue) _aimRange = projectileTuning.Range.Value;
             if (projectileTuning.Spread.HasValue) _spread = projectileTuning.Spread.Value;
+            if (projectileTuning.Size.HasValue) _size = projectileTuning.Size.Value;
         }
 
         protected override void Play()

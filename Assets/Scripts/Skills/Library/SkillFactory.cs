@@ -111,8 +111,9 @@ namespace MagicSchool.Skills
                                           float? duration = null, float? spread = null)
             => new MoveTuning { CastTime = castTime, Range = range, Duration = duration, Spread = spread };
         
-        public static ProjectileTuning TuneProjectile(float? castTime = null, int? range = null, float? spread = null)
-            => new ProjectileTuning { CastTime = castTime, Range = range, Spread = spread };
+        public static ProjectileTuning TuneProjectile(float? castTime = null, int? range = null,
+                                                      float? spread = null, float? size = null)
+            => new ProjectileTuning { CastTime = castTime, Range = range, Spread = spread, Size = size };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

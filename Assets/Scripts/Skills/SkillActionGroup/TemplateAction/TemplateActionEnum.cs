@@ -15,7 +15,7 @@ namespace MagicSchool.Skills
         CircleAOE = 2,
         CircleAOESticky = 15,
         HalfCircleAOESticky = 17,
-        CircleAOETip = 3,
+        CircleAOETip = 3,   // ASKING: Why we still have tip version?
         TriangleAOE = 4,
         ZoneAOE = 5,
 
@@ -23,7 +23,6 @@ namespace MagicSchool.Skills
         FirstHitProjectile = 7,
         HomingProjectile = 8,
         PiercingProjectile = 9,
-        PiercingProjectileSonaVariant = 12,
 
         // ==================================== Other ====================================
         Cast = 10,

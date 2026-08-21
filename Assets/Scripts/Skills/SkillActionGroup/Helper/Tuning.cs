@@ -27,5 +27,6 @@ namespace MagicSchool.Skills
     {
         public int? Range;               // how far out, in hexes, a hex-aimed shot may look
         public float? Spread;            // ClusteredCircle's blast radius, or ClusteredLaser's beam half-width
+        public float? Size;              // how wide the projectile is, as a scale on the prefab's collider
     }
 }

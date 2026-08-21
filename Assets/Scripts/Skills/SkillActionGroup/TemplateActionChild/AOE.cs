@@ -13,7 +13,7 @@ namespace MagicSchool.Skills
     internal abstract class AOE : TemplateAction
     {
         protected float _duration = 0.5f;    // how long the blast stays up before it expires
-        [SerializeField] private AOEOffsetEnum _offset;
+        private AOEOffsetEnum _offset;
         private Sticky _sticky;
 
         // ======================================= override =======================================

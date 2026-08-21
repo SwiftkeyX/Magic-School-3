@@ -7,7 +7,7 @@ namespace MagicSchool.Skills
     /// <summary>
     /// Projectile was aim toward the "target", what determined which recipients get hit is based on the projectile type.
     /// </summary>
-    public abstract class Projectile : TemplateAction
+    public abstract class Projectile : TemplateAction<ProjectileTuning>
     {
         [SerializeField] protected float _speed = 8f;
         protected float _size = 1f;
@@ -44,12 +44,8 @@ namespace MagicSchool.Skills
         protected bool IsTargetAlive => _target != null && _target.IsAlive;
 
         // ======================================== override method ========================================
-        // FIXLATER: the cast type loo ugly. Could we do something about it?
-        protected override void ApplyTuning(Tuning tuning)
+        protected override void ApplyTypedTuning(ProjectileTuning projectileTuning)
         {
-            base.ApplyTuning(tuning);
-            if (tuning is not ProjectileTuning projectileTuning) return;
-
             if (projectileTuning.Range.HasValue) _reachRange = projectileTuning.Range.Value;
             if (projectileTuning.Spread.HasValue) _spread = projectileTuning.Spread.Value;
             if (projectileTuning.Size.HasValue) _size = projectileTuning.Size.Value;

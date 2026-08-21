@@ -8,7 +8,7 @@ namespace MagicSchool.Skills
     /// <summary>
     /// AOE type for TemplateAction
     /// </summary>
-    internal abstract class AOE : TemplateAction
+    internal abstract class AOE : TemplateAction<AOETuning>
     {
         protected float _duration = 0.5f;    // how long the blast stays up before it expires
         private AOEOffsetEnum _offset;
@@ -16,11 +16,8 @@ namespace MagicSchool.Skills
         private int _reachRange = int.MaxValue;   // how far a AOE can reach, in hexes, default to global range (Not a size)
 
         // ======================================= override =======================================
-        protected override void ApplyTuning(Tuning tuning)
+        protected override void ApplyTypedTuning(AOETuning aoeTuning)
         {
-            base.ApplyTuning(tuning);
-            if (tuning is not AOETuning aoeTuning) return;
-
             if (aoeTuning.Size.HasValue) SetSize(aoeTuning.Size.Value);
 
             if (aoeTuning.Sticky.HasValue) _sticky.IsSticky = aoeTuning.Sticky.Value;

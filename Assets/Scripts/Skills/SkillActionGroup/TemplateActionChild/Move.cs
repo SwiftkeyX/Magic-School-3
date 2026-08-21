@@ -4,22 +4,19 @@ using MagicSchool.Engine;
 
 namespace MagicSchool.Skills
 {
-    internal class Move : TemplateAction
+    internal class Move : TemplateAction<MoveTuning>
     {
         [SerializeField] private AnimationCurve _jumpCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-        private int _jumpRange = 2;                
-        private float _jumpDuration = 0.5f;        
+        private int _jumpRange = 2;
+        private float _jumpDuration = 0.5f;
         private float _spread = 1f;
         private IPlacement _landing;    // hex the caster ends up on after moving
         private CurveMotion _jump;
         private bool _isJumping;
 
         // ======================================== override ========================================
-        protected override void ApplyTuning(Tuning tuning)
+        protected override void ApplyTypedTuning(MoveTuning moveTuning)
         {
-            base.ApplyTuning(tuning);
-            if (tuning is not MoveTuning moveTuning) return;
-
             if (moveTuning.Range.HasValue) _jumpRange = moveTuning.Range.Value;
             if (moveTuning.Duration.HasValue) _jumpDuration = moveTuning.Duration.Value;
             if (moveTuning.Spread.HasValue) _spread = moveTuning.Spread.Value;

@@ -229,4 +229,16 @@ namespace MagicSchool.Skills
             return resolve;
         }
     }
+
+    // Template action but with type casting for Tuning
+    public abstract class TemplateAction<TTuning> : TemplateAction where TTuning : Tuning
+    {
+        protected sealed override void ApplyTuning(Tuning tuning)
+        {
+            base.ApplyTuning(tuning);
+            if (tuning is TTuning typed) ApplyTypedTuning(typed);
+        }
+
+        protected abstract void ApplyTypedTuning(TTuning tuning);
+    }
 }

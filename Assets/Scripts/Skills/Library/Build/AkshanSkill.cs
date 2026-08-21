@@ -11,6 +11,8 @@ namespace MagicSchool.Skills
         private const float MGDamagePerShot = 125f;
         private const int ShotCount = 6;
         private const float IntervalBetweenShot = 0.1f;
+        private const float TotalCastTime = IntervalBetweenShot * (ShotCount - 1);
+
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
@@ -27,7 +29,8 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
                 target: AimTargetEnum.Furthest,
-                tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune),
+                tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
+                                             castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,

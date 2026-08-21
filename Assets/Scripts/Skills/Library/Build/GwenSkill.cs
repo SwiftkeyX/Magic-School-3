@@ -10,6 +10,7 @@ namespace MagicSchool.Skills
         private const float MGDamagePerSnip = 100f;   // sheet: 100/150/400% AP
         private const int SnipCount = 3;
         private const float IntervalBetweenSnip = 0.2f;
+        private const float TotalCastTime = IntervalBetweenSnip * (SnipCount - 1);
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -27,7 +28,11 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.FireTimingRunnerTriangleAOE,
                 target: AimTargetEnum.Current,
-                tuning: TuneFireTimingRunner(SnipCount, FireTimingModeEnum.Sequence, IntervalBetweenSnip, tune),
+                tuning: TuneFireTimingRunner(
+                    SnipCount, FireTimingModeEnum.Sequence, 
+                    IntervalBetweenSnip, 
+                    tune,
+                    castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,

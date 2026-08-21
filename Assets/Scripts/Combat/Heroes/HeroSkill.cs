@@ -139,7 +139,7 @@ namespace MagicSchool.Combat.Heroes
                 // if one of the template action is played, stop
                 if (played)
                 {
-                    _castTime = actionGroup.TemplateAction.CastTime;
+                    _castTime = actionGroup.Tuning?.CastTime ?? actionGroup.TemplateAction.CastTime;
                     return true;
                 }
             }

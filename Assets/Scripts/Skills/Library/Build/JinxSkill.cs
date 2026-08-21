@@ -21,6 +21,7 @@ namespace MagicSchool.Skills
         private const int ShotCount = 5;
         private const float IntervalBetweenShot = 0.1f;
         private const int RandomPoolRadius = 2;        // sheet: "random enemies within 2 hexes of the current target"
+        private const float TotalCastTime = IntervalBetweenShot * (ShotCount - 1);
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
@@ -39,7 +40,7 @@ namespace MagicSchool.Skills
                 action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
                 target: AimTargetEnum.Random,
                 tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
-                                             randomPoolRadius: RandomPoolRadius),
+                                             randomPoolRadius: RandomPoolRadius, castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,

@@ -17,7 +17,7 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Move(registry), Charge(registry) });
+                activeSteps: new List<SkillStep> { Move(registry), AOE(registry) });
         }
 
         private static SkillStep Move(TemplateActionRegistrySO registry)
@@ -33,7 +33,7 @@ namespace MagicSchool.Skills
             return Step(trigger: TriggerEnum.OnCast, groups: move);
         }
 
-        private static SkillStep Charge(TemplateActionRegistrySO registry)
+        private static SkillStep AOE(TemplateActionRegistrySO registry)
         {
             ICustomModifier knockup = Bundle(
                 duration: KnockedUpDuration,
@@ -46,8 +46,9 @@ namespace MagicSchool.Skills
             SkillActionGroup charge = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.HalfCircleAOESticky,  
+                action: TemplateActionEnum.HalfCircleAOESticky,
                 target: AimTargetEnum.Self,
+                tuning: TuneAOE(sticky: true),
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInPath,

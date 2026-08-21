@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b55b0dd9ae9b645ad69373b7cb4ae9, type: 3}
   m_Name: Akshan
   m_EditorClassIdentifier: Assembly-CSharp::HeroStat
-  _prefab: {fileID: 182412447273031416, guid: d80413cf088abf14a91155c665ab8116, type: 3}
+  _prefab: {fileID: 182412447273031416, guid: f69d9ea78b3c430499fe48d98d83463e, type: 3}
   _name: Akshan
   _hp: 500
   _attack: 40
@@ -20,7 +20,7 @@ MonoBehaviour:
   _magic: 40
   _magicResist: 20
   _attackSpeed: 1
-  _range: 1
+  _range: 4
   _startMana: 0
   _maxMana: 50
   _skillId: 14

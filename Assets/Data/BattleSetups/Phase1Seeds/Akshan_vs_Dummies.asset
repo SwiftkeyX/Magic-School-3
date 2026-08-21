@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Akshan_vs_Dummies
   m_EditorClassIdentifier: Assembly-CSharp::BattlePlacementSO
   _heroesPlacement:
-  - dataSO: {fileID: 11400000, guid: 841a5aaa2fba756488ce7d7b9745395c, type: 2}
+  - dataSO: {fileID: 11400000, guid: 81eb954f0f0758046a44fafb654cecf8, type: 2}
     hexPlacement:
       team: 0
-      column: 3
+      column: 0
       row: 1
   - dataSO: {fileID: 11400000, guid: 374c72dcb09b46c5ae6604af3ec59b79, type: 2}
     hexPlacement:

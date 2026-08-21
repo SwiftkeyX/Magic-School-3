@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MagicSchool.HeroDataSO
   _prefab: {fileID: 9062959879009104552, guid: f1da0e08ecc1f294a80cf9498bcc9e75, type: 3}
   _name: MovingDummy
-  _hp: 5000
+  _hp: 1000
   _attack: 0
   _defend: 0
   _magic: 0
@@ -23,5 +23,5 @@ MonoBehaviour:
   _range: 1
   _startMana: 0
   _maxMana: 50
-  _skill: {fileID: 0}
+  _skillId: 0
   _isDummy: 1

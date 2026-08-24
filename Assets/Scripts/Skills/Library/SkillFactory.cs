@@ -113,9 +113,16 @@ namespace MagicSchool.Skills
 
         public static FireTimingRunnerTuning TuneFireTimingRunner(int count, FireTimingModeEnum mode,
                                                                    float interval = 0f, Tuning innerTuning = null,
-                                                                   int? randomPoolRadius = null, float? castTime = null)
+                                                                   float? castTime = null)
             => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval, InnerTuning = innerTuning,
-                                            RandomPoolRadius = randomPoolRadius, CastTime = castTime };
+                                            CastTime = castTime };
+
+        public static FireTimingRunnerProjectileTuning TuneFireTimingRunnerProjectile(int count, FireTimingModeEnum mode,
+                                                                   float interval = 0f, Tuning innerTuning = null,
+                                                                   int? randomPoolRadius = null, float? castTime = null)
+            => new FireTimingRunnerProjectileTuning { Count = count, Mode = mode, Interval = interval,
+                                                      InnerTuning = innerTuning, RandomPoolRadius = randomPoolRadius,
+                                                      CastTime = castTime };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

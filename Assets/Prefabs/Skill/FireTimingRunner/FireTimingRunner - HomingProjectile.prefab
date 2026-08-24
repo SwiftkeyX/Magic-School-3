@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1797587087851222643}
-  - component: {fileID: 8891645874628243971}
+  - component: {fileID: 7575991698492996291}
   m_Layer: 0
   m_Name: FireTimingRunner - HomingProjectile
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8891645874628243971
+--- !u!114 &7575991698492996291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8049204807579425421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 324baa9c0ae14b74fb099e5a58f52035, type: 3}
+  m_Script: {fileID: 11500000, guid: d38a07eafdc6c1e44834aedabf482def, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: MagicSchool.Skills::MagicSchool.Skills.FireTimingRunner
+  m_EditorClassIdentifier: MagicSchool.Skills::MagicSchool.Skills.FireTimingRunnerProjectile
   _castTime: 0
   _innerPrefab: {fileID: 8198009179562479145, guid: f5699f21fd14aa24c868db5dbc393fd3, type: 3}

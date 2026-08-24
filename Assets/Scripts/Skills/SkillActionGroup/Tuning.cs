@@ -37,8 +37,12 @@ namespace MagicSchool.Skills
         public FireTimingModeEnum? Mode;    // fire once or in sequence
         public float? Interval;             // delay between shots - only read when Mode is Sequence
         public Tuning InnerTuning;          // tune for the template action that'll be fired
-        // FIXLATER: it was ugly, is there a way to clean this?
-        public int? RandomPoolRadius;       // only read when aimed with AimTargetEnum.Random - how
-                                            // many hexes from the current target the pool reaches
+    }
+
+    // FireTimingRunner with Projectile
+    // FLAGGING: Currently use in 1 scenario e.g. Jinx attack random enemies in 2 hex of current target
+    public class FireTimingRunnerProjectileTuning : FireTimingRunnerTuning
+    {
+        public int? RandomPoolRadius;    
     }
 }

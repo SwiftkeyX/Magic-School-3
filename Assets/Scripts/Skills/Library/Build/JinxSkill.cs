@@ -39,8 +39,8 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
                 target: AimTargetEnum.Random,
-                tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
-                                             randomPoolRadius: RandomPoolRadius, castTime: TotalCastTime),
+                tuning: TuneFireTimingRunnerProjectile(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
+                                                       randomPoolRadius: RandomPoolRadius, castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,

@@ -28,8 +28,8 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
                 target: AimTargetEnum.Furthest,
-                tuning: TuneFireTimingRunner(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
-                                             castTime: TotalCastTime),
+                tuning: TuneFireTimingRunnerProjectile(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
+                                                       castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,

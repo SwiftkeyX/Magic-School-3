@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using MagicSchool.Contracts;
 using UnityEngine;
 
@@ -27,9 +26,7 @@ namespace MagicSchool.Skills
         private int _randomPoolRadius;
 
         // ======================================= Random pool =======================================
-        // Pseudo-random
-        private List<ICombatant> _randomPool;
-        private int _randomPoolIndex;
+        private RandomTargetPool _randomTargets;
 
         // ======================================= Event =======================================
         protected override void SubscribeTriggers(Action<SkillStepContext> onExpired, Action<SkillStepContext> onHit)
@@ -90,7 +87,9 @@ namespace MagicSchool.Skills
             // if aim = random, FireTimingRunner have to be the organizer for picking the random unit.
             if (_innerAimTarget == AimTargetEnum.Random)
             {
-                ICombatant chosen = NextRandomTarget();
+                if (_randomTargets == null) _randomTargets = new RandomTargetPool(_me, _randomPoolRadius);
+
+                ICombatant chosen = _randomTargets.Next();
                 if (chosen == null) return;   
 
                 shotAimTarget = AimTargetEnum.Assigned;
@@ -121,42 +120,6 @@ namespace MagicSchool.Skills
 
             // after fire everything, destroy itself
             DestroyMe();
-        }
-
-        // ====================================== random ======================================
-        // FIXLATER: move this out to its own class
-        // To organize the pseudo random Fire 
-        // e.g. Jinx's fire at nearest enemies to current target.
-        private ICombatant NextRandomTarget()
-        {
-            // guard, and build the random pool
-            if (_randomPool == null)
-            {
-                ICombatant currentTarget = _me.FindCurrentTarget();
-                _randomPool = new List<ICombatant>(_me.FindEnemiesNear(currentTarget, _randomPoolRadius));
-                _randomPoolIndex = _randomPool.Count;   // force the first call below to shuffle
-            }
-
-            if (_randomPool.Count == 0) return null;
-
-            // once the pool is all used, reset the pool, and re-shuffle the pool
-            if (_randomPoolIndex >= _randomPool.Count)
-            {
-                Shuffle(_randomPool);
-                _randomPoolIndex = 0;
-            }
-
-            // return one of the random unit
-            return _randomPool[_randomPoolIndex++];
-        }
-
-        private static void Shuffle(List<ICombatant> list)
-        {
-            for (int i = list.Count - 1; i > 0; i--)
-            {
-                int j = UnityEngine.Random.Range(0, i + 1);
-                (list[i], list[j]) = (list[j], list[i]);
-            }
         }
     }
 }

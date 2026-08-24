@@ -60,36 +60,31 @@ namespace MagicSchool.Skills
             => new StatusModifier(status);
 
         // ================================== ActionGroup ==================================
-        // FIXLATER: there's too much duplicate of ActionGroup function here, could we group them into 1?
         // a template action
         public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                    TemplateActionEnum action, AimTargetEnum target,
                                                    params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    effects: new List<SkillEffect>(effects));
+            => Group(registry, source, action, target, conditions: null, tuning: null, effects: effects);
 
         // the same, with this hero's numbers for the action
         public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                    TemplateActionEnum action, AimTargetEnum target,
                                                    Tuning tuning,
                                                    params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    effects: new List<SkillEffect>(effects), tuning: tuning);
+            => Group(registry, source, action, target, conditions: null, tuning: tuning, effects: effects);
 
-        // a template action with condition
+        // a template action with condition, and this hero's numbers for it if it needs them.
         // conditin need to be true, in order this template action to play.
         public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                        TemplateActionEnum action, AimTargetEnum target,
-                                                       List<SkillCondition> conditions,
+                                                       List<SkillCondition> conditions, Tuning tuning = null,
                                                        params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    conditions: conditions, effects: new List<SkillEffect>(effects));
+            => Group(registry, source, action, target, conditions: conditions, tuning: tuning, effects: effects);
 
-        // the same, with this hero's numbers for the action
-        public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
-                                                       TemplateActionEnum action, AimTargetEnum target,
-                                                       List<SkillCondition> conditions, Tuning tuning,
-                                                       params SkillEffect[] effects)
+        private static SkillActionGroup Group(TemplateActionRegistrySO registry, ActionSourceEnum source,
+                                              TemplateActionEnum action, AimTargetEnum target,
+                                              List<SkillCondition> conditions, Tuning tuning,
+                                              SkillEffect[] effects)
             => new SkillActionGroup(source, registry.Get(action), target,
                                     conditions: conditions, effects: new List<SkillEffect>(effects), tuning: tuning);
 

@@ -1,10 +1,15 @@
 /* Match status - the hint line and the win banner, layered over the board.
    Palette matches Shop.uss and HeroPanel.uss so the three read as one UI. */
 
+/* Fills the StatusPanel overlay, which is itself absolutely positioned over the whole Top
+   row - so percentages here resolve against the play area rather than against a box that
+   collapsed to its own content. */
 .status-layer {
-    flex-grow: 1;
-    height: 100%;
-    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     align-items: center;
     justify-content: center;
 }
@@ -14,7 +19,7 @@
    off centre - the two are independent, and both can be on screen at once. */
 .hint {
     position: absolute;
-    bottom: 6px;
+    bottom: 10px;
     color: rgba(232, 230, 240, 0.75);
     font-size: 13px;
     -unity-font-style: bold;

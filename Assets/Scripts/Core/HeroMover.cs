@@ -2,12 +2,9 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.Core
 {
-    // There's 2 ways, hero can move:
-    // 1) Hero move on their own while combat
-    // 2) Hero got move by the system
-
     /// <summary>
-    /// This is the said system that move hero e.g. move hero while seeding hero on the board
+    /// This is the system that move hero during preparation state. (not in combat state) 
+    /// e.g. seeding hero on the board, player move hero by dragging
     /// </summary>
     public class HeroMover
     {

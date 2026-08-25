@@ -21,7 +21,10 @@ namespace MagicSchool.Skills
             SkillDefinition skill = new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Cast(registry), OnCastExpired(registry) },
-                passiveSteps: new List<SkillStep> { OnAttack(registry) });
+                passiveSteps: new List<SkillStep> { OnAttack(registry) },
+                description: "Works himself into a frenzy for 2.5 seconds, doubling his attack speed. When it wears "
+                           + "off he lets out a howl that stuns every enemy around him.",
+                passiveDescription: "Every auto attack he lands heals him.");
 
             return skill;
         }

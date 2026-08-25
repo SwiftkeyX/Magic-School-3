@@ -16,7 +16,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Snip(registry) });
+                activeSteps: new List<SkillStep> { Snip(registry) },
+                description: "Snips three times in quick succession, each cut carving a wedge in front of her that "
+                           + "damages every enemy standing inside it.");
         }
 
         private static SkillStep Snip(TemplateActionRegistrySO registry)

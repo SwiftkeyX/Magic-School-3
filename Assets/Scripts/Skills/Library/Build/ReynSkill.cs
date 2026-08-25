@@ -16,7 +16,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Shoot(registry) });
+                activeSteps: new List<SkillStep> { Shoot(registry) },
+                description: "Fires six shots in quick succession at the furthest enemy, each one landing as both "
+                           + "physical and magic damage.");
         }
 
         private static SkillStep Shoot(TemplateActionRegistrySO registry)

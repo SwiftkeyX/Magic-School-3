@@ -15,7 +15,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { DirectDamage(registry) });
+                activeSteps: new List<SkillStep> { DirectDamage(registry) },
+                description: "Strikes the current target four times in quick succession, every blow landing as both "
+                           + "physical and magic damage.");
         }
 
         private static SkillStep DirectDamage(TemplateActionRegistrySO registry)

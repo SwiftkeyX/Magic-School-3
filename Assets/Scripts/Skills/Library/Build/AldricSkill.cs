@@ -16,7 +16,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Jump(registry), Landing(registry) });
+                activeSteps: new List<SkillStep> { Jump(registry), Landing(registry) },
+                description: "Leaps into the densest part of the enemy formation. The landing damages everyone "
+                           + "caught around him and leaves them stunned for 2 seconds.");
         }
 
         private static SkillStep Jump(TemplateActionRegistrySO registry)

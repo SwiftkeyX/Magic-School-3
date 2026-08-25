@@ -21,7 +21,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Wave(registry) });
+                activeSteps: new List<SkillStep> { Wave(registry) },
+                description: "Sends a wave through the thickest part of the enemy line. Enemies it passes through "
+                           + "take damage; allies it passes through are left faster for the rest of the fight.");
         }
 
         private static SkillStep Wave(TemplateActionRegistrySO registry)

@@ -14,7 +14,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Shoot(registry), Explode(registry) });
+                activeSteps: new List<SkillStep> { Shoot(registry), Explode(registry) },
+                description: "Fires a homing shot into the densest cluster of enemies. "
+                           + "it bursts where it lands, damaging everyone inside the blast.");
         }
 
         private static SkillStep Shoot(TemplateActionRegistrySO registry)

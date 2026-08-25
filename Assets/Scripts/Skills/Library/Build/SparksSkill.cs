@@ -27,7 +27,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Shoot(registry) });
+                activeSteps: new List<SkillStep> { Shoot(registry) },
+                description: "Fires five rockets one after another at random enemies near the current target, "
+                           + "never hitting the same one twice until everyone in range has been caught once.");
         }
 
         private static SkillStep Shoot(TemplateActionRegistrySO registry)

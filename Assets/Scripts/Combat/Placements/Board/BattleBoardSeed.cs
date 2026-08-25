@@ -13,24 +13,19 @@ namespace MagicSchool.Combat.Placements
     {
         private readonly BattlePlacementSO _placementSO;
         private readonly BattleBoard _board;     // need to know which board, it'll seed on (there maybe several board at once)
-        private readonly bool _seedMode;
 
         // Raised to ask for a hero. Fires BEFORE anything is spawned - HeroSpawner does the work.
         public event Action<HeroDataSO, TeamEnum, IPlacement, BattleBoard> OnSpawnRequested;
 
-        public BattleBoardSeed(BattlePlacementSO placementSO, BattleBoard board, bool seedMode)
+        public BattleBoardSeed(BattlePlacementSO placementSO, BattleBoard board)
         {
             _placementSO = placementSO;
             _board = board;
-            _seedMode = seedMode;
         }
 
-        /// <summary>
-        /// Counterpart to Bench.SpawnHeroOnBench().
-        /// </summary>
-        public void SpawnHeroOnBoard()
+        // spawn hero on the board according to the set seed 
+        public void SpawnTeamOnBoard(TeamEnum team)
         {
-            if (!_seedMode) return;
             if (_placementSO == null) { DebugTool.LogError("Can't seed the hero. Hero Placement is null"); return; }
             if (OnSpawnRequested == null) { DebugTool.LogError("Can't seed the hero. Nothing is listening for spawn requests."); return; }
 
@@ -38,6 +33,9 @@ namespace MagicSchool.Combat.Placements
             {
                 HeroDataSO data = heroPlacement.dataSO;
                 HexNumber placement = heroPlacement.hexPlacement;
+
+                if (placement.team != team) continue;
+
                 OnSpawnRequested.Invoke(data, placement.team, _board.Hexs[placement], _board);
             }
         }

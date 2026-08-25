@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using MagicSchool.Engine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
 using MagicSchool.Skills;
@@ -29,8 +30,14 @@ namespace MagicSchool.Core
             Instance = this;
 
             _heroMover = new HeroMover();
-            _seed = new BattleBoardSeed(_placementSO, _board, _seedMode);
+            _seed = new BattleBoardSeed(_placementSO, _board);
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
+        }
+
+        // at start, spawn enemy team
+        void Start()
+        {
+            _seed.SpawnTeamOnBoard(TeamEnum.Red);
         }
 
         // The system moving a hero, as opposed to a hero walking itself during combat.
@@ -48,10 +55,20 @@ namespace MagicSchool.Core
         {
             if (Phase != GamePhaseEnum.Preparation) return;
 
-            SetPhase(GamePhaseEnum.Combat);
+            // spawn player team if seedMode activate
+            if (_seedMode) _seed.SpawnTeamOnBoard(TeamEnum.Blue);
 
-            _seed.SpawnHeroOnBoard();
+            // guard
+            if (!HasHeroesOnBoard(TeamEnum.Blue))
+            {
+                DebugTool.LogWarning("Can't start combat - place at least one hero on the board first.");
+                return;
+            }
+
+            SetPhase(GamePhaseEnum.Combat);
         }
+
+        private bool HasHeroesOnBoard(TeamEnum team) => _board.HeroesOnBoard.Any(h => h.Team == team);
 
         // The board is the one thing heroes already hold a reference to, so the phase is pushed
         // there rather than pulled back out of this singleton.

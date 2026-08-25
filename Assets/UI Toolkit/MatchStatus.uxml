@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MatchStatus.uss"/>
+    <!-- Root is named BoardArea because that is the slot it mounts into, the same convention
+         ShopPanelController and HeroPanelController follow.
+
+         picking-mode is Ignore all the way down: this layer sits over the board, and the board
+         is picked by dragging heroes on it. Nothing here is clickable and nothing here should
+         ever swallow a drag.
+
+         Both children are authored visible so the layout can be seen in UI Builder.
+         MatchStatusController hides the banner on the first frame. -->
+    <ui:VisualElement name="BoardArea" picking-mode="Ignore" class="status-layer">
+        <ui:VisualElement name="ResultBanner" picking-mode="Ignore" class="banner">
+            <ui:Label name="ResultText" picking-mode="Ignore" text="BLUE WINS" class="banner__text banner__text--blue"/>
+            <ui:Label name="ResultHint" picking-mode="Ignore" text="press R to play again" class="banner__hint"/>
+        </ui:VisualElement>
+
+        <ui:Label name="PhaseHint" picking-mode="Ignore" text="Drag heroes onto your hexes, then press SPACE to fight" class="hint"/>
+    </ui:VisualElement>
+</ui:UXML>

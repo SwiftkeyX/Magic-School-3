@@ -43,8 +43,29 @@ namespace MagicSchool.Player
             if (GameManager.Instance == null) return;
 
             TryStartCombat();
+            TryRestart();
             TryInspectHero();
             PlayerMoveHero();
+        }
+
+        // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
+        // Lives on the player side so starting a battle is something input asks for, rather than
+        // something GameManager reaches into input to discover.
+        // spacebar to start combat
+        private void TryStartCombat()
+        {
+            if (!PlayerInputSystem.SpacePressedThisFrame) return;
+
+            GameManager.Instance.StartCombat();
+        }
+        
+        // Press R once the match is over to play again. 
+        private void TryRestart()
+        {
+            if (!PlayerInputSystem.RestartPressedThisFrame) return;
+            if (GameManager.Instance.Phase != GamePhaseEnum.Result) return;
+
+            GameManager.Instance.Restart();
         }
 
         // Right-click a hero to inspect it.
@@ -61,15 +82,6 @@ namespace MagicSchool.Player
             _inspector?.Inspect(hero);
         }
 
-        // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
-        // Lives on the player side so starting a battle is something input asks for, rather than
-        // something GameManager reaches into input to discover.
-        private void TryStartCombat()
-        {
-            if (!PlayerInputSystem.SpacePressedThisFrame) return;
-
-            GameManager.Instance.StartCombat();
-        }
 
         // left click hero to drag it around.
         private void PlayerMoveHero()

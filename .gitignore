@@ -79,5 +79,6 @@ google-service-credential.json
 __pycache__/
 *.pyc
 
-# Transient sheet dump written at repo root by sheet_sync.py (dated copies live in .claude/reference/json/)
+# Sheet dumps written by sheet_sync.py. Third-party reference data - never commit these.
 /sheet_dump.json
+.claude/reference/

@@ -12,57 +12,62 @@
          Do not write a double dash in a UXML comment. It is XML, and that is a parse error
          that silently breaks the whole asset. -->
     <ui:VisualElement name="HeroPanel" class="hero-panel">
-        <ui:Label name="HeroName" text="Vharn" class="hero-panel__name"/>
-        <ui:Label name="HeroTeam" text="BLUE" class="hero-panel__team"/>
+        <!-- The content is taller than the row it sits in at most window sizes, so it scrolls
+             rather than spilling over the board and the bench. Q() searches descendants, so
+             the controller finds every label through this just the same. -->
+        <ui:ScrollView name="HeroScroll" class="hero-panel__scroll" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden">
+            <ui:Label name="HeroName" text="Vharn" class="hero-panel__name"/>
+            <ui:Label name="HeroTeam" text="BLUE" class="hero-panel__team"/>
 
-        <ui:VisualElement name="HpBar" class="bar">
-            <ui:VisualElement name="HpFill" class="bar__fill bar__fill--hp" style="width: 64%;"/>
-            <ui:Label name="HpLabel" text="320 / 500" class="bar__label"/>
-        </ui:VisualElement>
+            <ui:VisualElement name="HpBar" class="bar">
+                <ui:VisualElement name="HpFill" class="bar__fill bar__fill--hp" style="width: 64%;"/>
+                <ui:Label name="HpLabel" text="320 / 500" class="bar__label"/>
+            </ui:VisualElement>
 
-        <ui:VisualElement name="ManaBar" class="bar">
-            <ui:VisualElement name="ManaFill" class="bar__fill bar__fill--mana" style="width: 60%;"/>
-            <ui:Label name="ManaLabel" text="30 / 50" class="bar__label"/>
-        </ui:VisualElement>
+            <ui:VisualElement name="ManaBar" class="bar">
+                <ui:VisualElement name="ManaFill" class="bar__fill bar__fill--mana" style="width: 60%;"/>
+                <ui:Label name="ManaLabel" text="30 / 50" class="bar__label"/>
+            </ui:VisualElement>
 
-        <ui:VisualElement name="StatGrid" class="stat-grid">
-            <ui:VisualElement class="stat">
-                <ui:Label text="ATK" class="stat__key"/>
-                <ui:Label name="StatAtk" text="40" class="stat__value"/>
+            <ui:VisualElement name="StatGrid" class="stat-grid">
+                <ui:VisualElement class="stat">
+                    <ui:Label text="ATK" class="stat__key"/>
+                    <ui:Label name="StatAtk" text="40" class="stat__value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat">
+                    <ui:Label text="DEF" class="stat__key"/>
+                    <ui:Label name="StatDef" text="20" class="stat__value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat">
+                    <ui:Label text="MAG" class="stat__key"/>
+                    <ui:Label name="StatMag" text="40" class="stat__value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat">
+                    <ui:Label text="MR" class="stat__key"/>
+                    <ui:Label name="StatMr" text="20" class="stat__value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat">
+                    <ui:Label text="AS" class="stat__key"/>
+                    <ui:Label name="StatAs" text="1.00" class="stat__value"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="stat">
+                    <ui:Label text="RNG" class="stat__key"/>
+                    <ui:Label name="StatRange" text="1" class="stat__value"/>
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement class="stat">
-                <ui:Label text="DEF" class="stat__key"/>
-                <ui:Label name="StatDef" text="20" class="stat__value"/>
-            </ui:VisualElement>
-            <ui:VisualElement class="stat">
-                <ui:Label text="MAG" class="stat__key"/>
-                <ui:Label name="StatMag" text="40" class="stat__value"/>
-            </ui:VisualElement>
-            <ui:VisualElement class="stat">
-                <ui:Label text="MR" class="stat__key"/>
-                <ui:Label name="StatMr" text="20" class="stat__value"/>
-            </ui:VisualElement>
-            <ui:VisualElement class="stat">
-                <ui:Label text="AS" class="stat__key"/>
-                <ui:Label name="StatAs" text="1.00" class="stat__value"/>
-            </ui:VisualElement>
-            <ui:VisualElement class="stat">
-                <ui:Label text="RNG" class="stat__key"/>
-                <ui:Label name="StatRange" text="1" class="stat__value"/>
-            </ui:VisualElement>
-        </ui:VisualElement>
 
-        <ui:VisualElement name="ActiveSection" class="section">
-            <ui:Label text="ACTIVE" class="section__kicker"/>
-            <ui:Label name="ActiveName" text="Skill" class="section__title"/>
-            <ui:Label name="ActiveBody" text="Transforms for 10 seconds, draining life with every hit he lands and turning his bonus attack speed into raw attack damage." class="section__body"/>
-        </ui:VisualElement>
+            <ui:VisualElement name="ActiveSection" class="section">
+                <ui:Label text="ACTIVE" class="section__kicker"/>
+                <ui:Label name="ActiveName" text="Skill" class="section__title"/>
+                <ui:Label name="ActiveBody" text="Transforms for 10 seconds, draining life with every hit he lands and turning his bonus attack speed into raw attack damage." class="section__body"/>
+            </ui:VisualElement>
 
-        <!-- Only two heroes have a passive, so this is hidden at runtime unless one is actually
-             there. Left visible here so the section can be styled. -->
-        <ui:VisualElement name="PassiveSection" class="section">
-            <ui:Label text="PASSIVE" class="section__kicker"/>
-            <ui:Label name="PassiveBody" text="While transformed his auto attack becomes a three beat combo - box, then triangle, then circle - and each beat lands harder than the one before it." class="section__body"/>
-        </ui:VisualElement>
+            <!-- Only two heroes have a passive, so this is hidden at runtime unless one is actually
+                 there. Left visible here so the section can be styled. -->
+            <ui:VisualElement name="PassiveSection" class="section">
+                <ui:Label text="PASSIVE" class="section__kicker"/>
+                <ui:Label name="PassiveBody" text="While transformed his auto attack becomes a three beat combo - box, then triangle, then circle - and each beat lands harder than the one before it." class="section__body"/>
+            </ui:VisualElement>
+        </ui:ScrollView>
     </ui:VisualElement>
 </ui:UXML>

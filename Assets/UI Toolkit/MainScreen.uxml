@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Root" picking-mode="Ignore" style="flex-grow: 1; flex-direction: column; height: 100%; width: 100%;">
-        <ui:VisualElement name="Top" style="flex-grow: 1; height: 70%; flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+        <ui:VisualElement name="Top" style="flex-grow: 1; height: 70%; flex-direction: row; align-items: stretch; justify-content: space-between; width: 100%;">
             <ui:VisualElement name="TraitPanel" style="flex-grow: 1; min-width: 33%; min-height: 100%;"/>
             <ui:VisualElement name="BoardArea" picking-mode="Ignore" style="flex-grow: 1; min-width: 33%; min-height: 100%;"/>
             <ui:VisualElement name="HeroPanel" style="flex-grow: 1; top: auto; bottom: auto; flex-direction: column; flex-wrap: nowrap; min-width: 33%; min-height: 100%; max-height: none;"/>

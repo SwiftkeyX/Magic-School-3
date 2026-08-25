@@ -10,7 +10,18 @@
     align-self: flex-end;
     width: 100%;
     max-width: 320px;
+
+    /* max-height, not just height: the row centres its children, so content taller than the
+       row spills equally off the top of the screen and down over the bench. Capping here and
+       scrolling inside is what keeps it inside the play area at any window size. */
     height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.hero-panel__scroll {
+    flex-grow: 1;
+    min-height: 0;   /* a flex child will not shrink below its content without this */
 }
 
 /* Empty state: nothing selected. The panel keeps its box so the board never reflows when a

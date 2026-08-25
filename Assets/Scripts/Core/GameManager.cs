@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using MagicSchool.Engine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
+using MagicSchool.Core.States;
 using MagicSchool.Skills;
 
 namespace MagicSchool.Core
@@ -18,15 +19,26 @@ namespace MagicSchool.Core
         [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _seedMode;
 
-        public GamePhaseEnum Phase { get; private set; } = GamePhaseEnum.Preparation;
+        public GamePhaseEnum Phase => _stateMachine == null ? GamePhaseEnum.Preparation : _stateMachine.CurrentType;
         public TeamEnum? Winner { get; private set; }
 
         private HeroMover _heroMover;
         private BattleBoardSeed _seed;
         private HeroSpawner _heroSpawner;
+        private GameStateMachine _stateMachine;
         private IMatchStatusView _status;
 
-        // init
+        // ======================== what the states read ========================
+        internal BattleBoard Board => _board;
+        internal BattleBoardSeed Seed => _seed;
+        internal IMatchStatusView Status => _status;
+
+        // ======================================== getter ========================================
+        internal void SetWinner(TeamEnum? winner) => Winner = winner;
+        internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
+        public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
+
+        // init dependency 
         void Awake()
         {
             Instance = this;
@@ -34,75 +46,43 @@ namespace MagicSchool.Core
             _heroMover = new HeroMover();
             _seed = new BattleBoardSeed(_placementSO, _board);
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
+            _stateMachine = new GameStateMachine(this);
             _status = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .OfType<IMatchStatusView>()
                 .FirstOrDefault();
         }
 
+        // start the game at preparation state
         void Start()
         {
-            // at start, spawn enemy team
-            _seed.SpawnTeamOnBoard(TeamEnum.Red);
-
-            // in preparation state, show banner
-            _status?.ShowPreparation();
+            _stateMachine.Start(GamePhaseEnum.Preparation);
         }
 
-        // restart by re-loading the scene 
+        void Update() => _stateMachine.Tick();
+
+        // ========================================= public function for controlling game state =========================================
+        // FIXLATER: If we implement GameManager contract, Restart() and StartCombat() look like a good candidate memeber.
+        // restart by re-loading the scene => the game is back to preparation state
         public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        // The system moving a hero, as opposed to a hero walking itself during combat.
-        public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
-
-        void Update()
-        {
-            if (Phase == GamePhaseEnum.Combat)
-            {
-                CheckForWinner();
-            }
-        }
-
+        // if game is in preparation state, then go combat state
         public void StartCombat()
         {
             if (Phase != GamePhaseEnum.Preparation) return;
 
-            // spawn player team if seedMode activate
+            // spawn player team if seedMode activate.
+            // before the guard, so a seeded team counts as heroes on the board
             if (_seedMode) _seed.SpawnTeamOnBoard(TeamEnum.Blue);
 
             // guard
-            if (!HasHeroesOnBoard(TeamEnum.Blue))
+            bool hasHeroesOnBoard = _board.HeroesOnBoard.Any(h => h.Team == TeamEnum.Blue);
+            if (!hasHeroesOnBoard)
             {
                 DebugTool.LogWarning("Can't start combat - place at least one hero on the board first.");
                 return;
             }
 
-            SetPhase(GamePhaseEnum.Combat);
-        }
-
-        private bool HasHeroesOnBoard(TeamEnum team) => _board.HeroesOnBoard.Any(h => h.Team == team);
-
-        private void SetPhase(GamePhaseEnum phase)
-        {
-            Phase = phase;
-
-            if (_board != null) _board.SetBattleOn(phase == GamePhaseEnum.Combat);
-
-            if (_status == null) return;
-            if (phase == GamePhaseEnum.Preparation) _status.ShowPreparation();
-            else if (phase == GamePhaseEnum.Combat) _status.ShowCombat();
-            else _status.ShowResult(Winner);   // Winner is set before this is called
-        }
-
-        private void CheckForWinner()
-        {
-            var alive = _board.HeroesOnBoard.Where(h => h.StateType != HeroStateEnum.Dead);
-            bool blueAlive = alive.Any(h => h.Team == TeamEnum.Blue);
-            bool redAlive = alive.Any(h => h.Team == TeamEnum.Red);
-
-            if (blueAlive && redAlive) return;
-
-            Winner = blueAlive ? TeamEnum.Blue : redAlive ? TeamEnum.Red : (TeamEnum?)null;
-            SetPhase(GamePhaseEnum.Result);
+            ChangeState(GamePhaseEnum.Combat);
         }
     }
 }

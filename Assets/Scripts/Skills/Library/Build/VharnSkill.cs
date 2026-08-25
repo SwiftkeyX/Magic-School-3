@@ -16,7 +16,7 @@ namespace MagicSchool.Skills
         private const int ComboLength = 3;
 
         private const float OmnivampFromAP = 10f;   // sheet: 10% AP omnivamp
-        private const float AttackFromAS = 80f;   // sheet: 80% of bonus AS, converted to AD
+        private const float AttackFromAS = 500f;   // sheet: 80% of bonus AS, converted to AD
         private const float TransformDuration = 10f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)

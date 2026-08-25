@@ -72,8 +72,8 @@ namespace MagicSchool.UI
         // update hero panel according to new hero data consumed
         private void Show(IInspectable unit)
         {
-            // if the hero selected is the currently the inspected on, return
-            if (_panel != null && ReferenceEquals(_shown, unit)) return;
+            // if the hero selected is the currently the inspected on, return.
+            if (_panel != null && _shown != null && ReferenceEquals(_shown, unit)) return;
 
             _shown = unit;
 

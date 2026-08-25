@@ -85,14 +85,12 @@ namespace MagicSchool.UI
             _panel.EnableInClassList("hero-panel--empty", !hasHero);
             if (!hasHero) return;
 
-            // FIXLATER: I think it's not consistent that IHeroStat don't contain DF, MG, and MR.
-            // The data that shown in inspector should have its own interface too, how about "IInspectorData"
             _heroName.text = hero.HeroName;
             _heroTeam.text = hero.Team.ToString().ToUpperInvariant();
             _statAtk.text = hero.AttackDamage.ToString();
-            _statDef.text = Mathf.RoundToInt(hero.GetStat(StatEnum.DF)).ToString();
-            _statMag.text = Mathf.RoundToInt(hero.GetStat(StatEnum.MG)).ToString();
-            _statMr.text = Mathf.RoundToInt(hero.GetStat(StatEnum.MR)).ToString();
+            _statDef.text = hero.Defence.ToString();
+            _statMag.text = hero.Magic.ToString();
+            _statMr.text = hero.MagicResist.ToString();
             _statAs.text = hero.AttackSpeed.ToString("0.00");
             _statRange.text = hero.Range.ToString();
 

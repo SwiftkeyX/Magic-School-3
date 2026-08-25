@@ -20,7 +20,12 @@ namespace MagicSchool.Player
             _team = TeamEnum.Blue;
         }
 
-        // FIXNOW: Make it a serializeField. 
+        // FLAGGING: this wants to be a [SerializeField] and cannot be one - Unity does not
+        // serialize interface fields, so the reference would just sit there null. Doing it
+        // properly means a MonoBehaviour field plus a RequireInterface PropertyDrawer to stop
+        // the wrong component being dragged in (ShowIfDrawer in Core/Editor is the pattern).
+        // Deliberately not done: the scan runs once and costs nothing at runtime. The thing it
+        // actually costs is that the wiring is invisible in the Inspector.
         void Start()
         {
             _inspector = FindAnyInspector();

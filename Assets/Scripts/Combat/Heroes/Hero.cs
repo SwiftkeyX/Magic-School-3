@@ -114,6 +114,9 @@ namespace MagicSchool.Combat.Heroes
         public int CurrentMana => Stat.CurrentMana;
         public int MaxMana => Stat.MaxMana;
         public int AttackDamage => Stat.Atk;
+        public int Defence => Stat.DF;
+        public int Magic => Stat.MG;
+        public int MagicResist => Stat.MR;
         public float AttackSpeed => Stat.AttackSpeed;
         public int Range => Stat.Range;
         public bool IsStunned => Stat.IsStunned;

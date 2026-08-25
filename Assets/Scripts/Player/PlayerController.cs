@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Core;
@@ -12,10 +13,24 @@ namespace MagicSchool.Player
         private bool _isHeroHolded = false;
         private Hero _heroHolded;
         private TeamEnum _team;
+        private IHeroInspector _inspector;
 
         void Awake()
         {
             _team = TeamEnum.Blue;
+        }
+
+        // FIXNOW: Make it a serializeField. 
+        void Start()
+        {
+            _inspector = FindAnyInspector();
+        }
+
+        private static IHeroInspector FindAnyInspector()
+        {
+            return FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .OfType<IHeroInspector>()
+                .FirstOrDefault();
         }
 
         void Update()
@@ -37,8 +52,8 @@ namespace MagicSchool.Player
             Collider2D hit = Physics2D.OverlapPoint(worldPos);
             Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
 
-            if (hero == null) HeroSelection.Clear();
-            else HeroSelection.Select(hero);
+            // right-clicking past every hero closes the panel rather than leaving it stale
+            _inspector?.Inspect(hero);
         }
 
         // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.

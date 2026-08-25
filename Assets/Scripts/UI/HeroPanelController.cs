@@ -9,7 +9,7 @@ namespace MagicSchool.UI
     /// The inspect panel on the right. Opens when the player right-clicks a hero
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    internal class HeroPanelController : MonoBehaviour
+    internal class HeroPanelController : MonoBehaviour, IHeroInspector
     {
         [SerializeField] private VisualTreeAsset _heroPanelAsset;
 
@@ -24,6 +24,11 @@ namespace MagicSchool.UI
 
         private Hero _shown;
 
+        // === IHeroInspector interface ===
+        // when a hero is inspected, show hero panel for that hero
+        public void Inspect(ICombatant hero) => Show(hero as Hero);
+
+        // init hero panel
         private void OnEnable()
         {
             // get main screen panel
@@ -37,12 +42,9 @@ namespace MagicSchool.UI
 
             CacheElements();
 
-            // when the hero selected is changed, update hero panel too.
-            HeroSelection.Changed += Show;
-            Show(HeroSelection.Selected);
+            // nothing is selected until the player right-clicks something
+            Show(null);
         }
-
-        private void OnDisable() => HeroSelection.Changed -= Show;
 
         // get reference to every text in this hero panel
         private void CacheElements()
@@ -69,9 +71,12 @@ namespace MagicSchool.UI
             _passiveBody = _panel.Q<Label>("PassiveBody");
         }
 
-        // update hero panel accordign to new hero data consume
+        // update hero panel according to new hero data consumed
         private void Show(Hero hero)
         {
+            // if the hero selected is the currently the inspected on, return
+            if (_panel != null && ReferenceEquals(_shown, hero)) return;
+
             _shown = hero;
 
             if (_panel == null) return;
@@ -80,9 +85,10 @@ namespace MagicSchool.UI
             _panel.EnableInClassList("hero-panel--empty", !hasHero);
             if (!hasHero) return;
 
+            // FIXLATER: I think it's not consistent that IHeroStat don't contain DF, MG, and MR.
+            // The data that shown in inspector should have its own interface too, how about "IInspectorData"
             _heroName.text = hero.HeroName;
             _heroTeam.text = hero.Team.ToString().ToUpperInvariant();
-
             _statAtk.text = hero.AttackDamage.ToString();
             _statDef.text = Mathf.RoundToInt(hero.GetStat(StatEnum.DF)).ToString();
             _statMag.text = Mathf.RoundToInt(hero.GetStat(StatEnum.MG)).ToString();
@@ -125,11 +131,13 @@ namespace MagicSchool.UI
             if (_shown == null) return;
 
             // if hero dies
-            if (!_shown.IsInitialized) { HeroSelection.Clear(); return; }
+            if (!_shown.IsInitialized) { Show(null); return; }
 
             Refresh();
         }
 
+        // FLAGGING: those helper look so generic that it don't have to be in this class. Let leave it here for now.
+        #region helper
         // set bar to hp and mana
         private void Refresh()
         {
@@ -148,5 +156,6 @@ namespace MagicSchool.UI
         {
             element.style.display = shown ? DisplayStyle.Flex : DisplayStyle.None;
         }
+        #endregion
     }
 }

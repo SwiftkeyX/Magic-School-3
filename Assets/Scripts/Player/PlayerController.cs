@@ -13,7 +13,7 @@ namespace MagicSchool.Player
         private bool _isHeroHolded = false;
         private Hero _heroHolded;
         private TeamEnum _team;
-        private IHeroInspector _inspector;
+        private IInspectorPanel _inspector;
 
         void Awake()
         {
@@ -31,10 +31,10 @@ namespace MagicSchool.Player
             _inspector = FindAnyInspector();
         }
 
-        private static IHeroInspector FindAnyInspector()
+        private static IInspectorPanel FindAnyInspector()
         {
             return FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-                .OfType<IHeroInspector>()
+                .OfType<IInspectorPanel>()
                 .FirstOrDefault();
         }
 

@@ -13,7 +13,7 @@ namespace MagicSchool.Combat.Heroes
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats
+    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats, IInspectable
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;

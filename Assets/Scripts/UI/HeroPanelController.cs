@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using MagicSchool.Contracts;
-using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.UI
 {
@@ -9,7 +8,7 @@ namespace MagicSchool.UI
     /// The inspect panel on the right. Opens when the player right-clicks a hero
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    internal class HeroPanelController : MonoBehaviour, IHeroInspector
+    internal class HeroPanelController : MonoBehaviour, IInspectorPanel
     {
         [SerializeField] private VisualTreeAsset _heroPanelAsset;
 
@@ -22,11 +21,10 @@ namespace MagicSchool.UI
         private VisualElement _activeSection, _passiveSection;
         private Label _activeName, _activeBody, _passiveBody;
 
-        private Hero _shown;
-
-        // === IHeroInspector interface ===
+        // === IInspectorPanel interface ===
+        private IInspectable _shown;
         // when a hero is inspected, show hero panel for that hero
-        public void Inspect(ICombatant hero) => Show(hero as Hero);
+        public void Inspect(IInspectable hero) => Show(hero);
 
         // init hero panel
         private void OnEnable()
@@ -72,53 +70,53 @@ namespace MagicSchool.UI
         }
 
         // update hero panel according to new hero data consumed
-        private void Show(Hero hero)
+        private void Show(IInspectable unit)
         {
             // if the hero selected is the currently the inspected on, return
-            if (_panel != null && ReferenceEquals(_shown, hero)) return;
+            if (_panel != null && ReferenceEquals(_shown, unit)) return;
 
-            _shown = hero;
+            _shown = unit;
 
             if (_panel == null) return;
 
-            bool hasHero = hero != null && hero.IsInitialized;
+            bool hasHero = unit != null && unit.IsAlive;
             _panel.EnableInClassList("hero-panel--empty", !hasHero);
             if (!hasHero) return;
 
-            _heroName.text = hero.HeroName;
-            _heroTeam.text = hero.Team.ToString().ToUpperInvariant();
-            _statAtk.text = hero.AttackDamage.ToString();
-            _statDef.text = hero.Defence.ToString();
-            _statMag.text = hero.Magic.ToString();
-            _statMr.text = hero.MagicResist.ToString();
-            _statAs.text = hero.AttackSpeed.ToString("0.00");
-            _statRange.text = hero.Range.ToString();
+            _heroName.text = unit.HeroName;
+            _heroTeam.text = unit.Team.ToString().ToUpperInvariant();
+            _statAtk.text = unit.AttackDamage.ToString();
+            _statDef.text = unit.Defence.ToString();
+            _statMag.text = unit.Magic.ToString();
+            _statMr.text = unit.MagicResist.ToString();
+            _statAs.text = unit.AttackSpeed.ToString("0.00");
+            _statRange.text = unit.Range.ToString();
 
-            ShowAbility(hero);
+            ShowAbility(unit);
             Refresh();
         }
 
         // update ability text in hero panel
-        private void ShowAbility(Hero hero)
+        private void ShowAbility(IInspectable unit)
         {
-            bool hasActive = hero.HasSkill;
+            bool hasActive = unit.HasSkill;
             SetShown(_activeSection, hasActive);
             if (hasActive)
             {
-                _activeName.text = hero.SkillName;
-                _activeBody.text = string.IsNullOrEmpty(hero.SkillDescription)
+                _activeName.text = unit.SkillName;
+                _activeBody.text = string.IsNullOrEmpty(unit.SkillDescription)
                     ? "No description written yet."
-                    : hero.SkillDescription;
+                    : unit.SkillDescription;
             }
 
             // only two heroes have one - an empty PASSIVE heading on the other fifteen reads as a bug
-            bool hasPassive = hero.HasPassive;
+            bool hasPassive = unit.HasPassive;
             SetShown(_passiveSection, hasPassive);
             if (hasPassive)
             {
-                _passiveBody.text = string.IsNullOrEmpty(hero.PassiveDescription)
+                _passiveBody.text = string.IsNullOrEmpty(unit.PassiveDescription)
                     ? "No description written yet."
-                    : hero.PassiveDescription;
+                    : unit.PassiveDescription;
             }
         }
 
@@ -128,8 +126,8 @@ namespace MagicSchool.UI
         {
             if (_shown == null) return;
 
-            // if hero dies
-            if (!_shown.IsInitialized) { Show(null); return; }
+            // if hero dies or is destroyed - never a null check, see IInspectable.IsAlive
+            if (!_shown.IsAlive) { Show(null); return; }
 
             Refresh();
         }

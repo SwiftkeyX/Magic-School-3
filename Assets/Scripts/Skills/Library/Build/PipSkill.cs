@@ -4,16 +4,6 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Pip: a homing shot at the furthest enemy which does nothing on its own - where it lands, a
-    /// patch goes down that wounds and then keeps damaging whoever stands in it.
-    ///
-    /// Same two step shape as Solace: the second step is triggered by the first hitting something,
-    /// and spawns at the landing point.
-    ///
-    /// Ported from Assets/Data/Heroes/Skills/Pip.asset. Its skill name reads "Blinding Spore", the
-    /// same as Solace's - left as it was rather than guessed at.
-    /// </summary>
     internal static class PipSkill
     {
         private const float WoundDuration = 3f;
@@ -25,7 +15,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Blinding Spore",
-                activeSteps: new List<SkillStep> { Dart(registry), Patch(registry) });
+                activeSteps: new List<SkillStep> { Dart(registry), Patch(registry) },
+                description: "Lobs a spore at the furthest enemy. It does no damage itself - where it lands a patch spreads "
+                             + "that wounds anyone standing in it and keeps poisoning them for 3 seconds.");
         }
 
         private static SkillStep Dart(TemplateActionRegistrySO registry)

@@ -5,12 +5,6 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Sithra: a homing projectile at the furthest enemy, which hits hard and wounds whoever it
-    /// lands on.
-    ///
-    /// Ported from Assets/Data/Heroes/Skills/Sithra.asset.
-    /// </summary>
     internal static class SithraSkill
     {
         private const float DamageRatio = 1000f;
@@ -22,8 +16,8 @@ namespace MagicSchool.Skills
             List<SkillCondition> amplifierCondition = new List<SkillCondition>
             {
                 new HasStatusCondition(
-                    subject:     ConditionSubjectEnum.Caster,
-                    status:      ModifierEnum.Transformed,
+                    subject:     ConditionSubjectEnum.Recipient,
+                    status:      ModifierEnum.Wound,
                     wantPresent: true),
             };
 
@@ -49,7 +43,10 @@ namespace MagicSchool.Skills
 
             return new SkillDefinition(
                 skillName: "Split Venom",
-                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) },
+                description: "Spits a homing bolt at the furthest enemy. It hits hard and leaves the target wounded, so "
+                             + "everything that tries to heal them for the next 5 seconds does less." 
+                             + "If target is already wounded, amplified damage by +30%");
         }
     }
 }

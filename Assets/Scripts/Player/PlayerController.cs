@@ -23,7 +23,22 @@ namespace MagicSchool.Player
             if (GameManager.Instance == null) return;
 
             TryStartCombat();
+            TryInspectHero();
             PlayerMoveHero();
+        }
+
+        // Right-click a hero to inspect it.
+        private void TryInspectHero()
+        {
+            if (!PlayerInputSystem.InspectPressedThisFrame) return;
+
+            // get which hero pointer hit on
+            Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
+            Collider2D hit = Physics2D.OverlapPoint(worldPos);
+            Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
+
+            if (hero == null) HeroSelection.Clear();
+            else HeroSelection.Select(hero);
         }
 
         // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
@@ -36,6 +51,7 @@ namespace MagicSchool.Player
             GameManager.Instance.StartCombat();
         }
 
+        // left click hero to drag it around.
         private void PlayerMoveHero()
         {
             // if not in preparation, return;
@@ -52,7 +68,7 @@ namespace MagicSchool.Player
                 // if the user click/hold on the hero, continue 
                 _heroHolded = hit.GetComponent<Hero>();
                 bool isHeroHit = (_heroHolded != null);
-                bool isHeroClicked = PlayerInputSystem.PointerPressedThisFrame && isHeroHit;
+                bool isHeroClicked = PlayerInputSystem.DragPressedThisFrame && isHeroHit;
                 if (isHeroClicked)
                 {
                     _isHeroHolded = PlayerInputSystem.IsPointerDown;
@@ -67,7 +83,7 @@ namespace MagicSchool.Player
 
                 // if the user release hero on the hex, place hero on top of the hex 
                 Hex targetHex = hit.GetComponent<Hex>();
-                bool isRelease = PlayerInputSystem.PointerReleasedThisFrame;
+                bool isRelease = PlayerInputSystem.DragReleasedThisFrame;
                 bool isHexHit = (targetHex != null);
                 if (isRelease && isHexHit && ValidateHex(targetHex))
                 {

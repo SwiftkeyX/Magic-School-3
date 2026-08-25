@@ -470,9 +470,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _board: {fileID: 1120158067}
   _bench: {fileID: 477776518}
-  _placementSO: {fileID: 11400000, guid: fb5b073a3e432604ea1e248c85a1a39c, type: 2}
+  _placementSO: {fileID: 11400000, guid: 3365ba24a6f41744695c670fb11b94fa, type: 2}
   _templateActions: {fileID: 11400000, guid: 31d48e144b9be4e40b79fd94b16f49ed, type: 2}
-  _seedMode: 1
+  _seedMode: 0
 --- !u!4 &344829187
 Transform:
   m_ObjectHideFlags: 0
@@ -775,6 +775,7 @@ GameObject:
   - component: {fileID: 1091040812}
   - component: {fileID: 1091040811}
   - component: {fileID: 1091040813}
+  - component: {fileID: 1091040814}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -843,6 +844,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9636cb18892805344858c7b35439a83c, type: 2}
   - {fileID: 11400000, guid: 76e948a66c5e474439a5a33fcd03137a, type: 2}
   _bench: {fileID: 477776518}
+--- !u!114 &1091040814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091040810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 908e8b94bbf4d9144a962fe850e0c38e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.HeroPanelController
+  _heroPanelAsset: {fileID: 9197481963319205126, guid: 2119a30bf5772f44c8bb20a6f295e7d7, type: 3}
 --- !u!114 &1120158067 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}

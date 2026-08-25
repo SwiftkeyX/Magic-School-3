@@ -4,12 +4,6 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Vesper: a projectile at the current target that only counts its first hit, permanently
-    /// shredding the armour of whoever it lands on.
-    ///
-    /// Ported from Assets/Data/Heroes/Skills/Vesper.asset.
-    /// </summary>
     internal static class VesperSkill
     {
         private const float DamageRatio = 200f;
@@ -39,7 +33,9 @@ namespace MagicSchool.Skills
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) },
+                description: "Fires a shot at the current target. The first enemy it finds takes the hit and loses armour "
+                             + "for the rest of the fight.");
         }
     }
 }

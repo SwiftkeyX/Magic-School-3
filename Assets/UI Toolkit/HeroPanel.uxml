@@ -1,0 +1,58 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/HeroPanel.uss"/>
+    <!-- Root is named for the slot it lands in: HeroPanelController looks up the element of the
+         same name in MainScreen.uxml, exactly as ShopPanelController does. -->
+    <ui:VisualElement name="HeroPanel" class="hero-panel hero-panel--empty">
+        <ui:Label name="HeroName" text="-" class="hero-panel__name"/>
+        <ui:Label name="HeroTeam" text="-" class="hero-panel__team"/>
+
+        <ui:VisualElement name="HpBar" class="bar">
+            <ui:VisualElement name="HpFill" class="bar__fill bar__fill--hp"/>
+            <ui:Label name="HpLabel" text="-" class="bar__label"/>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="ManaBar" class="bar">
+            <ui:VisualElement name="ManaFill" class="bar__fill bar__fill--mana"/>
+            <ui:Label name="ManaLabel" text="-" class="bar__label"/>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="StatGrid" class="stat-grid">
+            <ui:VisualElement class="stat">
+                <ui:Label text="ATK" class="stat__key"/>
+                <ui:Label name="StatAtk" text="-" class="stat__value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="stat">
+                <ui:Label text="DEF" class="stat__key"/>
+                <ui:Label name="StatDef" text="-" class="stat__value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="stat">
+                <ui:Label text="MAG" class="stat__key"/>
+                <ui:Label name="StatMag" text="-" class="stat__value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="stat">
+                <ui:Label text="MR" class="stat__key"/>
+                <ui:Label name="StatMr" text="-" class="stat__value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="stat">
+                <ui:Label text="AS" class="stat__key"/>
+                <ui:Label name="StatAs" text="-" class="stat__value"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="stat">
+                <ui:Label text="RNG" class="stat__key"/>
+                <ui:Label name="StatRange" text="-" class="stat__value"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="ActiveSection" class="section">
+            <ui:Label text="ACTIVE" class="section__kicker"/>
+            <ui:Label name="ActiveName" text="-" class="section__title"/>
+            <ui:Label name="ActiveBody" text="-" class="section__body"/>
+        </ui:VisualElement>
+
+        <!-- Only two heroes have a passive, so this is hidden unless one is actually there -->
+        <ui:VisualElement name="PassiveSection" class="section">
+            <ui:Label text="PASSIVE" class="section__kicker"/>
+            <ui:Label name="PassiveBody" text="-" class="section__body"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

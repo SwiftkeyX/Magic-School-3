@@ -28,7 +28,11 @@ namespace MagicSchool.Skills
             SkillDefinition skill = new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Transform(registry) },
-                passiveSteps: new List<SkillStep> { Combo(registry, combo) });
+                passiveSteps: new List<SkillStep> { Combo(registry, combo) },
+                description: "Transforms for 10 seconds, draining life with every hit he lands and turning his bonus "
+                           + "attack speed into raw attack damage.",
+                passiveDescription: "While transformed his auto attack becomes a three beat combo - box, then triangle, "
+                                  + "then circle - and each beat lands harder than the one before it.");
 
             // moves the combo on when he attacks - not when a condition is asked
             skill.Triggered += combo.Count;

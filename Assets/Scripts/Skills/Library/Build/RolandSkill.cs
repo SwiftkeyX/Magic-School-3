@@ -4,15 +4,6 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Roland: a zone around himself that keeps damaging whoever stands in it, ticking twice a second
-    /// for four seconds.
-    ///
-    /// Ported from Assets/Data/Heroes/Skills/Roland.asset. That asset predates the current schema - it
-    /// still stores a _size/shape pair pointing at a Circle class that no longer exists, which Unity
-    /// has been dropping on load for a while. Not carried over; git history has it if it is ever
-    /// wanted back.
-    /// </summary>
     internal static class RolandSkill
     {
         private const float DamagePerTick = 80f;
@@ -38,7 +29,9 @@ namespace MagicSchool.Skills
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: spin) });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: spin) },
+                description: "Whips up a storm around himself that damages every enemy standing in it, twice a second for "
+                             + "4 seconds.");
         }
     }
 }

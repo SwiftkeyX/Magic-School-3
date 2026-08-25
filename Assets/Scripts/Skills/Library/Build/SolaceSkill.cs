@@ -21,7 +21,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Detonating Bolt",
-                activeSteps: new List<SkillStep> { Dart(registry), Explosion(registry) });
+                activeSteps: new List<SkillStep> { Dart(registry), Explosion(registry) },
+                description: "Throws a bolt at the current target. The bolt detonates where it "
+                             + "lands, damaging everyone caught in the blast.");
         }
 
         // carries no effects of its own - it only exists to land somewhere

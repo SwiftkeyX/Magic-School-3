@@ -22,6 +22,11 @@ namespace MagicSchool.Combat.Heroes
         public bool HasSkill => _skill != null && _skill.ActiveSteps.Count > 0;
         public bool HasPassive => _skill != null && _skill.PassiveSteps.Count > 0;
 
+        // information to hero inspector panel
+        public string SkillName => _skill != null ? _skill.SkillName : string.Empty;
+        public string Description => _skill != null ? _skill.Description : string.Empty;
+        public string PassiveDescription => _skill != null ? _skill.PassiveDescription : string.Empty;
+
         public HeroSkill(ICombatant me, SkillDefinition skill)
         {
             _me = me;

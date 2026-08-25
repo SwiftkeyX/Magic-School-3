@@ -4,13 +4,6 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Quatre: a piercing shot at the current target that damages everyone standing in its path.
-    ///
-    /// Ported from Assets/Data/Heroes/Skills/Quatre.asset. Like Roland's, that asset predates the
-    /// current schema and still carries a _size/shape pair - Quatre's shape reference was already
-    /// broken (rid -2, a managed reference Unity cannot resolve at all). Not carried over.
-    /// </summary>
     internal static class QuatreSkill
     {
         private const float DamageRatio = 744f;
@@ -26,7 +19,9 @@ namespace MagicSchool.Skills
 
             return new SkillDefinition(
                 skillName: "Skill",
-                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shot) });
+                activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shot) },
+                description: "Fires a shot that carries straight on through the target, damaging every enemy caught along "
+                             + "its path.");
         }
     }
 }

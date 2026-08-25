@@ -27,7 +27,9 @@ namespace MagicSchool.Skills
         {
             return new SkillDefinition(
                 skillName: "Guardian's Roar",
-                activeSteps: new List<SkillStep> { Brace(registry), Slam(registry) });
+                activeSteps: new List<SkillStep> { Brace(registry), Slam(registry) },
+                description: "Braces for 2 seconds, healing steadily and taking 25% less damage. The moment the brace ends "
+                             + "he slams the ground, damaging every enemy around him.");
         }
 
         // the cast itself - everything here lands on Bulwark

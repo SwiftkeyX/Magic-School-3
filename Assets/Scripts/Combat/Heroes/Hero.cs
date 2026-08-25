@@ -69,6 +69,14 @@ namespace MagicSchool.Combat.Heroes
         public bool TriggerPassiveSkill(TriggerEnum trigger) => _skill.TriggerPassiveSkill(trigger);
         public float GetCastTime() => _skill.GetCastTime();
 
+        // what the Hero Panel reads
+        public bool HasSkill => _skill != null && _skill.HasSkill;
+        public bool HasPassive => _skill != null && _skill.HasPassive;
+        public string SkillName => _skill != null ? _skill.SkillName : string.Empty;
+        public string SkillDescription => _skill != null ? _skill.Description : string.Empty;
+        public string PassiveDescription => _skill != null ? _skill.PassiveDescription : string.Empty;
+        public string HeroName => _SOData != null ? _SOData.Name : name;
+
         // ======================================== attack ========================================
         public bool IsAttackReady => _attackCooldown.IsReady(AttackSpeed);
         public void SpendAttack() => _attackCooldown.Spend();

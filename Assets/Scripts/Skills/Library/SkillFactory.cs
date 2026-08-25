@@ -12,7 +12,7 @@ namespace MagicSchool.Skills
         public static AttackSkillEffect Damage(EffectRecipientEnum recipient, params StatRatio[] ratios)
             => new AttackSkillEffect(recipient, Scale(ratios));
 
-        // the same, re-applied on a timer - Garen's spin, Teemo's patch
+        // the same, re-applied on a timer - Roland's spin, Pip's patch
         public static AttackSkillEffect DamageOverTime(EffectRecipientEnum recipient, float interval, float duration,
                                                        params StatRatio[] ratios)
             => new AttackSkillEffect(recipient, Scale(ratios), new Cadence(interval, duration));
@@ -31,7 +31,7 @@ namespace MagicSchool.Skills
             => new ModifierSkillEffect(recipient, modifier, amplifier: amplifier);
 
         // the same, but amplified only when every condition holds - the effect still lands either
-        // way, the conditions just scale it. Cassiopeia's wound is applied harder while transformed.
+        // way, the conditions just scale it. Sithra's wound is applied harder while transformed.
         public static ModifierSkillEffect ApplyWhen(EffectRecipientEnum recipient, ICustomModifier modifier,
                                                     List<SkillCondition> conditions, float amplifier)
             => new ModifierSkillEffect(recipient, modifier, conditions: conditions, amplifier: amplifier);
@@ -48,9 +48,9 @@ namespace MagicSchool.Skills
             => new StatModifier(modifier, Scale(ratios));
 
         // 3) the buff will derived from the caster itself unless it consume "source" parameter.
-        // Sona's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
+        // Lyra's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
         // BUT it have another pattern, you should know:
-        // Sona's skill (alternative) buff ally base on Sona's AP by +50%AP => This will get different result.
+        // Lyra's skill (alternative) buff ally base on Lyra's AP by +50%AP => This will get different result.
         public static IModifier Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
             => new StatModifier(modifier, Scale(source, ratios));
 

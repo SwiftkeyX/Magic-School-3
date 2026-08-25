@@ -4,7 +4,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal class FioraSkill
+    internal class VeritySkill
     {
         private const int Count = 4;
         private const float Interval = 0.2f;

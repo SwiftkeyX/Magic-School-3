@@ -8,7 +8,7 @@ namespace MagicSchool.Skills
     /// <summary>
     /// ZoneAOE are template action that apply effect over time.
     /// Effect here was apply to the recipients on standing in the effect, if they walk out of it, they don't get effect re-apply.
-    /// e.g. Garen, Silco, Swain
+    /// e.g. Roland
     /// </summary>
     internal class ZoneAOE : AOE
     {

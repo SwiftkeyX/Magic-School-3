@@ -5,7 +5,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal class GwenSkill
+    internal class MiraSkill
     {
         private const float MGDamagePerSnip = 100f;   // sheet: 100/150/400% AP
         private const int SnipCount = 3;

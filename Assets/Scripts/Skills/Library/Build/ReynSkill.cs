@@ -4,7 +4,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal class AkshanSkill
+    internal class ReynSkill
     {
         private const float ADDamagePerShot = 125f;
         private const float MGDamagePerShot = 125f;

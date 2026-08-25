@@ -5,14 +5,14 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Galio: braces himself - bonus health and healing over a couple of seconds, plus damage
+    /// Bulwark: braces himself - bonus health and healing over a couple of seconds, plus damage
     /// reduction - and when that wears off, slams the ground for damage around him.
     ///
     /// Two steps: the second one is triggered by the first expiring, not by anything the hero does.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Galio.asset.
+    /// Ported from Assets/Data/Heroes/Skills/Bulwark.asset.
     /// </summary>
-    internal static class GalioSkill
+    internal static class BulwarkSkill
     {
         // he is braced and locked out of attacking for the same stretch, so it is said once
         private const float BraceDuration = 2f;
@@ -26,11 +26,11 @@ namespace MagicSchool.Skills
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
-                skillName: "Idol of Durand",
+                skillName: "Guardian's Roar",
                 activeSteps: new List<SkillStep> { Brace(registry), Slam(registry) });
         }
 
-        // the cast itself - everything here lands on Galio
+        // the cast itself - everything here lands on Bulwark
         private static SkillStep Brace(TemplateActionRegistrySO registry)
         {
             SkillActionGroup brace = ActionGroup(
@@ -40,7 +40,7 @@ namespace MagicSchool.Skills
                 target:   AimTargetEnum.Self,
                 tuning:   Tune(castTime: BraceDuration),
 
-                // sheet: Galio heals off AP
+                // sheet: Bulwark heals off AP
                 HealOverTime(
                     recipient: EffectRecipientEnum.Self,
                     duration:  BraceDuration,

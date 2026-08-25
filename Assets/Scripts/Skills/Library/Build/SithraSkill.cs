@@ -6,12 +6,12 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Cassiopeia: a homing projectile at the furthest enemy, which hits hard and wounds whoever it
+    /// Sithra: a homing projectile at the furthest enemy, which hits hard and wounds whoever it
     /// lands on.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Cassiopeia.asset.
+    /// Ported from Assets/Data/Heroes/Skills/Sithra.asset.
     /// </summary>
-    internal static class CassiopeiaSkill
+    internal static class SithraSkill
     {
         private const float DamageRatio = 1000f;
         private const float WoundDuration = 5f;
@@ -48,7 +48,7 @@ namespace MagicSchool.Skills
             );
 
             return new SkillDefinition(
-                skillName: "Twin Fang",
+                skillName: "Split Venom",
                 activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) });
         }
     }

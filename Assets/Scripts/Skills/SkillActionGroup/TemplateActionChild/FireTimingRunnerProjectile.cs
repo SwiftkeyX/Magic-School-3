@@ -46,7 +46,7 @@ namespace MagicSchool.Skills
         }
 
         // ======================================= private =======================================
-        // pick random target using Jinx logic
+        // pick random target using Sparks logic
         private ICombatant PickRandomTarget()
         {
             if (_randomTargets == null) _randomTargets = new RandomTargetPool(_me, _randomPoolRadius);

@@ -4,7 +4,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal class ApheliosSkill
+    internal class LumenSkill
     {
         private const float ExplodeDmg = 240f;
         private const float BlastSize = 4.5f;

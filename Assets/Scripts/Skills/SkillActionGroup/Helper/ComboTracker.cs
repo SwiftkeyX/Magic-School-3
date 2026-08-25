@@ -4,14 +4,14 @@ namespace MagicSchool.Skills
 {
 
     /// <summary>
-    /// Some hero skill need a combo counter. e.g. Aatrox 3 hit combo.
+    /// Some hero skill need a combo counter. e.g. Vharn 3 hit combo.
     /// ComboTracker dedicate itself for being a counter.  
     /// </summary>
 
-    /// FLAGGING: this is very confusing btw. The combotracker now are used only be Aatrox.
+    /// FLAGGING: this is very confusing btw. The combotracker now are used only be Vharn.
     /// It use is:
-    /// 1) if OnAttack is invoke, the passive skill of Aatrox'll active.
-    /// 2) After OnAttack + Aatrox's active, the ComboTracker.Count() should also be called.
+    /// 1) if OnAttack is invoke, the passive skill of Vharn'll active.
+    /// 2) After OnAttack + Vharn's active, the ComboTracker.Count() should also be called.
     internal class ComboTracker
     {
         private readonly int _length;

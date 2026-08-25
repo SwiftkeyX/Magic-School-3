@@ -5,22 +5,22 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Karma: a projectile at the current target that does nothing itself - when it lands, an AOE
+    /// Solace: a projectile at the current target that does nothing itself - when it lands, an AOE
     /// goes off where it hit.
     ///
     /// Two steps: the second is triggered by the first hitting something, and it spawns and aims at
     /// the projectile's landing point rather than at the hero or a target.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Karma.asset.
+    /// Ported from Assets/Data/Heroes/Skills/Solace.asset.
     /// </summary>
-    internal static class KarmaSkill
+    internal static class SolaceSkill
     {
         private const float ExplosionDamage = 200f;
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             return new SkillDefinition(
-                skillName: "Blinding Dart",
+                skillName: "Detonating Bolt",
                 activeSteps: new List<SkillStep> { Dart(registry), Explosion(registry) });
         }
 
@@ -44,7 +44,7 @@ namespace MagicSchool.Skills
                 source:   ActionSourceEnum.WhereProjectileHit,
                 action:   TemplateActionEnum.CircleAOE,
                 target:   AimTargetEnum.WhereProjectileHit,
-                // sheet: Karma is AP
+                // sheet: Solace is AP
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
                     ratios:    (StatEnum.MG, ExplosionDamage))

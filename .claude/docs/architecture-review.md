@@ -52,7 +52,7 @@ checklist item.
 
 - [ ] **`Assets/Prefabs/Skill/PiercingProjectile.prefab` carries a `HomingProjectile` component**
   (it references that script's GUID). `PiercingProjectile.cs` is a **0-byte file** referenced by
-  nothing, and `Jhin.asset` points at the prefab. Implementing piercing for real means fixing the
+  nothing, and `Quatre.asset` points at the prefab. Implementing piercing for real means fixing the
   prefab's component, not just filling in the file.
 
 - [ ] **Stale `CLAUDE.md`**, five things across three lines:

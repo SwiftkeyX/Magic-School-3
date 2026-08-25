@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MagicSchool.Skills
 {
     /// A template action whose only job is to repeat another template action several times.
-    /// e.g. Akshan's 6 sequential shots, Ashe's 8 arrows at once => those are projectile being repeated several time
+    /// e.g. Reyn's 6 sequential shots, or a volley of 8 arrows at once => those are projectile being repeated several time
     internal abstract class FireTimingRunnerBase<TTuning> : TemplateAction<TTuning>
         where TTuning : FireTimingRunnerTuning
     {

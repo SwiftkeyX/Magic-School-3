@@ -5,13 +5,13 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Aatrox: casting transforms him, and while transformed his auto attack is replaced by a three
+    /// Vharn: casting transforms him, and while transformed his auto attack is replaced by a three
     /// beat combo - box, then triangle, then circle - each hitting harder than the last.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Aatrox.asset, which stays as the reference until this is
+    /// Ported from Assets/Data/Heroes/Skills/Vharn.asset, which stays as the reference until this is
     /// verified against it.
     /// </summary>
-    internal static class AatroxSkill
+    internal static class VharnSkill
     {
         private const int ComboLength = 3;
 
@@ -115,7 +115,7 @@ namespace MagicSchool.Skills
                 target: AimTargetEnum.Current,
                 conditions: conditions,
                 tuning: tuning,
-                // sheet: Aatrox is AD
+                // sheet: Vharn is AD
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
                     ratios: (StatEnum.Atk, damage))

@@ -76,7 +76,7 @@ namespace MagicSchool.Skills
             }
 
             // spawn on where the previous projectile hit
-            // e.g. Karma's dart exploding on impact
+            // e.g. Solace's dart exploding on impact
             else if (source == ActionSourceEnum.WhereProjectileHit)
             {
                 if (_fromPreviousStep?.Position == null) return false;
@@ -162,7 +162,7 @@ namespace MagicSchool.Skills
         }
 
         // The AOE could rides Move
-        // e.g. Sion's AOE dies when his Move dies
+        // e.g. Grimm's AOE dies when his Move dies
         protected override void InitRider()
         {
             _rider = Rider.FindHostFor(this, _me);

@@ -5,12 +5,12 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Samira: a projectile at the current target that only counts its first hit, permanently
+    /// Vesper: a projectile at the current target that only counts its first hit, permanently
     /// shredding the armour of whoever it lands on.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Samira.asset.
+    /// Ported from Assets/Data/Heroes/Skills/Vesper.asset.
     /// </summary>
-    internal static class SamiraSkill
+    internal static class VesperSkill
     {
         private const float DamageRatio = 200f;
         private const float ShredDuration = -1f;

@@ -6,7 +6,7 @@ using static MagicSchool.Skills.SkillFactory;
 
 namespace MagicSchool.Skills
 {
-    internal static class SionSkill
+    internal static class GrimmSkill
     {
         private const int ChargeRange = 4;              // hexes he can cross
         private const float HitboxHalfWidth = 1.25f;

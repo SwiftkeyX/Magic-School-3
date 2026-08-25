@@ -5,13 +5,13 @@ using static MagicSchool.Skills.SkillFactory;
 namespace MagicSchool.Skills
 {
     /// <summary>
-    /// Jhin: a piercing shot at the current target that damages everyone standing in its path.
+    /// Quatre: a piercing shot at the current target that damages everyone standing in its path.
     ///
-    /// Ported from Assets/Data/Heroes/Skills/Jhin.asset. Like Garen's, that asset predates the
-    /// current schema and still carries a _size/shape pair - Jhin's shape reference was already
+    /// Ported from Assets/Data/Heroes/Skills/Quatre.asset. Like Roland's, that asset predates the
+    /// current schema and still carries a _size/shape pair - Quatre's shape reference was already
     /// broken (rid -2, a managed reference Unity cannot resolve at all). Not carried over.
     /// </summary>
-    internal static class JhinSkill
+    internal static class QuatreSkill
     {
         private const float DamageRatio = 744f;
 

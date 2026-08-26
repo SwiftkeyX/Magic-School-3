@@ -64,7 +64,7 @@ namespace MagicSchool.Core.States
             forced = default;
 
             // if restart is requested, transition to Preparation state
-            if (!_game.ConsumeRestartRequest())
+            if (_game.ConsumeRestartRequest())
             {
                 forced = GamePhaseEnum.Preparation;
                 return true;

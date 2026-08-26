@@ -26,6 +26,7 @@ namespace MagicSchool.Core
         private int _stageIndex;
         private bool _startCombatRequested;
         private bool _continueRequested;
+        private bool _restartRequested;
 
         // ======================================== getter ========================================
         public GamePhaseEnum Phase => _stateMachine == null ? GamePhaseEnum.Preparation : _stateMachine.CurrentType;
@@ -40,6 +41,7 @@ namespace MagicSchool.Core
         // ======================================== setter ========================================
         internal BattlePlacementSO GetStage(int index) => HasStages ? _stages[index] : _currentStage;
         internal void SetWinner(TeamEnum? winner) => Winner = winner;
+        internal void SetStageIndex(int index) => _stageIndex = Mathf.Clamp(index, 0, StageCount - 1);
 
         // === forwarding ===
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
@@ -88,14 +90,24 @@ namespace MagicSchool.Core
 
         public void Restart()
         {
-            StartStage(_stageIndex);
+            _restartRequested = true;
         }
 
         // consume a request, then clear the flag to false immediately:
         // 1) start combat => let hero fight between heroes
         // 2) continue => move to a next stage, or repeat the same stage
+        // 3) restart => repeat this stage
         internal bool ConsumeStartCombatRequest() => Consume(ref _startCombatRequested);
         internal bool ConsumeContinueRequest() => Consume(ref _continueRequested);
+        internal bool ConsumeRestartRequest() => Consume(ref _restartRequested);
+
+        // reset all request
+        internal void ClearPendingRequests()
+        {
+            _startCombatRequested = false;
+            _continueRequested = false;
+            _restartRequested = false;
+        }
 
         // if request exist, consume it, and clear the flag
         private static bool Consume(ref bool requested)
@@ -104,30 +116,6 @@ namespace MagicSchool.Core
 
             requested = false;
             return true;
-        }
-
-        // ========================================= other =========================================
-        // start new stage
-        internal void StartStage(int index)
-        {
-            _stageIndex = Mathf.Clamp(index, 0, StageCount - 1);
-            
-            // reset var
-            Winner = null;
-            _startCombatRequested = false;
-            _continueRequested = false;
-
-            // wipe all enemies
-            _board.ClearTeam(TeamEnum.Red);
-
-            // ...
-            if (_isPlayerSeed) _board.ClearTeam(TeamEnum.Blue);
-            else _board.ReviveTeam(TeamEnum.Blue);
-
-            // switch to next enemies seed
-            _seed.SwitchSeed(GetStage(_stageIndex));
-
-            ChangeState(GamePhaseEnum.Preparation);
         }
     }
 }

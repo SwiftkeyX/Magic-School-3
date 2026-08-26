@@ -7,6 +7,7 @@ namespace MagicSchool.Core.States
     /// </summary>
     internal class GameStateMachine
     {
+        private readonly GameManager _game;
         private readonly PreparationState _preparation;
         private readonly CombatState _combat;
         private readonly ResultState _result;
@@ -17,6 +18,7 @@ namespace MagicSchool.Core.States
 
         public GameStateMachine(GameManager game)
         {
+            _game = game;
             _preparation = new PreparationState(game);
             _combat = new CombatState(game);
             _result = new ResultState(game);
@@ -41,7 +43,34 @@ namespace MagicSchool.Core.States
         {
             if (Current == null) return;
 
+            // interrupt state e.g. restart
+            if (TryResolveInterrupt(out GamePhaseEnum forced))
+            {
+                ChangeState(forced);
+
+                // return early, so we don't update in the same frame
+                return;
+            }
+
             Current.OnUpdate();
+        }
+
+        /// <summary>
+        /// Global state transition.  
+        /// Some of the transition are redundant in each state, make it a global transition by move it here.
+        /// </summary>
+        private bool TryResolveInterrupt(out GamePhaseEnum forced)
+        {
+            forced = default;
+
+            // if restart is requested, transition to Preparation state
+            if (!_game.ConsumeRestartRequest())
+            {
+                forced = GamePhaseEnum.Preparation;
+                return true;
+            }
+
+            return false;
         }
 
         private GameState GetState(GamePhaseEnum type)

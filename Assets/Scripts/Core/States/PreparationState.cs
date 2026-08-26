@@ -18,6 +18,20 @@ namespace MagicSchool.Core.States
         {
             _game.Board.SetBattleOn(false);
 
+            // reset var
+            _game.SetWinner(null);
+            _game.ClearPendingRequests();
+
+            // wipe all enemies
+            _game.Board.ClearTeam(TeamEnum.Red);
+
+            // ...
+            if (_game.IsPlayerSeed) _game.Board.ClearTeam(TeamEnum.Blue);
+            else _game.Board.ReviveTeam(TeamEnum.Blue);
+
+            // switch to next enemies seed
+            _game.Seed.SwitchSeed(_game.GetStage(_game.StageIndex));
+
             // spawn player team if seedMode activate.
             if (_game.IsPlayerSeed) _game.Seed.SpawnTeamOnBoard(TeamEnum.Blue);
 

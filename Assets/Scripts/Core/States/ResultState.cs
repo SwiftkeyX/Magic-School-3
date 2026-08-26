@@ -18,20 +18,22 @@ namespace MagicSchool.Core.States
             _game.Status?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
         }
 
-        // What to continue to after a game result:
-        // 1) if player won, go to next stage - or start the run over, if that was the last one
+        // if continue is requested, go to preparation state.
+        // 1) if player won, go to next stage
         // 2) if player lose, restart this stage
         protected override void CheckSwitchState()
         {
             if (!_game.ConsumeContinueRequest()) return;
 
             bool playerWon = _game.Winner == TeamEnum.Blue;
-
-            // read before StartStage - it clears the winner, and IsRunCleared is derived from it
             bool runCleared = _game.IsRunCleared;
 
-            if (playerWon) _game.StartStage(runCleared ? 0 : _game.StageIndex + 1);
-            else _game.StartStage(_game.StageIndex);
+            // if player won, go to next stage.
+            // if plyaer lose, repeat this stage.
+            if (playerWon) _game.SetStageIndex(runCleared ? 0 : _game.StageIndex + 1);
+
+            // go preparation state
+            _game.ChangeState(GamePhaseEnum.Preparation);
         }
     }
 }

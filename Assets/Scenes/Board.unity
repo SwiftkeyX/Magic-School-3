@@ -470,7 +470,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _board: {fileID: 1120158067}
   _bench: {fileID: 477776518}
-  _placementSO: {fileID: 11400000, guid: 3365ba24a6f41744695c670fb11b94fa, type: 2}
+  _placementSO: {fileID: 11400000, guid: 380e2c38de65be64c804d958858fd2a9, type: 2}
+  _stages:
+  - {fileID: 11400000, guid: a1bc08e4eaade5847bc4d0739fe6222e, type: 2}
+  - {fileID: 11400000, guid: 380e2c38de65be64c804d958858fd2a9, type: 2}
+  - {fileID: 11400000, guid: 27b17649b72c6184a8f83274789aedc1, type: 2}
   _templateActions: {fileID: 11400000, guid: 31d48e144b9be4e40b79fd94b16f49ed, type: 2}
   _seedMode: 0
 --- !u!4 &344829187

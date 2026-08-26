@@ -62,6 +62,7 @@ namespace MagicSchool.Combat.Heroes
 
         // ======================================== visuals ========================================
         public void SetDeadVisual() => _visuals.SetDeadVisual();
+        public void SetAliveVisual() => _visuals.SetAliveVisual();
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
@@ -204,6 +205,30 @@ namespace MagicSchool.Combat.Heroes
 
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, target.transform.position);
+        }
+        #endregion
+
+        // This is where a function with no where to live yet. group together.
+        #region Temporarily
+        /// <summary>
+        /// Put this hero back the way it started, without destroying and respawning it: full HP and
+        /// starting mana, every modifier gone, dead ones standing again. Used between stages, so the
+        /// player's team survives the fight it just had instead of being wiped and re-dragged.
+        /// A new Stat rather than a reset one - Stat holds the modifiers, so replacing it IS the
+        /// clear, and there is no half-cleared state to get wrong.
+        /// </summary>
+        public void ResetForNewStage()
+        {
+            if (!IsInitialized) return;
+
+            _stat = new Stat(_SOData);
+            _attackCooldown = new AttackCooldown();
+
+            SetAliveVisual();
+
+            // ChangeState, not Start: the Dead state has to be left properly, and a hero that
+            // survived is already mid-state rather than un-started.
+            _stateMachine.ChangeState(HeroStateEnum.Idle);
         }
         #endregion
     }

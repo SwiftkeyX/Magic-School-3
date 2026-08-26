@@ -19,15 +19,11 @@ namespace MagicSchool.Core.States
             // How about using contract for GameManager instead, so Hero can ref to current phase via the contract.
             _game.Board.SetBattleOn(true);
 
-            _game.Status?.ShowCombat();
+            _game.Status?.ShowCombat(_game.StageNumber, _game.StageCount);
         }
 
-        public override void OnUpdate()
-        {
-            CheckForWinner();
-        }
-
-        private void CheckForWinner()
+        // if there is no hero on the board, change to result state 
+        protected override void CheckSwitchState()
         {
             var alive = _game.Board.HeroesOnBoard.Where(h => h.StateType != HeroStateEnum.Dead);
             bool blueAlive = alive.Any(h => h.Team == TeamEnum.Blue);

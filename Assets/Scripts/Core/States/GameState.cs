@@ -13,6 +13,7 @@ namespace MagicSchool.Core.States
 
         public virtual void OnEnter() { }
         public virtual void OnExit() { }
-        public virtual void OnUpdate() { }
+        public virtual void OnUpdate() { CheckSwitchState(); }
+        protected virtual void CheckSwitchState() { }
     }
 }

@@ -86,13 +86,18 @@ namespace MagicSchool.Core
             _continueRequested = true;
         }
 
+        public void Restart()
+        {
+            StartStage(_stageIndex);
+        }
+
         // consume a request, then clear the flag to false immediately:
         // 1) start combat => let hero fight between heroes
         // 2) continue => move to a next stage, or repeat the same stage
         internal bool ConsumeStartCombatRequest() => Consume(ref _startCombatRequested);
         internal bool ConsumeContinueRequest() => Consume(ref _continueRequested);
 
-        // consume request, clear the flag
+        // if request exist, consume it, and clear the flag
         private static bool Consume(ref bool requested)
         {
             if (!requested) return false;
@@ -101,33 +106,27 @@ namespace MagicSchool.Core
             return true;
         }
 
-        // ========================================= public function for controlling game state =========================================
-        // quick restart
-        // FIXLATER: Make this a interrupt request, that force game into preparation state.
-        public void Restart() => StartStage(_stageIndex);
-
-        // FIXLATER: Move this into Result later
+        // ========================================= other =========================================
+        // start new stage
         internal void StartStage(int index)
         {
             _stageIndex = Mathf.Clamp(index, 0, StageCount - 1);
+            
+            // reset var
             Winner = null;
-
-            // a request made during the old stage has no meaning in the new one
             _startCombatRequested = false;
             _continueRequested = false;
 
-            // the enemy is thrown away and re-seeded from the stage
+            // wipe all enemies
             _board.ClearTeam(TeamEnum.Red);
 
-            // The player's team is stood back up where it stands - that is the whole point of not
-            // reloading the scene. Except under _isPlayerSeed, where Preparation seeds Blue itself
-            // and keeping this one would put two of every hero on the board next fight.
+            // ...
             if (_isPlayerSeed) _board.ClearTeam(TeamEnum.Blue);
             else _board.ReviveTeam(TeamEnum.Blue);
 
+            // switch to next enemies seed
             _seed.SwitchSeed(GetStage(_stageIndex));
 
-            // Preparation's OnEnter seeds the new stage's enemies
             ChangeState(GamePhaseEnum.Preparation);
         }
     }

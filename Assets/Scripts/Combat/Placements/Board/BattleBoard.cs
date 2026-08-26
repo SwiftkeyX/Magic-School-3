@@ -121,7 +121,7 @@ namespace MagicSchool.Combat.Placements
 
             foreach (ICombatant hero in leaving)
             {
-                ReleaseReservationsOf(hero);    // FIXNOW: this is O(n), it don't have to.
+                ReleaseReservationsOf(hero);    // FLAGGING: this is O(n), it don't have to.
                 _heroesOnBoard.Remove(hero);
 
                 if (hero.transform != null) Destroy(hero.transform.gameObject);

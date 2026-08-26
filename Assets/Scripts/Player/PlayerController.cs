@@ -7,14 +7,24 @@ using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.Player
 {
+    /// <summary>
+    /// FLAGGING: PlayerController ref to many module without using contract.
+    /// But I can't do anything since I don't see the pattern well enough to start using the interface.
+    /// So I just let it ref to other module directly.
+    /// BUT I think if I start making other game, I would see the pattern more clear, and understand what interface player should use 
+    /// </summary>
     internal class PlayerController : MonoBehaviour
     {
         [SerializeField] private Camera _cam;
+        [SerializeField] private int _heroLimit = 3;    // the number of player's hero allow on the board
+        [SerializeField] private BattleBoard _board;
+        private IInspectorPanel _inspector;
+        private TeamEnum _team;
+
+        // ===================================== holding hero var ============================== 
         private bool IsHoldingHero => _heroHolded != null;
         private Hero _heroHolded;
         private Collider2D _heldHeroHitbox;
-        private TeamEnum _team;
-        private IInspectorPanel _inspector;
 
         void Awake()
         {
@@ -143,16 +153,18 @@ namespace MagicSchool.Player
             Collider2D hit = Physics2D.OverlapPoint(worldPos);
             IPlacement targetPlacement = hit != null ? hit.GetComponent<IPlacement>() : null;
 
-            // if the user release hero on the hex, place hero on top of the hex
+            // if the user release hero on the placement, place hero on top of the placement
             if (targetPlacement != null && ValidatePlacement(targetPlacement))
             {
                 GameManager.Instance.MoveHero(_heroHolded, targetPlacement);
                 ReleaseHero();
-                return;
             }
 
             // if the user not release on the placement, snap hero to the same placement
-            CancelDrag();
+            else
+            {
+                CancelDrag();
+            }
         }
 
         // snap this holded hero back to its old placement
@@ -186,15 +198,22 @@ namespace MagicSchool.Player
                 validate = true;
             }
 
-            // if placement is hex, check the team first, if correct, allow the placement
+            // if placement is hex, check the team, hero limit 
+            // if correct, allow the placement
             // p.s. Hex could only belong to either Red or Blue team
             else if (placement is Hex)
             {
                 Hex targetHex = (Hex)placement;
                 bool correctTeam = targetHex.GetTeam() == this._team;
-                if (!correctTeam) Debug.LogWarning("Player place hero in the wrong hex!");
 
-                validate = correctTeam;
+                // if the hero placing here is the new hero that arn't already on the board, 
+                // check if new hero count is over the allow hero limit.
+                bool isThisHeroTracked = _board.HeroesOnBoard.Any(hero => (Hero)hero == _heroHolded);
+                int myHeroCount = _board.HeroesOnBoard.Count(hero => hero.Team == TeamEnum.Blue);
+                if (!isThisHeroTracked) myHeroCount += 1;
+                bool isHeroesCountOverFlow = myHeroCount > _heroLimit;
+
+                validate = correctTeam && !isHeroesCountOverFlow;
             }
 
             return validate;

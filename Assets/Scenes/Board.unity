@@ -424,6 +424,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _cam: {fileID: 519420031}
+  _heroLimit: 3
+  _board: {fileID: 1120158067}
 --- !u!4 &318911244
 Transform:
   m_ObjectHideFlags: 0

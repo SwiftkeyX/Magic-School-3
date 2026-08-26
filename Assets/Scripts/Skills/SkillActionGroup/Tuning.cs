@@ -12,7 +12,7 @@ namespace MagicSchool.Skills
     {
         public float? Duration;          // how long the blast stays before it expires
         public float? Size;              // how big the AOE is
-        public bool? Sticky;             // does AOE follow something e.g. garen's skill
+        public bool? Sticky;             // does AOE follow something e.g. roland's skill
         public AOEOffsetEnum? Offset;    // the offset this AOE will be placing
         public int? Range;               // how far a AOE can reach (not a size)
     }
@@ -37,8 +37,12 @@ namespace MagicSchool.Skills
         public FireTimingModeEnum? Mode;    // fire once or in sequence
         public float? Interval;             // delay between shots - only read when Mode is Sequence
         public Tuning InnerTuning;          // tune for the template action that'll be fired
-        // FIXLATER: it was ugly, is there a way to clean this?
-        public int? RandomPoolRadius;       // only read when aimed with AimTargetEnum.Random - how
-                                            // many hexes from the current target the pool reaches
+    }
+
+    // FireTimingRunner with Projectile
+    // FLAGGING: Currently use in 1 scenario e.g. Sparks attack random enemies in 2 hex of current target
+    public class FireTimingRunnerProjectileTuning : FireTimingRunnerTuning
+    {
+        public int? RandomPoolRadius;    
     }
 }

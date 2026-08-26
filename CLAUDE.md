@@ -97,7 +97,7 @@ way round — `Hero._SOData` is assigned at runtime by `HeroSpawner` via `Hero.I
 - Combat works: auto-attack on an attack-speed cooldown, mana (10 per attack, `HeroAttack.ManaPerAttack`),
   skill cast when mana caps and spent in `HeroCast.OnEnter`, damage/heal via `CombatMath`, and
   modifiers/statuses through `Stat`/`ModifierResolver`.
-- Skills are built for 8 heroes (Aatrox, Cassiopeia, Galio, Garen, Jhin, Karma, Samira, Teemo).
+- Skills are built for 8 heroes (Vharn, Sithra, Bulwark, Roland, Quatre, Solace, Vesper, Pip).
 - **Not built yet:** the gold/economy system — the Shop resolves buy-vs-cancel on drag release but
   can't charge for it (see the BLOCKED note in `ShopPanelController`). Trait Panel and Hero Panel are
   still empty slots. There is no "Start Battle" button: combat is triggered by the space bar in
@@ -115,7 +115,7 @@ way round — `Hero._SOData` is assigned at runtime by `HeroSpawner` via `Hero.I
 - **`mcp__coplay-mcp__save_scene` gotcha:** passing a bare scene name (e.g. `"Board"`) does a "Save As" into the wrong path (`Assets/Board.unity` instead of `Assets/Scenes/Board.unity`) and silently switches the Editor's active scene to that new wrong file. Always pass the full relative path without extension, e.g. `"Scenes/Board"`.
 - **Editing a `.unity` scene file directly (e.g. renaming a serialized field) has no effect while the Editor already has that scene open** — Unity reserializes from its in-memory copy, not from disk, so the on-disk edit is silently ignored (and would be clobbered by the next in-Editor save) until the scene is reloaded. After a raw text edit to a scene file's YAML, check `EditorSceneManager.GetActiveScene().isDirty` is `false` (no unsaved in-memory changes to lose) then call `open_scene` on the same path to force a reload before trusting/testing the change.
 - Moving script files between folders is safe as long as the `.meta` travels with the `.cs` — scene and prefab references are by GUID, so they survive both the move and a namespace change. Verify in Play mode anyway.
-- The user leaves inline code-review questions via CodeTour `.tours/*.tour` JSON files (edited in VS Code). When asked to "read .tour" (or similar), `Glob` `.tours/*.tour` (the filename itself has changed before, e.g. `review.tour` → `revview.tour`) and read all steps — but respect explicit "Don't answer" notes on individual steps, those are self-notes rather than questions.
+ — but respect explicit "Don't answer" notes on individual steps, those are self-notes rather than questions.
 - VS Code debugging uses the `visualstudiotoolsforunity.vstuc` extension (the current official one, not the deprecated "Debugger for Unity"), with an "Attach to Unity" launch config already in `.vscode/launch.json`.
 - GitHub remote: https://github.com/SwiftkeyX/Magic-School-3.git, branch `main`.
 - **Never commit on your own.** Finish the work and leave it in the working tree — the user reads every diff before it becomes a commit. Only run `git commit` when they ask for it in that turn, in plain words ("commit"). Nothing else counts as permission: not a plan they approved, not an option they picked in a question, not "the change is done and tested", not a long stretch of work that feels like it needs a checkpoint. When they do ask, commit to `main` (solo project, no branches unless they ask for a PR), and split multi-part work into one change per commit. Never push unless asked.

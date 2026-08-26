@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.StatScaling
 {
     // This is the stat ratio of the skill. Use in calculation.
-    // e.g. Jhin's skill = 744% AD damage
+    // e.g. Quatre's skill = 744% AD damage
     public readonly struct StatRatio
     {
         public readonly StatEnum Stat;      // which stat to read, e.g. Atk for AD, MG for AP

@@ -13,9 +13,11 @@ namespace MagicSchool.Player
     internal static class PlayerInputSystem
     {
         public static bool IsPointerDown => Mouse.current.leftButton.isPressed;
-        public static bool PointerPressedThisFrame => Mouse.current.leftButton.wasPressedThisFrame;
-        public static bool PointerReleasedThisFrame => Mouse.current.leftButton.wasReleasedThisFrame;
+        public static bool DragPressedThisFrame => Mouse.current.leftButton.wasPressedThisFrame;
+        public static bool DragReleasedThisFrame => Mouse.current.leftButton.wasReleasedThisFrame;
         public static bool SpacePressedThisFrame => Keyboard.current.spaceKey.wasPressedThisFrame;
+        public static bool InspectPressedThisFrame => Mouse.current.rightButton.wasPressedThisFrame;
+        public static bool RestartPressedThisFrame => Keyboard.current.rKey.wasPressedThisFrame;
 
         // Converts the current mouse position to a world point on the plane facing the given camera.
         public static Vector3 GetMouseWorldPosition(Camera cam)

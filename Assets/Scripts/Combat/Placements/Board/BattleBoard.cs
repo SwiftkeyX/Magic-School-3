@@ -111,5 +111,40 @@ namespace MagicSchool.Combat.Placements
             ICombatant reserver = WhoReservedThisHex(hex);
             return reserver != null && reserver != asker;
         }
+
+        // =================================== Between stages ===================================
+        // Wipe one team off the board
+        // e.g. after player is winning, clear enemy team 
+        public void ClearTeam(TeamEnum team)
+        {
+            List<ICombatant> leaving = _heroesOnBoard.Where(h => h != null && h.Team == team).ToList();
+
+            foreach (ICombatant hero in leaving)
+            {
+                ReleaseReservationsOf(hero);    // FLAGGING: this is O(n), it don't have to.
+                _heroesOnBoard.Remove(hero);
+
+                if (hero.transform != null) Destroy(hero.transform.gameObject);
+            }
+        }
+
+        // Revive one team on the board
+        // e.g. after player is losing, revive player team
+        public void ReviveTeam(TeamEnum team)
+        {
+            foreach (ICombatant combatant in _heroesOnBoard)
+            {
+                if (combatant == null || combatant.Team != team) continue;
+
+                if (combatant is Heroes.Hero hero) hero.ResetForNewStage();
+            }
+        }
+
+        private void ReleaseReservationsOf(ICombatant hero)
+        {
+            List<Hex> held = _reservedBy.Where(pair => pair.Value == hero).Select(pair => pair.Key).ToList();
+
+            foreach (Hex hex in held) _reservedBy.Remove(hex);
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace MagicSchool.Combat.Heroes
     internal class HeroVisuals : MonoBehaviour
     {
         private const float DeadAlpha = 0.3f;
+        private const float AliveAlpha = 1f;
 
         private static readonly Color BlueSkillTextColor = new Color(0.4f, 0.85f, 1f);
         private static readonly Color RedSkillTextColor = new Color(1f, 0.55f, 0.3f);
@@ -32,6 +33,14 @@ namespace MagicSchool.Combat.Heroes
         {
             Color c = _sprite.color;
             c.a = DeadAlpha;
+            _sprite.color = c;
+        }
+
+        // Counterpart to SetDeadVisual, no longer set the sprite to transparent
+        public void SetAliveVisual()
+        {
+            Color c = _sprite.color;
+            c.a = AliveAlpha;
             _sprite.color = c;
         }
 

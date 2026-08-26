@@ -12,6 +12,8 @@ namespace MagicSchool.Skills
     public class SkillDefinition
     {
         public string SkillName { get; }
+        public string Description { get; }
+        public string PassiveDescription { get; }
 
         // triggered by OnCast once mana caps
         public IReadOnlyList<SkillStep> ActiveSteps { get; }
@@ -22,11 +24,14 @@ namespace MagicSchool.Skills
         // event to control skill behaviour e.g. combo counter, (no more usage yet) ...
         public event Action<TriggerEnum> Triggered;
 
-        public SkillDefinition(string skillName, List<SkillStep> activeSteps = null, List<SkillStep> passiveSteps = null)
+        public SkillDefinition(string skillName, List<SkillStep> activeSteps = null, List<SkillStep> passiveSteps = null,
+            string description = "", string passiveDescription = "")
         {
             SkillName = skillName;
             ActiveSteps = activeSteps ?? new List<SkillStep>();
             PassiveSteps = passiveSteps ?? new List<SkillStep>();
+            Description = description;
+            PassiveDescription = passiveDescription;
         }
 
         // inject caster into class that need it.

@@ -42,7 +42,8 @@ namespace MagicSchool.UI
             if (_mainPanel == null || _shopPanelAsset == null) return;
 
             // Put small modular panel in main panel
-            VisualElement shopPanel = PutThisPanelInMainPanel(_shopPanelAsset);
+            VisualElement shopPanel = PanelMounter.MountInMainPanel(_mainPanel, _shopPanelAsset);
+            if (shopPanel == null) return;
 
             // get the reference for later use
             _shopPanel = shopPanel.Q<VisualElement>("ShopPanel");
@@ -56,41 +57,6 @@ namespace MagicSchool.UI
             MakeRefreshButtonWork();
         }
 
-        // CloneTree() wraps a template's root in a TemplateContainer, and any <Style src="...">
-        // referenced in its UXML attaches to that wrapper - not to the root itself. Copy it over
-        // before discarding the wrapper, or the clone silently loses its stylesheet.
-        private VisualElement CloneTemplateRoot(VisualTreeAsset asset)
-        {
-            VisualElement wrapper = asset.CloneTree();
-            VisualElement root = wrapper[0];
-
-            for (int i = 0; i < wrapper.styleSheets.count; i++)
-            {
-                root.styleSheets.Add(wrapper.styleSheets[i]);
-            }
-
-            root.RemoveFromHierarchy();
-            return root;
-        }
-
-        private VisualElement PutThisPanelInMainPanel(VisualTreeAsset panelTree)
-        {
-            VisualElement panel = CloneTemplateRoot(panelTree);
-
-            // use this panel's name - to find where it should be put inside the "main panel"
-            VisualElement thisPanelWhereAboutInMainPanel = _mainPanel.Q<VisualElement>(panel.name);
-            if (thisPanelWhereAboutInMainPanel == null)
-            {
-                Debug.LogWarning($"ShopPanelController: no element named '{panel.name}' found in the main document.");
-                return null;
-            }
-
-            // put the shop panel in "it"
-            thisPanelWhereAboutInMainPanel.Clear();
-            thisPanelWhereAboutInMainPanel.Add(panel);
-
-            return panel;
-        }
         #endregion
 
         #region Drag Hero Function
@@ -201,7 +167,7 @@ namespace MagicSchool.UI
         // Shop.uss instead of being hand-built in C#, same pattern as the shop panel itself.
         private void InitializeGhost()
         {
-            _ghost = CloneTemplateRoot(_ghostAsset);
+            _ghost = PanelMounter.CloneTemplateRoot(_ghostAsset);
         }
 
         // ghost copying the mouse position using "screen panel method"

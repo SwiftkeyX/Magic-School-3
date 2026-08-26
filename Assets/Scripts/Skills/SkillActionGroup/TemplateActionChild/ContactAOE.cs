@@ -13,7 +13,7 @@ namespace MagicSchool.Skills
     /// Herores who get poison will can't walk out of poison like ZoneAOE, but they get full damage duration instead.
     /// 
     /// Example
-    /// e.g. Teemo
+    /// e.g. Pip
     /// </summary>
     internal class ContactAOE : AOE
     {

@@ -12,7 +12,7 @@ namespace MagicSchool.Skills
         public static AttackSkillEffect Damage(EffectRecipientEnum recipient, params StatRatio[] ratios)
             => new AttackSkillEffect(recipient, Scale(ratios));
 
-        // the same, re-applied on a timer - Garen's spin, Teemo's patch
+        // the same, re-applied on a timer - Roland's spin, Pip's patch
         public static AttackSkillEffect DamageOverTime(EffectRecipientEnum recipient, float interval, float duration,
                                                        params StatRatio[] ratios)
             => new AttackSkillEffect(recipient, Scale(ratios), new Cadence(interval, duration));
@@ -31,7 +31,7 @@ namespace MagicSchool.Skills
             => new ModifierSkillEffect(recipient, modifier, amplifier: amplifier);
 
         // the same, but amplified only when every condition holds - the effect still lands either
-        // way, the conditions just scale it. Cassiopeia's wound is applied harder while transformed.
+        // way, the conditions just scale it. Sithra's wound is applied harder while transformed.
         public static ModifierSkillEffect ApplyWhen(EffectRecipientEnum recipient, ICustomModifier modifier,
                                                     List<SkillCondition> conditions, float amplifier)
             => new ModifierSkillEffect(recipient, modifier, conditions: conditions, amplifier: amplifier);
@@ -48,9 +48,9 @@ namespace MagicSchool.Skills
             => new StatModifier(modifier, Scale(ratios));
 
         // 3) the buff will derived from the caster itself unless it consume "source" parameter.
-        // Sona's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
+        // Lyra's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
         // BUT it have another pattern, you should know:
-        // Sona's skill (alternative) buff ally base on Sona's AP by +50%AP => This will get different result.
+        // Lyra's skill (alternative) buff ally base on Lyra's AP by +50%AP => This will get different result.
         public static IModifier Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
             => new StatModifier(modifier, Scale(source, ratios));
 
@@ -60,36 +60,31 @@ namespace MagicSchool.Skills
             => new StatusModifier(status);
 
         // ================================== ActionGroup ==================================
-        // FIXLATER: there's too much duplicate of ActionGroup function here, could we group them into 1?
         // a template action
         public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                    TemplateActionEnum action, AimTargetEnum target,
                                                    params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    effects: new List<SkillEffect>(effects));
+            => Group(registry, source, action, target, conditions: null, tuning: null, effects: effects);
 
         // the same, with this hero's numbers for the action
         public static SkillActionGroup ActionGroup(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                    TemplateActionEnum action, AimTargetEnum target,
                                                    Tuning tuning,
                                                    params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    effects: new List<SkillEffect>(effects), tuning: tuning);
+            => Group(registry, source, action, target, conditions: null, tuning: tuning, effects: effects);
 
-        // a template action with condition
+        // a template action with condition, and this hero's numbers for it if it needs them.
         // conditin need to be true, in order this template action to play.
         public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
                                                        TemplateActionEnum action, AimTargetEnum target,
-                                                       List<SkillCondition> conditions,
+                                                       List<SkillCondition> conditions, Tuning tuning = null,
                                                        params SkillEffect[] effects)
-            => new SkillActionGroup(source, registry.Get(action), target,
-                                    conditions: conditions, effects: new List<SkillEffect>(effects));
+            => Group(registry, source, action, target, conditions: conditions, tuning: tuning, effects: effects);
 
-        // the same, with this hero's numbers for the action
-        public static SkillActionGroup ActionGroupWhen(TemplateActionRegistrySO registry, ActionSourceEnum source,
-                                                       TemplateActionEnum action, AimTargetEnum target,
-                                                       List<SkillCondition> conditions, Tuning tuning,
-                                                       params SkillEffect[] effects)
+        private static SkillActionGroup Group(TemplateActionRegistrySO registry, ActionSourceEnum source,
+                                              TemplateActionEnum action, AimTargetEnum target,
+                                              List<SkillCondition> conditions, Tuning tuning,
+                                              SkillEffect[] effects)
             => new SkillActionGroup(source, registry.Get(action), target,
                                     conditions: conditions, effects: new List<SkillEffect>(effects), tuning: tuning);
 
@@ -118,9 +113,16 @@ namespace MagicSchool.Skills
 
         public static FireTimingRunnerTuning TuneFireTimingRunner(int count, FireTimingModeEnum mode,
                                                                    float interval = 0f, Tuning innerTuning = null,
-                                                                   int? randomPoolRadius = null, float? castTime = null)
+                                                                   float? castTime = null)
             => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval, InnerTuning = innerTuning,
-                                            RandomPoolRadius = randomPoolRadius, CastTime = castTime };
+                                            CastTime = castTime };
+
+        public static FireTimingRunnerProjectileTuning TuneFireTimingRunnerProjectile(int count, FireTimingModeEnum mode,
+                                                                   float interval = 0f, Tuning innerTuning = null,
+                                                                   int? randomPoolRadius = null, float? castTime = null)
+            => new FireTimingRunnerProjectileTuning { Count = count, Mode = mode, Interval = interval,
+                                                      InnerTuning = innerTuning, RandomPoolRadius = randomPoolRadius,
+                                                      CastTime = castTime };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;

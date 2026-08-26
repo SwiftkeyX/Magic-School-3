@@ -13,7 +13,7 @@ namespace MagicSchool.Combat.Heroes
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats
+    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats, IInspectable
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;
@@ -62,12 +62,21 @@ namespace MagicSchool.Combat.Heroes
 
         // ======================================== visuals ========================================
         public void SetDeadVisual() => _visuals.SetDeadVisual();
+        public void SetAliveVisual() => _visuals.SetAliveVisual();
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
 
         // ======================================== skill ========================================
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
         public bool TriggerPassiveSkill(TriggerEnum trigger) => _skill.TriggerPassiveSkill(trigger);
         public float GetCastTime() => _skill.GetCastTime();
+
+        // what the Hero Panel reads
+        public bool HasSkill => _skill != null && _skill.HasSkill;
+        public bool HasPassive => _skill != null && _skill.HasPassive;
+        public string SkillName => _skill != null ? _skill.SkillName : string.Empty;
+        public string SkillDescription => _skill != null ? _skill.Description : string.Empty;
+        public string PassiveDescription => _skill != null ? _skill.PassiveDescription : string.Empty;
+        public string HeroName => _SOData != null ? _SOData.Name : name;
 
         // ======================================== attack ========================================
         public bool IsAttackReady => _attackCooldown.IsReady(AttackSpeed);
@@ -106,6 +115,9 @@ namespace MagicSchool.Combat.Heroes
         public int CurrentMana => Stat.CurrentMana;
         public int MaxMana => Stat.MaxMana;
         public int AttackDamage => Stat.Atk;
+        public int Defence => Stat.DF;
+        public int Magic => Stat.MG;
+        public int MagicResist => Stat.MR;
         public float AttackSpeed => Stat.AttackSpeed;
         public int Range => Stat.Range;
         public bool IsStunned => Stat.IsStunned;
@@ -193,6 +205,30 @@ namespace MagicSchool.Combat.Heroes
 
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, target.transform.position);
+        }
+        #endregion
+
+        // This is where a function with no where to live yet. group together.
+        #region Temporarily
+        /// <summary>
+        /// Put this hero back the way it started, without destroying and respawning it: full HP and
+        /// starting mana, every modifier gone, dead ones standing again. Used between stages, so the
+        /// player's team survives the fight it just had instead of being wiped and re-dragged.
+        /// A new Stat rather than a reset one - Stat holds the modifiers, so replacing it IS the
+        /// clear, and there is no half-cleared state to get wrong.
+        /// </summary>
+        public void ResetForNewStage()
+        {
+            if (!IsInitialized) return;
+
+            _stat = new Stat(_SOData);
+            _attackCooldown = new AttackCooldown();
+
+            SetAliveVisual();
+
+            // ChangeState, not Start: the Dead state has to be left properly, and a hero that
+            // survived is already mid-state rather than un-started.
+            _stateMachine.ChangeState(HeroStateEnum.Idle);
         }
         #endregion
     }

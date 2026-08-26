@@ -20,6 +20,10 @@ namespace MagicSchool.Skills
         // ======================================== private ==============================================
         private void HandleHit(ICombatant hero)
         {
+            // FirstHitProjectile don't hit the same team.
+            // NOTE: mention this because PiercingProjectile can hit the same team (to give buff)
+            if (hero == null || hero.Team == _me.Team) return;
+
             List<ICombatant> recipients = new List<ICombatant> { hero };
             foreach (SkillEffect effect in _effects)
             {

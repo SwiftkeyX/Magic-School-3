@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Core;
@@ -12,10 +13,29 @@ namespace MagicSchool.Player
         private bool _isHeroHolded = false;
         private Hero _heroHolded;
         private TeamEnum _team;
+        private IInspectorPanel _inspector;
 
         void Awake()
         {
             _team = TeamEnum.Blue;
+        }
+
+        // FLAGGING: this wants to be a [SerializeField] and cannot be one - Unity does not
+        // serialize interface fields, so the reference would just sit there null. Doing it
+        // properly means a MonoBehaviour field plus a RequireInterface PropertyDrawer to stop
+        // the wrong component being dragged in (ShowIfDrawer in Core/Editor is the pattern).
+        // Deliberately not done: the scan runs once and costs nothing at runtime. The thing it
+        // actually costs is that the wiring is invisible in the Inspector.
+        void Start()
+        {
+            _inspector = FindAnyInspector();
+        }
+
+        private static IInspectorPanel FindAnyInspector()
+        {
+            return FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .OfType<IInspectorPanel>()
+                .FirstOrDefault();
         }
 
         void Update()
@@ -23,6 +43,8 @@ namespace MagicSchool.Player
             if (GameManager.Instance == null) return;
 
             TryStartCombat();
+            TryRestart();
+            TryInspectHero();
             PlayerMoveHero();
         }
 
@@ -33,9 +55,39 @@ namespace MagicSchool.Player
         {
             if (!PlayerInputSystem.SpacePressedThisFrame) return;
 
+            if (GameManager.Instance.Phase == GamePhaseEnum.Result)
+            {
+                GameManager.Instance.ContinueFromResult();
+                return;
+            }
+
             GameManager.Instance.StartCombat();
         }
 
+        // quick restart
+        private void TryRestart()
+        {
+            if (!PlayerInputSystem.RestartPressedThisFrame) return;
+
+            GameManager.Instance.Restart();
+        }
+
+        // Right-click a hero to inspect it.
+        private void TryInspectHero()
+        {
+            if (!PlayerInputSystem.InspectPressedThisFrame) return;
+
+            // get which hero pointer hit on
+            Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
+            Collider2D hit = Physics2D.OverlapPoint(worldPos);
+            Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
+
+            // right-clicking past every hero closes the panel rather than leaving it stale
+            _inspector?.Inspect(hero);
+        }
+
+
+        // left click hero to drag it around.
         private void PlayerMoveHero()
         {
             // if not in preparation, return;
@@ -52,7 +104,7 @@ namespace MagicSchool.Player
                 // if the user click/hold on the hero, continue 
                 _heroHolded = hit.GetComponent<Hero>();
                 bool isHeroHit = (_heroHolded != null);
-                bool isHeroClicked = PlayerInputSystem.PointerPressedThisFrame && isHeroHit;
+                bool isHeroClicked = PlayerInputSystem.DragPressedThisFrame && isHeroHit;
                 if (isHeroClicked)
                 {
                     _isHeroHolded = PlayerInputSystem.IsPointerDown;
@@ -67,7 +119,7 @@ namespace MagicSchool.Player
 
                 // if the user release hero on the hex, place hero on top of the hex 
                 Hex targetHex = hit.GetComponent<Hex>();
-                bool isRelease = PlayerInputSystem.PointerReleasedThisFrame;
+                bool isRelease = PlayerInputSystem.DragReleasedThisFrame;
                 bool isHexHit = (targetHex != null);
                 if (isRelease && isHexHit && ValidateHex(targetHex))
                 {

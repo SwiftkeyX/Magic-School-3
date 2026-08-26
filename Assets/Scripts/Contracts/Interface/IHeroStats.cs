@@ -8,6 +8,9 @@ namespace MagicSchool.Contracts
         int CurrentMana { get; }
         int MaxMana { get; }
         int AttackDamage { get; }
+        int Defence { get; }
+        int Magic { get; }
+        int MagicResist { get; }
         float AttackSpeed { get; }
         int Range { get; }
         float GetStat(StatEnum type);

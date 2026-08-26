@@ -84,7 +84,7 @@ namespace MagicSchool.Combat.Heroes.States
 
         private void PerformAutoAttack()
         {
-            // other action may replace normal auto attack e.g. Aatrox
+            // other action may replace normal auto attack e.g. Vharn
             if (!_me.HasStatus(ModifierEnum.AutoAttackWasReplaced))
             {
                 // FLAGGING: attack animation got skip by skill which is not intended

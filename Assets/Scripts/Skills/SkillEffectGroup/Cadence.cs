@@ -2,8 +2,8 @@ namespace MagicSchool.Skills
 {
     /// <summary>
     /// Not cadence => apply effect when hitbox collide (OnTriggerEnter())
-    /// cadence but start only initial collision => e.g. teemo's mushroom (after OnTriggerEnter(), start coroutine for the poison damage)
-    /// cadence but not need initial collision => e.g. garen's E (OnTriggerEnter() trigger every interval)
+    /// cadence but start only initial collision => e.g. pip's mushroom (after OnTriggerEnter(), start coroutine for the poison damage)
+    /// cadence but not need initial collision => e.g. roland's E (OnTriggerEnter() trigger every interval)
     /// </summary>
     public class Cadence
     {

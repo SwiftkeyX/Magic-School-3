@@ -18,8 +18,8 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Move(registry), AOE(registry) },
-                description: "Charges up to four hexes straight through the enemy line, damaging and stun "
-                           + "everyone he ploughs into on the way.");
+                description: $"Charges up to {ChargeRange} hexes straight through the enemy line, dealing "
+                           + $"{CollideDamage}% AP to everyone he ploughs into on the way and stunning them.");
         }
 
         private static SkillStep Move(TemplateActionRegistrySO registry)

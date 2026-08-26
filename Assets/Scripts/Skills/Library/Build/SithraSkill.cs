@@ -6,7 +6,7 @@ namespace MagicSchool.Skills
 {
     internal static class SithraSkill
     {
-        private const float DamageRatio = 1000f;
+        private const float DamageRatio = 160f;
         private const float WoundDuration = 5f;
         private const float WoundedAmplifier = 0.3f;
 
@@ -43,9 +43,10 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Split Venom",
                 activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) },
-                description: "Spits a homing bolt at the furthest enemy. It hits hard and leaves the target wounded, so "
-                             + "everything that tries to heal them for the next 5 seconds does less." 
-                             + "If target is already wounded, amplified damage by +30%");
+                description: $"Spits a homing bolt at the furthest enemy. It deals {DamageRatio}% AP and leaves the "
+                             + $"target wounded, so everything that tries to heal them for the next {WoundDuration} "
+                             + "seconds does less. If target is already wounded, amplified damage by "
+                             + $"+{WoundedAmplifier * 100}%");
         }
     }
 }

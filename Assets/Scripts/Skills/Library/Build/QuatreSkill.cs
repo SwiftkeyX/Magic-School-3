@@ -20,8 +20,8 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shot) },
-                description: "Fires a shot that carries straight on through the target, damaging every enemy caught along "
-                             + "its path.");
+                description: $"Fires a shot that carries straight on through the target, dealing {DamageRatio}% AD to "
+                             + "every enemy caught along its path.");
         }
     }
 }

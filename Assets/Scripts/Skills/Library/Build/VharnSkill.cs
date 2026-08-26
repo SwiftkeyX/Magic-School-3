@@ -19,6 +19,12 @@ namespace MagicSchool.Skills
         private const float AttackFromAS = 500f;   // sheet: 80% of bonus AS, converted to AD
         private const float TransformDuration = 10f;
 
+        // one per beat of the combo, in order. Named rather than passed inline so the description
+        // below can quote the same figures the beats are built from.
+        private const float BoxDamage = 200f;
+        private const float TriangleDamage = 300f;
+        private const float CircleDamage = 400f;
+
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
         {
             // one count for the whole combo, handed to each beat below. Shared deliberately and
@@ -29,10 +35,11 @@ namespace MagicSchool.Skills
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Transform(registry) },
                 passiveSteps: new List<SkillStep> { Combo(registry, combo) },
-                description: "Transforms for 10 seconds, draining life with every hit he lands and turning his bonus "
-                           + "attack speed into raw attack damage.",
+                description: $"Transforms for {TransformDuration} seconds, draining {OmnivampFromAP}% AP of the damage "
+                           + "he deals back as life and turning his bonus attack speed into raw attack damage.",
                 passiveDescription: "While transformed his auto attack becomes a three beat combo - box, then triangle, "
-                                  + "then circle - and each beat lands harder than the one before it.");
+                                  + $"then circle - landing for {BoxDamage}% / {TriangleDamage}% / {CircleDamage}% AD "
+                                  + "in turn.");
 
             // moves the combo on when he attacks - not when a condition is asked
             skill.Triggered += combo.Count;
@@ -84,9 +91,9 @@ namespace MagicSchool.Skills
         {
             List<SkillActionGroup> beats = new List<SkillActionGroup>
             {
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOE,      beat: 1, damage: 200f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOE, beat: 2, damage: 300f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
-                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOE,   beat: 3, damage: 400f, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.BoxAOE,      beat: 1, damage: BoxDamage,      tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.TriangleAOE, beat: 2, damage: TriangleDamage, tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
+                Beat(registry: registry, combo: combo, action: TemplateActionEnum.CircleAOE,   beat: 3, damage: CircleDamage,   tuning: TuneAOE(offset: AOEOffsetEnum.Tip)),
             };
 
             return new SkillStep(trigger: TriggerEnum.OnAttack, actionGroups: beats);

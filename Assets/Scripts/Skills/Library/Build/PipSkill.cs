@@ -17,7 +17,8 @@ namespace MagicSchool.Skills
                 skillName: "Blinding Spore",
                 activeSteps: new List<SkillStep> { Dart(registry), Patch(registry) },
                 description: "Lobs a spore at the furthest enemy. It does no damage itself - where it lands a patch spreads "
-                             + "that wounds anyone standing in it and keeps poisoning them for 3 seconds.");
+                             + $"that wounds anyone standing in it and poisons them for {PoisonDamage}% AP over "
+                             + $"{PoisonDuration} seconds.");
         }
 
         private static SkillStep Dart(TemplateActionRegistrySO registry)

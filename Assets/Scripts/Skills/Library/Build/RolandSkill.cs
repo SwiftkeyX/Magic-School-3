@@ -30,8 +30,8 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Skill",
                 activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: spin) },
-                description: "Whips up a storm around himself that damages every enemy standing in it, twice a second for "
-                             + "4 seconds.");
+                description: $"Whips up a storm around himself that deals {DamagePerTick}% AD to every enemy standing "
+                             + $"in it, split over {Duration} seconds and ticking every {TickInterval} seconds.");
         }
     }
 }

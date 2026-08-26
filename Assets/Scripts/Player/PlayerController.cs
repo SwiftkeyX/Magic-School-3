@@ -141,12 +141,12 @@ namespace MagicSchool.Player
         private void DropHero(Vector3 worldPos)
         {
             Collider2D hit = Physics2D.OverlapPoint(worldPos);
-            Hex targetHex = hit != null ? hit.GetComponent<Hex>() : null;
+            IPlacement targetPlacement = hit != null ? hit.GetComponent<IPlacement>() : null;
 
             // if the user release hero on the hex, place hero on top of the hex
-            if (targetHex != null && ValidateHex(targetHex))
+            if (targetPlacement != null && ValidatePlacement(targetPlacement))
             {
-                GameManager.Instance.MoveHero(_heroHolded, targetHex);
+                GameManager.Instance.MoveHero(_heroHolded, targetPlacement);
                 ReleaseHero();
                 return;
             }
@@ -175,13 +175,29 @@ namespace MagicSchool.Player
             _heroHolded = null;
         }
 
-        // If team of that hex is the same to hero's team, allow the placement
-        // p.s. Hex could only belong to either Red or Blue team
-        private bool ValidateHex(Hex targetHex)
+        // check the placement before placing the hero
+        private bool ValidatePlacement(IPlacement placement)
         {
-            bool correctTeam = targetHex.GetTeam() == this._team;
-            if (!correctTeam) Debug.LogWarning("Player place hero in the wrong hex!");
-            return correctTeam;
+            bool validate = false;
+
+            // if placement is bench, allow the placement
+            if (placement is BenchSlot)
+            {
+                validate = true;
+            }
+
+            // if placement is hex, check the team first, if correct, allow the placement
+            // p.s. Hex could only belong to either Red or Blue team
+            else if (placement is Hex)
+            {
+                Hex targetHex = (Hex)placement;
+                bool correctTeam = targetHex.GetTeam() == this._team;
+                if (!correctTeam) Debug.LogWarning("Player place hero in the wrong hex!");
+
+                validate = correctTeam;
+            }
+
+            return validate;
         }
     }
 }

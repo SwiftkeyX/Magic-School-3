@@ -53,7 +53,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c171b8ebb453fc4419575d8b4a44106e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bench
+  _cam: {fileID: 0}
   _benchSlots: []
+  _board: {fileID: 0}
 --- !u!1001 &728849593407657895
 PrefabInstance:
   m_ObjectHideFlags: 0

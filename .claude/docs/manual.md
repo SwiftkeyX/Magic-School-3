@@ -27,7 +27,7 @@ Suggest reading TriggerType.cs.
 For exmaple:
 - Darius(user) dunk(action) aim on Enemy(target), BUT ally(recipient) get heal(effect).
 - Yasuo(user) slash(action) aim on Enemy(target), the target(recipient) get damaged(effect), BUT yasuo(recipient) get buff(effect).
-- Sona(user) shoot wave(action) aim on Furthest enemy(target), BUT all the enemy that got hit by the wave(recipient) get damaged(effect).
+- Lyra(user) shoot wave(action) aim on Furthest enemy(target), BUT all the enemy that got hit by the wave(recipient) get damaged(effect).
 Suggest reading EffectRecipientType.cs
 
 This is the example when we combine all of the axes:
@@ -36,58 +36,69 @@ Step 2 = OnExpired(trigger), Yasuo(user) buff(action) aim on Yasuo(target), the 
 
 # problem
 
+# Done
+Lumen - throw 2 hex circle AOE on the clustered enemy
+- have to quickly implement this guy to clear the untested clusterd logic from Aldric
+
+Reyn - shoot 6 projectile at the furthest enemy. Shoot in sequence.
+- implement new variable in template action, "Fire timing", "shoot in sequence"
+- Fire timing - could belong to projectile, laser (BoxAOE e.g. Vharn), quickAA (direct damage e.g. verity)
+=> in summary, FireTiming could belong to projectile, AOE, DirectDamage (not implement yet)
+
+Sparks - shoot 5 homing projectile in sequince at random enemy in 2 hex of current target.
+- Implement new aim target, random (2 hex of current target)
+
+Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 time, 0.2 interval
+- implement AOE with "Fire timing"
 
 # Plan
-Aatrox (cont.)
-=> Also Omnivamp should be included in Stat too, now it does nothing - Omnivap heal self base on damage they did
-
-I don't sure. BUT I think the attack dash animation got override by walk animation. in Aatrox scene. 
-
+=== Interrupt ===
+For build version:
+- When player drag a hero, make a hero follow player's pointer too.
+- public the repo, write README, etc...
 
 === implement new hero ===
-Clustered (aimTarget)
-- when there's 2 clustered of enemies, the cluster target is always set to the same target as previous one, never set to the second one. 
-Which is not intented.
-- when there's no clustered, it should aim the current target instead.
-- when there's a tie clustered, it should prioritize the current target (if current target was 1 of the candidate)
+Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.
+While using skill become untargetable.
+weakest enemy = lowest effective health pool
+- Implement new template action, "DirectDamage"
+- Implement new status, "Untargetable"
 
+Nasus - choose 4 nearest enemy, debuff them, and buff self for that amount, last 8 sec
 
-JarvanIV - jump (2 hex maximum) into the cluster enemies. Stun AOE.
-- implement jump
+Solace's 3rd cast
 
-Sion - move into clustered, range 4 hex, enemy who is in the way get knocked up.
-- while moving, he have his AOE on himself activate, enemy who touch it get knock up.
+=== other ===
+I don't sure. BUT I think the attack dash animation got override by walk animation. in Vharn scene. 
+
+I want to be able to tune the width/height of each UI directly in play mode or alternative. 
+Becasue now if I want to edit UI, I have to exit play mode first, and guess the height on my own.
+
+Could we also make the text in HeroPanel scale as the screen size grow.
+
+# Not implement yet
+## hero
+Garen - can walk while using his skill
+- implement can walk while casting *for some skill
+
+Poppy - implement "Recieving Projectile" and Shield
+- receiving Projectile sound dump, let skip it for now.
 
 Shen - shield 2 lowest ally. OnExpired, shield burst into AOE, gain second shield.
 - implement aim on lowest ally.
 
-Akshan - shoot 6 projectile at the furthest enemy. Shoot in sequence.
-- implement new variable in template action, "Fire timing", "shoot in sequence"
+Lumen's chakram
 
 Ashe - shoot 8 arrow in a cone at once.
 - add to "Fire timing", "shoot at once"
 
-Gwen - do damage by spawn several cone AOE in sequence
-- implement AOE with "Fire timing"
+Kaisa - shoot 15 homing projectile in sequence. at 4 nearest enemies
 
-Kaisa - shoot 15 homing projectile in sequence.
-
-Jinx - shoot 5 homing projectile in sequince at random enemy in 2 hex of current target.
-- Implement new aim target, random (2 hex of current target)
-
-Fiora - do direct damage (like auto attack does) 4 time in sequence. random enemy in 2 hex of current target.
-While using skill become untargetable.
-- Implement new template action. "DirectDamage"
-- Implement new status, "Untargetable"
-
-
-# Not implement yet
-Poppy - implement "Recieving Projectile" and Shield
-- receiving Projectile sound dump, let skip it for now.
-
+## test
 write a MagicSchool.Combat.Tests asmdef.
-- skip it for now
+- not optional anymore if we test FindEnemy: it's internal, so nothing outside Combat can call it.
 
+## refactor
 internal for variable - a ton of work
 - skip it for now
 
@@ -95,6 +106,5 @@ internal for variable - a ton of work
 # Note
 2. _lookup missing AP and Omnivamp — both read as statuses and silently do nothing.
 
-Next, make a test of FindEnemy for every of the ITargeter's method.
-Make like 10 BattlePlacementSO for each of them.
-Is that make sense?
+when there's 2 clustered of enemies, the cluster target is always set to the same target as previous one, never set to the second one. 
+The ClusteredCircle still have problem, not sure about other clustered.

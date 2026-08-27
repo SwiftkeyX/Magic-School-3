@@ -113,3 +113,26 @@ each `TemplateAction` carries the effects it applies.
 
 Read BulWark's skill code at: 
 [`BulwarkSkill.cs`](Assets/Scripts/Skills/Library/Build/BulwarkSkill.cs): `Brace()`
+
+### Does the schema hold up?
+
+Bulwark is a kit written *for* this schema, so it fits by construction. The harder question is
+whether the columns survive kits designed by someone else, for a different game, with no regard
+for what this system can express.
+
+TFT Set 9 was used as the stress test. All **75 champions**, across every cost tier, decompose
+into the same columns:
+
+| Cost | 1 | 2 | 3 | 4 | 5 |
+| --- | --- | --- | --- | --- | --- |
+| Champions | 16 | 16 | 16 | 18 | 9 |
+
+75 kits come to **155 steps** — passives that trigger on attack, channels that tick while
+casting, steps that fire only when a previous one expired or hit, projectiles that spawn AoEs
+where they land. No column had to be added for any of them.
+
+- [`docs/tft-set9-schema.csv`](docs/tft-set9-schema.csv) — the full encoding, in this repo.
+- [The same thing as a sheet](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing) — easier to read and filter.
+
+**This is an encoding exercise, not an implementation.** It shows the schema is expressive
+enough to describe those kits; it does not mean the game runs them directly, but the game does derived from its formula very heavily.

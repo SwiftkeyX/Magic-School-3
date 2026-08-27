@@ -64,7 +64,7 @@ and Placement need to know which Hero standing on it.
 - built from a list of steps played in order, each step playing a template action
   (projectile, AoE, Cast, etc.).
 - apply the effect to hero; an effect could be damage, status, buff or debuff.
-- read here for more detail: [Modular Skill System](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing)
+- see [A skill, step by step](#a-skill-step-by-step) below for a worked example.
 
 **Modifiers**
 
@@ -85,3 +85,29 @@ bar, skill bar).
 **Editor** — inspector tooling for Core.
 
 **Combat.Tests** — EditMode tests for Combat, Contracts and Skills.
+
+## A skill, step by step
+
+Every skill decomposes into the same shape. Bulwark's *Guardian's Roar* is a
+useful one to read because its two steps are triggered differently: the first by the cast, the
+second by the first one **expiring**.
+
+> Braces for 2 seconds, healing steadily and taking 25% less damage. The moment the brace ends
+> he slams the ground for 120% AP to every enemy around him.
+
+| Step | Trigger | Action | Aim | Recipient | Effect | Amount | Cadence | Duration |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | `OnCast` | `Cast` | `Self` | `Self` | Heal | 200% MG | every 0.5s | 2s |
+| 1 | `OnCast` | `Cast` | `Self` | `Self` | Damage Reduction | 25% | once | 2s |
+| 2 | `OnExpired` | `CircleAOE` | `Self` | `EnemiesInArea` | Damage | 120% MG | once | — |
+
+Reading across a row: **when** does this fire, **what** does it spawn, **where** is it aimed,
+**who** does it land on, and **what happens** to them. Reading down: a skill is just a list of
+those rows.
+
+That is the whole model that was built to make human readable and codable. A `SkillDefinition` holds `SkillStep`s; 
+each step holds `SkillActionGroup`s that pick a `TemplateAction` (e.g. projectile, AoE, Cast) based on `SkillCondition`; 
+each action carries the effects it applies.
+
+Read BulWark's skill code at: 
+[`BulwarkSkill.cs`](Assets/Scripts/Skills/Library/Build/BulwarkSkill.cs): `Brace()`

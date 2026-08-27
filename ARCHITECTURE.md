@@ -107,21 +107,26 @@ Reading across a row: **when** does this fire, **what** does it spawn, **where**
 **who** does it land on, and **what happens** to them. Reading down: a skill is just a list of
 those rows.
 
-That is the whole model that was built to make human readable and codable. A `SkillDefinition` holds `SkillStep`s; 
-each step holds `SkillActionGroup`s that pick a `TemplateAction` (e.g. projectile, AoE, Cast) based on `SkillCondition`; 
+That is the whole model that was built to make human readable and codable. A `SkillDefinition` holds `SkillStep`s;
+each step holds `SkillActionGroup`s that pick a `TemplateAction` (e.g. projectile, AoE, Cast) based on `SkillCondition`;
 each `TemplateAction` carries the effects it applies.
 
-Read BulWark's skill code at: 
+Read Bulwark's skill code at:
 [`BulwarkSkill.cs`](Assets/Scripts/Skills/Library/Build/BulwarkSkill.cs): `Brace()`
 
 ### Where the schema came from
 
-These schema are the derived from TFT Set 9 & 10. It was written out before this system existed — **135 champions**, every cost tier, kit by
-kit — and that encoding was iterated until one consistent set of columns covered all of them.
+This schema is derived from TFT Set 9 & 10. Those were written out before this system existed —
+**135 champions**, every cost tier, kit by kit — and that encoding was iterated until one
+consistent set of columns covered all of them.
 
-The result, 135 kits get separate into **284 steps**.
-That is why the model looks the way it does. `SkillDefinition` / `SkillStep` /
-`SkillActionGroup` / `TemplateAction` are the spreadsheet's shape, in C#. The sheet is not
-documentation written afterwards; The sheet is the source the system was derived from.
+The result: 135 kits break down into **284 steps**. That is why the model looks the way it does.
+`SkillDefinition` / `SkillStep` / `SkillActionGroup` / `TemplateAction` are the spreadsheet's
+shape, in C#. The sheet is not documentation written afterwards; the sheet is the source the
+system was derived from.
 
 Read it here: [the design sheet](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing).
+
+Those 135 kits are a design corpus, not a feature list — encoding one in these columns is not
+the same as the game running it. The skills built in C# are this project's own 17 heroes,
+written in the shape the corpus produced.

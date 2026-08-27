@@ -54,7 +54,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- limit the hero from player's side
 - public the repo, write README, etc...
 
 === implement new hero ===

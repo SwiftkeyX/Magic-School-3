@@ -5,7 +5,8 @@ using MagicSchool.Contracts;
 namespace MagicSchool.UI
 {
     /// <summary>
-    /// The hint line, the win banner and the fielded-hero counter - everything layered over the board.
+    /// everything layered over the board.
+    /// e.g. The hint line, the win banner, and the hero counter 
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
     internal class MatchStatusController : MonoBehaviour, IBannerPanel, IHeroCountPanel

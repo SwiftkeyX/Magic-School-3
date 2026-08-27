@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Combat.Heroes.Stats
+namespace MagicSchool.Modifiers
 {
     // 1) ModifierResolver are used to calculate final stat from modifier:
     // 1.1) stat modifier: they increase/decrease stat e.g. atk, def, as, mana, hp, etc...
     // 1.2) status modifier: they don't relate to stat e.g. stun, wound, untargetable, disarm, etc...
     // 2) ModifierResolver track which modifier will expired
-    internal class ModifierResolver
+    public class ModifierResolver
     {
         private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
 

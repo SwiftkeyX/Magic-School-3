@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Combat.Heroes.Stats
+namespace MagicSchool.Modifiers
 {
     // Contain current active group of modifiers on the hero. 
     // To track how long this group of modifiers last.

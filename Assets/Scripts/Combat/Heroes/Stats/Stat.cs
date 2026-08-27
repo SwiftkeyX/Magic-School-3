@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Modifiers;
 
 namespace MagicSchool.Combat.Heroes.Stats
 {

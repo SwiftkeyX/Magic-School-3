@@ -15,7 +15,7 @@ MagicSchool.VFX        -> (nothing)          leaf: FloatingText
 MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
 MagicSchool.Modifiers  -> Contracts
 MagicSchool.Skills     -> Contracts, Engine, StatScaling, Modifiers
-MagicSchool.Combat     -> Contracts, Engine, Skills, VFX
+MagicSchool.Combat     -> Contracts, Engine, Skills, VFX, Modifiers
 MagicSchool.UI         -> Contracts, Combat
 MagicSchool.Core       -> Contracts, Engine, Skills, Combat
 MagicSchool.Player     -> Contracts, Combat, Core, Unity.InputSystem
@@ -32,8 +32,11 @@ Rules that aren't visible from any single file:
 - **`Modifiers` and `StatScaling` are separate from `Skills` on purpose.** A skill is only what
   *grants* a modifier today; traits, items or augments would grant the same ones, and none of them
   should have to reference `Skills` - and so `TemplateAction`, `SkillDefinition` and every hero
-  builder - just to say "+20 armour". `Combat` does not reference either module: `ModifierResolver`
-  and `Hero` only ever touch `ICustomModifier`/`IModifier`, which are in `Contracts`. The folder is
+  builder - just to say "+20 armour". `Combat` references `Modifiers` for one thing only:
+  `Stat` holds a `ModifierResolver`. The resolver lives in `Modifiers` rather than next to `Stat`
+  because a module that holds modifiers but cannot resolve them is not reusable - a trait or item
+  system would have had to take `Combat` along just to make "+20 armour" mean anything. `Combat`
+  still writes nothing but `ICustomModifier`/`IModifier` in its own code. The folder is
   `StatScaling/` rather than `Scaling/` because namespaces follow the folder, and a namespace
   `MagicSchool.Scaling` holding a class `Scaling` cannot be used unqualified.
 - **`Heroes/` and `Placements/` share one assembly on purpose.** A hero needs its hex and a hex

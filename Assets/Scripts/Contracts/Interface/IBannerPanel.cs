@@ -1,6 +1,6 @@
 namespace MagicSchool.Contracts
 {
-    // IMatchStatusView answer: what should the player be told about the match right now?
+    // IBannerPanel answer: what should the player be told about the match right now?
     // e.g. "drag heroes on and press space to start the combat", or "blue won, press SPACE for stage 2"
     public interface IBannerPanel
     {

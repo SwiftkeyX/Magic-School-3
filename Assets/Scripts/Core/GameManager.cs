@@ -7,6 +7,8 @@ using MagicSchool.Skills;
 
 namespace MagicSchool.Core
 {
+    // FLAGGING: The hero limit should stay in PlayerController.cs, 
+    // it was here now temporarily for quick demo.
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
@@ -18,12 +20,14 @@ namespace MagicSchool.Core
         [SerializeField] private BattlePlacementSO[] _stages;
         [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _isPlayerSeed;
+        [SerializeField] private int _startingHeroLimit = 3;   // how many heroes the player may field on stage 1
         private HeroMover _heroMover;
         private BattleBoardSeed _seed;
         private HeroSpawner _heroSpawner;
         private GameStateMachine _stateMachine;
         private IBannerPanel _status;
         private int _stageIndex;
+        private int _heroLimit;
         private bool _startCombatRequested;
         private bool _continueRequested;
         private bool _restartRequested;
@@ -36,12 +40,15 @@ namespace MagicSchool.Core
         internal bool HasStages => _stages != null && _stages.Length > 0;
         internal int StageCount => HasStages ? _stages.Length : 1;
         internal int StageNumber => _stageIndex + 1;
+        public int HeroLimit => _heroLimit;
         internal bool IsRunCleared => Winner == TeamEnum.Blue && _stageIndex + 1 >= StageCount;
 
         // ======================================== setter ========================================
         internal BattlePlacementSO GetStage(int index) => HasStages ? _stages[index] : _currentStage;
         internal void SetWinner(TeamEnum? winner) => Winner = winner;
         internal void SetStageIndex(int index) => _stageIndex = Mathf.Clamp(index, 0, StageCount - 1);
+        internal void GrowHeroLimit() => _heroLimit++;
+        internal void ResetHeroLimit() => _heroLimit = _startingHeroLimit;
 
         // === forwarding ===
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
@@ -57,6 +64,7 @@ namespace MagicSchool.Core
             Instance = this;
 
             _heroMover = new HeroMover();
+            _heroLimit = _startingHeroLimit;
             _seed = new BattleBoardSeed(GetStage(_stageIndex), _board);
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
             _stateMachine = new GameStateMachine(this);

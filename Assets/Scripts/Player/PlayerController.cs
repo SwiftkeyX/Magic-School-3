@@ -16,11 +16,11 @@ namespace MagicSchool.Player
     internal class PlayerController : MonoBehaviour
     {
         [SerializeField] private Camera _cam;
-        [SerializeField] private int _heroLimit = 3;    // the number of player's hero allow on the board
         [SerializeField] private BattleBoard _board;
         private IInspectorPanel _inspector;
         private IHeroCountPanel _heroCountPanel;
         private TeamEnum _team;
+        private int HeroLimit => GameManager.Instance.HeroLimit;
 
         private const int CountHidden = -1;
         private int _shownHeroCount = CountHidden;
@@ -93,7 +93,8 @@ namespace MagicSchool.Player
             _inspector?.Inspect(hero);
         }
 
-
+        // FLAGGING: move hero section could be move to its own file 
+        // =================================== move hero ==================================
         // left click hero to drag it around.
         private void PlayerMoveHero()
         {
@@ -207,7 +208,7 @@ namespace MagicSchool.Player
                 bool isThisHeroTracked = _board.HeroesOnBoard.Any(hero => (Hero)hero == _heroHolded);
                 int myHeroCount = CountMyHeroes();
                 if (!isThisHeroTracked) myHeroCount += 1;
-                bool isHeroesCountOverFlow = myHeroCount > _heroLimit;
+                bool isHeroesCountOverFlow = myHeroCount > HeroLimit;
 
                 validate = correctTeam && !isHeroesCountOverFlow;
             }
@@ -215,6 +216,7 @@ namespace MagicSchool.Player
             return validate;
         }
 
+        // FLAGGING: hero count section could move to its own file
         // =================================== hero count ==================================
         private void RefreshHeroCount()
         {
@@ -230,11 +232,11 @@ namespace MagicSchool.Player
             }
 
             int count = CountMyHeroes();
-            if (count == _shownHeroCount && _heroLimit == _shownHeroLimit) return;
+            if (count == _shownHeroCount && HeroLimit == _shownHeroLimit) return;
 
-            _heroCountPanel.ShowHeroCount(count, _heroLimit);
+            _heroCountPanel.ShowHeroCount(count, HeroLimit);
             _shownHeroCount = count;
-            _shownHeroLimit = _heroLimit;
+            _shownHeroLimit = HeroLimit;
         }
 
         private int CountMyHeroes()

@@ -30,7 +30,16 @@ namespace MagicSchool.Core.States
 
             // if player won, go to next stage.
             // if plyaer lose, repeat this stage.
-            if (playerWon) _game.SetStageIndex(runCleared ? 0 : _game.StageIndex + 1);
+            if (playerWon)
+            {
+                _game.SetStageIndex(runCleared ? 0 : _game.StageIndex + 1);
+
+                // FLAGGING: temporarily, this is to expand hero limit easily for demo version
+                // clearing the run loops back to stage 1, so the team it is fought with
+                // loops back too - otherwise the replay starts oversized against stage 1.
+                if (runCleared) _game.ResetHeroLimit();
+                else _game.GrowHeroLimit();
+            }
 
             // go preparation state
             _game.ChangeState(GamePhaseEnum.Preparation);

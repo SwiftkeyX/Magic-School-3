@@ -43,39 +43,9 @@ nothing to install by hand.
 
 ## How the code is laid out
 
-Scripts live in `Assets/Scripts/`, split into assemblies so the dependency direction is
-enforced by the compiler rather than by convention. **One `.asmdef` is one module**, and the
-module is the unit of reuse: everything inside one is deeply coupled on purpose, so lifting
-a piece out means taking the whole assembly with it.
-
-### Module Overview:
-**Contracts** — contain interfaces and enums every other module talks through. The most significant is: 
-`ICombatant` - refer to a unit that can fight on a board.
-`IEffectable` - refer to a unit that can be effected by a attack or skill. 
-`IPlaceable` - refer to a unit that can be placed on the `IPlacement`.
-
-**Engine** — services that help decouple the system from the engine.
-
-**VFX** — floating combat text.
-
-**StatScaling** — how stat ratios and scaling is computed.
-
-**Modifiers** — resolve buffs, debuffs and statuses. 
-
-**Skills** — a skill of a hero. It is a list of steps, each step play a template action (projectile, AoE, hitbox).
-
-**Combat** — contain 2 smaller module that are deeply coupling, Hero and Placement. 
-
-**UI** — overlay panel e.g. inspector panel, shop panel. World UI e.g. Healbar, Manabar, SkillBar. 
-
-**Core** — control game states.  
-
-**Player** — process player input: dragging heroes, right-click to inspect, and the keys that start and restart
-a fight.
-
-**Editor** — inspector tooling for Core.
-
-**Combat.Tests** — EditMode tests for Combat, Contracts, and Skills.
+The code is split into 12 modules along `.asmdef` boundaries, so the dependency direction is
+enforced by the compiler — see **[ARCHITECTURE.md](ARCHITECTURE.md)**
+for the dependency graph and what each module does.
 
 ## License
 

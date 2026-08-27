@@ -114,25 +114,14 @@ each `TemplateAction` carries the effects it applies.
 Read BulWark's skill code at: 
 [`BulwarkSkill.cs`](Assets/Scripts/Skills/Library/Build/BulwarkSkill.cs): `Brace()`
 
-### Does the schema hold up?
+### Where the schema came from
 
-Bulwark is a kit written *for* this schema, so it fits by construction. The harder question is
-whether the columns survive kits designed by someone else, for a different game, with no regard
-for what this system can express.
+These schema are the derived from TFT Set 9 & 10. It was written out before this system existed — **135 champions**, every cost tier, kit by
+kit — and that encoding was iterated until one consistent set of columns covered all of them.
 
-TFT Set 9 was used as the stress test. All **75 champions**, across every cost tier, decompose
-into the same columns:
+The result, 135 kits get separate into **284 steps**.
+That is why the model looks the way it does. `SkillDefinition` / `SkillStep` /
+`SkillActionGroup` / `TemplateAction` are the spreadsheet's shape, in C#. The sheet is not
+documentation written afterwards; The sheet is the source the system was derived from.
 
-| Cost | 1 | 2 | 3 | 4 | 5 |
-| --- | --- | --- | --- | --- | --- |
-| Champions | 16 | 16 | 16 | 18 | 9 |
-
-75 kits come to **155 steps** — passives that trigger on attack, channels that tick while
-casting, steps that fire only when a previous one expired or hit, projectiles that spawn AoEs
-where they land. No column had to be added for any of them.
-
-- [`docs/tft-set9-schema.csv`](docs/tft-set9-schema.csv) — the full encoding, in this repo.
-- [The same thing as a sheet](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing) — easier to read and filter.
-
-**This is an encoding exercise, not an implementation.** It shows the schema is expressive
-enough to describe those kits; it does not mean the game runs them directly, but the game does derived from its formula very heavily.
+Read it here: [the design sheet](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing).

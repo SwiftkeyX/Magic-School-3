@@ -28,7 +28,7 @@ MagicSchool.Combat.Tests -> Combat, Contracts, Skills
 
 Each module also carries a `*Module.md` next to its `.asmdef` stating its own boundary.
 
-Two of them do not get a top-level folder of their own: `MagicSchool.Editor` is Editor-only and
+Most of modules are top-level folder. But two of them do not get a top-level folder of their own: `MagicSchool.Editor` is Editor-only and
 lives in `Core/Editor/`, and `MagicSchool.Combat.Tests` holds the EditMode tests and lives in
 `Assets/Tests/`.
 
@@ -80,7 +80,7 @@ and Placement need to know which Hero standing on it.
 **UI** — overlay panels (inspector, shop), and world-space UI (health bar, mana
 bar, skill bar).
 
-**Engine** — services that decouple the rest of the game from the Unity engine.
+**Engine** — services that decouple some of the game from the Unity engine.
 
 **Editor** — inspector tooling for Core.
 

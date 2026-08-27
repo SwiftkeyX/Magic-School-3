@@ -7,7 +7,7 @@ namespace MagicSchool.Skills
     internal static class PipSkill
     {
         private const float WoundDuration = 3f;
-        private const float PoisonDamage = 2000f;
+        private const float PoisonDamage = 300f;
         private const float PoisonInterval = 0.1f;
         private const float PoisonDuration = 3f;
 

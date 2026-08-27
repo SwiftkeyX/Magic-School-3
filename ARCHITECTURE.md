@@ -95,6 +95,8 @@ second by the first one **expiring**.
 > Braces for 2 seconds, healing steadily and taking 25% less damage. The moment the brace ends
 > he slams the ground for 120% AP to every enemy around him.
 
+![Bulwark casting Guardian's Roar](docs/Bulwark%20Skill%20Demonstration.gif)
+
 | Step | Trigger | Action | Aim | Recipient | Effect | Amount | Cadence | Duration |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `OnCast` | `Cast` | `Self` | `Self` | Heal | 200% MG | every 0.5s | 2s |
@@ -107,7 +109,7 @@ those rows.
 
 That is the whole model that was built to make human readable and codable. A `SkillDefinition` holds `SkillStep`s; 
 each step holds `SkillActionGroup`s that pick a `TemplateAction` (e.g. projectile, AoE, Cast) based on `SkillCondition`; 
-each action carries the effects it applies.
+each `TemplateAction` carries the effects it applies.
 
 Read BulWark's skill code at: 
 [`BulwarkSkill.cs`](Assets/Scripts/Skills/Library/Build/BulwarkSkill.cs): `Brace()`

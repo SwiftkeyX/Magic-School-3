@@ -1,8 +1,7 @@
 # Magic School 3
 
 A Unity auto-chess game. Buy heroes, place them on a hex board, then watch them fight on
-their own — heroes on opposing teams walk toward each other and trade blows until one side
-has nobody left standing.
+their own.
 
 Built with **Unity 6000.4** (URP, 2D) and **UI Toolkit**.
 
@@ -18,77 +17,60 @@ nothing to install by hand.
 | Input | Does |
 | --- | --- |
 | Left-drag a hero | Pick it up and drop it on a hex or a bench slot |
-| Right-click a hero | Open the inspector on it; right-click empty space to close |
-| `Space` | Start the fight — and, once it's over, continue to the next stage |
-| `R` | Restart the current stage |
-
-There is no Start Battle button yet, which is why `Space` does that job.
+| Right-click a hero | Open the inspector on it |
+| `Space` | Start the fight, and continue to the next stage |
+| `R` | Quick restart the current stage |
 
 ## What works today
 
 **Running:**
 
-- Movement and **A\*** pathfinding over the hex grid, with hex reservation so two heroes
-  never commit to the same tile in one frame.
-- Auto-attack on an attack-speed cooldown, mana (10 per attack), and a skill cast when mana
-  caps.
-- Damage, healing, modifiers and statuses.
-- Skills for 8 of the heroes: Vharn, Sithra, Bulwark, Roland, Quatre, Solace, Vesper, Pip.
-- Stage progression — clear a stage and the next one seeds; the team you may field grows by
-  one hero per win.
+- Path finder for hex grid. 
+- Hero can apply damage, healing, modifiers, and statuses.
+- Modular skill systems that was easy to re-use.
+- 17 available heroes.
 
 **Not built yet:**
 
 - **Gold and economy.** The Shop resolves buy-versus-cancel when you release a drag, but it
   cannot charge for the purchase.
-- **Trait panel and hero panel.** Both are empty slots in the main screen layout.
-- **A Start Battle button.** Combat is keyboard-triggered, as above.
+- **Trait panel** It's empty slots in the main screen layout.
 
 ## How the code is laid out
 
-Scripts live in `Assets/Scripts/`, split into assemblies (one `.asmdef` per top-level
-folder) so the dependency direction is enforced by the compiler rather than by convention.
-Arrows point at what a module may reference:
+Scripts live in `Assets/Scripts/`, split into assemblies so the dependency direction is
+enforced by the compiler rather than by convention. **One `.asmdef` is one module**, and the
+module is the unit of reuse: everything inside one is deeply coupled on purpose, so lifting
+a piece out means taking the whole assembly with it.
 
-```
-Contracts   -> (nothing)        interfaces + enums everyone shares
-Engine      -> (nothing)        DebugTool, SceneHelper, CurveMotion
-VFX         -> (nothing)        FloatingText
-StatScaling -> Contracts        StatRatio + Scaling, the amount math
-Modifiers   -> Contracts
-Skills      -> Contracts, Engine, StatScaling, Modifiers
-Combat      -> Contracts, Engine, Skills, VFX
-UI          -> Contracts, Combat
-Core        -> Contracts, Engine, Skills, Combat
-Player      -> Contracts, Combat, Core, Unity.InputSystem
-Editor      -> Core                                        (Editor-only)
-```
+### Module Overview:
+**Contracts** — contain interfaces and enums every other module talks through. The most significant is: 
+`ICombatant` - refer to a unit that can fight on a board.
+`IEffectable` - refer to a unit that can be effected by a attack or skill. 
+`IPlaceable` - refer to a unit that can be placed on the `IPlacement`.
 
-`Contracts` sits at the bottom and references nothing — anything it reached for would be
-dragged underneath every other module. Each module carries a `*Module.md` next to its
-asmdef stating its own boundary, and `CLAUDE.md` records the reasoning behind the
-boundaries that aren't visible from any single file.
+**Engine** — services that help decouple the system from the engine.
 
-The pieces worth knowing about:
+**VFX** — floating combat text.
 
-- **`Combat/Placements/`** — `Hex` works out its own neighbours by distance rather than
-  axial math, so it survives board layout changes; `BattleBoard` owns hero tracking and hex
-  reservations; `HexPathfinder` is A\*, returning one step at a time.
-- **`Combat/Heroes/`** — `Hero` is deliberately glue with no logic of its own. The behaviour
-  is a state machine over Idle / Walk / Attack / Cast / Stunned / Dead.
-- **`Skills/`** — a skill is a list of steps, each picking a template action (projectile,
-  AoE, hitbox) by condition. Effects apply through an interface, so nothing here knows the
-  `Hero` type.
-- **`Core/`** — the composition root: game phase, winner, and the wiring between the rest.
+**StatScaling** — how stat ratios and scaling is computed.
 
-UI is **UI Toolkit**, not uGUI: one shared document (`Assets/UI Toolkit/MainScreen.uxml`)
-with named containers as slots, and each panel cloning its own `.uxml` into the matching
-slot at runtime. The bench is the deliberate exception — it needs real animated hero
-objects standing on it, which a `VisualElement` cannot host, so it is world-space.
+**Modifiers** — resolve buffs, debuffs and statuses. 
 
-Every hero prefab is a variant of `Assets/Prefabs/Hero/BaseHero.prefab`, overriding only
-name, sprite colour and position. Shared components belong on `BaseHero`, never on an
-individual hero.
+**Skills** — a skill of a hero. It is a list of steps, each step play a template action (projectile, AoE, hitbox).
+
+**Combat** — contain 2 smaller module that are deeply coupling, Hero and Placement. 
+
+**UI** — overlay panel e.g. inspector panel, shop panel. World UI e.g. Healbar, Manabar, SkillBar. 
+
+**Core** — control game states.  
+
+**Player** — process player input: dragging heroes, right-click to inspect, and the keys that start and restart
+a fight.
+
+**Editor** — inspector tooling for Core.
+
+**Combat.Tests** — EditMode tests for Combat, Contracts, and Skills.
 
 ## License
 

@@ -3,10 +3,13 @@
 A Unity auto-chess game. Buy heroes, place them on a hex board, then watch them fight on
 their own.
 
+![A fight in progress](docs/battle.gif)
+
 Built with **Unity 6000.4** (URP, 2D) and **UI Toolkit**.
 
 > Work in progress. Combat, movement and skills run; the economy around them does not yet —
-> see [What works today](#what-works-today).
+> see [What works today](#what-works-today). Heroes are placeholder shapes: the systems came
+> first, the art has not.
 
 ## Running it
 

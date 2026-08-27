@@ -2,16 +2,14 @@
 
 Scripts live in `Assets/Scripts/`, split into assemblies so the dependency direction is
 enforced by the compiler rather than by convention. **One `.asmdef` is one module**, and the
-module is the unit of reuse: everything inside one is deeply coupled on purpose, so lifting a
-piece out means taking the whole assembly with it.
+module is the unit of reuse: everything inside one is deeply coupled on purpose, so reusing
+something means taking the entire module.
 
-Namespaces subdivide further inside a module, but they are naming, not boundaries. The
-assembly is the line the compiler actually holds.
+Namespaces subdivide further inside a module, but they are naming, not boundaries.
 
 ## Who depends on whom
 
-Arrows point at what a module is allowed to reference. Nothing here is inherited or implied —
-this is what the `.asmdef` files say.
+Arrows point at what a module is allowed to reference.
 
 ```
 MagicSchool.Contracts    -> (nothing)
@@ -24,11 +22,15 @@ MagicSchool.Combat       -> Contracts, Engine, Skills, VFX, Modifiers
 MagicSchool.UI           -> Contracts, Combat, UnityEngine.UI
 MagicSchool.Core         -> Contracts, Engine, Skills, Combat
 MagicSchool.Player       -> Contracts, Combat, Core, Unity.InputSystem
-MagicSchool.Editor       -> Core                       Editor-only, sits in Core/Editor/
-MagicSchool.Combat.Tests -> Combat, Contracts, Skills  EditMode tests, in Assets/Tests/
+MagicSchool.Editor       -> Core
+MagicSchool.Combat.Tests -> Combat, Contracts, Skills
 ```
 
 Each module also carries a `*Module.md` next to its `.asmdef` stating its own boundary.
+
+Two of them do not get a top-level folder of their own: `MagicSchool.Editor` is Editor-only and
+lives in `Core/Editor/`, and `MagicSchool.Combat.Tests` holds the EditMode tests and lives in
+`Assets/Tests/`.
 
 ## The modules
 
@@ -39,36 +41,46 @@ significant are:
 - `IEffectable` — a unit that can be affected by an attack or a skill.
 - `IPlaceable` — a unit that can be placed on an `IPlacement`.
 
-It references nothing, and has to stay that way. Anything it reaches for gets dragged
-underneath every other module.
+It's a leaf module, and must never reference another module, because that would easily lead to
+a cyclic dependency.
 
-**Engine** — services that decouple the rest of the game from the Unity engine.
+**Core**
 
-**VFX** — floating combat text.
+- controls the game state machine, e.g. preparation, combat, result.
+- controls stage progression between them, and wires the other modules together.
+
+**Player** — processes player input: dragging heroes, right-click to inspect, and start or restart a fight.
+
+**Combat**
+
+- two smaller modules that are deeply coupled, Hero and Placement, Hero need to ask Placement for other Hero whereabout,
+and Placement need to know which Hero standing on it.
+- controls hero behaviour through a state machine.
+- constructs a graph-like hex grid that heroes fight on, using A\* to path across it.
+
+**Skills**
+
+- a hero's skill: small steps combined into one big skill.
+- built from a list of steps played in order, each step playing a template action
+  (projectile, AoE, Cast, etc.).
+- apply the effect to hero; an effect could be damage, status, buff or debuff.
+- read here for more detail: [Modular Skill System](https://docs.google.com/spreadsheets/d/1PSSGZAq2gkkOxTENDWpChI_2OpXvTmQIfPxZebuuDsc/edit?usp=sharing)
+
+**Modifiers**
+
+- resolves modifiers, e.g. buffs, debuffs and statuses.
+- counts down modifier timers.
+- computes the final stat after combining modifiers.
+- returns whether a status is active when asked.
 
 **StatScaling** — how stat ratios and scaling are computed.
 
-**Modifiers** — buffs, debuffs and statuses as data, plus the resolver that turns them into a
-final stat and expires them on time. Both halves live here so the module stands alone:
-anything that grants "+20 armour" needs only this module, not the combat system as well.
+**VFX** — floating combat text.
 
-**Skills** — a hero's skill: a list of steps, each step playing a template action (projectile,
-AoE, hitbox). Effects apply through `IEffectable`, so this never knows the `Hero` type.
+**UI** — overlay panels (inspector, shop), and world-space UI (health bar, mana
+bar, skill bar).
 
-**Combat** — two smaller pieces that are deeply coupled, Hero and Placement, in one assembly.
-A hero needs its hex and a hex tracks its occupant, so the coupling is real and the module
-admits it rather than pretending otherwise. Holds the hex grid, A\* pathfinding, hex
-reservation, and the hero state machine.
-
-**UI** — overlay panels (inspector, shop) in UI Toolkit, and world-space UI (health bar, mana
-bar, skill bar) in uGUI.
-
-**Core** — the composition root. Owns the game state machine — preparation, combat, result —
-and the stage progression between them, and wires the other modules together. It is the only
-module that knows about all of them.
-
-**Player** — processes player input: dragging heroes, right-click to inspect, and the keys
-that start and restart a fight.
+**Engine** — services that decouple the rest of the game from the Unity engine.
 
 **Editor** — inspector tooling for Core.
 

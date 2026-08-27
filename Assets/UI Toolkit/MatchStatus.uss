@@ -74,6 +74,52 @@
     margin-top: 4px;
 }
 
+
+/* ---------------- the fielded-hero counter ---------------- */
+/* Absolute for the same reason the hint is: the banner is the thing that gets centred, and
+   neither of these two may push it off centre. Bottom-LEFT rather than top-centre - the board
+   reaches the top edge of this layer, and a chip up there covers two placeable hexes. The
+   bottom-left corner is the one part of the play area no hex reaches. */
+.hero-count {
+    position: absolute;
+    left: 12px;
+    bottom: 8px;
+    align-items: center;
+    background-color: rgba(18, 16, 28, 0.7);
+    padding: 4px 14px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.12);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.hero-count__value {
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(232, 230, 240);
+}
+
+.hero-count__label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgba(232, 230, 240, 0.45);
+}
+
+/* At the limit the next hex drop will be refused, so the number says so before it happens.
+   Same red as a lost match rather than a fourth colour in the palette. */
+.hero-count--full .hero-count__value {
+    color: rgb(232, 120, 120);
+}
+
+.hero-count--full {
+    border-color: rgba(232, 120, 120, 0.45);
+}
+
 /* Hidden state. display:none rather than opacity, so a hidden banner cannot sit
    invisibly over the board eating nothing but still occupying layout. */
 .is-hidden {

@@ -19,7 +19,12 @@ namespace MagicSchool.Player
         [SerializeField] private int _heroLimit = 3;    // the number of player's hero allow on the board
         [SerializeField] private BattleBoard _board;
         private IInspectorPanel _inspector;
+        private IHeroCountPanel _heroCountPanel;
         private TeamEnum _team;
+
+        private const int CountHidden = -1;
+        private int _shownHeroCount = CountHidden;
+        private int _shownHeroLimit = CountHidden;
 
         // ===================================== holding hero var ============================== 
         private bool IsHoldingHero => _heroHolded != null;
@@ -31,22 +36,12 @@ namespace MagicSchool.Player
             _team = TeamEnum.Blue;
         }
 
-        // FLAGGING: this wants to be a [SerializeField] and cannot be one - Unity does not
-        // serialize interface fields, so the reference would just sit there null. Doing it
-        // properly means a MonoBehaviour field plus a RequireInterface PropertyDrawer to stop
-        // the wrong component being dragged in (ShowIfDrawer in Core/Editor is the pattern).
-        // Deliberately not done: the scan runs once and costs nothing at runtime. The thing it
-        // actually costs is that the wiring is invisible in the Inspector.
+        // FLAGGING: Use findObjectByType maybe mess up later.
         void Start()
         {
-            _inspector = FindAnyInspector();
-        }
-
-        private static IInspectorPanel FindAnyInspector()
-        {
-            return FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-                .OfType<IInspectorPanel>()
-                .FirstOrDefault();
+            var behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            _inspector = behaviours.OfType<IInspectorPanel>().FirstOrDefault();
+            _heroCountPanel = behaviours.OfType<IHeroCountPanel>().FirstOrDefault();
         }
 
         void Update()
@@ -57,6 +52,7 @@ namespace MagicSchool.Player
             TryRestart();
             TryInspectHero();
             PlayerMoveHero();
+            RefreshHeroCount();
         }
 
         // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
@@ -209,7 +205,7 @@ namespace MagicSchool.Player
                 // if the hero placing here is the new hero that arn't already on the board, 
                 // check if new hero count is over the allow hero limit.
                 bool isThisHeroTracked = _board.HeroesOnBoard.Any(hero => (Hero)hero == _heroHolded);
-                int myHeroCount = _board.HeroesOnBoard.Count(hero => hero.Team == TeamEnum.Blue);
+                int myHeroCount = CountMyHeroes();
                 if (!isThisHeroTracked) myHeroCount += 1;
                 bool isHeroesCountOverFlow = myHeroCount > _heroLimit;
 
@@ -217,6 +213,38 @@ namespace MagicSchool.Player
             }
 
             return validate;
+        }
+
+        // =================================== hero count ==================================
+        private void RefreshHeroCount()
+        {
+            if (_heroCountPanel == null) return;
+
+            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation)
+            {
+                if (_shownHeroCount == CountHidden) return;
+
+                _heroCountPanel.HideHeroCount();
+                _shownHeroCount = CountHidden;
+                return;
+            }
+
+            int count = CountMyHeroes();
+            if (count == _shownHeroCount && _heroLimit == _shownHeroLimit) return;
+
+            _heroCountPanel.ShowHeroCount(count, _heroLimit);
+            _shownHeroCount = count;
+            _shownHeroLimit = _heroLimit;
+        }
+
+        private int CountMyHeroes()
+        {
+            int count = 0;
+            foreach (ICombatant hero in _board.HeroesOnBoard)
+            {
+                if (hero.Team == _team) count++;
+            }
+            return count;
         }
     }
 }

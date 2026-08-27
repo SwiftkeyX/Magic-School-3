@@ -10,8 +10,8 @@
          is picked by dragging heroes on it. Nothing here is clickable and nothing here should
          ever swallow a drag.
 
-         Both children are authored visible so the layout can be seen in UI Builder.
-         MatchStatusController hides the banner on the first frame. -->
+         Every child is authored visible so the layout can be seen in UI Builder.
+         MatchStatusController hides the banner and the counter on the first frame. -->
     <ui:VisualElement name="StatusPanel" picking-mode="Ignore" class="status-layer">
         <ui:VisualElement name="ResultBanner" picking-mode="Ignore" class="banner">
             <ui:Label name="ResultText" picking-mode="Ignore" text="BLUE WINS" class="banner__text banner__text--blue"/>
@@ -19,5 +19,13 @@
         </ui:VisualElement>
 
         <ui:Label name="PhaseHint" picking-mode="Ignore" text="Drag heroes onto your hexes, then press SPACE to fight" class="hint"/>
+
+        <!-- How many heroes are fielded out of the limit. Pushed by PlayerController, which is
+             what enforces that limit, so the two cannot disagree. Tucked into the bottom-left
+             corner, the one part of this layer the hex grid never reaches. -->
+        <ui:VisualElement name="HeroCount" picking-mode="Ignore" class="hero-count">
+            <ui:Label name="HeroCountValue" picking-mode="Ignore" text="0 / 3" class="hero-count__value"/>
+            <ui:Label name="HeroCountLabel" picking-mode="Ignore" text="ON BOARD" class="hero-count__label"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

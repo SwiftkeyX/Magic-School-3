@@ -5,19 +5,21 @@ using MagicSchool.Contracts;
 namespace MagicSchool.UI
 {
     /// <summary>
-    /// The hint line and the win banner
+    /// The hint line, the win banner and the fielded-hero counter - everything layered over the board.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    internal class MatchStatusController : MonoBehaviour, IBannerPanel
+    internal class MatchStatusController : MonoBehaviour, IBannerPanel, IHeroCountPanel
     {
         [SerializeField] private VisualTreeAsset _matchStatusAsset;
 
-        private VisualElement _panel;
+        private VisualElement _mainPanel;
         private VisualElement _banner;
+        private VisualElement _heroCount;
         private Label _resultText;
         private Label _phaseHint;
+        private Label _heroCountValue;
 
-        // =================================== IMatchStatusView interface ===================================
+        // =================================== IBannerPanel interface ===================================
         public void ShowPreparation(int stage, int stageCount)
         {
             SetHint($"{Stage(stage, stageCount)} - drag heroes onto your hexes, then press SPACE to fight");
@@ -64,6 +66,24 @@ namespace MagicSchool.UI
             SetShown(_banner, true);
         }
 
+        // =================================== IHeroCountPanel interface ===================================
+        public void ShowHeroCount(int placed, int limit)
+        {
+            if (_heroCountValue != null) _heroCountValue.text = $"{placed} / {limit}";
+
+            // warn at the limit, not past it - a drop that would exceed it is simply refused,
+            // so the count never actually reads higher than the limit
+            if (_heroCount != null) _heroCount.EnableInClassList("hero-count--full", placed >= limit);
+
+            SetShown(_heroCount, true);
+        }
+
+        public void HideHeroCount()
+        {
+            SetShown(_heroCount, false);
+        }
+
+        // =================================== Life cycle ===================================
         // init the status layer
         private void OnEnable()
         {
@@ -71,18 +91,20 @@ namespace MagicSchool.UI
             VisualElement mainPanel = document.rootVisualElement;
             if (mainPanel == null || _matchStatusAsset == null) return;
 
-            _panel = PanelMounter.MountInMainPanel(mainPanel, _matchStatusAsset);
-            if (_panel == null) return;
+            _mainPanel = PanelMounter.MountInMainPanel(mainPanel, _matchStatusAsset);
+            if (_mainPanel == null) return;
 
-            _banner = _panel.Q<VisualElement>("ResultBanner");
-            _resultText = _panel.Q<Label>("ResultText");
-            _phaseHint = _panel.Q<Label>("PhaseHint");
+            _banner = _mainPanel.Q<VisualElement>("ResultBanner");
+            _resultText = _mainPanel.Q<Label>("ResultText");
+            _phaseHint = _mainPanel.Q<Label>("PhaseHint");
+            _heroCount = _mainPanel.Q<VisualElement>("HeroCount");
+            _heroCountValue = _mainPanel.Q<Label>("HeroCountValue");
 
-            // the UXML is authored with the banner visible so it can be laid out in UI Builder;
-            // a match always starts in preparation on the first stage, with nothing won yet
             ShowPreparation(1, 1);
+            HideHeroCount();
         }
 
+        // =================================== private ===================================
         private static string Stage(int stage, int stageCount)
         {
             return stageCount > 1 ? $"Stage {stage} of {stageCount}" : "Stage";

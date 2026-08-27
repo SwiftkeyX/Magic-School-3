@@ -28,16 +28,18 @@ nothing to install by hand.
 
 **Running:**
 
-- Path finder for hex grid. 
-- Hero can apply damage, healing, modifiers, and statuses.
-- Modular skill systems that was easy to re-use.
-- 17 available heroes.
+- **Movement and pathfinding.** hero move on a hex toward a nearest enemy using A\* algorithm on the hex grid, with hex reservation so two heroes
+  cannot commit to the same tile in the same frame.
+- **Combat.** Auto-attack on an attack-speed cooldown, and a skill cast when mana caps.
+- **Damage, healing, modifiers and statuses**, applied through `IEffectable`.
+- **Skills.** A skill is a list of steps, each playing a template action — projectile, AoE or
+  hitbox — picked by condition. **24 heroes exist; 17 of them have skills built.**
 
 **Not built yet:**
 
 - **Gold and economy.** The Shop resolves buy-versus-cancel when you release a drag, but it
   cannot charge for the purchase.
-- **Trait panel** It's empty slots in the main screen layout.
+- **Trait panel.** Still an empty slot in the main screen layout.
 
 ## How the code is laid out
 

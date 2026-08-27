@@ -86,8 +86,7 @@ namespace MagicSchool.Player
 
             // get which hero pointer hit on
             Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-            Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
+            Hero hero = PickAt<Hero>(worldPos);
 
             // right-clicking past every hero closes the panel rather than leaving it stale
             _inspector?.Inspect(hero);
@@ -130,8 +129,7 @@ namespace MagicSchool.Player
         {
             if (!PlayerInputSystem.DragPressedThisFrame) return;
 
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-            Hero hero = hit != null ? hit.GetComponent<Hero>() : null;
+            Hero hero = PickAt<Hero>(worldPos);
             if (hero == null) return;
 
             _heroHolded = hero;
@@ -147,8 +145,7 @@ namespace MagicSchool.Player
         // put the hero down where the player releasing
         private void DropHero(Vector3 worldPos)
         {
-            Collider2D hit = Physics2D.OverlapPoint(worldPos);
-            IPlacement targetPlacement = hit != null ? hit.GetComponent<IPlacement>() : null;
+            IPlacement targetPlacement = PickAt<IPlacement>(worldPos);
 
             // if the user release hero on the placement, place hero on top of the placement
             if (targetPlacement != null && ValidatePlacement(targetPlacement))
@@ -182,6 +179,25 @@ namespace MagicSchool.Player
 
             _heldHeroHitbox = null;
             _heroHolded = null;
+        }
+
+        // context: we use OverLapPoint to pick up a collider, 
+        // and check if which hero this collider belong to?
+        // OverLapPoint can return both hero/placement.
+        // problem: Sometime when placement and hero is presented at the same spot, 
+        // the hero can't be drag or inspect.
+        // PickAt() is to ensure hero is always picked.
+        private static T PickAt<T>(Vector3 worldPos) where T : class
+        {
+            Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
+
+            foreach (Collider2D hit in hits)
+            {
+                T found = hit.GetComponent<T>();
+                if (found != null) return found;
+            }
+
+            return null;
         }
 
         // check the placement before placing the hero

@@ -57,7 +57,8 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 === Interrupt ===
 For build version:
 - After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
-    - lastly, make a item give modifier
+- prevent the hero from setting in the same placement.
+- the projectile set size - it look all the same to me - could you make the size 1 a original default size - that would help a lot.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 === implement new hero ===
@@ -79,7 +80,8 @@ Becasue now if I want to edit UI, I have to exit play mode first, and guess the 
 
 Could we also make the text in HeroPanel scale as the screen size grow.
 
-
+The sprite order layer is so random, I want to have a code organize it later.
+e.g. order = {hero = 0, item = 1, skill = 2, etc...}
 
 # Not implement yet
 ## hero
@@ -116,4 +118,4 @@ internal for variable - a ton of work
 
 
 # Note
-...
+- _lookup missing AP and Omnivamp — an item granting either would equip cleanly and do nothing

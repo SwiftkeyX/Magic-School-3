@@ -2,8 +2,9 @@ using System;
 using MagicSchool.Engine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Heroes;
+using MagicSchool.Combat.Placements;
 
-namespace MagicSchool.Combat.Placements
+namespace MagicSchool.Core
 {
     // seed the hero onto the board
     // e.g. enemy side always got seed, player side don't use seed since player drag hero onto the board themself. 

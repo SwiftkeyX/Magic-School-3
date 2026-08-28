@@ -34,7 +34,7 @@ This is the example when we combine all of the axes:
 Step 1 = OnCast(trigger), Yasuo(user) slash(action) aim on Enemy(target), the same target(recipient) get damaged(effect) and shred(effect).
 Step 2 = OnExpired(trigger), Yasuo(user) buff(action) aim on Yasuo(target), the same target(recipient) get buff(effect).
 
-# problem
+
 
 # Done
 Lumen - throw 2 hex circle AOE on the clustered enemy
@@ -51,11 +51,15 @@ Sparks - shoot 5 homing projectile in sequince at random enemy in 2 hex of curre
 Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 time, 0.2 interval
 - implement AOE with "Fire timing"
 
+
+
 # Plan
 === Interrupt ===
 For build version:
 - After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
     => baseItem have dataSO of IronPlate which shouldn't be
+    - now the item was draggable and inspectable
+    - next, assign it to the hero => let make hero having 
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 === implement new hero ===
@@ -76,6 +80,8 @@ I want to be able to tune the width/height of each UI directly in play mode or a
 Becasue now if I want to edit UI, I have to exit play mode first, and guess the height on my own.
 
 Could we also make the text in HeroPanel scale as the screen size grow.
+
+
 
 # Not implement yet
 ## hero
@@ -109,6 +115,7 @@ internal for variable - a ton of work
 ## other
 2. _lookup missing AP and Omnivamp — both read as statuses and silently do nothing.
 
+
+
 # Note
-do HeroPanelController → InspectorController
-after that, answer why is "Let do polymorphism to separate item and hero apart" not work?
+...

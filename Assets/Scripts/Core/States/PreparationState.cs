@@ -22,30 +22,9 @@ namespace MagicSchool.Core.States
             _game.SetWinner(null);
             _game.ClearPendingRequests();
 
-            // wipe all enemies
-            _game.Board.ClearTeam(TeamEnum.Red);
+            SeedNewEnemies();
 
-            // move player hero to its original formation 
-            if (_game.IsPlayerSeed)
-            {
-                _game.Board.ClearTeam(TeamEnum.Blue);
-            }
-            else
-            {
-                // FIXNOW: Could we merge HeroFormation and HeroSeed together?
-                // FIXLATER: Could we also move the ReviveTeam() inside HeroFormation instead?
-                _game.Board.ReviveTeam(TeamEnum.Blue);
-                _game.Formation.Restore();
-            }
-
-            // switch to next enemies seed
-            _game.Seed.SwitchSeed(_game.GetStage(_game.StageIndex));
-
-            // spawn player team if seedMode activate.
-            if (_game.IsPlayerSeed) _game.Seed.SpawnTeamOnBoard(TeamEnum.Blue);
-
-            // spawn enemy team in preparation state
-            _game.Seed.SpawnTeamOnBoard(TeamEnum.Red);
+            ResetPlayerTeam();
 
             _game.Status?.ShowPreparation(_game.StageNumber, _game.StageCount);
         }
@@ -63,6 +42,36 @@ namespace MagicSchool.Core.States
             }
 
             _game.ChangeState(GamePhaseEnum.Combat);
+        }
+
+        private void SeedNewEnemies()
+        {
+            // wipe all enemies
+            _game.Board.ClearTeam(TeamEnum.Red);
+
+            // switch to this stage's seed, before anything spawns from it
+            // context: this stage = could be a same stage that was repeated or new stage.
+            _game.Seed.SwitchSeed(_game.GetStage(_game.StageIndex));
+
+            // spawn enemy team in preparation state
+            _game.Seed.SpawnTeamOnBoard(TeamEnum.Red);
+        }
+
+        private void ResetPlayerTeam()
+        {
+            // if player was seeded, clear old team, then seed again.
+            if (_game.IsPlayerSeed)
+            {
+                _game.Board.ClearTeam(TeamEnum.Blue);
+                _game.Seed.SpawnTeamOnBoard(TeamEnum.Blue);
+            }
+
+            // if not seeded, reset, and restore the formation
+            else
+            {
+                _game.Board.ResetTeam(TeamEnum.Blue);
+                _game.Formation.Restore();
+            }
         }
     }
 }

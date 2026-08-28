@@ -129,9 +129,9 @@ namespace MagicSchool.Combat.Placements
             }
         }
 
-        // Revive one team on the board
-        // e.g. after player is losing, revive player team
-        public void ReviveTeam(TeamEnum team)
+        // Reset hero = reset its stat, sprite, statemachine
+        // e.g. after player is losing, reset each hero from player team
+        public void ResetTeam(TeamEnum team)
         {
             foreach (ICombatant combatant in _heroesOnBoard)
             {

@@ -147,5 +147,17 @@ namespace MagicSchool.Combat.Placements
 
             foreach (Hex hex in held) _reservedBy.Remove(hex);
         }
+
+        // How many of consuming team are standing on the board right now.
+        public int CountTeamOnBoard(TeamEnum team)
+        {
+            int count = 0;
+            foreach (ICombatant hero in _heroesOnBoard)
+            {
+                if (hero.Team == team) count++;
+            }
+
+            return count;
+        }
     }
 }

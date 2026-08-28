@@ -213,7 +213,7 @@ namespace MagicSchool.UI
         // =========================== Sell ===============================
         #region Sell
         // if releasing point match shop boundary, return true
-        public bool ContainsScreenPoint(Vector2 screenPosition)
+        public bool IsInSellBoundary(Vector2 screenPosition)
         {
             if (_shopPanel == null || _shopPanel.panel == null) return false;
 

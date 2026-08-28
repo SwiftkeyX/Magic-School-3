@@ -8,10 +8,18 @@ namespace MagicSchool.Items
     {
         [SerializeField] private ItemDataSO _data;
         public ItemDataSO Data => _data;
+        private ICustomModifier _modifier;
 
+        // ================================= getter =================================
+        public ICustomModifier Modifier => _modifier;
         // === IInspectableItem ===
         public string DisplayName => _data != null ? _data.Name : name;
         public string Description => _data != null ? _data.Description : string.Empty;
         public bool IsAlive => this != null;    
+
+        void Awake()
+        {
+            _modifier = ItemLibrary.Resolve(_data != null ? _data.ItemId : ItemIdEnum.None);
+        }
     }
 }

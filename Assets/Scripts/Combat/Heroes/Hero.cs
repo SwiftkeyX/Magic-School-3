@@ -13,7 +13,7 @@ namespace MagicSchool.Combat.Heroes
     /// 1) It's the ONLY Monobehavior for the Hero, so it's here so we could make hero interact with Unity.
     /// 2) it act like a glue, which mean itself don't contain any real logic.
     /// </summary>
-    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats, IInspectable
+    public class Hero : MonoBehaviour, ICombatant, IHexPlaceable, IHeroStats, IInspectableHero
     {
         // ======================================== Dependency ========================================
         private HeroDataSO _SOData;
@@ -76,7 +76,7 @@ namespace MagicSchool.Combat.Heroes
         public string SkillName => _skill != null ? _skill.SkillName : string.Empty;
         public string SkillDescription => _skill != null ? _skill.Description : string.Empty;
         public string PassiveDescription => _skill != null ? _skill.PassiveDescription : string.Empty;
-        public string HeroName => _SOData != null ? _SOData.Name : name;
+        public string DisplayName => _SOData != null ? _SOData.Name : name;
 
         // ======================================== attack ========================================
         public bool IsAttackReady => _attackCooldown.IsReady(AttackSpeed);

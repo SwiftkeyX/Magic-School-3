@@ -5,8 +5,12 @@ using MagicSchool.Contracts;
 namespace MagicSchool.UI
 {
     /// <summary>
-    /// The inspect panel on the right. Opens when the player right-clicks a hero
+    /// The inspect panel on the right. Opens when the player right-clicks a inspectable
+    /// e.g. hero, item.
     /// </summary>
+    /// 
+    /// FIXLATER: This isn't HeroPaenlController anymore, it was InspectorController
+    /// Let do polymorphism to separate item and hero apart.
     [RequireComponent(typeof(UIDocument))]
     internal class HeroPanelController : MonoBehaviour, IInspectorPanel
     {
@@ -16,15 +20,16 @@ namespace MagicSchool.UI
 
         private Label _heroName, _heroTeam;
         private Label _hpLabel, _manaLabel;
+        private VisualElement _hpBar, _manaBar, _statGrid;
         private VisualElement _hpFill, _manaFill;
         private Label _statAtk, _statDef, _statMag, _statMr, _statAs, _statRange;
-        private VisualElement _activeSection, _passiveSection;
-        private Label _activeName, _activeBody, _passiveBody;
+        private VisualElement _activeSection, _passiveSection, _itemSection;
+        private Label _activeName, _activeBody, _passiveBody, _itemBody;
 
         // === IInspectorPanel interface ===
         private IInspectable _shown;
         // when a hero is inspected, show hero panel for that hero
-        public void Inspect(IInspectable hero) => Show(hero);
+        public void Inspect(IInspectable target) => Show(target);
 
         // init hero panel
         private void OnEnable()
@@ -50,6 +55,10 @@ namespace MagicSchool.UI
             _heroName = _panel.Q<Label>("HeroName");
             _heroTeam = _panel.Q<Label>("HeroTeam");
 
+            _hpBar = _panel.Q<VisualElement>("HpBar");
+            _manaBar = _panel.Q<VisualElement>("ManaBar");
+            _statGrid = _panel.Q<VisualElement>("StatGrid");
+
             _hpFill = _panel.Q<VisualElement>("HpFill");
             _hpLabel = _panel.Q<Label>("HpLabel");
             _manaFill = _panel.Q<VisualElement>("ManaFill");
@@ -67,37 +76,74 @@ namespace MagicSchool.UI
             _activeBody = _panel.Q<Label>("ActiveBody");
             _passiveSection = _panel.Q<VisualElement>("PassiveSection");
             _passiveBody = _panel.Q<Label>("PassiveBody");
+            _itemSection = _panel.Q<VisualElement>("ItemSection");
+            _itemBody = _panel.Q<Label>("ItemBody");
         }
 
-        // update hero panel according to new hero data consumed
+        // update the panel according to whatever was just inspected
         private void Show(IInspectable unit)
         {
-            // if the hero selected is the currently the inspected on, return.
+            // if the thing selected is already the inspected one, return.
             if (_panel != null && _shown != null && ReferenceEquals(_shown, unit)) return;
 
             _shown = unit;
 
             if (_panel == null) return;
 
-            bool hasHero = unit != null && unit.IsAlive;
-            _panel.EnableInClassList("hero-panel--empty", !hasHero);
-            if (!hasHero) return;
+            bool hasSomething = unit != null && unit.IsAlive;
+            _panel.EnableInClassList("hero-panel--empty", !hasSomething);
+            if (!hasSomething) return;
 
-            _heroName.text = unit.HeroName;
-            _heroTeam.text = unit.Team.ToString().ToUpperInvariant();
-            _statAtk.text = unit.AttackDamage.ToString();
-            _statDef.text = unit.Defence.ToString();
-            _statMag.text = unit.Magic.ToString();
-            _statMr.text = unit.MagicResist.ToString();
-            _statAs.text = unit.AttackSpeed.ToString("0.00");
-            _statRange.text = unit.Range.ToString();
+            // the one line both kinds share
+            _heroName.text = unit.DisplayName;
 
-            ShowAbility(unit);
+            // // FLAGGING: polymorphism fix this
+            // Which half of the panel this is depends on what came in, and the sections not
+            // wanted are hidden rather than left showing a hero's blank stat grid over an item.
+            if (unit is IInspectableHero hero) ShowHero(hero);
+            else if (unit is IInspectableItem item) ShowItem(item);
+        }
+
+        // the hero half: team, bars, stat grid, ability text
+        private void ShowHero(IInspectableHero hero)
+        {
+            SetShown(_itemSection, false);
+
+            SetShown(_heroTeam, true);
+            SetShown(_hpBar, true);
+            SetShown(_manaBar, true);
+            SetShown(_statGrid, true);
+
+            _heroTeam.text = hero.Team.ToString().ToUpperInvariant();
+            _statAtk.text = hero.AttackDamage.ToString();
+            _statDef.text = hero.Defence.ToString();
+            _statMag.text = hero.Magic.ToString();
+            _statMr.text = hero.MagicResist.ToString();
+            _statAs.text = hero.AttackSpeed.ToString("0.00");
+            _statRange.text = hero.Range.ToString();
+
+            ShowAbility(hero);
             Refresh();
         }
 
+        // the item half: a name and what it does, with every hero-shaped row hidden
+        private void ShowItem(IInspectableItem item)
+        {
+            SetShown(_heroTeam, false);
+            SetShown(_hpBar, false);
+            SetShown(_manaBar, false);
+            SetShown(_statGrid, false);
+            SetShown(_activeSection, false);
+            SetShown(_passiveSection, false);
+
+            SetShown(_itemSection, true);
+            _itemBody.text = string.IsNullOrEmpty(item.Description)
+                ? "No description written yet."
+                : item.Description;
+        }
+
         // update ability text in hero panel
-        private void ShowAbility(IInspectable unit)
+        private void ShowAbility(IInspectableHero unit)
         {
             bool hasActive = unit.HasSkill;
             SetShown(_activeSection, hasActive);
@@ -126,10 +172,12 @@ namespace MagicSchool.UI
         {
             if (_shown == null) return;
 
-            // if hero dies or is destroyed - never a null check, see IInspectable.IsAlive
+            // if it dies or is destroyed - never a null check, see IInspectable.IsAlive
             if (!_shown.IsAlive) { Show(null); return; }
 
-            Refresh();
+            // FLAGGING: polymorphism fix this
+            // only a hero has bars that move; an item's panel is static once shown
+            if (_shown is IInspectableHero) Refresh();
         }
 
         // FLAGGING: those helper look so generic that it don't have to be in this class. Let leave it here for now.
@@ -137,8 +185,11 @@ namespace MagicSchool.UI
         // set bar to hp and mana
         private void Refresh()
         {
-            SetBar(_hpFill, _hpLabel, _shown.CurrentHP, _shown.MaxHP);
-            SetBar(_manaFill, _manaLabel, _shown.CurrentMana, _shown.MaxMana);
+            // FLAGGING: polymorphism fix this
+            if (!(_shown is IInspectableHero hero)) return;
+
+            SetBar(_hpFill, _hpLabel, hero.CurrentHP, hero.MaxHP);
+            SetBar(_manaFill, _manaLabel, hero.CurrentMana, hero.MaxMana);
         }
 
         private static void SetBar(VisualElement fill, Label label, int current, int max)

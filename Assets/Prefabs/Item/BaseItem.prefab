@@ -151,4 +151,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5a60496428f7f2488c31515e9ca1a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MagicSchool.Items::MagicSchool.Items.Item
-  _data: {fileID: 11400000, guid: ff46cc4dd6cab07439700bfd8ee361a2, type: 2}
+  _data: {fileID: 11400000, guid: bb7797e87cfb2a64a9fcb2346680ec5c, type: 2}

@@ -1,13 +1,7 @@
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Which skill in SkillLibrary a hero uses. Set on HeroDataSO.
-    ///
-    /// Serialized into those assets as a raw int - always assign explicit values so inserting a new
-    /// member later can't silently remap which skill an existing hero points at.
-    ///
-    /// None means "not ported to C# yet" and falls back to the hero's SkillSO.
-    /// </summary>
+    // a enum that used to pair a hero SO => with a skill code
+    // e.g. HeroSO contain enum "Vharn" => use the enum to find "VharnSkill.cs"
     public enum SkillIdEnum
     {
         None = 0,

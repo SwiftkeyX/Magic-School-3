@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace MagicSchool.Skills
 {
-    /// <summary>
-    /// Where a hero's skill comes from.
-    /// </summary>
+    // this is where the skill was registered in the game.
     public static class SkillLibrary
     {
         // a pair of HeroEnum & SkillDefinition
@@ -34,9 +32,7 @@ namespace MagicSchool.Skills
                 { SkillIdEnum.Verity , VeritySkill.Build  },
             };
 
-        /// <summary>
         /// Return a skill that match skillID's TemplateAction.
-        /// </summary>
         public static SkillDefinition Resolve(SkillIdEnum skillID, TemplateActionRegistrySO registry)
         {
             // no skill at all is normal - a dummy has none

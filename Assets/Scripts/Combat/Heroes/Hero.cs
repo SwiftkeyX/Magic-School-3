@@ -168,7 +168,7 @@ namespace MagicSchool.Combat.Heroes
 
             _visuals = GetComponent<HeroVisuals>();
             _skill = new HeroSkill(this, skill);
-            _items = new HeroItems(transform);
+            _items = new HeroItems(this);
             _findEnemy = new FindEnemy(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

@@ -8,25 +8,28 @@ namespace MagicSchool.Combat.Heroes
     {
         public const int Capacity = 3;
         private readonly List<IEquipment> _worn = new List<IEquipment>(Capacity);
-        private readonly Transform _wearer;
+        private readonly Hero _wearer;
 
+        private const float Strength = 1f;
+        
         // ====================== where the worn item sit on the hero ======================
         private const float RowY = -0.55f;
         private const float Spacing = 0.34f;
         private const float Scale = 0.3f;
+
 
         // ================================== getter ==================================
         public IReadOnlyList<IEquipment> Worn => _worn;
         public int Count => _worn.Count;
     public bool HasRoom => _worn.Count < Capacity;
 
-        public HeroItems(Transform wearer)
+        public HeroItems(Hero wearer)
         {
             _wearer = wearer;
         }
 
         // ================================== wear ==================================
-        /// Put an item in the free slot. 
+        /// Put an item on wearer, in the free slot. 
         public bool TryWear(IEquipment item)
         {
             if (item == null || !HasRoom) return false;
@@ -35,8 +38,24 @@ namespace MagicSchool.Combat.Heroes
             if (_worn.Contains(item)) return false;
 
             _worn.Add(item);
+
+            // parent item to wearer
             Seat(item, _worn.Count - 1);
+
+            // item give modifier to wearer
+            Grant(item);
+
             return true;
+        }
+
+        // Hand the hero what the item gives.
+        private void Grant(IEquipment item)
+        {
+            ICustomModifier granted = item.Modifier;
+
+            if (granted == null) return;
+
+            _wearer.AddModifier(granted, Strength, _wearer);
         }
 
         // Park the item under the hero, in its slot.
@@ -44,7 +63,7 @@ namespace MagicSchool.Combat.Heroes
         {
             Transform worn = item.transform;
 
-            worn.SetParent(_wearer, worldPositionStays: false);
+            worn.SetParent(_wearer.transform, worldPositionStays: false);
             worn.localPosition = new Vector3((slot - 1) * Spacing, RowY, 0f);
             worn.localScale = new Vector3(Scale, Scale, 1f);
 

@@ -34,19 +34,12 @@ namespace MagicSchool.Core
             {
                 if (IsGone(stood.Key) || stood.Value == null) continue;
 
-                // MoveThisHeroTo, not a bare OnUnitPlaced: leaving the old hex is what frees its
-                // reservation, and skipping that would leave the board holding tiles nobody is on.
                 _heroMover.MoveThisHeroTo(stood.Key, stood.Value);
             }
 
             _formation.Clear();
         }
 
-
-        // ASKING: still confuse.
-        // A hero can be destroyed between the snapshot and the restore (a wipe on the way into
-        // preparation, say). Cast to Object first: `hero == null` on an interface-typed reference
-        // is plain reference equality, which misses Unity's destroyed-but-not-null objects.
         private static bool IsGone(ICombatant hero)
         {
             return hero as Object == null;

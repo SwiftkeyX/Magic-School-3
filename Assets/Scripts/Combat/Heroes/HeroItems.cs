@@ -28,7 +28,6 @@ namespace MagicSchool.Combat.Heroes
             _wearer = wearer;
         }
 
-        // ================================== wear ==================================
         /// Put an item on wearer, in the free slot. 
         public bool TryWear(IEquipment item)
         {
@@ -45,6 +44,21 @@ namespace MagicSchool.Combat.Heroes
             Grant(item);
 
             return true;
+        }
+
+        /// Grant everything worn, again.
+        /// e.g. when the stat is reset, modifier is reset too, so item have to re-grant the modifier
+        public void ReGrantAll()
+        {
+            foreach (IEquipment item in _worn)
+            {
+                // an item destroyed while worn. `as Object` because == on an interface-typed
+                // reference is plain reference equality and misses Unity's destroyed objects,
+                // and reading .Modifier off one of those throws.
+                if (item as Object == null) continue;
+
+                Grant(item);
+            }
         }
 
         // Hand the hero what the item gives.

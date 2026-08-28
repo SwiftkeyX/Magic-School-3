@@ -226,6 +226,9 @@ namespace MagicSchool.Combat.Heroes
             _stat = new Stat(_SOData);
             _attackCooldown = new AttackCooldown();
 
+            // the modifier from items is also reset, so re-grant it.
+            _items.ReGrantAll();
+
             SetAliveVisual();
 
             // ChangeState, not Start: the Dead state has to be left properly, and a hero that

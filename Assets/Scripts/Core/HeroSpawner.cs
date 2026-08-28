@@ -12,7 +12,7 @@ namespace MagicSchool.Core
         private readonly HeroMover _heroMover;
         private readonly TemplateActionRegistrySO _templateActions;
 
-        public HeroSpawner(HeroMover heroMover, Bench bench, BattleBoardSeed seed, TemplateActionRegistrySO templateActions)
+        public HeroSpawner(HeroMover heroMover, Bench bench, HeroSeed seed, TemplateActionRegistrySO templateActions)
         {
             _heroMover = heroMover;
             _templateActions = templateActions;

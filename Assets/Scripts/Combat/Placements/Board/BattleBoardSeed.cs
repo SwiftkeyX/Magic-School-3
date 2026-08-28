@@ -8,7 +8,7 @@ namespace MagicSchool.Combat.Placements
     // seed the hero onto the board
     // e.g. enemy side always got seed, player side don't use seed since player drag hero onto the board themself. 
     // p.s. but player can also be seeded too for fast testing.
-    public class BattleBoardSeed
+    public class HeroSeed
     {
         private BattlePlacementSO _placementSO;
         private readonly BattleBoard _board;     // need to know which board, it'll seed on (there maybe several board at once)
@@ -16,7 +16,7 @@ namespace MagicSchool.Combat.Placements
         // Raised to ask for a hero. Fires BEFORE anything is spawned - HeroSpawner does the work.
         public event Action<HeroDataSO, TeamEnum, IPlacement, BattleBoard> OnSpawnRequested;
 
-        public BattleBoardSeed(BattlePlacementSO placementSO, BattleBoard board)
+        public HeroSeed(BattlePlacementSO placementSO, BattleBoard board)
         {
             _placementSO = placementSO;
             _board = board;

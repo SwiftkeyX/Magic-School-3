@@ -4,6 +4,7 @@ using MagicSchool.Contracts;
 using MagicSchool.Core;
 using MagicSchool.Combat.Heroes;
 using MagicSchool.Combat.Placements;
+using MagicSchool.Items;
 
 namespace MagicSchool.Player
 {
@@ -27,11 +28,18 @@ namespace MagicSchool.Player
         private int _shownHeroCount = CountHidden;
         private int _shownHeroLimit = CountHidden;
 
+        // FIXLATER: holding hero var and holding item var can merge, no?
+        // I think those dragging/holding logic already deserved its own file already, let move them to new file, "Dragging.cs"
         // ===================================== holding hero var ============================== 
         private bool IsHoldingHero => _heroHolded != null;
         private Hero _heroHolded;
         private Collider2D _heldHeroHitbox;
         private bool _sellHintShown;
+
+        // ===================================== holding item var ==============================
+        private bool IsHoldingItem => _itemHeld != null;
+        private Item _itemHeld;
+        private Collider2D _heldItemHitbox;
 
         void Awake()
         {
@@ -53,8 +61,9 @@ namespace MagicSchool.Player
 
             TryStartCombat();
             TryRestart();
-            TryInspectHero();
+            TryInspect();
             PlayerMoveHero();
+            PlayerMoveItem();
             RefreshHeroCount();
         }
 
@@ -82,17 +91,16 @@ namespace MagicSchool.Player
             GameManager.Instance.Restart();
         }
 
-        // Right-click a hero to inspect it.
-        private void TryInspectHero()
+        // Right-click a hero or an item to inspect it.
+        private void TryInspect()
         {
             if (!PlayerInputSystem.InspectPressedThisFrame) return;
 
-            // get which hero pointer hit on
+            // get which IIspectable that the pointer hit on
             Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
-            Hero hero = PickAt<Hero>(worldPos);
+            IInspectable target = PickAt<IInspectable>(worldPos);
 
-            // right-clicking past every hero closes the panel rather than leaving it stale
-            _inspector?.Inspect(hero);
+            _inspector?.Inspect(target);
         }
 
         // FLAGGING: move hero section could be move to its own file 
@@ -249,6 +257,63 @@ namespace MagicSchool.Player
             return validate;
         }
 
+
+        // FLAGGING: this mirrors PlayerMoveHero closely. Leaving them apart while an item has no
+        // placement to land on and no equip rule - once dropping an item ONTO a hero means
+        // something, the two drops stop being the same shape anyway and the sharing can be
+        // decided then, on real requirements rather than guessed ones.
+        // =================================== move item ==================================
+        private void PlayerMoveItem()
+        {
+            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation)
+            {
+                if (IsHoldingItem) ReleaseItem();
+                return;
+            }
+
+            // a hero drag wins: never drag both at once
+            if (IsHoldingHero) return;
+
+            Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
+
+            if (!IsHoldingItem)
+            {
+                TryPickUpItem(worldPos);
+                return;
+            }
+
+            _itemHeld.transform.position = new Vector3(worldPos.x, worldPos.y, _itemHeld.transform.position.z);
+
+            bool stillHolding = PlayerInputSystem.IsPointerDown && !PlayerInputSystem.DragReleasedThisFrame;
+            if (stillHolding) return;
+
+            // Nothing to validate against yet: an item has no placement of its own, so it simply
+            // stays where it was let go. It gets a drop rule when it gets somewhere to be dropped.
+            ReleaseItem();
+        }
+
+        private void TryPickUpItem(Vector3 worldPos)
+        {
+            if (!PlayerInputSystem.DragPressedThisFrame) return;
+
+            Item item = PickAt<Item>(worldPos);
+            if (item == null) return;
+
+            _itemHeld = item;
+
+            // same reason as a held hero: while carrying it, the pointer must be able to see
+            // what is underneath rather than only the thing in its hand
+            _heldItemHitbox = item.GetComponent<Collider2D>();
+            if (_heldItemHitbox != null) _heldItemHitbox.enabled = false;
+        }
+
+        private void ReleaseItem()
+        {
+            if (_heldItemHitbox != null) _heldItemHitbox.enabled = true;
+
+            _heldItemHitbox = null;
+            _itemHeld = null;
+        }
 
         // ================================== sell =================================
         // is player's pointer over shop boundary?

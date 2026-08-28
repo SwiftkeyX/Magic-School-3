@@ -59,7 +59,9 @@ For build version:
 - After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
     => baseItem have dataSO of IronPlate which shouldn't be
     - now the item was draggable and inspectable
-    - next, assign it to the hero => let make hero having 
+    - next, assign it to the hero => let make hero having 3 slot of item
+    - when drag item on the hero, wear the item to hero
+    - lastly, make a item give modifier
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 === implement new hero ===

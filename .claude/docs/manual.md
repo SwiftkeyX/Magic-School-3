@@ -99,13 +99,16 @@ Kaisa - shoot 15 homing projectile in sequence. at 4 nearest enemies
 write a MagicSchool.Combat.Tests asmdef.
 - not optional anymore if we test FindEnemy: it's internal, so nothing outside Combat can call it.
 
+when there's 2 clustered of enemies, the cluster target is always set to the same target as previous one, never set to the second one. 
+The ClusteredCircle still have problem, not sure about other clustered.
+
 ## refactor
 internal for variable - a ton of work
 - skip it for now
 
-
-# Note
+## other
 2. _lookup missing AP and Omnivamp — both read as statuses and silently do nothing.
 
-when there's 2 clustered of enemies, the cluster target is always set to the same target as previous one, never set to the second one. 
-The ClusteredCircle still have problem, not sure about other clustered.
+# Note
+do HeroPanelController → InspectorController
+after that, answer why is "Let do polymorphism to separate item and hero apart" not work?

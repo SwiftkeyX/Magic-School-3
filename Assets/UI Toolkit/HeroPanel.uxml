@@ -1,11 +1,11 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/HeroPanel.uss"/>
-    <!-- Root is named for the slot it lands in: HeroPanelController looks up the element of the
+    <!-- Root is named for the slot it lands in: InspectorController looks up the element of the
          same name in MainScreen.uxml, exactly as ShopPanelController does.
 
          EVERYTHING BELOW IS SAMPLE CONTENT, authored so this file can be laid out and restyled
          in UI Builder rather than opened as a blank rectangle. Every label is overwritten by
-         HeroPanelController.Show, which also adds the empty modifier class on the first frame
+         InspectorController.Show, which also adds the empty modifier class on the first frame
          to hide the panel, so none of these values are ever seen at runtime. Values are Vharn's
          real ones, and the two bars are deliberately part-full so the fills can be judged.
 
@@ -58,7 +58,7 @@
 
             <!-- Shown only when what is being inspected is an item rather than a hero, in which
                  case the team line, both bars, the stat grid and the two ability sections are all
-                 hidden instead. See HeroPanelController.ShowItem. -->
+                 hidden instead. See InspectorController.ShowItem. -->
             <ui:VisualElement name="ItemSection" class="section">
                 <ui:Label text="ITEM" class="section__kicker"/>
                 <ui:Label name="ItemBody" text="Grants nothing yet. Right click a hero to see the other half of this panel." class="section__body"/>

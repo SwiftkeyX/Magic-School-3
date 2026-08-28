@@ -25,9 +25,18 @@ namespace MagicSchool.Core.States
             // wipe all enemies
             _game.Board.ClearTeam(TeamEnum.Red);
 
-            // ...
-            if (_game.IsPlayerSeed) _game.Board.ClearTeam(TeamEnum.Blue);
-            else _game.Board.ReviveTeam(TeamEnum.Blue);
+            // move player hero to its original formation 
+            if (_game.IsPlayerSeed)
+            {
+                _game.Board.ClearTeam(TeamEnum.Blue);
+            }
+            else
+            {
+                // FIXLATER: Could we mere HeroFormation and HeroSeed together?
+                // FIXLATER: Could we also move the ReviveTeam() inside HeroFormation instead?
+                _game.Board.ReviveTeam(TeamEnum.Blue);
+                _game.Formation.Restore();
+            }
 
             // switch to next enemies seed
             _game.Seed.SwitchSeed(_game.GetStage(_game.StageIndex));

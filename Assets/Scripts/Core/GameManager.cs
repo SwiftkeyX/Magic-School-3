@@ -16,14 +16,15 @@ namespace MagicSchool.Core
         // ============================================= dependency =============================================
         [SerializeField] private BattleBoard _board;
         [SerializeField] private Bench _bench;
-        [SerializeField] private BattlePlacementSO _currentStage;
+        private BattlePlacementSO _currentStage;
         [SerializeField] private BattlePlacementSO[] _stages;
         [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _isPlayerSeed;
         [SerializeField] private int _startingHeroLimit = 3;   // how many heroes the player may field on stage 1
         private HeroMover _heroMover;
         private HeroSeller _heroSeller;
-        private BattleBoardSeed _seed;
+        private HeroFormation _heroFormation;
+        private HeroSeed _seed;
         private HeroSpawner _heroSpawner;
         private GameStateMachine _stateMachine;
         private IBannerPanel _status;
@@ -53,7 +54,8 @@ namespace MagicSchool.Core
 
         // === forwarding ===
         internal BattleBoard Board => _board;
-        internal BattleBoardSeed Seed => _seed;
+        internal HeroSeed Seed => _seed;
+        internal HeroFormation Formation => _heroFormation;
         internal IBannerPanel Status => _status;
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
         public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
@@ -71,9 +73,10 @@ namespace MagicSchool.Core
             Instance = this;
 
             _heroMover = new HeroMover();
-            _seed = new BattleBoardSeed(GetStage(_stageIndex), _board);
+            _seed = new HeroSeed(GetStage(_stageIndex), _board);
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
             _heroSeller = new HeroSeller();
+            _heroFormation = new HeroFormation(_heroMover);
             _heroLimit = _startingHeroLimit;
             _stateMachine = new GameStateMachine(this);
             _status = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)

@@ -82,7 +82,7 @@ Rules that aren't visible from any single file:
   applied through `IEffectable`, so nothing here knows the `Hero` type. `SkillLibrary.Resolve` maps
   a `SkillIdEnum` to its builder.
 - **`Core/`** — the composition root: `GameManager` (phase, winner, wiring), `HeroMover`,
-  `HeroSeller`, `HeroSpawner`.
+  `HeroSeller`, `HeroFormation`, `HeroSpawner`.
 
 **UI Toolkit panel pattern** (`Assets/UI Toolkit/`): one shared `UIDocument` on `MainScreen.uxml`, which has empty named containers as slots (`#ShopPanel` is wired up; `#BenchPanel`/`#TraitPanel`/`#HeroPanel` still empty). Each actual panel is its own `.uxml` file plus a small controller script (see `ShopPanelController.cs`) that clones its UXML into the matching-named slot at runtime. The convention: name a panel's root element in its own `.uxml` the same as the slot container waiting for it in `MainScreen.uxml` — the controller looks up the slot by reading its own root element's name, so no manual string field has to be kept in sync.
 - The Bench is deliberately **not** a UI Toolkit panel: it needs real `Hero` GameObjects standing on it (animated sprites, not flat icons), which `VisualElement` can't host. It's world-space instead, using the same `Hero`/Physics2D-drag approach as board placement (see `Assets/Scripts/Combat/Placements/Bench/`, `Assets/Prefabs/Bench/`). The `#BenchPanel` slot in `MainScreen.uxml` stays empty/unused for this reason. The Shop panel (buy heroes) is the UI Toolkit one: drag a shop slot's ghost outside the shop panel's bounds to buy, drop it back inside to cancel — see `ShopPanelController.ResolveDrop`. Selling is the same bounds read from the other direction: drop a held world-space `Hero` onto the shop and it's sold (`PlayerController.DropHero` → `GameManager.SellHero` → `HeroSeller`). Because the two drags live in different coordinate spaces, and `Player` may not reference `UI`, the shop answers `ISellZone.ContainsScreenPoint` rather than handing out its rect — it owns the screen→panel conversion, y-flip included. A drop only sells when no `IPlacement` is under the pointer, since the bench band sits directly above the shop.
@@ -101,6 +101,11 @@ way round — `Hero._SOData` is assigned at runtime by `HeroSpawner` via `Hero.I
   skill cast when mana caps and spent in `HeroCast.OnEnter`, damage/heal via `CombatMath`, and
   modifiers/statuses through `Stat`/`ModifierResolver`.
 - Skills are built for 8 heroes (Vharn, Sithra, Bulwark, Roland, Quatre, Solace, Vesper, Pip).
+- Between stages the player's team is revived *and* walked back to the hexes it started the
+  fight on (`HeroFormation`, snapshot in `CombatState.OnEnter`, restore in
+  `PreparationState.OnEnter`). Without the restore a hero stays where the fight left it —
+  including dead ones, since `HeroDead` never releases its hex — often on an enemy tile the
+  player could never have placed it on.
 - **Not built yet:** the gold/economy system — the Shop resolves buy-vs-cancel on drag release but
   can't charge for it, and selling removes the hero but can't refund (see the BLOCKED notes in
   `ShopPanelController` and `HeroSeller`). Trait Panel and Hero Panel are

@@ -19,6 +19,9 @@ namespace MagicSchool.Core.States
             // How about using contract for GameManager instead, so Hero can ref to current phase via the contract.
             _game.Board.SetBattleOn(true);
 
+            // remember the team's formation at the start
+            _game.Formation.Remember(_game.Board.HeroesOnBoard, TeamEnum.Blue);
+
             _game.Status?.ShowCombat(_game.StageNumber, _game.StageCount);
         }
 

@@ -136,7 +136,9 @@ namespace MagicSchool.Player
             if (!PlayerInputSystem.DragPressedThisFrame) return;
 
             Hero hero = PickAt<Hero>(worldPos);
-            if (hero == null) return;
+
+            // There's some hero that player shouldn't allow to drag 
+            if (!CanDragThisHero(hero)) return;
 
             _heroHolded = hero;
 
@@ -146,6 +148,13 @@ namespace MagicSchool.Player
             // so we turn off hero hitbox.
             _heldHeroHitbox = hero.GetComponent<Collider2D>();
             if (_heldHeroHitbox != null) _heldHeroHitbox.enabled = false;
+        }
+
+        // There's some hero that player shouldn't allow to drag 
+        // e.g. enemy
+        private bool CanDragThisHero(Hero hero)
+        {
+            return hero != null && hero.Team == _team;
         }
 
         // put the hero down where the player releasing

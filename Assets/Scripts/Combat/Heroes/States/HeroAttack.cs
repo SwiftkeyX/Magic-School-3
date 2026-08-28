@@ -42,6 +42,9 @@ namespace MagicSchool.Combat.Heroes.States
             // CheckSwitchState may switch the state. Then, attack state shouldn't continue.
             if (_me.StateType != StateType) return;
 
+            // guard - nothing left to hit
+            if (_currentTarget == null) { CheckSwitchState(); return; }
+
             // attack again if aa is reset. The timer is always runs in the background
             if (_me.IsAttackReady)
             {

@@ -758,6 +758,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43608789dc6b31c49a164ecc77b8d8cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BenchSlot
+--- !u!1001 &911983090
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1622558564318197876, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_Name
+      value: IronPlate
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684594932741638325, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
 --- !u!114 &1027824831 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1022609506225991101, guid: 38b26e3300af184498d1cfedcf906f4e, type: 3}
@@ -1046,3 +1103,4 @@ SceneRoots:
   - {fileID: 318911244}
   - {fileID: 52110551}
   - {fileID: 2034168831}
+  - {fileID: 911983090}

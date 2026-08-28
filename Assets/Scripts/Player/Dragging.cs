@@ -113,6 +113,12 @@ namespace MagicSchool.Player
                 return;
             }
 
+            if (_held is Item item)
+            {
+                DropItem(item, worldPos);
+                return;
+            }
+
             Release();
         }
 
@@ -141,6 +147,19 @@ namespace MagicSchool.Player
 
             // released on nothing = put hero back to its original placement
             Cancel();
+        }
+
+        // an item can be dropped on 1 thing so far:
+        // 1) one of your heroes => that hero wears it, if it has a slot free
+        private void DropItem(Item item, Vector3 worldPos)
+        {
+            Hero hero = Picker.At<Hero>(worldPos);
+
+            Release();
+
+            // wear the item to your hero
+            if (hero == null || hero.Team != _team) return;
+            hero.TryWear(item);
         }
 
         // put back whatever is held, as far as it can be put back

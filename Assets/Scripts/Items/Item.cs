@@ -4,7 +4,7 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Items
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public class Item : MonoBehaviour, IInspectableItem, IDraggable
+    public class Item : MonoBehaviour, IInspectableItem, IDraggable, IEquipment
     {
         [SerializeField] private ItemDataSO _data;
         public ItemDataSO Data => _data;

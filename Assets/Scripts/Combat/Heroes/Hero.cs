@@ -22,6 +22,7 @@ namespace MagicSchool.Combat.Heroes
         private FindEnemy _findEnemy;
         private HeroVisuals _visuals;
         private HeroSkill _skill;
+        private HeroItems _items;
         private AttackCooldown _attackCooldown;
         private Stat _stat;
         private TeamEnum _team;
@@ -64,6 +65,12 @@ namespace MagicSchool.Combat.Heroes
         public void SetDeadVisual() => _visuals.SetDeadVisual();
         public void SetAliveVisual() => _visuals.SetAliveVisual();
         public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
+
+        // ======================================== items ========================================
+        public IReadOnlyList<IEquipment> WornItems => _items.Worn;
+        public int WornItemCount => _items.Count;
+        public bool HasItemRoom => _items != null && _items.HasRoom;
+        public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
 
         // ======================================== skill ========================================
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
@@ -161,6 +168,7 @@ namespace MagicSchool.Combat.Heroes
 
             _visuals = GetComponent<HeroVisuals>();
             _skill = new HeroSkill(this, skill);
+            _items = new HeroItems(transform);
             _findEnemy = new FindEnemy(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));

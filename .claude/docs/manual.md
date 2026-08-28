@@ -54,8 +54,8 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- After each stage, player team should teleport back to their original hex.
 - After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
+    => baseItem have dataSO of IronPlate which shouldn't be
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 === implement new hero ===

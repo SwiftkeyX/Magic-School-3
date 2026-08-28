@@ -54,7 +54,9 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- public the repo, write README, etc...
+- After each stage, player team should teleport back to their original hex.
+- After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
+- Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.

@@ -11,7 +11,7 @@ namespace MagicSchool.Combat.Heroes
         private readonly Hero _wearer;
 
         private const float Strength = 1f;
-        
+
         // ====================== where the worn item sit on the hero ======================
         private const float RowY = -0.55f;
         private const float Spacing = 0.34f;
@@ -21,7 +21,7 @@ namespace MagicSchool.Combat.Heroes
         // ================================== getter ==================================
         public IReadOnlyList<IEquipment> Worn => _worn;
         public int Count => _worn.Count;
-    public bool HasRoom => _worn.Count < Capacity;
+        public bool HasRoom => _worn.Count < Capacity;
 
         public HeroItems(Hero wearer)
         {
@@ -34,13 +34,12 @@ namespace MagicSchool.Combat.Heroes
         {
             if (item == null || !HasRoom) return false;
 
-            // the same item twice would take two slots and sit in one place
-            if (_worn.Contains(item)) return false;
-
+            // add new item to the worn list
             _worn.Add(item);
 
             // parent item to wearer
-            Seat(item, _worn.Count - 1);
+            int slotPosition = _worn.Count - 1;
+            Seat(item, slotPosition);
 
             // item give modifier to wearer
             Grant(item);

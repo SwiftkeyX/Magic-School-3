@@ -68,17 +68,50 @@ namespace MagicSchool.Player
         }
 
         // =================================== pick up ===================================
+        // the pickup could be either hero, or item.
         private void TryPickUp(Vector3 worldPos)
         {
             if (!PlayerInputSystem.DragPressedThisFrame) return;
 
-            // heroes first: once an item can sit on a hero, a press on that square still means
-            // the hero
-            Hero hero = Picker.At<Hero>(worldPos);
-            if (CanDragThisHero(hero)) { Grab(hero); return; }
+            IDraggable hero = TryPickHero(worldPos);
+            if (hero != null)
+            {
+                Grab(hero);
+                return;
+            }
 
+            IDraggable item = TryPickItem(worldPos);
+            if (item != null)
+            {
+                Grab(item);
+                return;
+            }
+        }
+
+        private IDraggable TryPickHero(Vector3 worldPos)
+        {
+            Hero hero = Picker.At<Hero>(worldPos);
+            if (CanDragThisHero(hero))
+            {
+                return hero;
+            }
+
+            return null;
+        }
+
+        private IDraggable TryPickItem(Vector3 worldPos)
+        {
             Item item = Picker.At<Item>(worldPos);
-            if (item != null) Grab(item);
+            if (item == null) { return null; }
+
+            // if the item have wearer, take it off
+            Hero wearer = item.GetComponentInParent<Hero>();
+            if (wearer != null)
+            {
+                wearer.TryTakeOff(item);
+            }
+
+            return item;
         }
 
         // There's some hero that player shouldn't allow to drag
@@ -91,9 +124,6 @@ namespace MagicSchool.Player
         private void Grab(IDraggable target)
         {
             _held = target;
-
-            // context: dropping scans the pointer for a placement hitbox, but while something is
-            // held the pointer would only ever find the held thing's own hitbox. So turn it off.
             _heldHitbox = target.transform.GetComponent<Collider2D>();
             if (_heldHitbox != null) _heldHitbox.enabled = false;
         }

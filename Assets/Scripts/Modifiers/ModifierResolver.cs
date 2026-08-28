@@ -49,6 +49,8 @@ namespace MagicSchool.Modifiers
         // add new modifier
         public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
+            // FLAGGING: we shouldn't have to loop all the modifiers, but RefernceEqual is still need, 
+            // we can use dict to help this.
             // if the same modifier is added again, refresh the modifier
             for (int i = 0; i < _activeModifiers.Count; i++)
             {
@@ -64,6 +66,23 @@ namespace MagicSchool.Modifiers
 
             // add modifier
             _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier, casterStats, recipientStats));
+        }
+
+        // force remove modifier before it expired
+       public bool RemoveModifier(ICustomModifier modifier)
+        {
+            if (modifier == null) return false;
+
+            // FLAGGING: we shouldn't have to loop all the modifiers.
+            for (int i = 0; i < _activeModifiers.Count; i++)
+            {
+                if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
+
+                _activeModifiers.RemoveAt(i);
+                return true;
+            }
+
+            return false;
         }
 
         // =================================== getter ===================================

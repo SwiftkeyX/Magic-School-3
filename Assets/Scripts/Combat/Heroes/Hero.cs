@@ -71,6 +71,7 @@ namespace MagicSchool.Combat.Heroes
         public int WornItemCount => _items.Count;
         public bool HasItemRoom => _items != null && _items.HasRoom;
         public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
+        public bool TryTakeOff(IEquipment item) => _items != null && _items.TryTakeOff(item);
 
         // ======================================== skill ========================================
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
@@ -98,8 +99,8 @@ namespace MagicSchool.Combat.Heroes
         // ======================================== interface method ========================================
         // === IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats)
-            => Stat.AddModifier(modifier, amplifier, casterStats, this);
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats) => Stat.AddModifier(modifier, amplifier, casterStats, this);
+        public bool RemoveModifier(ICustomModifier modifier) => Stat.RemoveModifier(modifier);
         public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);
         public int ActiveModifierCount => Stat.ActiveModifierCount;
         public float ModifierRemaining(int index) => Stat.ModifierRemaining(index);

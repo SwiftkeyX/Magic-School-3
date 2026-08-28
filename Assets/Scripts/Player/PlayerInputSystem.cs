@@ -19,6 +19,8 @@ namespace MagicSchool.Player
         public static bool InspectPressedThisFrame => Mouse.current.rightButton.wasPressedThisFrame;
         public static bool RestartPressedThisFrame => Keyboard.current.rKey.wasPressedThisFrame;
 
+        public static Vector2 PointerScreenPosition => Mouse.current.position.ReadValue();
+
         // Converts the current mouse position to a world point on the plane facing the given camera.
         public static Vector3 GetMouseWorldPosition(Camera cam)
         {

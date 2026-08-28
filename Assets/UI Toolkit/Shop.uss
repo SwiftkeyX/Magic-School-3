@@ -3,6 +3,16 @@
     border-top-width: 2px;
     border-top-color: rgba(255, 255, 255, 0.12);
     padding: 10px 16px;
+    transition-property: background-color, border-top-color;
+    transition-duration: 0.12s;
+}
+
+/* While a held hero hovers the shop, dropping it here sells it - say so before the drop
+   happens, since the bench sits directly above and a slightly low drop would otherwise
+   delete a hero with no warning (see PlayerController.DropHero). */
+.shop-panel--selling {
+    background-color: rgba(64, 16, 22, 0.92);
+    border-top-color: rgba(232, 84, 84, 0.9);
 }
 
 .shop-slots-container {

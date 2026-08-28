@@ -19,6 +19,7 @@ namespace MagicSchool.Player
         [SerializeField] private BattleBoard _board;
         private IInspectorPanel _inspector;
         private IHeroCountPanel _heroCountPanel;
+        private ISellZone _sellZone;
         private TeamEnum _team;
         private int HeroLimit => GameManager.Instance.HeroLimit;
 
@@ -30,6 +31,7 @@ namespace MagicSchool.Player
         private bool IsHoldingHero => _heroHolded != null;
         private Hero _heroHolded;
         private Collider2D _heldHeroHitbox;
+        private bool _sellHintShown;
 
         void Awake()
         {
@@ -42,6 +44,7 @@ namespace MagicSchool.Player
             var behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             _inspector = behaviours.OfType<IInspectorPanel>().FirstOrDefault();
             _heroCountPanel = behaviours.OfType<IHeroCountPanel>().FirstOrDefault();
+            _sellZone = behaviours.OfType<ISellZone>().FirstOrDefault();
         }
 
         void Update()
@@ -116,6 +119,9 @@ namespace MagicSchool.Player
             // while holdin hero, hero'll move following the pointer
             _heroHolded.transform.position = new Vector3(worldPos.x, worldPos.y, _heroHolded.transform.position.z);
 
+            // if hover over shop, show shop tint, to indicate the shop was focus
+            RefreshSellHint(IsPointerOverSellZone());
+
             // if still holding hero, return
             bool stillHolding = PlayerInputSystem.IsPointerDown && !PlayerInputSystem.DragReleasedThisFrame;
             if (stillHolding) return;
@@ -151,14 +157,45 @@ namespace MagicSchool.Player
             if (targetPlacement != null && ValidatePlacement(targetPlacement))
             {
                 GameManager.Instance.MoveHero(_heroHolded, targetPlacement);
-                ReleaseHero();
+                ResolveAfterReleaseHero();
+                return;
+            }
+
+            // if the user release hero on shop boundary, sell hero
+            if (targetPlacement == null && IsPointerOverSellZone())
+            {
+                SellHeldHero();
+                return;
             }
 
             // if the user not release on the placement, snap hero to the same placement
-            else
-            {
-                CancelDrag();
-            }
+            CancelDrag();
+        }
+
+        // ================================== sell =================================
+        // is player's pointer over shop boundary?
+        private bool IsPointerOverSellZone()
+        {
+            return _sellZone != null && _sellZone.ContainsScreenPoint(PlayerInputSystem.PointerScreenPosition);
+        }
+
+        // if shop is hover by a dragging hero, turn on tint of the shop
+        private void RefreshSellHint(bool isOverZone)
+        {
+            if (isOverZone == _sellHintShown) return;
+
+            _sellZone?.ShowSellHint(isOverZone);
+            _sellHintShown = isOverZone;
+        }
+
+        // sell the hero
+        private void SellHeldHero()
+        {
+            Hero sold = _heroHolded;
+
+            GameManager.Instance.SellHero(sold);
+
+            ResolveAfterReleaseHero();
         }
 
         // snap this holded hero back to its old placement
@@ -169,14 +206,14 @@ namespace MagicSchool.Player
             // OnUnitPlaced re-seats the transform, so this is the snap back
             if (placement != null) placement.OnUnitPlaced(_heroHolded);
 
-            ReleaseHero();
+            ResolveAfterReleaseHero();
         }
 
         // when releasing hero, reset var
-        private void ReleaseHero()
+        private void ResolveAfterReleaseHero()
         {
             if (_heldHeroHitbox != null) _heldHeroHitbox.enabled = true;
-
+            RefreshSellHint(false);
             _heldHeroHitbox = null;
             _heroHolded = null;
         }

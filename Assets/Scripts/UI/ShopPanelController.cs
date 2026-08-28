@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using MagicSchool.Contracts;
 using MagicSchool.Combat.Heroes;
 using MagicSchool.Combat.Placements;
 
@@ -12,8 +13,11 @@ namespace MagicSchool.UI
     /// 2) ...
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
-    internal class ShopPanelController : MonoBehaviour
+    internal class ShopPanelController : MonoBehaviour, ISellZone
     {
+        // the shop tints itself while a held hero hovers it (see Shop.uss)
+        private const string SellHintClass = "shop-panel--selling";
+
         // ================= SerializeField ======================
         [SerializeField] private VisualTreeAsset _shopPanelAsset;
         [SerializeField] private VisualTreeAsset _ghostAsset;
@@ -203,6 +207,28 @@ namespace MagicSchool.UI
         private bool BuyHero(HeroDataSO data)
         {
             return _bench.SpawnHeroOnBench(data);
+        }
+        #endregion
+
+        // =========================== Sell ===============================
+        #region Sell
+        // if releasing point match shop boundary, return true
+        public bool ContainsScreenPoint(Vector2 screenPosition)
+        {
+            if (_shopPanel == null || _shopPanel.panel == null) return false;
+
+            Vector2 flipped = new Vector2(screenPosition.x, Screen.height - screenPosition.y);
+            Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(_shopPanel.panel, flipped);
+
+            return _shopPanel.worldBound.Contains(panelPosition);
+        }
+
+        // change the shop UI's color to indicate that it was focus
+        public void ShowSellHint(bool isOverZone)
+        {
+            if (_shopPanel == null) return;
+
+            _shopPanel.EnableInClassList(SellHintClass, isOverZone);
         }
         #endregion
 

@@ -22,6 +22,7 @@ namespace MagicSchool.Core
         [SerializeField] private bool _isPlayerSeed;
         [SerializeField] private int _startingHeroLimit = 3;   // how many heroes the player may field on stage 1
         private HeroMover _heroMover;
+        private HeroSeller _heroSeller;
         private BattleBoardSeed _seed;
         private HeroSpawner _heroSpawner;
         private GameStateMachine _stateMachine;
@@ -51,11 +52,17 @@ namespace MagicSchool.Core
         internal void ResetHeroLimit() => _heroLimit = _startingHeroLimit;
 
         // === forwarding ===
-        internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
-        public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
         internal BattleBoard Board => _board;
         internal BattleBoardSeed Seed => _seed;
         internal IBannerPanel Status => _status;
+        internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
+        public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
+        public void SellHero(ICombatant hero)
+        {
+            if (Phase != GamePhaseEnum.Preparation) return;
+
+            _heroSeller.Sell(hero);
+        }
 
         // ======================================== life cycle ========================================
         // init dependency
@@ -64,9 +71,10 @@ namespace MagicSchool.Core
             Instance = this;
 
             _heroMover = new HeroMover();
-            _heroLimit = _startingHeroLimit;
             _seed = new BattleBoardSeed(GetStage(_stageIndex), _board);
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
+            _heroSeller = new HeroSeller();
+            _heroLimit = _startingHeroLimit;
             _stateMachine = new GameStateMachine(this);
             _status = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .OfType<IBannerPanel>()

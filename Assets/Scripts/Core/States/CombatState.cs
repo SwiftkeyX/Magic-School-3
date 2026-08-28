@@ -14,9 +14,6 @@ namespace MagicSchool.Core.States
 
         public override void OnEnter()
         {
-            // FIXLATER: Set battleon seem ugly to me. Since it's use exactly like a _gameManager.Phase.
-            // But the deal with it, is that Hero module can't ref to Core module, else it would casue circular dependency.
-            // How about using contract for GameManager instead, so Hero can ref to current phase via the contract.
             _game.Board.SetBattleOn(true);
 
             // remember the team's formation at the start

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.Combat.Placements
 {
@@ -136,7 +137,7 @@ namespace MagicSchool.Combat.Placements
             {
                 if (combatant == null || combatant.Team != team) continue;
 
-                if (combatant is Heroes.Hero hero) hero.ResetForNewStage();
+                if (combatant is Hero hero) hero.ResetForNewStage();
             }
         }
 

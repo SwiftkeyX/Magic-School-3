@@ -32,7 +32,7 @@ namespace MagicSchool.Core.States
             }
             else
             {
-                // FIXLATER: Could we mere HeroFormation and HeroSeed together?
+                // FIXNOW: Could we merge HeroFormation and HeroSeed together?
                 // FIXLATER: Could we also move the ReviveTeam() inside HeroFormation instead?
                 _game.Board.ReviveTeam(TeamEnum.Blue);
                 _game.Formation.Restore();

@@ -181,32 +181,6 @@ namespace MagicSchool.Player
             CancelDrag();
         }
 
-        // ================================== sell =================================
-        // is player's pointer over shop boundary?
-        private bool IsPointerOverSellZone()
-        {
-            return _sellZone != null && _sellZone.ContainsScreenPoint(PlayerInputSystem.PointerScreenPosition);
-        }
-
-        // if shop is hover by a dragging hero, turn on tint of the shop
-        private void RefreshSellHint(bool isOverZone)
-        {
-            if (isOverZone == _sellHintShown) return;
-
-            _sellZone?.ShowSellHint(isOverZone);
-            _sellHintShown = isOverZone;
-        }
-
-        // sell the hero
-        private void SellHeldHero()
-        {
-            Hero sold = _heroHolded;
-
-            GameManager.Instance.SellHero(sold);
-
-            ResolveAfterReleaseHero();
-        }
-
         // snap this holded hero back to its old placement
         private void CancelDrag()
         {
@@ -227,12 +201,9 @@ namespace MagicSchool.Player
             _heroHolded = null;
         }
 
-        // context: we use OverLapPoint to pick up a collider, 
-        // and check if which hero this collider belong to?
-        // OverLapPoint can return both hero/placement.
-        // problem: Sometime when placement and hero is presented at the same spot, 
-        // the hero can't be drag or inspect.
         // PickAt() is to ensure hero is always picked.
+        // This is to prevent OverLapPointAll return something that isn't <T>.
+        // <T> can be = { hero, placement }
         private static T PickAt<T>(Vector3 worldPos) where T : class
         {
             Collider2D[] hits = Physics2D.OverlapPointAll(worldPos);
@@ -277,6 +248,34 @@ namespace MagicSchool.Player
 
             return validate;
         }
+
+
+        // ================================== sell =================================
+        // is player's pointer over shop boundary?
+        private bool IsPointerOverSellZone()
+        {
+            return _sellZone != null && _sellZone.ContainsScreenPoint(PlayerInputSystem.PointerScreenPosition);
+        }
+
+        // if shop is hover by a dragging hero, turn on tint of the shop
+        private void RefreshSellHint(bool isOverZone)
+        {
+            if (isOverZone == _sellHintShown) return;
+
+            _sellZone?.ShowSellHint(isOverZone);
+            _sellHintShown = isOverZone;
+        }
+
+        // sell the hero
+        private void SellHeldHero()
+        {
+            Hero sold = _heroHolded;
+
+            GameManager.Instance.SellHero(sold);
+
+            ResolveAfterReleaseHero();
+        }
+
 
         // FLAGGING: hero count section could move to its own file
         // =================================== hero count ==================================

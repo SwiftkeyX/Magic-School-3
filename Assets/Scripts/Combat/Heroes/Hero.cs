@@ -210,13 +210,7 @@ namespace MagicSchool.Combat.Heroes
 
         // This is where a function with no where to live yet. group together.
         #region Temporarily
-        /// <summary>
-        /// Put this hero back the way it started, without destroying and respawning it: full HP and
-        /// starting mana, every modifier gone, dead ones standing again. Used between stages, so the
-        /// player's team survives the fight it just had instead of being wiped and re-dragged.
-        /// A new Stat rather than a reset one - Stat holds the modifiers, so replacing it IS the
-        /// clear, and there is no half-cleared state to get wrong.
-        /// </summary>
+        // when the stage is reset, make hero alive again.
         public void ResetForNewStage()
         {
             if (!IsInitialized) return;

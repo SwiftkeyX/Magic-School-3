@@ -16,11 +16,11 @@ namespace MagicSchool.Core
         // ============================================= dependency =============================================
         [SerializeField] private BattleBoard _board;
         [SerializeField] private Bench _bench;
-        private BattlePlacementSO _currentStage;
         [SerializeField] private BattlePlacementSO[] _stages;
         [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _isPlayerSeed;
         [SerializeField] private int _startingHeroLimit = 3;   // how many heroes the player may field on stage 1
+        private BattlePlacementSO _currentStage;
         private HeroMover _heroMover;
         private HeroSeller _heroSeller;
         private HeroFormation _heroFormation;

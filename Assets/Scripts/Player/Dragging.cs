@@ -16,13 +16,13 @@ namespace MagicSchool.Player
         private readonly ISellZone _sellZone;
         private readonly TeamEnum _team;
 
-        private MonoBehaviour _held;    // FIXNOW: use interface, IDraggable
+        private IDraggable _held;
         private Collider2D _heldHitbox;
         private bool _sellHintShown;
 
         // ============================= getter =============================
         private int HeroLimit => GameManager.Instance.HeroLimit;
-        public bool IsHolding => _held != null;
+        public bool IsHolding => _held as Object != null;
 
         public Dragging(Camera cam, BattleBoard board, ISellZone sellZone, TeamEnum team)
         {
@@ -88,13 +88,13 @@ namespace MagicSchool.Player
             return hero != null && hero.Team == _team;
         }
 
-        private void Grab(MonoBehaviour target)
+        private void Grab(IDraggable target)
         {
             _held = target;
 
             // context: dropping scans the pointer for a placement hitbox, but while something is
             // held the pointer would only ever find the held thing's own hitbox. So turn it off.
-            _heldHitbox = target.GetComponent<Collider2D>();
+            _heldHitbox = target.transform.GetComponent<Collider2D>();
             if (_heldHitbox != null) _heldHitbox.enabled = false;
         }
 

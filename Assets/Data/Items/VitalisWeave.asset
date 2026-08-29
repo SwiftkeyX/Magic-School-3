@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebabab084c4af3d4b85d9417dcaf9548, type: 3}
-  m_Name: IronPlate
+  m_Name: VitalisWeave
   m_EditorClassIdentifier: MagicSchool.Items::MagicSchool.Items.ItemDataSO
   _prefab: {fileID: 1622558564318197876, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
-  _name: Iron Plate
-  _description: +20 DF. A slab of plain iron, and no pretence of being anything else.
-  _itemId: 1
+  _name: Vitalis Weave
+  _description: +200 HP, +5% Damage Reduction. Thread that spreads a blow across the whole cloth instead of one spot.
+  _itemId: 20

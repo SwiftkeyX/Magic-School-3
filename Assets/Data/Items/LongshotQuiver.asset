@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebabab084c4af3d4b85d9417dcaf9548, type: 3}
-  m_Name: IronPlate
+  m_Name: LongshotQuiver
   m_EditorClassIdentifier: MagicSchool.Items::MagicSchool.Items.ItemDataSO
   _prefab: {fileID: 1622558564318197876, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
-  _name: Iron Plate
-  _description: +20 DF. A slab of plain iron, and no pretence of being anything else.
-  _itemId: 1
+  _name: Longshot Quiver
+  _description: +1 Range, +0.12 Attack Speed. Longer arrows, drawn faster than they have any right to be.
+  _itemId: 19

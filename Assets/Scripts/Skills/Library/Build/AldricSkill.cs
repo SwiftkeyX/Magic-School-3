@@ -9,6 +9,7 @@ namespace MagicSchool.Skills
         private const float StunDuration = 2f;
         private const float LandingDamage = 200f;
         private const float LandingSize = 4.5f;
+        private const int JumpRange = 4;
 
         private static readonly float LandingRadius = Reach(LandingSize);
 
@@ -29,7 +30,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.Move,
                 target: AimTargetEnum.ClusteredCircle,
-                tuning: TuneMove(spread: LandingRadius)
+                tuning: TuneMove(range: JumpRange, spread: LandingRadius)
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: jump);

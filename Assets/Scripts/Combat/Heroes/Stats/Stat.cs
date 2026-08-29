@@ -52,6 +52,11 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         // ========================================== setter ==========================================
         public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
+        public void SeedPools()
+        {
+            _currentHP = HP;
+            _currentMana = StartMana;
+        }
         public void AddMana(int amount) => _currentMana += amount;
         public bool IsManaCapped() => _currentMana >= MaxMana;
         public void SpendMana() => _currentMana = 0;

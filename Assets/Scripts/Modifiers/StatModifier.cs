@@ -23,6 +23,7 @@ namespace MagicSchool.Modifiers
         // === IModifier ===
         public ModifierEnum GetModifierEnum() => _modifier;
         public ScalingSourceEnum GetScalingSource() => _source;
-        public float GetBonusAmount(IHeroStats stats) => Scaling.Total(_ratios, stats);
+        // FIXLATER: this is kinda wrong, the statModifier don't fix to TotalOfBase()
+        public float GetBonusAmount(IHeroStats stats) => Scaling.TotalOfBase(_ratios, stats);
     }
 }

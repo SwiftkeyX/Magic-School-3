@@ -14,7 +14,21 @@ namespace MagicSchool.StatScaling
     // e.g. currently the ModifierEnum use to specify where the total stat go into, ModifierEnum.ATK/ModiferEnum.DF/etc...
     public static class Scaling
     {
+        // scaling based on the final stat of a unit, this ensure hero who hold item hit harder.
+        // usage: skill dmg
+        // e.g. Quatre's skill dmg = 744% of AD.
         public static float Total(IReadOnlyList<StatRatio> ratios, IHeroStats stats)
+            => Sum(ratios, stats, fromBase: false);
+
+        // scaling based on the base stat of a unit, so the buff is worth the same whenever it
+        // lands rather than more for having landed later.
+        // usage: item's passive, skill that buff stat
+        // e.g. Fang's +100% attack speed = 100% of his BASE attack speed.
+        public static float TotalOfBase(IReadOnlyList<StatRatio> ratios, IHeroStats stats)
+            => Sum(ratios, stats, fromBase: true);
+
+        // sum the total amount from a specify stats
+        private static float Sum(IReadOnlyList<StatRatio> ratios, IHeroStats stats, bool fromBase)
         {
             // guard
             if (ratios == null || ratios.Count == 0) return 0f;
@@ -44,7 +58,10 @@ namespace MagicSchool.StatScaling
                     }
 
                     // get bonus stat by deriving from specify stat
-                    total += stats.GetStat(ratio.Stat.Value) * ratio.Amount / 100f;
+                    float from = fromBase ? stats.GetBaseStat(ratio.Stat.Value)
+                                          : stats.GetStat(ratio.Stat.Value);
+
+                    total += from * ratio.Amount / 100f;
                 }
 
             }

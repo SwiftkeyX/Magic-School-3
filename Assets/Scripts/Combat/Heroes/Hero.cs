@@ -138,6 +138,7 @@ namespace MagicSchool.Combat.Heroes
         public bool IsStunned => Stat.IsStunned;
         public bool IsWounded => Stat.IsWounded;
         public float GetStat(StatEnum type) => Stat.GetFinalStat(type);
+        public float GetBaseStat(StatEnum type) => Stat.GetBaseStat(type);
 
         // === IPlaceable ===
         public Hex CurrentHex => _currentPlacement as Hex;

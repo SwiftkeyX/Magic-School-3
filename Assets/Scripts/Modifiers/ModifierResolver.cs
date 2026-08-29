@@ -115,17 +115,7 @@ namespace MagicSchool.Modifiers
                 }
             }
 
-            // FIXNOW: a true multiplier - a share of the stat being modified, e.g. "+15% ATK" -
-            // does not exist yet, and it is the only thing a flat-before-percentage order would
-            // actually change. It would land right here, as (baseStat + bonus) * multiplier.
-            //
-            // Two things have to move first. A modifier is no longer wholly flat or wholly
-            // derived - its ratios mix - so the split has to be made per RATIO, down in Scaling,
-            // not per modifier up here. And ActiveCustomModifier computes BonusStat once in its
-            // constructor, at AddModifier time, so every modifier arriving here is already a
-            // finished number with nothing left to order. That snapshot has to go too - which
-            // would also stop two percentage buffs on one hero from depending on which of them
-            // was granted first.
+            // StatModifier is always additive, no multiplicative
             return baseStat + bonus;
         }
 

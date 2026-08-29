@@ -14,18 +14,11 @@ namespace MagicSchool.Items
         public static ICustomModifier Bundle(params IModifier[] modifiers)
             => new CustomModifier(Permanent, modifiers);
 
-        // FIXLATER: the name suck
-        // a modifier that gives a plain stat bonus, e.g. Flat(DF, 20f) is "+20 DF".
-        // The number is what the hero gets, whoever the hero is - it reads no stat off anyone.
-        // This is what every item is built from today.
-        public static IModifier Flat(ModifierEnum modifier, float amount)
-            => new StatModifier(modifier, new Scaling(amount));
-
-        // a modifier that gives a share of ANOTHER stat, e.g. Buff(ATK, (StatEnum.AP, 50f)) is
-        // "+ATK worth 50% of the wearer's AP".
-        // 1) If have several ratios, it add up.
-        // 2) For a number written straight in, reach for Flat above rather than a ratio.
+        // a modifier that gives a stat bonus:
+        //   Buff(DamageReduction, 20f)                     -> "+20% DR"
+        //   Buff(ATK, (StatEnum.AP, 50f))                  -> "Buff ATK = 50% of the caster's AP"
+        //   Buff(DefendShred, 20f, (StatEnum.AP, 20f))     -> "Reduce DF = 20 flat, plus 20% AP on top"
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
-            => new StatModifier(modifier, new Scaling(ScalingEnum.Percentage, ratios));
+            => new StatModifier(modifier, new Scaling(ratios));
     }
 }

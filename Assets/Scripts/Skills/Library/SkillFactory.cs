@@ -40,18 +40,10 @@ namespace MagicSchool.Skills
         public static ICustomModifier Bundle(float duration, params IModifier[] modifiers)
             => new CustomModifier(duration, modifiers);
 
-        // FIXLATER: this was fine, it just bother me because the name suck. 
-        // we could name it like BuffFlat & BuffPercentage
-        // a modifier that gives a plain stat bonus, e.g. Flat(DamageReduction, 20f) is "+20% DR".
-        // The number is what the recipient gets, whoever they are - it reads no stat off anyone.
-        public static IModifier Flat(ModifierEnum modifier, float amount)
-            => new StatModifier(modifier, new Scaling(amount));
-
-        // a modifier that gives a share of ANOTHER stat, e.g. Buff(ATK, (StatEnum.AP, 50f)) is
-        // "+ATK worth 50% of the caster's AP".
-        // 1) If have several ratios, it add up.
-        // 2) For a number written straight in, reach for Flat above rather than a ratio.
-        // 2.1) A buff that wants both takes two modifiers now - one Flat, one Buff.
+        // a modifier that gives a stat bonus:
+        //   Buff(DamageReduction, 20f)                     -> "+20% DR"
+        //   Buff(ATK, (StatEnum.AP, 50f))                  -> "Buff ATK = 50% of the caster's AP"
+        //   Buff(DefendShred, 20f, (StatEnum.AP, 20f))     -> "Reduce DF = 20 flat, plus 20% AP on top"
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
             => new StatModifier(modifier, Scale(ratios));
 
@@ -141,9 +133,9 @@ namespace MagicSchool.Skills
 
         // ================================== scaling ==================================
         public static IScaling Scale(params StatRatio[] ratios)
-            => new Scaling(ScalingEnum.Percentage, ratios);
+            => new Scaling(ratios);
 
         public static IScaling Scale(ScalingSourceEnum source, params StatRatio[] ratios)
-            => new Scaling(ScalingEnum.Percentage, ratios, source);
+            => new Scaling(ratios, source);
     }
 }

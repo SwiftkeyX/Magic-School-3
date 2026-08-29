@@ -95,10 +95,7 @@ namespace MagicSchool.Modifiers
         // how about we compute it 1 time , and use it forever.
         public float GetStatModifier(StatEnum type, float baseStat)
         {
-            // kept apart, not summed as they arrive: flats are the base the rest builds on, and
-            // a real multiplier would have to land after both. See the note under the loop.
-            float flatBonus = 0f;
-            float scaledBonus = 0f;
+            float bonus = 0f;
 
             foreach (ActiveCustomModifier active in _activeModifiers)
             {
@@ -114,33 +111,22 @@ namespace MagicSchool.Modifiers
                     // let the modifier with correct stat pass.
                     if (target != type) continue;
 
-                    // Flat is a number written straight in, e.g. +50 DF.
-                    // Percentage is a share of ANOTHER stat, e.g. +ATK worth 80% of AS - so it is
-                    // additive too, and the two differ only in which pile they land on.
-                    switch (modifier.GetScalingEnum())
-                    {
-                        case ScalingEnum.Flat:
-                            flatBonus += active.BonusStat[i];
-                            break;
-
-                        case ScalingEnum.Percentage:
-                            scaledBonus += active.BonusStat[i];
-                            break;
-                    }
+                    bonus += active.BonusStat[i];
                 }
             }
 
-            // FIXLATER: a true multiplier - a share of the stat being modified, e.g. "+15% ATK" -
+            // FIXNOW: a true multiplier - a share of the stat being modified, e.g. "+15% ATK" -
             // does not exist yet, and it is the only thing a flat-before-percentage order would
-            // actually change. It would land right here, as
-            //     (baseStat + flatBonus + scaledBonus) * multiplier
+            // actually change. It would land right here, as (baseStat + bonus) * multiplier.
             //
-            // It cannot be added at this line alone, though. ActiveCustomModifier computes
-            // BonusStat once in its constructor, at AddModifier time, so every modifier arriving
-            // here is already a finished number with nothing left to order. That snapshot has to
-            // go first - which would also stop two percentage buffs on one hero from depending on
-            // which of them was granted first.
-            return baseStat + flatBonus + scaledBonus;
+            // Two things have to move first. A modifier is no longer wholly flat or wholly
+            // derived - its ratios mix - so the split has to be made per RATIO, down in Scaling,
+            // not per modifier up here. And ActiveCustomModifier computes BonusStat once in its
+            // constructor, at AddModifier time, so every modifier arriving here is already a
+            // finished number with nothing left to order. That snapshot has to go too - which
+            // would also stop two percentage buffs on one hero from depending on which of them
+            // was granted first.
+            return baseStat + bonus;
         }
 
         // Return available status modifier

@@ -9,8 +9,8 @@ namespace MagicSchool.Items
         internal static ICustomModifier Build()
         {
             return ItemFactory.Bundle(
-                ItemFactory.Flat(ModifierEnum.ATK, 8f),
-                ItemFactory.Flat(ModifierEnum.AP, 25f));
+                ItemFactory.Buff(ModifierEnum.ATK, 8f),
+                ItemFactory.Buff(ModifierEnum.AP, 25f));
         }
     }
 }

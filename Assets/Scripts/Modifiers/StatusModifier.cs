@@ -12,7 +12,6 @@ namespace MagicSchool.Modifiers
         }
 
         public ModifierEnum GetModifierEnum() => _status;
-        public ScalingEnum GetScalingEnum() => ScalingEnum.Percentage;
 
         // FLAGGING: When we see pattern more clear, we maybe consider separate
         // StatusModifer & StatModifier to not use the same interface.

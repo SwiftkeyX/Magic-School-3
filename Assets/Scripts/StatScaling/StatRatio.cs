@@ -2,25 +2,46 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.StatScaling
 {
-    // This is the stat ratio of the skill. Use in calculation.
-    // e.g. Quatre's skill = 744% AD damage
+    // the thing that Scaling read from, to know: 
+    // 1) which stat to derive from.
+    // 2) how much the amount/percentage it scale.  
+    //
+    // e.g. Quatre's skill = (StatEnum.ATK, 744f) damage
+    // which mean [total damage] = [744%] of the [atk].
     public readonly struct StatRatio
     {
-        public readonly StatEnum Stat;      // which stat to read, e.g. ATK for AD, AP for ability power
-        public readonly float Percent;      // 200f = 200% of it
+        // which stat to derived from.
+        // optional because the amount added could be a flat amount that don't derived from anything. 
+        public readonly StatEnum? Stat;
 
-        public StatRatio(StatEnum stat, float percent)
+        // if Stat is set, 200f is "200% of that [stat]".  
+        // if Stat isn't set, 200f is plain 200 added directly.
+        public readonly float Amount;
+
+        public StatRatio(StatEnum stat, float amount)
         {
             Stat = stat;
-            Percent = percent;
+            Amount = amount;
         }
 
-        // conversion rule NOT constructor.
-        // it change (stat, percent) to new type StatRatio(). It's here so the skill builder doesn't get too messy.
-        // E.g. { (StatEnum.ATK, 100f), (StatEnum.AP, 50f) } => +100% atk & +50% ap 
+        public StatRatio(float amount)
+        {
+            Stat = null;
+            Amount = amount;
+        }
+
+        // conversion rule for StatRatio that derived from stat.
+        // e.g. { (StatEnum.ATK, 100f), (StatEnum.AP, 50f) } => +100% atk & +50% ap
         public static implicit operator StatRatio((StatEnum stat, float percent) pair)
         {
             return new StatRatio(pair.stat, pair.percent);
+        }
+
+        // conversion rule for StatRatio that use only the flat amount.
+        // e.g. { (100f), (StatEnum.AP, 50f) } => +100 & +50% ap
+        public static implicit operator StatRatio(float amount)
+        {
+            return new StatRatio(amount);
         }
     }
 }

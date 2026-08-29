@@ -16,7 +16,6 @@ namespace MagicSchool.Modifiers
         }
 
         public ModifierEnum GetModifierEnum() => _modifier;
-        public ScalingEnum GetScalingEnum() => _scaling.GetScalingEnum();
         public ScalingSourceEnum GetScalingSource() => _scaling.GetScalingSource();
 
         // return a pure bonus stat from this modifier 

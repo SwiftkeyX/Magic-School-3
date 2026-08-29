@@ -28,7 +28,8 @@ namespace MagicSchool.Skills
                         duration: ShredDuration,
                         modifiers: Buff(
                             modifier: ModifierEnum.DefendShred,
-                            ratios: (StatEnum.AP, -ShredFromAP))))
+                            // 20% of the total AP is the total that reduce the target's DF. 
+                            ratios: (StatEnum.AP, -ShredFromAP, ScaleFromEnum.Total))))
             );
 
             return new SkillDefinition(

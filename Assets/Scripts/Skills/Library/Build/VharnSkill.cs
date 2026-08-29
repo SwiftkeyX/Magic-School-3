@@ -57,13 +57,13 @@ namespace MagicSchool.Skills
                 // sheet: 10% Ability Power Omnivamp
                 Buff(
                     modifier: ModifierEnum.Omnivamp,
-                    ratios: (StatEnum.AP, OmnivampFromAP)),
+                    ratios: (StatEnum.AP, OmnivampFromAP, ScaleFromEnum.Base)),
 
                 // FLAGGING: it consume 80% AS. which is only convert to 0.5 atk.
                 // need change later
                 Buff(
                     modifier: ModifierEnum.ATK,
-                    ratios: (StatEnum.AS, AttackFromAS)),
+                    ratios: (StatEnum.AS, AttackFromAS, ScaleFromEnum.Base)),
 
                 Status(ModifierEnum.Transformed),
 

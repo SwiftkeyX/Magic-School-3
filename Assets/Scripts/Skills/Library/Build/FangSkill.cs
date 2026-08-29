@@ -37,7 +37,7 @@ namespace MagicSchool.Skills
             // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
             ICustomModifier modifiers = Bundle(
                 duration: BuffDuration,
-                modifiers: Buff(ModifierEnum.AS, (StatEnum.AS, AttackSpeedBuff))
+                modifiers: Buff(ModifierEnum.AS, (StatEnum.AS, AttackSpeedBuff, ScaleFromEnum.Base))
             );
 
             // cast buff

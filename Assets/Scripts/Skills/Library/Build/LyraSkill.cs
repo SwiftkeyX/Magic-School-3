@@ -34,7 +34,7 @@ namespace MagicSchool.Skills
                 Buff(
                     modifier: ModifierEnum.AS,
                     source: ScalingSourceEnum.Recipient,
-                    ratios: (StatEnum.AS, ASbuff))
+                    ratios: (StatEnum.AS, ASbuff, ScaleFromEnum.Base))
             );
 
             SkillActionGroup wave = ActionGroup(

@@ -52,10 +52,12 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         // ========================================== setter ==========================================
         public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
+        // FIXLATER: I kinda skeptical about this one, but maybe it was okay.
+        // let see later.
         public void SeedPools()
         {
             _currentHP = HP;
-            _currentMana = StartMana;
+            _currentMana = Mathf.Min(StartMana, MaxMana);
         }
         public void AddMana(int amount) => _currentMana += amount;
         public bool IsManaCapped() => _currentMana >= MaxMana;
@@ -78,8 +80,7 @@ namespace MagicSchool.Combat.Heroes.Stats
             _base[StatEnum.MaxMana] = stat.MaxMana;
             _base[StatEnum.DamageReduction] = 0f;
 
-            _currentHP = HP;
-            _currentMana = StartMana;
+            SeedPools();
         }
     }
 }

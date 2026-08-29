@@ -20,6 +20,9 @@ namespace MagicSchool.Modifiers
             { ModifierEnum.AS             , StatEnum.AS}              ,
             { ModifierEnum.DF             , StatEnum.DF }             ,
             { ModifierEnum.DamageReduction, StatEnum.DamageReduction },
+            { ModifierEnum.AP             , StatEnum.AP }             ,
+            { ModifierEnum.Range          , StatEnum.Range }          ,
+            { ModifierEnum.StartMana      , StatEnum.StartMana }      ,
             // ...
 
             // debuff
@@ -114,6 +117,7 @@ namespace MagicSchool.Modifiers
                     if (scalingEnum == ScalingEnum.Percentage)
                         pureStatFromPercentageBonus += active.BonusStat[i];
 
+                    // FIXNOW: I think it's time to implement Scaling
                     else { }
                 }
             }

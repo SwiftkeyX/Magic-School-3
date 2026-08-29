@@ -12,6 +12,8 @@ namespace MagicSchool.Contracts
         DF = 7,
         AP = 8,
         Omnivamp = 9,
+        Range = 14,
+        StartMana = 15,
 
         // ======================================= Debuff =======================================
         DefendShred = 13,

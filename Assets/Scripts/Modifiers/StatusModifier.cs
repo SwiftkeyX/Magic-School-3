@@ -22,6 +22,6 @@ namespace MagicSchool.Modifiers
         // e.g. Wound have fix amount = 50% heal reduction.
         // e.g. Burn do 3% fix amount dmg to enemy.
         // e.g. Stun don't have amount. 
-        public float GetBonusAmount(IHeroStats stats) => 0f;
+        public ScalingTotals GetTotals(IHeroStats stats, StatEnum? landingOn) => new ScalingTotals(0f, 0f);
     }
 }

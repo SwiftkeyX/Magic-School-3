@@ -14,7 +14,7 @@ namespace MagicSchool.Modifiers
 
         // ============================================ getter ============================================
         public readonly ICustomModifier CustomModifier;     // the group of modifier - buff, debuff, status, etc...
-        public readonly float[] BonusStat;                  //the amount of total stat that will be added to hero, amplifier included
+        public readonly ScalingTotals[] BonusStat;          //the amount of total stat that will be added to hero, amplifier included
         public float Remaining => _remaining;               // remember its remaining duration of the modifier - The group share the same remaining
 
         public ActiveCustomModifier(ICustomModifier source, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
@@ -23,7 +23,7 @@ namespace MagicSchool.Modifiers
 
             // get bonus stat from each modifier
             IReadOnlyList<IModifier> modifiers = source.GetModifiers();
-            BonusStat = new float[modifiers.Count];
+            BonusStat = new ScalingTotals[modifiers.Count];
             for (int i = 0; i < modifiers.Count; i++)
             {
                 // the bonus stat could derive from caster itself or others hero that being hit by the skill.
@@ -41,7 +41,8 @@ namespace MagicSchool.Modifiers
 
                 // get bonus stat, amplified if the effect's conditions is true.
                 // e.g. +30% when the target was wounded.
-                BonusStat[i] = modifiers[i].GetBonusAmount(from) * amplifier;
+                ModifierTarget.TryGet(modifiers[i].GetModifierEnum(), out StatEnum targetStat);
+                BonusStat[i] = modifiers[i].GetTotals(from, targetStat) * amplifier;
             }
 
             // start the modifier's timer

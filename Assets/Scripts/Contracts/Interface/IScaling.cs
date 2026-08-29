@@ -8,5 +8,11 @@ namespace MagicSchool.Contracts
     {
         ScalingSourceEnum GetScalingSource();               // whose stats the ratios read - the caster, or the other being hit by the skill
         float GetTotalAfterScaling(IHeroStats stats);       // Get a total amount of stat/dmg/heal after the scaling calculation
+
+        // The same terms, split into what adds and what multiplies.
+        // "landingOn" is the stat the total is going into, and it is what tells the two apart: a
+        // term reading that same stat is a multiplier, one reading another stat is an amount to
+        // add. Damage and healing land on no stat, so they pass null and everything adds.
+        ScalingTotals GetTotals(IHeroStats stats, StatEnum? landingOn);
     }
 }

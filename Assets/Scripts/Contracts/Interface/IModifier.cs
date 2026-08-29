@@ -4,7 +4,7 @@ namespace MagicSchool.Contracts
     // e.g. Hero ask "hey, I have like 10 modifiers, give me how much stat, each modifier actualy give me"
     public interface IModifier
     {
-        public float GetBonusAmount(IHeroStats stats);      // get bonus amount from this modifier (bonus amount is the final amount after modifier calculation)
+        public ScalingTotals GetTotals(IHeroStats stats, StatEnum? landingOn);   // what this modifier gives, split into what adds and what multiplies
         public ModifierEnum GetModifierEnum();              // get modifier enum - to know what this modifier should behave
         public ScalingSourceEnum GetScalingSource();        // get whose stats it should be scaling off
     }

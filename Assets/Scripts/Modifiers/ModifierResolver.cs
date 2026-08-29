@@ -11,25 +11,6 @@ namespace MagicSchool.Modifiers
     {
         private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
 
-        // pair of modifier & stat - tell which stat is increase by this modifier
-        private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
-        {
-            // buff
-            { ModifierEnum.BonusHP        , StatEnum.MAXHP }          ,
-            { ModifierEnum.ATK            , StatEnum.ATK }            ,
-            { ModifierEnum.AS             , StatEnum.AS}              ,
-            { ModifierEnum.DF             , StatEnum.DF }             ,
-            { ModifierEnum.DamageReduction, StatEnum.DamageReduction },
-            { ModifierEnum.AP             , StatEnum.AP }             ,
-            { ModifierEnum.Range          , StatEnum.Range }          ,
-            { ModifierEnum.StartMana      , StatEnum.StartMana }      ,
-            // ...
-
-            // debuff
-            { ModifierEnum.DefendShred    , StatEnum.DF }             ,
-            // ...
-        };
-
         // =================================== life cycle ===================================
         // update all current modifier duration, removing any that just expired
         public void Tick(float deltaTime)
@@ -95,7 +76,8 @@ namespace MagicSchool.Modifiers
         // how about we compute it 1 time , and use it forever.
         public float GetStatModifier(StatEnum type, float baseStat)
         {
-            float bonus = 0f;
+            float additive = 0f;
+            float multiplierPercent = 0f;
 
             foreach (ActiveCustomModifier active in _activeModifiers)
             {
@@ -106,27 +88,17 @@ namespace MagicSchool.Modifiers
                     IModifier modifier = modifiers[i];
 
                     // lookup modifier table - what stat is increase?
-                    if (!_lookup.TryGetValue(modifier.GetModifierEnum(), out StatEnum target)) continue;
+                    if (!ModifierTarget.TryGet(modifier.GetModifierEnum(), out StatEnum target)) continue;
 
                     // let the modifier with correct stat pass.
                     if (target != type) continue;
 
-                    bonus += active.BonusStat[i];
+                    additive += active.BonusStat[i].Additive;
+                    multiplierPercent += active.BonusStat[i].MultiplierPercent;
                 }
             }
 
-            // FIXNOW: a true multiplier - a share of the stat being modified, e.g. "+15% ATK" -
-            // does not exist yet, and it is the only thing a flat-before-percentage order would
-            // actually change. It would land right here, as (baseStat + bonus) * multiplier.
-            //
-            // Two things have to move first. A modifier is no longer wholly flat or wholly
-            // derived - its ratios mix - so the split has to be made per RATIO, down in Scaling,
-            // not per modifier up here. And ActiveCustomModifier computes BonusStat once in its
-            // constructor, at AddModifier time, so every modifier arriving here is already a
-            // finished number with nothing left to order. That snapshot has to go too - which
-            // would also stop two percentage buffs on one hero from depending on which of them
-            // was granted first.
-            return baseStat + bonus;
+            return (baseStat + additive) * (1f + multiplierPercent / 100f);
         }
 
         // Return available status modifier

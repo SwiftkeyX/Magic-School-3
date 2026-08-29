@@ -18,8 +18,8 @@ namespace MagicSchool.Modifiers
         public ModifierEnum GetModifierEnum() => _modifier;
         public ScalingSourceEnum GetScalingSource() => _scaling.GetScalingSource();
 
-        // return a pure bonus stat from this modifier 
-        // e.g. this modifier grant +100 ATK
-        public float GetBonusAmount(IHeroStats stats) => _scaling.GetTotalAfterScaling(stats);
+        // return what this modifier grants, split into what adds and what multiplies
+        // e.g. this modifier grant +100 ATK, or *2 AS
+        public ScalingTotals GetTotals(IHeroStats stats, StatEnum? landingOn) => _scaling.GetTotals(stats, landingOn);
     }
 }

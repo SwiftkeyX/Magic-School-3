@@ -29,41 +29,53 @@ namespace MagicSchool.StatScaling
         // scale the ratio base on the consuming stats.
         // stats could be from the caster itself or other heroes. (most of the time, is "caster")
         public float GetTotalAfterScaling(IHeroStats stats)
+            => GetTotals(stats, null).Additive;
+
+        // Split the terms against the stat the total is landing on.
+        // A term reading that same stat cannot be resolved here - it is a share of a number this
+        // scaling never sees, the finished stat - so it is handed up as a percentage and applied
+        // once everything additive has settled.
+        public ScalingTotals GetTotals(IHeroStats stats, StatEnum? landingOn)
         {
             // guard
-            if (_ratios == null || _ratios.Count == 0) return 0f;
+            if (_ratios == null || _ratios.Count == 0) return new ScalingTotals(0f, 0f);
 
-            float total = 0f;
+            float additive = 0f;
+            float multiplierPercent = 0f;
 
             foreach (StatRatio ratio in _ratios)
             {
-                bool flatAmountScaling = !ratio.Stat.HasValue;
-
-                // flat scaling
-                if (flatAmountScaling)
+                // flat scaling - the number stands on its own
+                if (!ratio.Stat.HasValue)
                 {
-                    total += ratio.Amount;
+                    additive += ratio.Amount;
                     continue;
                 }
 
-                // percentage scaling 
-                else
+                // derived from the same stat it lands on - a multiplier, e.g. Fang's "+100% of his
+                // own attack speed". Reads nothing now; the resolver applies it last.
+                if (landingOn.HasValue && ratio.Stat.Value == landingOn.Value)
                 {
-                    // guard
-                    if (stats == null)
-                    {
-                        UnityEngine.Debug.LogError($"[Scaling] scales off the {_source}'s stats but was asked without any. " +
-                                                   "SkillDefinition.Init() has to reach every effect it holds.");
-                        continue;
-                    }
-
-                    // get bonus stat by deriving from specify stat
-                    total += stats.GetStat(ratio.Stat.Value) * ratio.Amount / 100f;
+                    multiplierPercent += ratio.Amount;
+                    continue;
                 }
 
+                // derived from another stat - an amount to add, e.g. "+ATK worth 80% of AS"
+                // FLAGGING: another class type check, let leave it for now.
+                // Somehow the effect always need stat from hero, maybe we'll have to include IHeroStats into ICombatant?
+                // guard - only this branch needs a hero to read off, so it is checked here rather
+                // than up front: the other two are worth paying out without one.
+                if (stats == null)
+                {
+                    UnityEngine.Debug.LogError($"[Scaling] scales off the {_source}'s stats but was asked without any. " +
+                                               "SkillDefinition.Init() has to reach every effect it holds.");
+                    continue;
+                }
+
+                additive += stats.GetStat(ratio.Stat.Value) * ratio.Amount / 100f;
             }
 
-            return total;
+            return new ScalingTotals(additive, multiplierPercent);
         }
     }
 

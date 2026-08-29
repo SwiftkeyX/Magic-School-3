@@ -16,9 +16,9 @@ namespace MagicSchool.Modifiers
         {
             // buff
             { ModifierEnum.BonusHP        , StatEnum.MAXHP }          ,
-            { ModifierEnum.Attack         , StatEnum.Atk }            ,
-            { ModifierEnum.AttackSpeed    , StatEnum.AttackSpeed}     ,
-            { ModifierEnum.Defend         , StatEnum.DF }             ,
+            { ModifierEnum.ATK            , StatEnum.ATK }            ,
+            { ModifierEnum.AS             , StatEnum.AS}              ,
+            { ModifierEnum.DF             , StatEnum.DF }             ,
             { ModifierEnum.DamageReduction, StatEnum.DamageReduction },
             // ...
 
@@ -69,7 +69,7 @@ namespace MagicSchool.Modifiers
         }
 
         // force remove modifier before it expired
-       public bool RemoveModifier(ICustomModifier modifier)
+        public bool RemoveModifier(ICustomModifier modifier)
         {
             if (modifier == null) return false;
 

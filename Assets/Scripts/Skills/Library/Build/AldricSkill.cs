@@ -8,8 +8,8 @@ namespace MagicSchool.Skills
     {
         private const float StunDuration = 2f;
         private const float LandingDamage = 200f;
-
         private const float LandingSize = 4.5f;
+
         private static readonly float LandingRadius = Reach(LandingSize);
 
         public static SkillDefinition Build(TemplateActionRegistrySO registry)
@@ -53,7 +53,7 @@ namespace MagicSchool.Skills
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    ratios: (StatEnum.MG, LandingDamage)
+                    ratios: (StatEnum.AP, LandingDamage)
                 ),
                 Apply(
                     recipient: EffectRecipientEnum.EnemiesInArea,

@@ -43,7 +43,7 @@ namespace MagicSchool.Skills
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    ratios: (StatEnum.Atk, ExplodeDmg)
+                    ratios: (StatEnum.ATK, ExplodeDmg)
                 )
             );
 

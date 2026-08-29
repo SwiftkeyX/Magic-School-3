@@ -37,7 +37,7 @@ namespace MagicSchool.Skills
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    (StatEnum.Atk, ADDamagePerShot), (StatEnum.MG, MGDamagePerShot)
+                    (StatEnum.ATK, ADDamagePerShot), (StatEnum.AP, MGDamagePerShot)
                 )
             );
 

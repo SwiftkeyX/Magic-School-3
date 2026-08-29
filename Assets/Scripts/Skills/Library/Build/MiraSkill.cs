@@ -31,14 +31,14 @@ namespace MagicSchool.Skills
                 action: TemplateActionEnum.FireTimingRunnerTriangleAOE,
                 target: AimTargetEnum.Current,
                 tuning: TuneFireTimingRunner(
-                    SnipCount, FireTimingModeEnum.Sequence, 
-                    IntervalBetweenSnip, 
+                    SnipCount, FireTimingModeEnum.Sequence,
+                    IntervalBetweenSnip,
                     tune,
                     castTime: TotalCastTime),
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    (StatEnum.MG, MGDamagePerSnip)
+                    (StatEnum.AP, MGDamagePerSnip)
                 )
             );
 

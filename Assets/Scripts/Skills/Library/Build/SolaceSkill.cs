@@ -31,9 +31,9 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup dart = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.FirstHitProjectile,
-                target:   AimTargetEnum.Current
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.FirstHitProjectile,
+                target: AimTargetEnum.Current
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: dart);
@@ -43,13 +43,13 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup blast = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.WhereProjectileHit,
-                action:   TemplateActionEnum.CircleAOE,
-                target:   AimTargetEnum.WhereProjectileHit,
+                source: ActionSourceEnum.WhereProjectileHit,
+                action: TemplateActionEnum.CircleAOE,
+                target: AimTargetEnum.WhereProjectileHit,
                 // sheet: Solace is AP
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    ratios:    (StatEnum.MG, ExplosionDamage))
+                    ratios: (StatEnum.AP, ExplosionDamage))
             );
 
             return Step(trigger: TriggerEnum.OnHit, groups: blast);

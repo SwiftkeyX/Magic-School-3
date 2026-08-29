@@ -38,25 +38,25 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup brace = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.Cast,
-                target:   AimTargetEnum.Self,
-                tuning:   Tune(castTime: BraceDuration),
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.Cast,
+                target: AimTargetEnum.Self,
+                tuning: Tune(castTime: BraceDuration),
 
                 // sheet: Bulwark heals off AP
                 HealOverTime(
                     recipient: EffectRecipientEnum.Self,
-                    duration:  BraceDuration,
-                    interval:  TickInterval,
-                    ratios:    (StatEnum.MG, HealAmount)),
+                    duration: BraceDuration,
+                    interval: TickInterval,
+                    ratios: (StatEnum.AP, HealAmount)),
 
                 Apply(
                     recipient: EffectRecipientEnum.Self,
-                    modifier:  Bundle(
-                        duration:  BraceDuration,
+                    modifier: Bundle(
+                        duration: BraceDuration,
                         modifiers: Buff(
                             modifier: ModifierEnum.DamageReduction,
-                            ratios:   (StatEnum.None, DamageReductionPercent)))
+                            ratios: (StatEnum.None, DamageReductionPercent)))
                 )
             );
 
@@ -68,13 +68,13 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup slam = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.CircleAOE,
-                target:   AimTargetEnum.Self,
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.CircleAOE,
+                target: AimTargetEnum.Self,
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    ratios:    (StatEnum.MG, SlamDamage))
+                    ratios: (StatEnum.AP, SlamDamage))
             );
 
             return Step(trigger: TriggerEnum.OnExpired, groups: slam);

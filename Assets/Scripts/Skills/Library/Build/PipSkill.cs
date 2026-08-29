@@ -25,9 +25,9 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup dart = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.HomingProjectile,
-                target:   AimTargetEnum.Furthest
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.HomingProjectile,
+                target: AimTargetEnum.Furthest
             );
 
             return Step(trigger: TriggerEnum.OnCast, groups: dart);
@@ -37,23 +37,23 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup patch = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.WhereProjectileHit,
-                action:   TemplateActionEnum.CircleAOE,
-                target:   AimTargetEnum.WhereProjectileHit,
+                source: ActionSourceEnum.WhereProjectileHit,
+                action: TemplateActionEnum.CircleAOE,
+                target: AimTargetEnum.WhereProjectileHit,
 
                 Apply(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    modifier:  Bundle(
-                        duration:  WoundDuration,
+                    modifier: Bundle(
+                        duration: WoundDuration,
                         modifiers: Status(ModifierEnum.Wound)),
                     amplifier: 0.3f),
 
                 // sheet: Pip is AP
                 DamageOverTime(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    interval:  PoisonInterval,
-                    duration:  PoisonDuration,
-                    ratios:    (StatEnum.MG, PoisonDamage))
+                    interval: PoisonInterval,
+                    duration: PoisonDuration,
+                    ratios: (StatEnum.AP, PoisonDamage))
             );
 
             return Step(trigger: TriggerEnum.OnHit, groups: patch);

@@ -54,7 +54,7 @@ namespace MagicSchool.Skills
 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInPath,
-                    ratios: (StatEnum.MG, CollideDamage)
+                    ratios: (StatEnum.AP, CollideDamage)
                 ),
                 Apply(
                     recipient: EffectRecipientEnum.EnemiesInPath,

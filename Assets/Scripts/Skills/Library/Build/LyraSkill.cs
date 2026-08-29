@@ -32,9 +32,9 @@ namespace MagicSchool.Skills
             ICustomModifier ASBuff = Bundle(
                 duration: -1f,
                 Buff(
-                    modifier: ModifierEnum.AttackSpeed,
+                    modifier: ModifierEnum.AS,
                     source: ScalingSourceEnum.Recipient,
-                    ratios: (StatEnum.AttackSpeed, ASbuff))
+                    ratios: (StatEnum.AS, ASbuff))
             );
 
             SkillActionGroup wave = ActionGroup(
@@ -47,7 +47,7 @@ namespace MagicSchool.Skills
                 // deal dmg to enemy & give buff to ally 
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInPath,
-                    ratios: (StatEnum.MG, DamageRatio)),
+                    ratios: (StatEnum.AP, DamageRatio)),
                 Apply(
                     recipient: EffectRecipientEnum.AlliesInPath,
                     modifier: ASBuff

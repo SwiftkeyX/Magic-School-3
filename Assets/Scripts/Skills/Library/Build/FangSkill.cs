@@ -37,7 +37,7 @@ namespace MagicSchool.Skills
             // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
             ICustomModifier modifiers = Bundle(
                 duration: BuffDuration,
-                modifiers: Buff(ModifierEnum.AttackSpeed, (StatEnum.AttackSpeed, AttackSpeedBuff))
+                modifiers: Buff(ModifierEnum.AS, (StatEnum.AS, AttackSpeedBuff))
             );
 
             // cast buff
@@ -74,7 +74,7 @@ namespace MagicSchool.Skills
                 action: TemplateActionEnum.Cast,
                 target: AimTargetEnum.Self,
                 // sheet: 30% AP
-                Heal(EffectRecipientEnum.Self, (StatEnum.MG, HealOnAA)));
+                Heal(EffectRecipientEnum.Self, (StatEnum.AP, HealOnAA)));
 
             return Step(trigger: TriggerEnum.OnAttack, groups: cast);
         }

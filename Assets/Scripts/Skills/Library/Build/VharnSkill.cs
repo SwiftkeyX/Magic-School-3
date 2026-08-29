@@ -57,13 +57,13 @@ namespace MagicSchool.Skills
                 // sheet: 10% Ability Power Omnivamp
                 Buff(
                     modifier: ModifierEnum.Omnivamp,
-                    ratios: (StatEnum.MG, OmnivampFromAP)),
+                    ratios: (StatEnum.AP, OmnivampFromAP)),
 
                 // FLAGGING: it consume 80% AS. which is only convert to 0.5 atk.
                 // need change later
                 Buff(
-                    modifier: ModifierEnum.Attack,
-                    ratios: (StatEnum.AttackSpeed, AttackFromAS)),
+                    modifier: ModifierEnum.ATK,
+                    ratios: (StatEnum.AS, AttackFromAS)),
 
                 Status(ModifierEnum.Transformed),
 
@@ -129,7 +129,7 @@ namespace MagicSchool.Skills
                 // sheet: Vharn is AD
                 Damage(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    ratios: (StatEnum.Atk, damage))
+                    ratios: (StatEnum.ATK, damage))
             );
         }
     }

@@ -23,21 +23,21 @@ namespace MagicSchool.Skills
             // homing projectile to furthest enemy
             SkillActionGroup shootProjectile = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.HomingProjectile,
-                target:   AimTargetEnum.Furthest,
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.HomingProjectile,
+                target: AimTargetEnum.Furthest,
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    ratios:    (StatEnum.MG, DamageRatio)),
+                    ratios: (StatEnum.AP, DamageRatio)),
 
                 ApplyWhen(
-                    recipient:  EffectRecipientEnum.SameToAimTarget,
-                    modifier:   Bundle(
-                        duration:  WoundDuration,
+                    recipient: EffectRecipientEnum.SameToAimTarget,
+                    modifier: Bundle(
+                        duration: WoundDuration,
                         modifiers: Status(ModifierEnum.Wound)),
                     conditions: amplifierCondition,
-                    amplifier:  WoundedAmplifier)
+                    amplifier: WoundedAmplifier)
             );
 
             return new SkillDefinition(

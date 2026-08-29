@@ -14,21 +14,21 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup shootProjectile = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.FirstHitProjectile,
-                target:   AimTargetEnum.Current,
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.FirstHitProjectile,
+                target: AimTargetEnum.Current,
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    ratios:    (StatEnum.Atk, DamageRatio)),
+                    ratios: (StatEnum.ATK, DamageRatio)),
 
                 Apply(
                     recipient: EffectRecipientEnum.SameToAimTarget,
-                    modifier:  Bundle(
-                        duration:  ShredDuration,
+                    modifier: Bundle(
+                        duration: ShredDuration,
                         modifiers: Buff(
                             modifier: ModifierEnum.DefendShred,
-                            ratios:   (StatEnum.MG, -ShredFromAP))))
+                            ratios: (StatEnum.AP, -ShredFromAP))))
             );
 
             return new SkillDefinition(

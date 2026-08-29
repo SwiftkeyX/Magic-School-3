@@ -15,16 +15,16 @@ namespace MagicSchool.Skills
         {
             SkillActionGroup spin = ActionGroup(
                 registry: registry,
-                source:   ActionSourceEnum.Self,
-                action:   TemplateActionEnum.ZoneAOE,  
-                target:   AimTargetEnum.Self,
-                tuning:   TuneAOE(castTime: Duration, sticky: true),
-                
+                source: ActionSourceEnum.Self,
+                action: TemplateActionEnum.ZoneAOE,
+                target: AimTargetEnum.Self,
+                tuning: TuneAOE(castTime: Duration, sticky: true),
+
                 DamageOverTime(
                     recipient: EffectRecipientEnum.EnemiesInArea,
-                    interval:  TickInterval,
-                    duration:  Duration,
-                    ratios:    (StatEnum.Atk, DamagePerTick))
+                    interval: TickInterval,
+                    duration: Duration,
+                    ratios: (StatEnum.ATK, DamagePerTick))
             );
 
             return new SkillDefinition(

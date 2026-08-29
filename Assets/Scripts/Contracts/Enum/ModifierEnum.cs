@@ -7,9 +7,9 @@ namespace MagicSchool.Contracts
         // ======================================= Buff =======================================
         BonusHP = 0,
         DamageReduction = 2,
-        AttackSpeed = 5,
-        Attack = 6,
-        Defend = 7,
+        AS = 5,
+        ATK = 6,
+        DF = 7,
         AP = 8,
         Omnivamp = 9,
 

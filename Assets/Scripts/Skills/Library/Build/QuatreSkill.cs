@@ -14,7 +14,7 @@ namespace MagicSchool.Skills
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.PiercingProjectile,
                 target: AimTargetEnum.Current,
-                Damage(EffectRecipientEnum.EnemiesInPath, (StatEnum.Atk, DamageRatio))
+                Damage(EffectRecipientEnum.EnemiesInPath, (StatEnum.ATK, DamageRatio))
             );
 
             return new SkillDefinition(

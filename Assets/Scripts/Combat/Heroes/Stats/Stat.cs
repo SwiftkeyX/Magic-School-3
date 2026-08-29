@@ -29,11 +29,11 @@ namespace MagicSchool.Combat.Heroes.Stats
         public float GetFinalStat(StatEnum type) => _statModifier.GetStatModifier(type, _base[type]);
 
         public int HP => Mathf.RoundToInt(GetFinalStat(StatEnum.MAXHP));
-        public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.Atk));
+        public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.ATK));
         public int DF => Mathf.RoundToInt(GetFinalStat(StatEnum.DF));
-        public int MG => Mathf.RoundToInt(GetFinalStat(StatEnum.MG));
+        public int MG => Mathf.RoundToInt(GetFinalStat(StatEnum.AP));
         public int MR => Mathf.RoundToInt(GetFinalStat(StatEnum.MR));
-        public float AttackSpeed => GetFinalStat(StatEnum.AttackSpeed);
+        public float AttackSpeed => GetFinalStat(StatEnum.AS);
         public int Range => Mathf.RoundToInt(GetFinalStat(StatEnum.Range));
         public int StartMana => Mathf.RoundToInt(GetFinalStat(StatEnum.StartMana));
         public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatEnum.MaxMana));
@@ -63,11 +63,11 @@ namespace MagicSchool.Combat.Heroes.Stats
         public Stat(HeroDataSO stat)
         {
             _base[StatEnum.MAXHP] = stat.HP;
-            _base[StatEnum.Atk] = stat.Atk;
+            _base[StatEnum.ATK] = stat.Atk;
             _base[StatEnum.DF] = stat.DF;
-            _base[StatEnum.MG] = stat.MG;
+            _base[StatEnum.AP] = stat.MG;
             _base[StatEnum.MR] = stat.MR;
-            _base[StatEnum.AttackSpeed] = stat.AttackSpeed;
+            _base[StatEnum.AS] = stat.AttackSpeed;
             _base[StatEnum.Range] = stat.Range;
             _base[StatEnum.StartMana] = stat.StartMana;
             _base[StatEnum.MaxMana] = stat.MaxMana;

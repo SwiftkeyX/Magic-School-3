@@ -91,10 +91,14 @@ namespace MagicSchool.Modifiers
         // =================================== getter ===================================
         // Compute final stat after calculating modifier.
         // Consume base stat. Spit the final stat out.
-        // FLAGGING: The stat are re-compute single time hero attack. Let cache this later.
+        // FIXLATER: now this function always recompute every single time hero called its atk, let change that.
+        // how about we compute it 1 time , and use it forever.
         public float GetStatModifier(StatEnum type, float baseStat)
         {
-            float pureStatFromPercentageBonus = 0f;
+            // kept apart, not summed as they arrive: flats are the base the rest builds on, and
+            // a real multiplier would have to land after both. See the note under the loop.
+            float flatBonus = 0f;
+            float scaledBonus = 0f;
 
             foreach (ActiveCustomModifier active in _activeModifiers)
             {
@@ -110,19 +114,33 @@ namespace MagicSchool.Modifiers
                     // let the modifier with correct stat pass.
                     if (target != type) continue;
 
-                    // scale stat e.g. flat +50, percentage +100%
-                    // the percentage is derived from StatRatio 
-                    ScalingEnum scalingEnum = modifier.GetScalingEnum();
+                    // Flat is a number written straight in, e.g. +50 DF.
+                    // Percentage is a share of ANOTHER stat, e.g. +ATK worth 80% of AS - so it is
+                    // additive too, and the two differ only in which pile they land on.
+                    switch (modifier.GetScalingEnum())
+                    {
+                        case ScalingEnum.Flat:
+                            flatBonus += active.BonusStat[i];
+                            break;
 
-                    if (scalingEnum == ScalingEnum.Percentage)
-                        pureStatFromPercentageBonus += active.BonusStat[i];
-
-                    // FIXNOW: I think it's time to implement Scaling
-                    else { }
+                        case ScalingEnum.Percentage:
+                            scaledBonus += active.BonusStat[i];
+                            break;
+                    }
                 }
             }
 
-            return (baseStat + pureStatFromPercentageBonus);
+            // FIXLATER: a true multiplier - a share of the stat being modified, e.g. "+15% ATK" -
+            // does not exist yet, and it is the only thing a flat-before-percentage order would
+            // actually change. It would land right here, as
+            //     (baseStat + flatBonus + scaledBonus) * multiplier
+            //
+            // It cannot be added at this line alone, though. ActiveCustomModifier computes
+            // BonusStat once in its constructor, at AddModifier time, so every modifier arriving
+            // here is already a finished number with nothing left to order. That snapshot has to
+            // go first - which would also stop two percentage buffs on one hero from depending on
+            // which of them was granted first.
+            return baseStat + flatBonus + scaledBonus;
         }
 
         // Return available status modifier

@@ -5,7 +5,8 @@ using MagicSchool.Contracts;
 namespace MagicSchool.Modifiers
 {
     // Contain current active group of modifiers on the hero. 
-    // To track how long this group of modifiers last.
+    // 1) To track how long this group of modifiers last.
+    // 2) To contain how much bonus stat this modifier'll give. 
     internal class ActiveCustomModifier
     {
         private const float Permanent = -1f;

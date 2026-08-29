@@ -8,7 +8,7 @@ namespace MagicSchool.Skills
     internal static class SkillFactory
     {
         // ================================== damage ==================================
-        // e.g. Damage(EnemiesInPath, (StatEnum.Atk, 1000f))  ->  1000% AD to everyone in the path
+        // e.g. Damage(EnemiesInPath, (StatEnum.ATK, 1000f))  ->  1000% AD to everyone in the path
         public static AttackSkillEffect Damage(EffectRecipientEnum recipient, params StatRatio[] ratios)
             => new AttackSkillEffect(recipient, Scale(ratios));
 
@@ -40,10 +40,18 @@ namespace MagicSchool.Skills
         public static ICustomModifier Bundle(float duration, params IModifier[] modifiers)
             => new CustomModifier(duration, modifiers);
 
-        // a modifier that give stat bonus, e.g. Buff(Attack, (StatEnum.MG, 50f)) is "+Atk 50% of the caster's AP".
+        // FIXLATER: this was fine, it just bother me because the name suck. 
+        // we could name it like BuffFlat & BuffPercentage
+        // a modifier that gives a plain stat bonus, e.g. Flat(DamageReduction, 20f) is "+20% DR".
+        // The number is what the recipient gets, whoever they are - it reads no stat off anyone.
+        public static IModifier Flat(ModifierEnum modifier, float amount)
+            => new StatModifier(modifier, new Scaling(amount));
+
+        // a modifier that gives a share of ANOTHER stat, e.g. Buff(ATK, (StatEnum.AP, 50f)) is
+        // "+ATK worth 50% of the caster's AP".
         // 1) If have several ratios, it add up.
-        // 2) StatEnum.None is a number written straight in rather than derived from any stat.
-        // 2.1) Buff(DefendShred, (StatEnum.None, 20f), (StatEnum.MG, 20f)) is "20 flat, plus 20% AP on top".
+        // 2) For a number written straight in, reach for Flat above rather than a ratio.
+        // 2.1) A buff that wants both takes two modifiers now - one Flat, one Buff.
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
             => new StatModifier(modifier, Scale(ratios));
 

@@ -54,9 +54,9 @@ namespace MagicSchool.Skills
                     recipient: EffectRecipientEnum.Self,
                     modifier: Bundle(
                         duration: BraceDuration,
-                        modifiers: Buff(
+                        modifiers: Flat(
                             modifier: ModifierEnum.DamageReduction,
-                            ratios: (StatEnum.None, DamageReductionPercent)))
+                            amount: DamageReductionPercent))
                 )
             );
 

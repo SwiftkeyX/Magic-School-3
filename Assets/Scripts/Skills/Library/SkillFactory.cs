@@ -10,20 +10,20 @@ namespace MagicSchool.Skills
         // ================================== damage ==================================
         // e.g. Damage(EnemiesInPath, (StatEnum.ATK, 1000f))  ->  1000% AD to everyone in the path
         public static AttackSkillEffect Damage(EffectRecipientEnum recipient, params StatRatio[] ratios)
-            => new AttackSkillEffect(recipient, Scale(ratios));
+            => new AttackSkillEffect(recipient, ratios);
 
         // the same, re-applied on a timer - Roland's spin, Pip's patch
         public static AttackSkillEffect DamageOverTime(EffectRecipientEnum recipient, float interval, float duration,
                                                        params StatRatio[] ratios)
-            => new AttackSkillEffect(recipient, Scale(ratios), new Cadence(interval, duration));
+            => new AttackSkillEffect(recipient, ratios, new Cadence(interval, duration));
 
         // ================================== heal ==================================
         public static HealSkillEffect Heal(EffectRecipientEnum recipient, params StatRatio[] ratios)
-            => new HealSkillEffect(recipient, Scale(ratios));
+            => new HealSkillEffect(recipient, ratios);
 
         public static HealSkillEffect HealOverTime(EffectRecipientEnum recipient, float duration, float interval,
                                                    params StatRatio[] ratios)
-            => new HealSkillEffect(recipient, Scale(ratios), duration, new Cadence(interval, duration));
+            => new HealSkillEffect(recipient, ratios, duration, new Cadence(interval, duration));
 
         // ================================== modifiers ==================================
         // apply a group of modifiers on the recipient
@@ -45,14 +45,14 @@ namespace MagicSchool.Skills
         //   Buff(ATK, (StatEnum.AP, 50f))                  -> "Buff ATK = 50% of the caster's AP"
         //   Buff(DefendShred, 20f, (StatEnum.AP, 20f))     -> "Reduce DF = 20 flat, plus 20% AP on top"
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
-            => new StatModifier(modifier, Scale(ratios));
+            => new StatModifier(modifier, ratios);
 
         // 3) the buff will derived from the caster itself unless it consume "source" parameter.
         // Lyra's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
         // BUT it have another pattern, you should know:
         // Lyra's skill (alternative) buff ally base on Lyra's AP by +50%AP => This will get different result.
         public static IModifier Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
-            => new StatModifier(modifier, Scale(source, ratios));
+            => new StatModifier(modifier, ratios, source);
 
         // a modifier that give status 
         // e.g. Wound, Stun, Transformed
@@ -129,13 +129,5 @@ namespace MagicSchool.Skills
         
         // size of the AOE, etc...
         public static float Reach(float size) => size * AuthoredRadius;
-
-
-        // ================================== scaling ==================================
-        public static IScaling Scale(params StatRatio[] ratios)
-            => new Scaling(ratios);
-
-        public static IScaling Scale(ScalingSourceEnum source, params StatRatio[] ratios)
-            => new Scaling(ratios, source);
     }
 }

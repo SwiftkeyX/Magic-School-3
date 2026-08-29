@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
 
 namespace MagicSchool.Skills
 {
@@ -8,16 +9,16 @@ namespace MagicSchool.Skills
     // It still look weird to me but it work well and clean. Lets leave it.
     internal class HealSkillEffect : SkillEffect
     {
-        private readonly IScaling _scaling;
+        private readonly IReadOnlyList<StatRatio> _ratios;
         private readonly float _duration;
 
         public float Duration => _duration;
 
-        public HealSkillEffect(EffectRecipientEnum recipient, IScaling scaling, float duration = -1f,
+        public HealSkillEffect(EffectRecipientEnum recipient, IReadOnlyList<StatRatio> ratios, float duration = -1f,
                                Cadence cadence = null, List<SkillCondition> conditions = null, float amplifier = 0.3f)
             : base(recipient, cadence, conditions, amplifier)
         {
-            _scaling = scaling;
+            _ratios = ratios;
             _duration = duration;
         }
 
@@ -26,7 +27,7 @@ namespace MagicSchool.Skills
         public override void ApplyEffect(IReadOnlyList<IEffectable> recipients)
         {
             int totalTicks = Mathf.Max(1, Mathf.RoundToInt(_duration / Cadence.cadenceInterval));
-            float healPerTick = _scaling.GetTotalAfterScaling(_caster as IHeroStats) / totalTicks;
+            float healPerTick = Scaling.Total(_ratios, _caster as IHeroStats) / totalTicks;
 
             foreach (IEffectable recipient in recipients)
             {

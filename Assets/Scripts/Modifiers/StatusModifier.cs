@@ -11,6 +11,7 @@ namespace MagicSchool.Modifiers
             _status = status;
         }
 
+        // === IModifier ===
         public ModifierEnum GetModifierEnum() => _status;
 
         // FLAGGING: When we see pattern more clear, we maybe consider separate

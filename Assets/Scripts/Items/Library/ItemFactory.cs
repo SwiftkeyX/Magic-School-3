@@ -19,6 +19,6 @@ namespace MagicSchool.Items
         //   Buff(ATK, (StatEnum.AP, 50f))                  -> "Buff ATK = 50% of the caster's AP"
         //   Buff(DefendShred, 20f, (StatEnum.AP, 20f))     -> "Reduce DF = 20 flat, plus 20% AP on top"
         public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
-            => new StatModifier(modifier, new Scaling(ratios));
+            => new StatModifier(modifier, ratios);
     }
 }

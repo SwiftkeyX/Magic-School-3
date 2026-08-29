@@ -1,25 +1,28 @@
+using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.StatScaling;
 
 namespace MagicSchool.Modifiers
 {
-    // The actual modifier class 
+    // The actual modifier class
     // To contain modifier type and its amount in 1 place.
     public class StatModifier : IModifier
     {
         private readonly ModifierEnum _modifier;
-        private readonly IScaling _scaling;
+        private readonly IReadOnlyList<StatRatio> _ratios;
+        private readonly ScalingSourceEnum _source;
 
-        public StatModifier(ModifierEnum modifier, IScaling scaling)
+        public StatModifier(ModifierEnum modifier, IReadOnlyList<StatRatio> ratios,
+                            ScalingSourceEnum source = ScalingSourceEnum.Caster)
         {
             _modifier = modifier;
-            _scaling = scaling;
+            _ratios = ratios;
+            _source = source;
         }
 
+        // === IModifier ===
         public ModifierEnum GetModifierEnum() => _modifier;
-        public ScalingSourceEnum GetScalingSource() => _scaling.GetScalingSource();
-
-        // return a pure bonus stat from this modifier 
-        // e.g. this modifier grant +100 ATK
-        public float GetBonusAmount(IHeroStats stats) => _scaling.GetTotalAfterScaling(stats);
+        public ScalingSourceEnum GetScalingSource() => _source;
+        public float GetBonusAmount(IHeroStats stats) => Scaling.Total(_ratios, stats);
     }
 }

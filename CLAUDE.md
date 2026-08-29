@@ -13,7 +13,7 @@ MagicSchool.Contracts  -> (nothing)          leaf: interfaces + enums everyone s
 MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper, CurveMotion
 MagicSchool.VFX        -> (nothing)          leaf: FloatingText
 MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
-MagicSchool.Modifiers  -> Contracts
+MagicSchool.Modifiers  -> Contracts, StatScaling
 MagicSchool.Skills     -> Contracts, Engine, StatScaling, Modifiers
 MagicSchool.Combat     -> Contracts, Engine, Skills, VFX, Modifiers
 MagicSchool.UI         -> Contracts, Combat

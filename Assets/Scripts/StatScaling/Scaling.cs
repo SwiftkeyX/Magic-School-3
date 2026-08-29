@@ -12,30 +12,16 @@ namespace MagicSchool.StatScaling
     // HeroA's buff derived from atk, but it doesn't mean total stat have to be added into ATK,
     // the skill may specify to add the total stat into AS instead.
     // e.g. currently the ModifierEnum use to specify where the total stat go into, ModifierEnum.ATK/ModiferEnum.DF/etc...
-    public class Scaling : IScaling
+    public static class Scaling
     {
-        private readonly IReadOnlyList<StatRatio> _ratios;
-        private readonly ScalingSourceEnum _source;     // whose stat will be scaling from
-
-        // =================================== getter ===================================
-        public ScalingSourceEnum GetScalingSource() => _source;
-
-        public Scaling(IReadOnlyList<StatRatio> ratios, ScalingSourceEnum source = ScalingSourceEnum.Caster)
-        {
-            _ratios = ratios;
-            _source = source;
-        }
-
-        // scale the ratio base on the consuming stats.
-        // stats could be from the caster itself or other heroes. (most of the time, is "caster")
-        public float GetTotalAfterScaling(IHeroStats stats)
+        public static float Total(IReadOnlyList<StatRatio> ratios, IHeroStats stats)
         {
             // guard
-            if (_ratios == null || _ratios.Count == 0) return 0f;
+            if (ratios == null || ratios.Count == 0) return 0f;
 
             float total = 0f;
 
-            foreach (StatRatio ratio in _ratios)
+            foreach (StatRatio ratio in ratios)
             {
                 bool flatAmountScaling = !ratio.Stat.HasValue;
 
@@ -52,8 +38,8 @@ namespace MagicSchool.StatScaling
                     // guard
                     if (stats == null)
                     {
-                        UnityEngine.Debug.LogError($"[Scaling] scales off the {_source}'s stats but was asked without any. " +
-                                                   "SkillDefinition.Init() has to reach every effect it holds.");
+                        UnityEngine.Debug.LogError($"[Scaling] a ratio scales off {ratio.Stat.Value} but was asked without any stats " +
+                                                   "to read it from. SkillDefinition.Init() has to reach every effect it holds.");
                         continue;
                     }
 

@@ -92,9 +92,8 @@ namespace MagicSchool.Combat.Heroes.Stats
             _base[StatEnum.MaxMana] = so.MaxMana;
             _base[StatEnum.DamageReduction] = 0f;
 
-            // there's chance MaxHP is modified at the start, so set _currentHP to MaxHP accordingly 
-            int previousMaxHP = (int)_base[StatEnum.MaxHP];
-            FollowMaxHP(previousMaxHP);
+            // there's chance MaxHP is modified at the start, so set _currentHP to MaxHP accordingly  
+            _currentHP = MaxHP;
 
             // there's chance StartMana is modified at the start, so set _currentMana to StartMana.
             _currentMana = Mathf.Min(StartMana, MaxMana);

@@ -8,12 +8,8 @@ namespace MagicSchool.UI
     /// everything layered over the board.
     /// e.g. The hint line, the win banner, and the hero counter 
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
-    internal class MatchStatusController : MonoBehaviour, IBannerPanel, IHeroCountPanel
+    internal class MatchStatusController : PanelController, IBannerPanel, IHeroCountPanel
     {
-        [SerializeField] private VisualTreeAsset _matchStatusAsset;
-
-        private VisualElement _mainPanel;
         private VisualElement _banner;
         private VisualElement _heroCount;
         private Label _resultText;
@@ -24,13 +20,13 @@ namespace MagicSchool.UI
         public void ShowPreparation(int stage, int stageCount)
         {
             SetHint($"{Stage(stage, stageCount)} - drag heroes onto your hexes, then press SPACE to fight");
-            SetShown(_banner, false);
+            SetShown(false);
         }
 
         public void ShowCombat(int stage, int stageCount)
         {
             SetHint($"{Stage(stage, stageCount)} - fighting. Right-click a hero to inspect it");
-            SetShown(_banner, false);
+            SetShown(false);
         }
 
         public void ShowResult(TeamEnum? winner, int stage, int stageCount, bool runCleared)
@@ -64,7 +60,7 @@ namespace MagicSchool.UI
                 _resultText.AddToClassList("banner__text--draw");
             }
 
-            SetShown(_banner, true);
+            SetShown(true);
         }
 
         // =================================== IHeroCountPanel interface ===================================
@@ -76,32 +72,25 @@ namespace MagicSchool.UI
             // so the count never actually reads higher than the limit
             if (_heroCount != null) _heroCount.EnableInClassList("hero-count--full", placed >= limit);
 
-            SetShown(_heroCount, true);
+            SetShown(true);
         }
 
         public void HideHeroCount()
         {
-            SetShown(_heroCount, false);
+            SetShown(false);
         }
 
         // =================================== Life cycle ===================================
-        // init the status layer
-        private void OnEnable()
+        // OnMounted, get all element, show preparation banner
+        protected override void OnMounted(VisualElement panel)
         {
-            UIDocument document = GetComponent<UIDocument>();
-            VisualElement mainPanel = document.rootVisualElement;
-            if (mainPanel == null || _matchStatusAsset == null) return;
+            _banner = panel.Q<VisualElement>("ResultBanner");
+            _resultText = panel.Q<Label>("ResultText");
+            _phaseHint = panel.Q<Label>("PhaseHint");
+            _heroCount = panel.Q<VisualElement>("HeroCount");
+            _heroCountValue = panel.Q<Label>("HeroCountValue");
 
-            _mainPanel = PanelMounter.MountInMainPanel(mainPanel, _matchStatusAsset);
-            if (_mainPanel == null) return;
-
-            _banner = _mainPanel.Q<VisualElement>("ResultBanner");
-            _resultText = _mainPanel.Q<Label>("ResultText");
-            _phaseHint = _mainPanel.Q<Label>("PhaseHint");
-            _heroCount = _mainPanel.Q<VisualElement>("HeroCount");
-            _heroCountValue = _mainPanel.Q<Label>("HeroCountValue");
-
-            ShowPreparation(1, 1);
+            ShowPreparation(stage: 1, stageCount: 1);
             HideHeroCount();
         }
 
@@ -116,10 +105,5 @@ namespace MagicSchool.UI
             if (_phaseHint != null) _phaseHint.text = text;
         }
 
-        private static void SetShown(VisualElement element, bool shown)
-        {
-            if (element == null) return;
-            element.EnableInClassList("is-hidden", !shown);
-        }
     }
 }

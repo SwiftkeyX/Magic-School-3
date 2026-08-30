@@ -26,7 +26,8 @@ namespace MagicSchool.Core.States
 
             ResetPlayerTeam();
 
-            _game.Status?.ShowPreparation(_game.StageNumber, _game.StageCount);
+            _game.Hint?.ShowPreparation(_game.StageNumber, _game.StageCount);
+            _game.Banner?.SetShown(false);
         }
 
         // if there's heroes from the player side on the board, allow to start combat

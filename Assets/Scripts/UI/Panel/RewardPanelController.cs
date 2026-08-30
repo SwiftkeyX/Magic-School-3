@@ -8,18 +8,12 @@ namespace MagicSchool.UI
 {
     // FIXLATER: I notice that most of our UI panel do the same thing. Could we apply DRY here?
     /// The item offer shown after a stage is won: three items, of which the player keeps one.
-    [RequireComponent(typeof(UIDocument))]
-    internal class RewardPanelController : MonoBehaviour, IRewardPanel
+    internal class RewardPanelController : PanelController, IRewardPanel
     {
-        // style for empty reward slot 
+        // .uss for empty reward slot 
         private const string EmptySlotClass = "item-slot--empty";
 
-        // style for hiding the container
-        private const string HiddenClass = "is-hidden";
-
         // ================= SerializeField ======================
-        [SerializeField] private VisualTreeAsset _rewardPanelAsset;
-
         [Tooltip("Every item a stage win can offer. Three are drawn from it, without repeats.")]
         [SerializeField] private List<ItemDataSO> _itemPool = new List<ItemDataSO>();
 
@@ -33,8 +27,6 @@ namespace MagicSchool.UI
         [SerializeField] private float _spawnSpacing = 0.6f;
 
         // ================= VisualElement ======================
-        private VisualElement _rewardPanel;
-
         // the slot of the offered item
         private List<VisualElement> _itemSlots;
 
@@ -46,55 +38,12 @@ namespace MagicSchool.UI
         private int _spawnedCount;
 
         // ================= getter ======================
-        public bool IsShown => _rewardPanel != null && !_rewardPanel.ClassListContains(HiddenClass);
+        public bool IsShown => Panel != null && !Panel.ClassListContains(HiddenClass);
 
-        #region Initialize Panel
-        private void OnEnable()
-        {
-            // get main screen panel
-            UIDocument main = GetComponent<UIDocument>();
-            VisualElement mainPanel = main.rootVisualElement;
-            if (mainPanel == null || _rewardPanelAsset == null) return;
 
-            // put this panel in the slot of the main panel that shares its name
-            VisualElement rewardPanel = PanelMounter.MountInMainPanel(mainPanel, _rewardPanelAsset);
-            if (rewardPanel == null) return;
+        // ================================== interface ==================================
+        public bool IsChoosing => IsShown;
 
-            _rewardPanel = rewardPanel;
-            _itemSlots = rewardPanel.Query<VisualElement>("ItemSlot").ToList();
-
-            // registered once here rather than per offer, so re-filling the card cannot stack
-            // a second callback on the same slot
-            foreach (VisualElement slot in _itemSlots)
-                slot.RegisterCallback<ClickEvent>(_ => Pick(slot));
-
-            // At start of the game, panel should be hidden
-            Hide();
-
-            // FLAGGING: show on start make the result panel show at the start, this is for fast debugging.
-            // rolls as well as shows, so an inspector-opened card is not blank
-            if (_showOnStart) ShowReward();
-        }
-        #endregion
-
-        #region Public
-        // Put a set of items on the card. 
-        public void ShowOffer(IReadOnlyList<ItemDataSO> offer)
-        {
-            if (_itemSlots == null) return;
-
-            for (int slot = 0; slot < _itemSlots.Count; slot++)
-            {
-                ItemDataSO data = offer != null && slot < offer.Count ? offer[slot] : null;
-
-                AssignItemToSlot(_itemSlots[slot], data);
-            }
-        }
-
-        public void Show() => SetShown(true);
-        public void Hide() => SetShown(false);
-
-        // === IRewardPanel ===
         public void ShowReward()
         {
             // get random items from the pool, 
@@ -108,14 +57,40 @@ namespace MagicSchool.UI
             if (!HasAnyOffer()) return;
 
             // finally, show the reward panel
-            Show();
+            SetShown(true);
         }
 
-        // the card is only up while a pick is still owed - Pick hides it
-        public bool IsChoosing => IsShown;
-        #endregion
+        // ================================== override ==================================
+        protected override void OnMounted(VisualElement panel)
+        {
+            _itemSlots = panel.Query<VisualElement>("ItemSlot").ToList();
 
-        #region Private
+            // register click event to each slot
+            foreach (VisualElement slot in _itemSlots)
+                slot.RegisterCallback<ClickEvent>(_ => Pick(slot));
+
+            // At start of the game, panel should be hidden
+            SetShown(false);
+
+            // FLAGGING: show on start make the result panel show at the start, this is for fast debugging.
+            // rolls as well as shows, so an inspector-opened card is not blank
+            if (_showOnStart) ShowReward();
+        }
+
+        // ================================== private ==================================
+        // Put a set of items on the card. 
+        private void ShowOffer(IReadOnlyList<ItemDataSO> offer)
+        {
+            if (_itemSlots == null) return;
+
+            for (int slot = 0; slot < _itemSlots.Count; slot++)
+            {
+                ItemDataSO data = offer != null && slot < offer.Count ? offer[slot] : null;
+
+                AssignItemToSlot(_itemSlots[slot], data);
+            }
+        }
+
         // Random an offer out of the pool, without repeating the same item.
         private List<ItemDataSO> RollOffer(int count)
         {
@@ -179,15 +154,7 @@ namespace MagicSchool.UI
             if (Item.Spawn(data, where) == null) return;
 
             _spawnedCount++;
-            Hide();
+            SetShown(false);
         }
-
-        private void SetShown(bool shown)
-        {
-            if (_rewardPanel == null) return;
-
-            _rewardPanel.EnableInClassList(HiddenClass, !shown);
-        }
-        #endregion
     }
 }

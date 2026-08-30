@@ -857,8 +857,10 @@ GameObject:
   - component: {fileID: 1091040811}
   - component: {fileID: 1091040813}
   - component: {fileID: 1091040814}
-  - component: {fileID: 1091040815}
   - component: {fileID: 1091040816}
+  - component: {fileID: 1091040819}
+  - component: {fileID: 1091040818}
+  - component: {fileID: 1091040817}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -916,7 +918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b9bbbd74908bd48a00594846926532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopPanelController
-  _shopPanelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
+  _panelAsset: {fileID: 9197481963319205126, guid: a6ab2bc69608ec746938b3134742beb5, type: 3}
   _ghostAsset: {fileID: 9197481963319205126, guid: f2b0855b1d9174942833f355aba69429, type: 3}
   _heroDataSOs:
   - {fileID: 11400000, guid: dc1c3d91f1638e84081e8a7a65529145, type: 2}
@@ -949,20 +951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908e8b94bbf4d9144a962fe850e0c38e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.HeroPanelController
-  _heroPanelAsset: {fileID: 9197481963319205126, guid: 2119a30bf5772f44c8bb20a6f295e7d7, type: 3}
---- !u!114 &1091040815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091040810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f19b47ff22b46c44e8eb08ee20ad06a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.MatchStatusController
-  _matchStatusAsset: {fileID: 9197481963319205126, guid: a01e40ce71d16c84399f17c538a081f6, type: 3}
+  _panelAsset: {fileID: 9197481963319205126, guid: 2119a30bf5772f44c8bb20a6f295e7d7, type: 3}
 --- !u!114 &1091040816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,7 +964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc1b47b3f014bd59a6e47a7ca30e4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.RewardPanelController
-  _rewardPanelAsset: {fileID: 9197481963319205126, guid: 9ac73ab5fa3c40c2822192e5b94420eb, type: 3}
+  _panelAsset: {fileID: 9197481963319205126, guid: 9ac73ab5fa3c40c2822192e5b94420eb, type: 3}
   _itemPool:
   - {fileID: 11400000, guid: c1345137b9a34636af5362cd13a0cc20, type: 2}
   - {fileID: 11400000, guid: 9c42e1bfd7e341b6a3b5a2dfa1de318d, type: 2}
@@ -1000,6 +989,45 @@ MonoBehaviour:
   _showOnStart: 0
   _spawnPosition: {x: -5.6, y: -2, z: 0}
   _spawnSpacing: 0.6
+--- !u!114 &1091040817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091040810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a83f05ee994434197191f1fc382c5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.HeroCountController
+  _panelAsset: {fileID: 9197481963319205126, guid: 8b90177761b44379aae66b5dc16f5129, type: 3}
+--- !u!114 &1091040818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091040810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 923539cdeded4de29db7c22ab0f637f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.PhaseHintController
+  _panelAsset: {fileID: 9197481963319205126, guid: fd90bfbc0d324c999ce26fead30dee40, type: 3}
+--- !u!114 &1091040819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091040810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24cbe18a5984d1492129002685c294e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.ResultBannerController
+  _panelAsset: {fileID: 9197481963319205126, guid: 657f1d6520de442091bea06ca59336b6, type: 3}
 --- !u!114 &1120158067 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1659029782032959822, guid: 7c943b35b15ad3f4aa2cc962d8209249, type: 3}

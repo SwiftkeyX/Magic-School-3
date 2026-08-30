@@ -19,7 +19,7 @@ namespace MagicSchool.Core.States
             // remember the team's formation at the start
             _game.Formation.Remember(_game.Board.HeroesOnBoard, TeamEnum.Blue);
 
-            _game.Status?.ShowCombat(_game.StageNumber, _game.StageCount);
+            _game.Hint?.ShowCombat(_game.StageNumber, _game.StageCount);
         }
 
         // if there is no hero on the board, change to result state 

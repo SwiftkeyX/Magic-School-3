@@ -15,7 +15,8 @@ namespace MagicSchool.Core.States
         {
             _game.Board.SetBattleOn(false);
 
-            _game.Status?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+            _game.Hint?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+            _game.Banner?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
 
             // if player win, show reward panel
             if (_game.Winner == TeamEnum.Blue) _game.Reward?.ShowReward();
@@ -24,7 +25,7 @@ namespace MagicSchool.Core.States
         public override void OnExit()
         {
             // close reward panel
-            _game.Reward?.Hide();
+            _game.Reward?.SetShown(false);
         }
 
         // if continue is requested, go to preparation state.

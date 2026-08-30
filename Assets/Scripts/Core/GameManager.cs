@@ -27,7 +27,8 @@ namespace MagicSchool.Core
         private HeroSeed _seed;
         private HeroSpawner _heroSpawner;
         private GameStateMachine _stateMachine;
-        private IBannerPanel _status;
+        private IBannerPanel _banner;
+        private IHintPanel _hint;
         private IRewardPanel _reward;
         private int _stageIndex;
         private int _heroLimit;
@@ -57,7 +58,8 @@ namespace MagicSchool.Core
         internal BattleBoard Board => _board;
         internal HeroSeed Seed => _seed;
         internal HeroFormation Formation => _heroFormation;
-        internal IBannerPanel Status => _status;
+        internal IBannerPanel Banner => _banner;
+        internal IHintPanel Hint => _hint;
         internal IRewardPanel Reward => _reward;
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
         public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
@@ -83,7 +85,8 @@ namespace MagicSchool.Core
             _stateMachine = new GameStateMachine(this);
 
             MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            _status = behaviours.OfType<IBannerPanel>().FirstOrDefault();
+            _banner = behaviours.OfType<IBannerPanel>().FirstOrDefault();
+            _hint = behaviours.OfType<IHintPanel>().FirstOrDefault();
             _reward = behaviours.OfType<IRewardPanel>().FirstOrDefault();
         }
 

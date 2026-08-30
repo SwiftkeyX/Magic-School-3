@@ -12,21 +12,18 @@ namespace MagicSchool.UI
     /// 1) Shop Panel
     /// 2) ...
     /// </summary>
-    [RequireComponent(typeof(UIDocument))]
-    internal class ShopPanelController : MonoBehaviour, ISellZone
+    internal class ShopPanelController : PanelController, ISellZone
     {
         // the shop tints itself while a held hero hovers it (see Shop.uss)
         private const string SellHintClass = "shop-panel--selling";
 
         // ================= SerializeField ======================
-        [SerializeField] private VisualTreeAsset _shopPanelAsset;
         [SerializeField] private VisualTreeAsset _ghostAsset;
         [SerializeField] private List<HeroDataSO> _heroDataSOs;
         [SerializeField] private Bench _bench;
 
         // ================= VisualElement ======================
         private VisualElement _shopPanel;
-        private VisualElement _mainPanel;
         private VisualElement _ghost;
         private Dictionary<VisualElement, HeroDataSO> _heroSlotsDict = new Dictionary<VisualElement, HeroDataSO>();
         private List<VisualElement> _heroSlots;
@@ -38,20 +35,12 @@ namespace MagicSchool.UI
         // ...
 
         #region Initialize Panel
-        private void OnEnable()
+        protected override void OnMounted(VisualElement panel)
         {
-            // get main screen panel
-            UIDocument _main = GetComponent<UIDocument>();
-            _mainPanel = _main.rootVisualElement;
-            if (_mainPanel == null || _shopPanelAsset == null) return;
-
-            // Put small modular panel in main panel
-            VisualElement shopPanel = PanelMounter.MountInMainPanel(_mainPanel, _shopPanelAsset);
-            if (shopPanel == null) return;
-
             // get the reference for later use
-            _shopPanel = shopPanel.Q<VisualElement>("ShopPanel");
+            _shopPanel = panel.Q<VisualElement>("ShopPanel");
 
+            // FIXLATER: ghost should also use the hero slot as a sprite
             InitializeGhost();
 
             // Make hero slot draggable
@@ -63,7 +52,8 @@ namespace MagicSchool.UI
 
         #endregion
 
-        #region Drag Hero Function
+        // FLAGGIGN: UI Draggable is generic too, it also deserved its own file in the future. 
+        #region UI Draggable
         /// <summary>
         /// Main function for dragging
         /// A lot of comment since I never use those event before
@@ -126,7 +116,7 @@ namespace MagicSchool.UI
                 // add ghost to main UI, this make ghost visible
                 // ghost = the element that visually got drag together with your mouse e.g. hero sprite.
                 // technically, ghost is element that copy your mouse pointer's position.
-                _mainPanel.Add(_ghost);
+                MainPanel.Add(_ghost);
 
                 // move ghost to the point you just click
                 MoveGhostTo(pointer.position);

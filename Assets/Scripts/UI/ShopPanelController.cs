@@ -249,9 +249,7 @@ namespace MagicSchool.UI
             }
         }
 
-        // Re-roll every hero slot with a random hero from the full roster (repeats allowed,
-        // kept simple) - AssignHeroToSlot un-hides any slot that had been bought previously,
-        // since its visibility is always derived from having data, never toggled separately.
+        // Re-roll every hero slot with a random hero from the full roster
         private void RerollShop()
         {
             foreach (var slot in _heroSlots)

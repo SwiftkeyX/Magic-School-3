@@ -68,6 +68,9 @@ namespace MagicSchool.UI
             foreach (VisualElement slot in _itemSlots)
                 slot.RegisterCallback<ClickEvent>(_ => Pick(slot));
 
+            // At start of the game, panel should be hidden
+            Hide();
+
             // FLAGGING: show on start make the result panel show at the start, this is for fast debugging.
             // rolls as well as shows, so an inspector-opened card is not blank
             if (_showOnStart) ShowReward();

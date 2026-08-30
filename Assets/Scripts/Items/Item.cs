@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.Items
@@ -7,30 +8,40 @@ namespace MagicSchool.Items
     public class Item : MonoBehaviour, IInspectableItem, IDraggable, IEquipment
     {
         [SerializeField] private ItemDataSO _data;
-        public ItemDataSO Data => _data;
+        [SerializeField] private TextMeshPro _nameLabel;    // FLAGGING: name on the item, this is for prototype
         private ICustomModifier _modifier;
 
         // ================================= getter =================================
+        public ItemDataSO Data => _data;
         public ICustomModifier Modifier => _modifier;
         // === IInspectableItem ===
         public string DisplayName => _data != null ? _data.Name : name;
         public string Description => _data != null ? _data.Description : string.Empty;
         public bool IsAlive => this != null;
 
+        // ================================= life cycle =================================
+        // show a name of the item's prefab even in editor mode.
+#if UNITY_EDITOR
+        private void OnValidate() => ShowName();
+#endif
+
         void Awake()
         {
-            _modifier = ItemLibrary.Resolve(_data != null ? _data.ItemId : ItemIdEnum.None);
+            Init(_data);
         }
 
+        // init item
         private void Init(ItemDataSO data)
         {
             if (data == null) return;
 
             _data = data;
             _modifier = ItemLibrary.Resolve(data.ItemId);
+            ShowName();
         }
 
-        // spawn item into the scene
+        // ================================= public =================================
+        // this is factory, to spawn item into the scene
         public static Item Spawn(ItemDataSO data, Vector3 position)
         {
             if (data == null)
@@ -60,6 +71,14 @@ namespace MagicSchool.Items
             spawned.name = data.Name;
 
             return item;
+        }
+
+        // ================================= private =================================
+        private void ShowName()
+        {
+            if (_nameLabel == null) return;
+
+            _nameLabel.text = _data != null ? _data.Name : string.Empty;
         }
     }
 }

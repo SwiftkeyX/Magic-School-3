@@ -20,8 +20,8 @@ namespace MagicSchool.UI
         // ================= SerializeField ======================
         [SerializeField] private VisualTreeAsset _rewardPanelAsset;
 
-        [Tooltip("The three items offered. Fewer than the card has slots is fine - the rest go dim.")]
-        [SerializeField] private List<ItemDataSO> _offeredItems = new List<ItemDataSO>();
+        [Tooltip("Every item a stage win can offer. Three are drawn from it, without repeats.")]
+        [SerializeField] private List<ItemDataSO> _itemPool = new List<ItemDataSO>();
 
         [Tooltip("Draw the card as soon as the scene starts. Off once a stage win is what opens it.")]
         [SerializeField] private bool _showOnStart = true;
@@ -34,7 +34,7 @@ namespace MagicSchool.UI
 
         // ================= VisualElement ======================
         private VisualElement _rewardPanel;
-        
+
         // the slot of the offered item
         private List<VisualElement> _itemSlots;
 
@@ -68,8 +68,9 @@ namespace MagicSchool.UI
             foreach (VisualElement slot in _itemSlots)
                 slot.RegisterCallback<ClickEvent>(_ => Pick(slot));
 
-            ShowOffer(_offeredItems);
-            SetShown(_showOnStart);
+            // FLAGGING: show on start make the result panel show at the start, this is for fast debugging.
+            // rolls as well as shows, so an inspector-opened card is not blank
+            if (_showOnStart) ShowReward();
         }
         #endregion
 
@@ -93,8 +94,17 @@ namespace MagicSchool.UI
         // === IRewardPanel ===
         public void ShowReward()
         {
+            // get random items from the pool, 
+            // count = the number of slot in the panel
+            List<ItemDataSO> items = RollOffer(_itemSlots != null ? _itemSlots.Count : 0);
+
+            // put item in the slot
+            ShowOffer(items);
+
+            // if nothing is offered, return
             if (!HasAnyOffer()) return;
 
+            // finally, show the reward panel
             Show();
         }
 
@@ -103,6 +113,32 @@ namespace MagicSchool.UI
         #endregion
 
         #region Private
+        // Random an offer out of the pool, without repeating the same item.
+        private List<ItemDataSO> RollOffer(int count)
+        {
+            List<ItemDataSO> candidates = new List<ItemDataSO>();
+
+            // guard
+            foreach (ItemDataSO item in _itemPool)
+                if (item != null && item.ItemId != ItemIdEnum.None) candidates.Add(item);
+
+            // random a item, and put it in the offer list
+            List<ItemDataSO> offer = new List<ItemDataSO>();
+            for (int drawn = 0; drawn < count && candidates.Count > 0; drawn++)
+            {
+                // random the item
+                int pick = Random.Range(0, candidates.Count);
+
+                // put in offer
+                offer.Add(candidates[pick]);
+
+                // remove from the candidate, to prevent the repeat item from being random again.
+                candidates.RemoveAt(pick);
+            }
+
+            return offer;
+        }
+
         private bool HasAnyOffer()
         {
             foreach (ItemDataSO data in _items.Values)

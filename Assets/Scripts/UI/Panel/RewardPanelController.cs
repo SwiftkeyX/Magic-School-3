@@ -6,8 +6,6 @@ using MagicSchool.Items;
 
 namespace MagicSchool.UI
 {
-    // FIXLATER: I notice that most of our UI panel do the same thing. Could we apply DRY here?
-    /// The item offer shown after a stage is won: three items, of which the player keeps one.
     internal class RewardPanelController : PanelController, IRewardPanel
     {
         // .uss for empty reward slot 

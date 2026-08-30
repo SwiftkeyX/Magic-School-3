@@ -126,7 +126,7 @@ namespace MagicSchool.Combat.Heroes
 
         // === IHeroStats ===
         public int CurrentHP => Stat.CurrentHP;
-        public int MaxHP => Stat.HP;
+        public int MaxHP => Stat.MaxHP;
         public int CurrentMana => Stat.CurrentMana;
         public int MaxMana => Stat.MaxMana;
         public int AttackDamage => Stat.Atk;

@@ -6,7 +6,7 @@ namespace MagicSchool.Contracts
         float GetStat(StatEnum type);       
         float GetBaseStat(StatEnum type);
 
-        // FIXLATER: since we have GetStat() now, all this below is no need.   
+        // FLAGGING: since we have GetStat() now, all this below is no need. ???   
         int CurrentHP { get; }
         int MaxHP { get; }
         int CurrentMana { get; }

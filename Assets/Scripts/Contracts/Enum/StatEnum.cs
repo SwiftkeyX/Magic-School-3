@@ -12,7 +12,7 @@ namespace MagicSchool.Contracts
     {
         None = -1,
 
-        MAXHP = 0,
+        MaxHP = 0,
         ATK = 1,
         DF = 2,
         AP = 3,

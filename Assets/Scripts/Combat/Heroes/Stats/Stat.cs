@@ -28,7 +28,7 @@ namespace MagicSchool.Combat.Heroes.Stats
         // ========================================== modify stat getter ==========================================
         public float GetFinalStat(StatEnum type) => _statModifier.GetStatModifier(type, _base[type]);
 
-        public int HP => Mathf.RoundToInt(GetFinalStat(StatEnum.MAXHP));
+        public int MaxHP => Mathf.RoundToInt(GetFinalStat(StatEnum.MaxHP));
         public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.ATK));
         public int DF => Mathf.RoundToInt(GetFinalStat(StatEnum.DF));
         public int MG => Mathf.RoundToInt(GetFinalStat(StatEnum.AP));
@@ -51,12 +51,12 @@ namespace MagicSchool.Combat.Heroes.Stats
         public bool IsWounded => HasStatus(ModifierEnum.Wound);
 
         // ========================================== setter ==========================================
-        public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, HP);
+        public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, MaxHP);
         // FIXLATER: I kinda skeptical about this one, but maybe it was okay.
         // let see later.
         public void SeedPools()
         {
-            _currentHP = HP;
+            _currentHP = MaxHP;
             _currentMana = Mathf.Min(StartMana, MaxMana);
         }
         public void AddMana(int amount) => _currentMana += amount;
@@ -69,7 +69,7 @@ namespace MagicSchool.Combat.Heroes.Stats
 
         public Stat(HeroDataSO stat)
         {
-            _base[StatEnum.MAXHP] = stat.HP;
+            _base[StatEnum.MaxHP] = stat.HP;
             _base[StatEnum.ATK] = stat.Atk;
             _base[StatEnum.DF] = stat.DF;
             _base[StatEnum.AP] = stat.MG;

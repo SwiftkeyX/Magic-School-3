@@ -15,7 +15,7 @@ namespace MagicSchool.Modifiers
         private static readonly Dictionary<ModifierEnum, StatEnum> _lookup = new Dictionary<ModifierEnum, StatEnum>
         {
             // buff
-            { ModifierEnum.BonusHP        , StatEnum.MAXHP }          ,
+            { ModifierEnum.BonusHP        , StatEnum.MaxHP }          ,
             { ModifierEnum.ATK            , StatEnum.ATK }            ,
             { ModifierEnum.AS             , StatEnum.AS}              ,
             { ModifierEnum.DF             , StatEnum.DF }             ,

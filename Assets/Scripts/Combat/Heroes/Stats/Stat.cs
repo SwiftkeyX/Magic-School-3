@@ -13,21 +13,23 @@ namespace MagicSchool.Combat.Heroes.Stats
     /// </summary>
     internal class Stat
     {
-        // ========================================== dependency ==========================================
         private readonly ModifierResolver _statModifier = new ModifierResolver();
-
-        // ========================================== base stat ==========================================
         private readonly Dictionary<StatEnum, float> _base = new Dictionary<StatEnum, float>();
-
         private int _currentHP;
         private int _currentMana;
 
-        // ========================================== base stat getter ==========================================
+        // ========================================== stat getter ==========================================
         public float GetBaseStat(StatEnum type) => _base[type];
+        public bool IsManaCapped() => _currentMana >= MaxMana;
 
-        // ========================================== modify stat getter ==========================================
+        // ========================================== stat setter ==========================================
+        public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, MaxHP);
+        public void AddMana(int amount) => _currentMana += amount;
+        public void SpendMana() => _currentMana = 0;
+
+        // ========================================== modifier getter ==========================================
+        // === final stat after modifier calculation ===
         public float GetFinalStat(StatEnum type) => _statModifier.GetStatModifier(type, _base[type]);
-
         public int MaxHP => Mathf.RoundToInt(GetFinalStat(StatEnum.MaxHP));
         public int Atk => Mathf.RoundToInt(GetFinalStat(StatEnum.ATK));
         public int DF => Mathf.RoundToInt(GetFinalStat(StatEnum.DF));
@@ -37,50 +39,65 @@ namespace MagicSchool.Combat.Heroes.Stats
         public int Range => Mathf.RoundToInt(GetFinalStat(StatEnum.Range));
         public int StartMana => Mathf.RoundToInt(GetFinalStat(StatEnum.StartMana));
         public int MaxMana => Mathf.RoundToInt(GetFinalStat(StatEnum.MaxMana));
-        public float DamageReductionPercent => Mathf.RoundToInt(GetFinalStat(StatEnum.DamageReduction));   // FLAGGING: let make this a stat for now. if it doesn't, adjust later.
-
+        public float DamageReductionPercent => Mathf.RoundToInt(GetFinalStat(StatEnum.DamageReduction));
         public int CurrentHP => _currentHP;
         public int CurrentMana => _currentMana;
 
+        // === status modifier ===
         public bool HasStatus(ModifierEnum type) => _statModifier.GetStatusModifier(type);
-
-        public int ActiveModifierCount => _statModifier.ActiveCount;
-        public float ModifierRemaining(int index) => _statModifier.GetRemainingDuration(index);
-
         public bool IsStunned => HasStatus(ModifierEnum.Stun);
         public bool IsWounded => HasStatus(ModifierEnum.Wound);
 
-        // ========================================== setter ==========================================
-        public void SetCurrentHP(int value) => _currentHP = Mathf.Clamp(value, 0, MaxHP);
-        // FIXLATER: I kinda skeptical about this one, but maybe it was okay.
-        // let see later.
-        public void SeedPools()
+        // === other ===
+        public float ModifierRemaining(int index) => _statModifier.GetRemainingDuration(index);
+        public int ActiveModifierCount => _statModifier.ActiveCount;
+
+        // ===  modifier setter ===
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
-            _currentHP = MaxHP;
-            _currentMana = Mathf.Min(StartMana, MaxMana);
+            int previousMaxHP = MaxHP;
+            _statModifier.AddModifier(modifier, amplifier, casterStats, recipientStats);
+            FollowMaxHP(previousMaxHP);
         }
-        public void AddMana(int amount) => _currentMana += amount;
-        public bool IsManaCapped() => _currentMana >= MaxMana;
-        public void SpendMana() => _currentMana = 0;
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats) => _statModifier.AddModifier(modifier, amplifier, casterStats, recipientStats);
-        public bool RemoveModifier(ICustomModifier modifier) => _statModifier.RemoveModifier(modifier);
-        public void TickModifiers(float deltaTime) => _statModifier.Tick(deltaTime);
 
-
-        public Stat(HeroDataSO stat)
+        public bool RemoveModifier(ICustomModifier modifier)
         {
-            _base[StatEnum.MaxHP] = stat.HP;
-            _base[StatEnum.ATK] = stat.Atk;
-            _base[StatEnum.DF] = stat.DF;
-            _base[StatEnum.AP] = stat.MG;
-            _base[StatEnum.MR] = stat.MR;
-            _base[StatEnum.AS] = stat.AttackSpeed;
-            _base[StatEnum.Range] = stat.Range;
-            _base[StatEnum.StartMana] = stat.StartMana;
-            _base[StatEnum.MaxMana] = stat.MaxMana;
+            int previousMaxHP = MaxHP;
+            bool removed = _statModifier.RemoveModifier(modifier);
+            FollowMaxHP(previousMaxHP);
+            return removed;
+        }
+
+        public void TickModifiers(float deltaTime)
+        {
+            int previousMaxHP = MaxHP;
+            _statModifier.Tick(deltaTime);
+            FollowMaxHP(previousMaxHP);
+        }
+
+        // whenever the modifier increase MaxHP, the currentHP is increase permanently according to MaxHP
+        // e.g. hero have 500/1000 hp, he get modifier resulting in 1500/2000 hp
+        private void FollowMaxHP(int previousMaxHP) => SetCurrentHP(_currentHP + Mathf.Max(0, MaxHP - previousMaxHP));
+
+        public Stat(HeroDataSO so)
+        {
+            _base[StatEnum.MaxHP] = so.HP;
+            _base[StatEnum.ATK] = so.Atk;
+            _base[StatEnum.DF] = so.DF;
+            _base[StatEnum.AP] = so.MG;
+            _base[StatEnum.MR] = so.MR;
+            _base[StatEnum.AS] = so.AttackSpeed;
+            _base[StatEnum.Range] = so.Range;
+            _base[StatEnum.StartMana] = so.StartMana;
+            _base[StatEnum.MaxMana] = so.MaxMana;
             _base[StatEnum.DamageReduction] = 0f;
 
-            SeedPools();
+            // there's chance MaxHP is modified at the start, so set _currentHP to MaxHP accordingly 
+            int previousMaxHP = (int)_base[StatEnum.MaxHP];
+            FollowMaxHP(previousMaxHP);
+
+            // there's chance StartMana is modified at the start, so set _currentMana to StartMana.
+            _currentMana = Mathf.Min(StartMana, MaxMana);
         }
     }
 }

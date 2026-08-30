@@ -70,15 +70,8 @@ namespace MagicSchool.Combat.Heroes
         public IReadOnlyList<IEquipment> WornItems => _items.Worn;
         public int WornItemCount => _items.Count;
         public bool HasItemRoom => _items != null && _items.HasRoom;
-        public bool TryWear(IEquipment item) => WearingChanged(_items != null && _items.TryWear(item));
-        public bool TryTakeOff(IEquipment item) => WearingChanged(_items != null && _items.TryTakeOff(item));
-
-        // ASKING: Is this the best way? Is there alternative?
-        private bool WearingChanged(bool didChange)
-        {
-            if (didChange && !IsBattleOn) _stat.SeedPools();
-            return didChange;
-        }
+        public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
+        public bool TryTakeOff(IEquipment item) => _items != null && _items.TryTakeOff(item);
 
         // ======================================== skill ========================================
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
@@ -237,9 +230,6 @@ namespace MagicSchool.Combat.Heroes
 
             // the modifier from items is also reset, so re-grant it.
             _items.ReGrantAll();
-
-            // and only now are the final stats real: the pools were seeded off the base ones.
-            _stat.SeedPools();
 
             SetAliveVisual();
 

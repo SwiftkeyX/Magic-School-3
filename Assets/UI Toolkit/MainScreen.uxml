@@ -12,5 +12,6 @@
         <ui:VisualElement name="Bottom" style="flex-grow: 1; flex-direction: column; align-items: auto; justify-content: space-between; align-self: stretch; height: 15%; width: 100%;">
             <ui:VisualElement name="ShopPanel" style="flex-grow: 1; flex-direction: row; align-self: stretch; align-items: auto; height: 100%; width: 100%;"/>
         </ui:VisualElement>
+        <ui:VisualElement name="RewardPanel" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
     </ui:VisualElement>
 </ui:UXML>

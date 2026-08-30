@@ -1,0 +1,116 @@
+/* Reward panel - the stage-win item offer.
+   Palette matches MatchStatus.uss and Shop.uss so all three read as one UI. */
+
+/* Fills the RewardPanel overlay, which is absolutely positioned over the whole screen
+   rather than over one row - the card is a modal choice, so it centres against everything
+   including the shop and the bench, not just the board. */
+.reward-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 9, 16, 0.55);
+}
+
+/* ---------------- the card ---------------- */
+/* Same ground and border as the win banner, one step wider - it holds three columns
+   rather than a word. */
+.reward-card {
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px;
+    background-color: rgba(18, 16, 28, 0.95);
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.18);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.reward-card__title {
+    font-size: 18px;
+    letter-spacing: 3px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(240, 240, 248);
+    margin-bottom: 4px;
+}
+
+.reward-card__hint {
+    font-size: 12px;
+    -unity-text-align: middle-center;
+    color: rgba(232, 230, 240, 0.6);
+    margin-bottom: 14px;
+}
+
+/* ---------------- the three offers ---------------- */
+.reward-slots {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+}
+
+/* Fixed width rather than flex-grow, unlike .hero-slot in the shop: a shop slot divides a
+   row that is already as wide as the screen, while these three define the card's own width.
+   Letting them grow off their labels would make the card change size with whatever items
+   happened to be rolled. */
+.item-slot {
+    width: 150px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 12px 10px;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.16);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    transition-property: background-color, border-color;
+    transition-duration: 0.12s;
+}
+
+.item-slot:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.32);
+}
+
+.item-slot:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.item-slot__name {
+    color: rgb(232, 230, 240);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+/* The blue the winner banner and the HP bar already use, rather than a fourth accent. */
+.item-slot__description {
+    color: rgba(180, 205, 245, 0.85);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* An offer with no ItemDataSO behind it - the slot keeps its place in the row so a card of
+   two offers is still laid out like a card of three. */
+.item-slot--empty {
+    opacity: 0.35;
+}
+
+/* Hidden state. display:none rather than opacity, so a hidden card cannot sit invisibly
+   over the board eating pointer events meant for a hex. */
+.is-hidden {
+    display: none;
+}

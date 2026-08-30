@@ -28,6 +28,7 @@ namespace MagicSchool.Core
         private HeroSpawner _heroSpawner;
         private GameStateMachine _stateMachine;
         private IBannerPanel _status;
+        private IRewardPanel _reward;
         private int _stageIndex;
         private int _heroLimit;
         private bool _startCombatRequested;
@@ -57,6 +58,7 @@ namespace MagicSchool.Core
         internal HeroSeed Seed => _seed;
         internal HeroFormation Formation => _heroFormation;
         internal IBannerPanel Status => _status;
+        internal IRewardPanel Reward => _reward;
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
         public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
         public void SellHero(ICombatant hero)
@@ -79,9 +81,10 @@ namespace MagicSchool.Core
             _heroFormation = new HeroFormation(_heroMover);
             _heroLimit = _startingHeroLimit;
             _stateMachine = new GameStateMachine(this);
-            _status = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-                .OfType<IBannerPanel>()
-                .FirstOrDefault();
+
+            MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            _status = behaviours.OfType<IBannerPanel>().FirstOrDefault();
+            _reward = behaviours.OfType<IRewardPanel>().FirstOrDefault();
         }
 
         // start the game at preparation state

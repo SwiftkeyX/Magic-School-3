@@ -766,6 +766,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_fontSize
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280555290
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     - target: {fileID: 1622558564318197876, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
       propertyPath: m_Name
       value: IronPlate
@@ -817,7 +829,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7070245622803463687, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
 --- !u!114 &1027824831 stripped
 MonoBehaviour:
@@ -965,7 +980,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4f2690f453f4d9c8e597d1b3035bbcc, type: 2}
   - {fileID: 11400000, guid: 9c42e1bfd7e341b6a3b5a2dfa1de318d, type: 2}
   - {fileID: 11400000, guid: ff46cc4dd6cab07439700bfd8ee361a2, type: 2}
-  _showOnStart: 1
+  _showOnStart: 0
   _spawnPosition: {x: -5.6, y: -2, z: 0}
   _spawnSpacing: 0.6
 --- !u!114 &1120158067 stripped
@@ -987,6 +1002,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_fontSize
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280555290
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274460416188929158, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     - target: {fileID: 1622558564318197876, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
       propertyPath: m_Name
       value: IronPlate (1)
@@ -1038,7 +1065,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7070245622803463687, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1873d0ffaf3430a488c7956619e02e04, type: 3}
 --- !u!114 &1582661774 stripped
 MonoBehaviour:

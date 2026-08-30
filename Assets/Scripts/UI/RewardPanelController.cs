@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using MagicSchool.Contracts;
 using MagicSchool.Items;
 
 namespace MagicSchool.UI
@@ -8,7 +9,7 @@ namespace MagicSchool.UI
     // FIXLATER: I notice that most of our UI panel do the same thing. Could we apply DRY here?
     /// The item offer shown after a stage is won: three items, of which the player keeps one.
     [RequireComponent(typeof(UIDocument))]
-    internal class RewardPanelController : MonoBehaviour
+    internal class RewardPanelController : MonoBehaviour, IRewardPanel
     {
         // style for empty reward slot 
         private const string EmptySlotClass = "item-slot--empty";
@@ -88,9 +89,28 @@ namespace MagicSchool.UI
 
         public void Show() => SetShown(true);
         public void Hide() => SetShown(false);
+
+        // === IRewardPanel ===
+        public void ShowReward()
+        {
+            if (!HasAnyOffer()) return;
+
+            Show();
+        }
+
+        // the card is only up while a pick is still owed - Pick hides it
+        public bool IsChoosing => IsShown;
         #endregion
 
         #region Private
+        private bool HasAnyOffer()
+        {
+            foreach (ItemDataSO data in _items.Values)
+                if (data != null) return true;
+
+            return false;
+        }
+
         // Put one item's data into one slot. 
         private void AssignItemToSlot(VisualElement slot, ItemDataSO data)
         {

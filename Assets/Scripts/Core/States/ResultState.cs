@@ -16,6 +16,15 @@ namespace MagicSchool.Core.States
             _game.Board.SetBattleOn(false);
 
             _game.Status?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+
+            // if player win, show reward panel
+            if (_game.Winner == TeamEnum.Blue) _game.Reward?.ShowReward();
+        }
+
+        public override void OnExit()
+        {
+            // close reward panel
+            _game.Reward?.Hide();
         }
 
         // if continue is requested, go to preparation state.
@@ -23,6 +32,10 @@ namespace MagicSchool.Core.States
         // 2) if player lose, restart this stage
         protected override void CheckSwitchState()
         {
+            // if the reward isn't choose yet, return
+            if (_game.Reward != null && _game.Reward.IsChoosing) return;
+
+            // polling for player's continue request
             if (!_game.ConsumeContinueRequest()) return;
 
             bool playerWon = _game.Winner == TeamEnum.Blue;

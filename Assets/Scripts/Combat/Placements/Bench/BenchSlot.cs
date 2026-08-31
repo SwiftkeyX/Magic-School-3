@@ -5,16 +5,17 @@ namespace MagicSchool.Combat.Placements
 {
     public class BenchSlot : MonoBehaviour, IPlacement
     {
-        private bool _reserved = false;
+        private IPlaceable _occupant;
 
         // ==================== getter ===================
-        public bool Reserved => _reserved;
+        public IPlaceable Occupant => _occupant;
+        public bool Reserved => _occupant != null;
 
         // A hero on its way here holds the slot, same as one already standing on it - otherwise
         // a second hero could be sent to a slot that's about to be occupied.
         public void OnUnitReserved(IPlaceable hero)
         {
-            _reserved = true;
+            _occupant = hero;
         }
 
         // A hero placed on a bench slot has no hex - just remember who's here so
@@ -23,13 +24,13 @@ namespace MagicSchool.Combat.Placements
         {
             this.EnterPlacementExtension(hero);
 
-            _reserved = true;
+            _occupant = hero;
         }
 
         // The hero sitting here is moving to a different placement - free the slot.
         public void OnUnitUnplaced(IPlaceable hero)
         {
-            _reserved = false;
+            if (_occupant == hero) _occupant = null;
         }
     }
 }

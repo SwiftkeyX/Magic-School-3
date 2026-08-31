@@ -16,6 +16,7 @@ namespace MagicSchool.Player
         private readonly BattleBoard _board;
         private readonly ISellZone _sellZone;
         private readonly TeamEnum _team;
+        private readonly PlayerTeamSize _teamSize;
 
         private IDraggable _held;
         private Collider2D _heldHitbox;
@@ -23,15 +24,15 @@ namespace MagicSchool.Player
 
         // ============================= getter =============================
         public bool IsHolding => _held as Object != null;
-        private int HeroLimit => GameManager.Instance.HeroLimit;
         private bool IsPreparation => GameManager.Instance.Phase == GamePhaseEnum.Preparation;
 
-        public Dragging(Camera cam, BattleBoard board, ISellZone sellZone, TeamEnum team)
+        public Dragging(Camera cam, BattleBoard board, ISellZone sellZone, TeamEnum team, PlayerTeamSize teamSize)
         {
             _cam = cam;
             _board = board;
             _sellZone = sellZone;
             _team = team;
+            _teamSize = teamSize;
         }
 
         // =================================== life cycle ===================================
@@ -168,8 +169,11 @@ namespace MagicSchool.Player
             // released on a placement = put a hero there
             if (targetPlacement != null && ValidatePlacement(targetPlacement, hero))
             {
-                GameManager.Instance.MoveHero(hero, targetPlacement);
+                PlaceAndSwap(hero, targetPlacement);
                 Release();
+
+                // put hero in, refresh hero count
+                _teamSize.RefreshHeroCountPanel();
                 return;
             }
 
@@ -183,6 +187,24 @@ namespace MagicSchool.Player
 
             // released on nothing = put hero back to its original placement
             Cancel();
+        }
+
+        // place the hero on the placement
+        // if the target placement already have owner, swap the placement.
+        private void PlaceAndSwap(Hero holded, IPlacement targetPlacement)
+        {
+            // get var for swapping
+            Hero previousOwner = OccupantOf(targetPlacement);
+            IPlacement myPreviousPlacement = holded.CurrentPlacement;
+
+            // place the holded hero on the target placement
+            GameManager.Instance.MoveHero(holded, targetPlacement);
+
+            // nobody to swap with, return
+            if (previousOwner == null || previousOwner == holded || myPreviousPlacement == null) return;
+
+            // swap the previousOwner to myPreviousPlacement
+            GameManager.Instance.MoveHero(previousOwner, myPreviousPlacement);
         }
 
         // an item can be dropped on 1 thing so far:
@@ -232,9 +254,6 @@ namespace MagicSchool.Player
         {
             bool validate = false;
 
-            // the placement is already taken by someone, not allow the placement
-            if (IsPlacementTaken(placement, hero)) return false;
-
             // if placement is bench, allow the placement
             if (placement is BenchSlot)
             {
@@ -247,28 +266,37 @@ namespace MagicSchool.Player
             else if (placement is Hex targetHex)
             {
                 bool correctTeam = targetHex.GetTeam() == _team;
+                if (!correctTeam) return false;
 
-                // if the hero placing here is the new hero that arn't already on the board,
-                // check if new hero count is over the allow hero limit.
-                bool isThisHeroTracked = _board.HeroesOnBoard.Any(tracked => (Hero)tracked == hero);
-                int myHeroCount = _board.CountTeamOnBoard(_team);
-                if (!isThisHeroTracked) myHeroCount += 1;
-                bool isHeroesCountOverFlow = myHeroCount > HeroLimit;
+                // if hero is tracked, then this is just re-positioning, no new hero added
+                bool isDropHeroTracked = _board.HeroesOnBoard.Any(tracked => (Hero)tracked == hero);
+                if (isDropHeroTracked)
+                {
+                    return true;
+                }
 
-                validate = correctTeam && !isHeroesCountOverFlow;
+                // if hero is not tracked, but was swap, then the new hero is added, but no team size isn't increase
+                bool isSwap = _board.IsReservedByOther(targetHex, hero);
+                if (isSwap)
+                {
+                    return true;
+                }
+
+                // if none work, this hero is added new to the board, so increase team size too
+                return _teamSize.IsAddingOK();
             }
 
             return validate;
         }
 
-        // Is somebody already standing here? 
-        private bool IsPlacementTaken(IPlacement placement, Hero hero)
+        // Who is standing here? 
+        private Hero OccupantOf(IPlacement placement)
         {
-            if (placement is Hex hex) return _board.IsReservedByOther(hex, hero);
+            if (placement is Hex hex) return _board.WhoReservedThisHex(hex) as Hero;
 
-            if (placement is BenchSlot slot) return slot.Reserved;
+            if (placement is BenchSlot slot) return slot.Occupant as Hero;
 
-            return false;
+            return null;
         }
 
         // =================================== sell zone ===================================

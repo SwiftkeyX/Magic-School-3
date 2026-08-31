@@ -22,9 +22,7 @@ namespace MagicSchool.Combat.Placements
             steps[from] = 0;
             var currentPossibleHex = new List<Hex> { from };
 
-            // ASKING: Aren't we have a better way of finding the amount of hop? 
-            // This is simply O(n) when n = hex, in the end it will calculate every hex on the board.
-
+            // FLAGGING: This is basically O(n) in time complexity which is okay when n = 56 hex. 
             // calculate how many hop from me to all the possible hex.
             while (currentPossibleHex.Count > 0)
             {

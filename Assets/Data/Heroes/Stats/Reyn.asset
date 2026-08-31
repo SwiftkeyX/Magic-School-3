@@ -22,6 +22,6 @@ MonoBehaviour:
   _attackSpeed: 1
   _range: 4
   _startMana: 0
-  _maxMana: 50
+  _maxMana: 100
   _skillId: 14
   _isDummy: 0

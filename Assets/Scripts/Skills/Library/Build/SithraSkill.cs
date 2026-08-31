@@ -25,7 +25,7 @@ namespace MagicSchool.Skills
                 registry: registry,
                 source: ActionSourceEnum.Self,
                 action: TemplateActionEnum.HomingProjectile,
-                target: AimTargetEnum.Furthest,
+                target: AimTargetEnum.Current,
 
                 Damage(
                     recipient: EffectRecipientEnum.SameToAimTarget,
@@ -43,7 +43,7 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Split Venom",
                 activeSteps: new List<SkillStep> { Step(trigger: TriggerEnum.OnCast, groups: shootProjectile) },
-                description: $"Spits a homing bolt at the furthest enemy. It deals {DamageRatio}% AP and leaves the "
+                description: $"Spits a homing bolt at the current enemy. It deals {DamageRatio}% AP and leaves the "
                              + $"target wounded, so everything that tries to heal them for the next {WoundDuration} "
                              + "seconds does less. If target is already wounded, amplified damage by "
                              + $"+{WoundedAmplifier * 100}%");

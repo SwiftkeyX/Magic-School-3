@@ -39,6 +39,8 @@ namespace MagicSchool.UI
         // show/hide this panel. 
         public void SetShown(bool shown)
         {
+            if (Panel == null) return;
+
             Panel.EnableInClassList(HiddenClass, !shown);
         }
     }

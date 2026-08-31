@@ -17,6 +17,7 @@ namespace MagicSchool.Combat.Heroes
         [SerializeField] private int _attack = 40;
         [SerializeField] private int _defend = 20;
         [SerializeField] private int _magic = 100;
+        // FIXLATER: MR isn't need, get rid of if
         [SerializeField] private int _magicResist = 20;
         [SerializeField] private float _attackSpeed = 0.7f;
         [SerializeField] private int _range = 1;

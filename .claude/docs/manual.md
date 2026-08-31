@@ -56,8 +56,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
-    - make a reward panel a full overlay panel, and with the X button on the top right, press spacebar again to re-open it.
 - prevent the hero from setting in the same placement.
 - the projectile set size - it look all the same to me - could you make the size 1 a original default size - that would help a lot.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
@@ -83,6 +81,8 @@ Could we also make the text in HeroPanel scale as the screen size grow.
 
 The sprite order layer is so random, I want to have a code organize it later.
 e.g. order = {hero = 0, item = 1, skill = 2, etc...}
+
+when hero count was over the limit, the player can still start the battle which is not intented.
 
 # Not implement yet
 ## hero

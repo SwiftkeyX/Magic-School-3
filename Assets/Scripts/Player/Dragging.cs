@@ -171,9 +171,6 @@ namespace MagicSchool.Player
             {
                 PlaceAndSwap(hero, targetPlacement);
                 Release();
-
-                // put hero in, refresh hero count
-                _teamSize.RefreshHeroCountPanel();
                 return;
             }
 

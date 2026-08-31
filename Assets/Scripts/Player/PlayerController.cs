@@ -48,6 +48,7 @@ namespace MagicSchool.Player
             TryRestart();
             TryInspect();
             _dragging?.Tick();
+            _teamSize?.RefreshHeroCountPanel();
         }
 
         // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.

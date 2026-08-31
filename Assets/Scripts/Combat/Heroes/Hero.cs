@@ -19,7 +19,7 @@ namespace MagicSchool.Combat.Heroes
         private HeroDataSO _SOData;
         private HeroStateMachine _stateMachine;
         private BattleBoard _board;
-        private FindEnemy _findEnemy;
+        private FindTarget _findEnemy;
         private HeroVisuals _visuals;
         private HeroSkill _skill;
         private HeroItems _items;
@@ -171,7 +171,7 @@ namespace MagicSchool.Combat.Heroes
             _visuals = GetComponent<HeroVisuals>();
             _skill = new HeroSkill(this, skill);
             _items = new HeroItems(this);
-            _findEnemy = new FindEnemy(this, _board);
+            _findEnemy = new FindTarget(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
         }

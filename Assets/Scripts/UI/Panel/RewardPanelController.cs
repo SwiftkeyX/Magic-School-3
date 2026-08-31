@@ -35,12 +35,15 @@ namespace MagicSchool.UI
         // how many picks have been spawned, so the next spawned one lands beside the previous one
         private int _spawnedCount;
 
+        // is the reward choosed yet.
+        private bool _isChoosing;
+
         // ================= getter ======================
         public bool IsShown => Panel != null && !Panel.ClassListContains(HiddenClass);
 
 
         // ================================== interface ==================================
-        public bool IsChoosing => IsShown;
+        public bool IsChoosing => _isChoosing;
 
         public void ShowReward()
         {
@@ -55,6 +58,7 @@ namespace MagicSchool.UI
             if (!HasAnyOffer()) return;
 
             // finally, show the reward panel
+            _isChoosing = true;
             SetShown(true);
         }
 
@@ -66,6 +70,10 @@ namespace MagicSchool.UI
             // register click event to each slot
             foreach (VisualElement slot in _itemSlots)
                 slot.RegisterCallback<ClickEvent>(_ => Pick(slot));
+
+            // register close event to the close button
+            Button close = panel.Q<Button>("CloseButton");
+            if (close != null) close.clicked += () => SetShown(false);
 
             // At start of the game, panel should be hidden
             SetShown(false);
@@ -152,6 +160,7 @@ namespace MagicSchool.UI
             if (Item.Spawn(data, where) == null) return;
 
             _spawnedCount++;
+            _isChoosing = false;
             SetShown(false);
         }
     }

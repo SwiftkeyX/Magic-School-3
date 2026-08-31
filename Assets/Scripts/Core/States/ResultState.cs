@@ -33,25 +33,33 @@ namespace MagicSchool.Core.States
         // 2) if player lose, restart this stage
         protected override void CheckSwitchState()
         {
-            // if the reward isn't choose yet, return
-            if (_game.Reward != null && _game.Reward.IsChoosing) return;
-
             // polling for player's continue request
             if (!_game.ConsumeContinueRequest()) return;
 
             bool playerWon = _game.Winner == TeamEnum.Blue;
             bool runCleared = _game.IsRunCleared;
 
-            // if player won, go to next stage.
-            // if plyaer lose, repeat this stage.
+            // if player won, give reward, and go to next stage.
+            // if player lose, repeat this stage.
             if (playerWon)
             {
+                // give player a reward 
+                // if player still choosing the reward, let player finish choosing first, before continue
+                if (_game.Reward != null && _game.Reward.IsChoosing)
+                {
+                    _game.Reward.SetShown(true);
+                    return;
+                }
+
                 _game.SetStageIndex(runCleared ? 0 : _game.StageIndex + 1);
 
                 // FLAGGING: temporarily, this is to expand hero limit easily for demo version
                 // clearing the run loops back to stage 1, so the team it is fought with
                 // loops back too - otherwise the replay starts oversized against stage 1.
+                
+                // when player clear the game, reset team size
                 if (runCleared) _game.ResetHeroLimit();
+                // when player not clear the game, but pass the stage, increase team size 
                 else _game.GrowHeroLimit();
             }
 

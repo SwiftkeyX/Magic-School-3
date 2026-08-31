@@ -56,12 +56,12 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- it kinda annoyed me that I can't drag the item around when it's not in preparation state. Could we change it to, allow dragging all the time, but not allow TryWear() in other state.
 - I want a logic for swapping placement, when you drag your hero onto another hero, swap their placement.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 I want to be able to tune the width/height of each UI directly in play mode or alternative way. 
 Becasue now if I want to edit UI, I have to exit play mode first, and guess the height on my own.
-Also the height/width of the UI panel edit in the VisualTreeAsset 
+Also the height/width of the UI panel edit in the VisualTreeAsset aren't actually the same to the one in the game.
+Is there a way to do this match them into a game?
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.

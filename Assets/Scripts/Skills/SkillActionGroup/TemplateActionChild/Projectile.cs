@@ -16,7 +16,7 @@ namespace MagicSchool.Skills
 
         // =================================== Tune able ======================================
         [SerializeField] protected float _speed = 8f;
-        protected float _size = 1f;                  // projectile size
+        protected float _size = 1f;                  // projectile size; 1 leaves the prefab as drawn
         protected int _reachRange = int.MaxValue;    // how far a projectile can reach, in hexes, default to global range
         protected float _spread = 1f;                // how wide the AOE (next SkillStep) will be spread
 
@@ -192,8 +192,16 @@ namespace MagicSchool.Skills
 
         // ======================================== private ========================================
         private const float Default = 1f;
+
+        // Size 1 means "however this projectile was drawn", so it touches nothing. It used to be
+        // written onto both axes like any other size, which flattened every prefab to the same
+        // 1x1 square - the bolts are drawn 0.1 wide by 0.3 tall - and that is why one projectile
+        // looked like the next whatever it was authored as. Any other size is still set outright,
+        // so a projectile that asks for one comes out square.
         private void SetProjectileSize(float size = Default)
         {
+            if (size == Default) return;
+
             this.transform.localScale = new Vector3(size, size, this.transform.localScale.z);
         }
 

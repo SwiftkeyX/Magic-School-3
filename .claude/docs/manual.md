@@ -56,7 +56,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- I want a logic for swapping placement, when you drag your hero onto another hero, swap their placement.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
 
 I want to be able to tune the width/height of each UI directly in play mode or alternative way. 

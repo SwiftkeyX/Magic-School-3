@@ -9,6 +9,7 @@ using MagicSchool.Items;
 namespace MagicSchool.Player
 {
     // Picking things up with the pointer, dragging around, and putting them down again.
+    // e.g. draggable are items, and hero
     internal class Dragging
     {
         private readonly Camera _cam;
@@ -21,8 +22,9 @@ namespace MagicSchool.Player
         private bool _sellHintShown;
 
         // ============================= getter =============================
-        private int HeroLimit => GameManager.Instance.HeroLimit;
         public bool IsHolding => _held as Object != null;
+        private int HeroLimit => GameManager.Instance.HeroLimit;
+        private bool IsPreparation => GameManager.Instance.Phase == GamePhaseEnum.Preparation;
 
         public Dragging(Camera cam, BattleBoard board, ISellZone sellZone, TeamEnum team)
         {
@@ -35,12 +37,8 @@ namespace MagicSchool.Player
         // =================================== life cycle ===================================
         public void Tick()
         {
-            // dragging is a preparation-phase thing; a fight starting mid-drag puts it back down
-            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation)
-            {
-                if (IsHolding) Cancel();
-                return;
-            }
+            // guard - if not in preparation state, not allow to hold the hero.
+            if (!IsPreparation && _held is Hero) Cancel();
 
             Vector3 worldPos = PlayerInputSystem.GetMouseWorldPosition(_cam);
 
@@ -73,13 +71,18 @@ namespace MagicSchool.Player
         {
             if (!PlayerInputSystem.DragPressedThisFrame) return;
 
-            IDraggable hero = TryPickHero(worldPos);
-            if (hero != null)
+            // only allow to drag hero in preparation state
+            if (IsPreparation)
             {
-                Grab(hero);
-                return;
+                IDraggable hero = TryPickHero(worldPos);
+                if (hero != null)
+                {
+                    Grab(hero);
+                    return;
+                }
             }
 
+            // always allow to drag item
             IDraggable item = TryPickItem(worldPos);
             if (item != null)
             {
@@ -108,6 +111,9 @@ namespace MagicSchool.Player
             Hero wearer = item.GetComponentInParent<Hero>();
             if (wearer != null)
             {
+                // if not in preparation state, not allow to strip item off hero.
+                if (!IsPreparation) return null;
+
                 wearer.TryTakeOff(item);
             }
 
@@ -189,7 +195,9 @@ namespace MagicSchool.Player
 
             // wear the item to your hero
             if (hero == null || hero.Team != _team) return;
-            hero.TryWear(item);
+
+            // only in preparation state, allow to wear item to the hero
+            if (IsPreparation) hero.TryWear(item);
         }
 
         // put back whatever is held, as far as it can be put back

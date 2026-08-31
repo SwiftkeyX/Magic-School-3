@@ -21,6 +21,15 @@ namespace MagicSchool.Combat.Heroes
         private List<(ICombatant target, float dist)> _enemyDistanceCache;
         private int _enemyDistanceCacheFrame = -1;
 
+        private Dictionary<Hex, int> _stepsCache;           // steps from me, routing around whoever is in the way
+        private Dictionary<Hex, int> _openStepsCache;       // steps from me as if the board were empty
+        private int _stepsCacheFrame = -1;
+
+        // Ranks an enemy nothing can currently reach behind every enemy something can, while
+        // still ordering those by the walk they would take if the way cleared. Bigger than any
+        // step count a board this size can produce.
+        private const int UnreachablePenalty = 1000;
+
         private ICombatant _lastNearest;
         private ICombatant _currentTarget;
         internal ICombatant CurrentTarget => _currentTarget;
@@ -47,15 +56,19 @@ namespace MagicSchool.Combat.Heroes
             return fresh;
         }
 
-        // Picks nearest enemy
+        // Picks the enemy that costs the fewest steps to walk to, which is not the one the
+        // shortest straight line points at: a same-column hop measures 1.0 and a diagonal one
+        // 1.118, so a line ranks two enemies that are the same number of hexes away - and it
+        // knows nothing about the ally standing in the only way through. Both together used to
+        // send a hero the long way round to an enemy four steps off, past one a step away.
         public ICombatant FindNearestEnemy()
         {
-            var enemyDistances = GetEnemyDistance();
+            var enemySteps = GetEnemySteps();
 
-            if (enemyDistances.Count == 0) return null;
+            if (enemySteps.Count == 0) return null;
 
-            float nearestDist = enemyDistances.Min(e => e.dist);
-            var tiedNearest = enemyDistances.Where(e => e.dist <= nearestDist + TieEpsilon).Select(e => e.target).ToList();
+            int nearestSteps = enemySteps.Min(e => e.steps);
+            var tiedNearest = enemySteps.Where(e => e.steps == nearestSteps).Select(e => e.target).ToList();
 
             // Get last answer, or the engaged target if there isn't one yet
             ICombatant preferred = _lastNearest ?? _currentTarget;
@@ -336,6 +349,48 @@ namespace MagicSchool.Combat.Heroes
             _enemyBFSCacheFrame = Time.frameCount;
 
             return _enemyBFSCache;
+        }
+
+        // What each enemy costs to walk to. A hero walks to a hex beside its target - that is
+        // what HexPathfinder routes to, whatever its range - so the cost is the cheapest hex
+        // beside the enemy that this hero can actually get to.
+        private List<(ICombatant target, int steps)> GetEnemySteps()
+        {
+            RefreshSteps();
+
+            return GetEnemiesBFS().Select(target => (target, steps: StepsToReach(target))).ToList();
+        }
+
+        private int StepsToReach(ICombatant enemy)
+        {
+            Hex enemyHex = enemy.CurrentHex();
+            if (enemyHex == null) return UnreachablePenalty;
+
+            int walked = int.MaxValue;
+            int ifTheWayCleared = int.MaxValue;
+
+            foreach (Hex beside in enemyHex.GetNeighbors())
+            {
+                if (_stepsCache.TryGetValue(beside, out int steps)) walked = Mathf.Min(walked, steps);
+                if (_openStepsCache.TryGetValue(beside, out int open)) ifTheWayCleared = Mathf.Min(ifTheWayCleared, open);
+            }
+
+            if (walked != int.MaxValue) return walked;
+
+            // boxed in by whoever is standing around it, for now
+            return UnreachablePenalty + (ifTheWayCleared == int.MaxValue ? 0 : ifTheWayCleared);
+        }
+
+        // Both maps are wanted together and cost the same walk of the board, so they are built
+        // and cached in one go, like the other per-frame scans here.
+        private void RefreshSteps()
+        {
+            bool isCache = (_stepsCacheFrame == Time.frameCount);
+            if (isCache) return;
+
+            _stepsCache = HexFinder.StepsFrom(_me.CurrentHex, _me.IsHexReservedByOther);
+            _openStepsCache = HexFinder.StepsFrom(_me.CurrentHex, null);
+            _stepsCacheFrame = Time.frameCount;
         }
 
         // Scan all enemy distance from myself.

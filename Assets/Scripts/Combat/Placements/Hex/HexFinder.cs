@@ -13,6 +13,47 @@ namespace MagicSchool.Combat.Placements
         public static List<Hex> FindFreeHexesWithin(Hex from, int range, Func<Hex, bool> isHexBlocked)
             => FindHexesWithin(from, range).Where(hex => !isHexBlocked(hex)).ToList();
 
+        // create dictionary that tell how many hop from me to the possible hex. 
+        public static Dictionary<Hex, int> StepsFrom(Hex from, Func<Hex, bool> isHexBlocked)
+        {
+            var steps = new Dictionary<Hex, int>();
+            if (from == null) return steps;
+
+            steps[from] = 0;
+            var currentPossibleHex = new List<Hex> { from };
+
+            // ASKING: Aren't we have a better way of finding the amount of hop? 
+            // This is simply O(n) when n = hex, in the end it will calculate every hex on the board.
+
+            // calculate how many hop from me to all the possible hex.
+            while (currentPossibleHex.Count > 0)
+            {
+                var nextPossibleHex = new List<Hex>();
+                foreach (Hex hex in currentPossibleHex)
+                {
+                    foreach (Hex neighbor in hex.GetNeighbors())
+                    {
+                        // if this neighbors already added, continue
+                        if (steps.ContainsKey(neighbor)) continue;
+
+                        // if this neighbors is blocked, continue
+                        if (isHexBlocked != null && isHexBlocked(neighbor)) continue;
+
+                        // this neighbor can be traveled to, by [x] amount of hop 
+                        int hop = steps[hex] + 1;
+                        steps[neighbor] = hop;
+
+                        // this neighbors can be walked, so put in the possible hex.
+                        nextPossibleHex.Add(neighbor);
+                    }
+                }
+
+                currentPossibleHex = nextPossibleHex;
+            }
+
+            return steps;
+        }
+
         // find all possible hex with in the specify radius
         public static List<Hex> FindHexesWithin(Hex centre, int radius)
         {

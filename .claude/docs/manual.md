@@ -56,9 +56,12 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 For build version:
-- prevent the hero from setting in the same placement.
-- the projectile set size - it look all the same to me - could you make the size 1 a original default size - that would help a lot.
+- it kinda annoyed me that I can't drag the item around when it's not in preparation state. Could we change it to, allow dragging all the time, but not allow TryWear() in other state.
+- I want a logic for swapping placement, when you drag your hero onto another hero, swap their placement.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
+I want to be able to tune the width/height of each UI directly in play mode or alternative way. 
+Becasue now if I want to edit UI, I have to exit play mode first, and guess the height on my own.
+Also the height/width of the UI panel edit in the VisualTreeAsset 
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.
@@ -73,9 +76,6 @@ Solace's 3rd cast
 
 === other ===
 I don't sure. BUT I think the attack dash animation got override by walk animation. in Vharn scene. 
-
-I want to be able to tune the width/height of each UI directly in play mode or alternative. 
-Becasue now if I want to edit UI, I have to exit play mode first, and guess the height on my own.
 
 Could we also make the text in HeroPanel scale as the screen size grow.
 

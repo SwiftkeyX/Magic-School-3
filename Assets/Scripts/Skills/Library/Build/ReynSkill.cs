@@ -28,7 +28,7 @@ namespace MagicSchool.Skills
             SkillActionGroup shoot = ActionGroup(
                 registry: registry,
                 source: ActionSourceEnum.Self,
-                action: TemplateActionEnum.FireTimingRunnerHomingProjectile,
+                action: TemplateActionEnum.FireTimingRunnerFirstHitProjectile,
                 target: AimTargetEnum.Furthest,
                 tuning: TuneFireTimingRunnerProjectile(ShotCount, FireTimingModeEnum.Sequence, IntervalBetweenShot, tune,
                                                        castTime: TotalCastTime),

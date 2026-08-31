@@ -123,3 +123,9 @@ Modifer part are some of the most confusing, since the name don't explain itself
 # Note
 - _lookup missing AP and Omnivamp — an item granting either would equip cleanly and do nothing
 
+1. Pin the Game view to a fixed resolution and set the UI Builder canvas to the same numbers (the canvas inspector has a Match Game View option). Percentages then resolve identically in both. This alone removes the guessing.
+2. Decide whether the UI should scale, and I'd say yes: switch to Scale With Screen Size with the 1200×800 that's already in the asset, Match 0.5. That gives you one true authoring resolution, makes the Builder canvas meaningful, and stops the UI shrinking to nothing on a big monitor. It will change how things look at your current window size, so it's your call.
+3. Tune while it runs — both already work here: UXML/USS hot reload (save a .uss with the game playing and the panel re-applies; I hit this repeatedly this session), and the UI Toolkit Debugger (Window → UI Toolkit → Debugger) attached to the live panel, which shows the resolved styles and box model and lets you poke inline values to find a number before writing it into the USS.
+
+❯ okay, i will pin the game view, match the screen size of UI to the game.
+  Then, I will try edit it during play mode.

@@ -16,6 +16,7 @@ namespace MagicSchool.Player
         [SerializeField] private BattleBoard _board;
         private IInspectorPanel _inspector;
         private IHeroCountPanel _heroCountPanel;
+        private IRewardPanel _reward;
         private ISellZone _sellZone;
         private Dragging _dragging;
         private TeamEnum _team;
@@ -36,6 +37,7 @@ namespace MagicSchool.Player
             var behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             _inspector = behaviours.OfType<IInspectorPanel>().FirstOrDefault();
             _heroCountPanel = behaviours.OfType<IHeroCountPanel>().FirstOrDefault();
+            _reward = behaviours.OfType<IRewardPanel>().FirstOrDefault();
             _sellZone = behaviours.OfType<ISellZone>().FirstOrDefault();
             _dragging = new Dragging(_cam, _board, _sellZone, _team);
         }
@@ -58,13 +60,30 @@ namespace MagicSchool.Player
         {
             if (!PlayerInputSystem.SpacePressedThisFrame) return;
 
+            // if the reward isn't choose yet, choose reward first.
+            if (TryReopenReward()) return;
+
+            // if in result state, continue the game, by going to preparation state
             if (GameManager.Instance.Phase == GamePhaseEnum.Result)
             {
                 GameManager.Instance.ContinueFromResult();
                 return;
             }
 
-            GameManager.Instance.StartCombat();
+            // if in preparation state, start the combat
+            else if (GameManager.Instance.Phase == GamePhaseEnum.Preparation)
+            {
+                GameManager.Instance.StartCombat();
+            }
+        }
+
+        // if the reward available and isn't choose yet, show the reward panel.
+        private bool TryReopenReward()
+        {
+            if (_reward == null || !_reward.IsChoosing) return false;
+
+            _reward.SetShown(true);
+            return true;
         }
 
         // quick restart

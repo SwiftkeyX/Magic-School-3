@@ -475,9 +475,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a1bc08e4eaade5847bc4d0739fe6222e, type: 2}
   - {fileID: 11400000, guid: 380e2c38de65be64c804d958858fd2a9, type: 2}
   - {fileID: 11400000, guid: 27b17649b72c6184a8f83274789aedc1, type: 2}
+  - {fileID: 11400000, guid: 9515de3f25526504fab19967eb317ce6, type: 2}
+  - {fileID: 11400000, guid: 3e3c748c11858a4418ae61fb7362cf42, type: 2}
   _templateActions: {fileID: 11400000, guid: 31d48e144b9be4e40b79fd94b16f49ed, type: 2}
   _isPlayerSeed: 0
-  _startingHeroLimit: 3
+  _startingHeroLimit: 5
 --- !u!4 &344829187
 Transform:
   m_ObjectHideFlags: 0
@@ -986,7 +988,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c15d89114cbb478daa8343a04905d3c7, type: 2}
   - {fileID: 11400000, guid: 3ad0e98a5bdd4b55b163ebc32e4455e0, type: 2}
   - {fileID: 11400000, guid: d4f2690f453f4d9c8e597d1b3035bbcc, type: 2}
-  _showOnStart: 0
+  _showOnStart: 1
   _spawnPosition: {x: -5.6, y: -2, z: 0}
   _spawnSpacing: 0.6
 --- !u!114 &1091040817

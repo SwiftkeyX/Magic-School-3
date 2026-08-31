@@ -57,8 +57,7 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 === Interrupt ===
 For build version:
 - After wining each stage, give player a item panel => show 3 item, player choose only 1 of them.
-    - make the panel that show 3 item, the panel should show when winning each stage. 
-    - the offered item should be random 
+    - make a reward panel a full overlay panel, and with the X button on the top right, press spacebar again to re-open it.
 - prevent the hero from setting in the same placement.
 - the projectile set size - it look all the same to me - could you make the size 1 a original default size - that would help a lot.
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 

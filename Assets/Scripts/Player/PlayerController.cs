@@ -20,11 +20,8 @@ namespace MagicSchool.Player
         private ISellZone _sellZone;
         private Dragging _dragging;
         private TeamEnum _team;
-        private int HeroLimit => GameManager.Instance.HeroLimit;
+        private PlayerTeamSize _teamSize;
 
-        private const int CountHidden = -1;
-        private int _shownHeroCount = CountHidden;
-        private int _shownHeroLimit = CountHidden;
 
         void Awake()
         {
@@ -39,7 +36,8 @@ namespace MagicSchool.Player
             _heroCountPanel = behaviours.OfType<IHeroCountPanel>().FirstOrDefault();
             _reward = behaviours.OfType<IRewardPanel>().FirstOrDefault();
             _sellZone = behaviours.OfType<ISellZone>().FirstOrDefault();
-            _dragging = new Dragging(_cam, _board, _sellZone, _team);
+            _teamSize = new PlayerTeamSize(_heroCountPanel, _board);
+            _dragging = new Dragging(_cam, _board, _sellZone, _team, _teamSize);
         }
 
         void Update()
@@ -50,7 +48,6 @@ namespace MagicSchool.Player
             TryRestart();
             TryInspect();
             _dragging?.Tick();
-            RefreshHeroCount();
         }
 
         // BLOCKED on: a "Start Battle" UI button. => Now use manual space-bar to trigger the game for easy testing.
@@ -105,29 +102,6 @@ namespace MagicSchool.Player
 
             // inspect the target
             _inspector?.Inspect(target);
-        }
-
-        // FLAGGING: hero count section could move to its own file
-        // =================================== hero count ==================================
-        private void RefreshHeroCount()
-        {
-            if (_heroCountPanel == null) return;
-
-            if (GameManager.Instance.Phase != GamePhaseEnum.Preparation)
-            {
-                if (_shownHeroCount == CountHidden) return;
-
-                _heroCountPanel.SetShown(false);
-                _shownHeroCount = CountHidden;
-                return;
-            }
-
-            int count = _board.CountTeamOnBoard(_team);
-            if (count == _shownHeroCount && HeroLimit == _shownHeroLimit) return;
-
-            _heroCountPanel.ShowHeroCount(count, HeroLimit);
-            _shownHeroCount = count;
-            _shownHeroLimit = HeroLimit;
         }
     }
 }

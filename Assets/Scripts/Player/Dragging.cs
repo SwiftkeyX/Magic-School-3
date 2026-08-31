@@ -224,6 +224,9 @@ namespace MagicSchool.Player
         {
             bool validate = false;
 
+            // the placement is already taken by someone, not allow the placement
+            if (IsPlacementTaken(placement, hero)) return false;
+
             // if placement is bench, allow the placement
             if (placement is BenchSlot)
             {
@@ -248,6 +251,16 @@ namespace MagicSchool.Player
             }
 
             return validate;
+        }
+
+        // Is somebody already standing here? 
+        private bool IsPlacementTaken(IPlacement placement, Hero hero)
+        {
+            if (placement is Hex hex) return _board.IsReservedByOther(hex, hero);
+
+            if (placement is BenchSlot slot) return slot.Reserved;
+
+            return false;
         }
 
         // =================================== sell zone ===================================

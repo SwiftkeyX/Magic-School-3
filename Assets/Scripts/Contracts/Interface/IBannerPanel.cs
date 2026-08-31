@@ -1,8 +1,7 @@
 namespace MagicSchool.Contracts
 {
-    public interface IBannerPanel
+    public interface IBannerPanel : IPanel
     {
         void ShowResult(TeamEnum? winner, int stage, int stageCount, bool runCleared);
-        void SetShown(bool shown);
     }
 }

@@ -98,7 +98,7 @@ namespace MagicSchool.Player
             {
                 if (_shownHeroCount == CountHidden) return;
 
-                _heroCountPanel.HideHeroCount();
+                _heroCountPanel.SetShown(false);
                 _shownHeroCount = CountHidden;
                 return;
             }

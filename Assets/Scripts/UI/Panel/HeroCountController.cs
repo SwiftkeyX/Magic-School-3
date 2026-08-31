@@ -24,8 +24,6 @@ namespace MagicSchool.UI
             SetShown(true);
         }
 
-        public void HideHeroCount() => SetShown(false);
-
         // =================================== Life cycle ===================================
         protected override void OnMounted(VisualElement panel)
         {

@@ -28,7 +28,7 @@ namespace MagicSchool.Skills
             return new SkillDefinition(
                 skillName: "Guardian's Roar",
                 activeSteps: new List<SkillStep> { Brace(registry), Slam(registry) },
-                description: $"Braces for {BraceDuration} seconds, healing steadily and taking "
+                description: $"Braces for {BraceDuration} seconds, healing steadily for {HealAmount} and taking "
                              + $"{DamageReductionPercent}% less damage. The moment the brace ends he slams the ground "
                              + $"for {SlamDamage}% AP to every enemy around him.");
         }

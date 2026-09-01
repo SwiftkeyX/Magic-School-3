@@ -30,6 +30,7 @@ namespace MagicSchool.UI
 
         // ================== etc =======================
         private bool _isDragging = false;
+        private Vector2 _ghostSize;
 
         // ================= setter & getter ===================
         // ...
@@ -40,7 +41,6 @@ namespace MagicSchool.UI
             // get the reference for later use
             _shopPanel = panel.Q<VisualElement>("ShopPanel");
 
-            // FIXLATER: ghost should also use the hero slot as a sprite
             InitializeGhost();
 
             // Make hero slot draggable
@@ -116,6 +116,7 @@ namespace MagicSchool.UI
                 // add ghost to main UI, this make ghost visible
                 // ghost = the element that visually got drag together with your mouse e.g. hero sprite.
                 // technically, ghost is element that copy your mouse pointer's position.
+                ShowGhostAs(heroSlot);
                 MainPanel.Add(_ghost);
 
                 // move ghost to the point you just click
@@ -157,18 +158,30 @@ namespace MagicSchool.UI
         }
 
         // ============================== Ghost ====================================
-        // dragged-hero preview that follows the pointer - cloned from Ghost.uxml/.ghost in
-        // Shop.uss instead of being hand-built in C#, same pattern as the shop panel itself.
+        // ghost = the same sprite that hero slot use in the shop.
+        // ghost spawn when player drag one of the hero slot.
         private void InitializeGhost()
         {
             _ghost = PanelMounter.CloneTemplateRoot(_ghostAsset);
         }
 
+        // show ghost as the same to the dragging hero slot.
+        private void ShowGhostAs(VisualElement heroSlot)
+        {
+            Label slotLabel = heroSlot.Q<Label>();
+            Label ghostLabel = _ghost.Q<Label>();
+            if (slotLabel != null && ghostLabel != null) ghostLabel.text = slotLabel.text;
+
+            _ghostSize = new Vector2(heroSlot.resolvedStyle.width, heroSlot.resolvedStyle.height);
+            _ghost.style.width = _ghostSize.x;
+            _ghost.style.height = _ghostSize.y;
+        }
+
         // ghost copying the mouse position using "screen panel method"
         private void MoveGhostTo(Vector2 panelPosition)
         {
-            _ghost.style.left = panelPosition.x - _ghost.resolvedStyle.width / 2f;
-            _ghost.style.top = panelPosition.y - _ghost.resolvedStyle.height / 2f;
+            _ghost.style.left = panelPosition.x - _ghostSize.x / 2f;
+            _ghost.style.top = panelPosition.y - _ghostSize.y / 2f;
         }
 
         // =========================== Buy / cancel on release ===============================

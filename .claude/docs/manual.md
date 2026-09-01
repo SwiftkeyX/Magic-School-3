@@ -57,11 +57,7 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 === Interrupt ===
 For build version:
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
-
-I want to be able to tune the width/height of each UI directly in play mode or alternative way. 
-Becasue now if I want to edit UI, I have to exit play mode first, and go into VisualTreeAsset, to guess the height on my own.
-Also the height/width of the UI panel edit in the VisualTreeAsset aren't actually the same to the one in the game.
-What is my problem called? How do other devs handle this?
+- the ghost from the shop, its sprite should use the same sprite to the hero slot it was drag from.
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.

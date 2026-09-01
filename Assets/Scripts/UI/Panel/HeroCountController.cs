@@ -3,7 +3,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.UI
 {
-    /// The "2 / 3 ON BOARD" chip in the corner, shown while the player is placing heroes.
+    /// The "2 / 3 ON BOARD" chip, shown in its own box in the bottom row while the player is placing heroes.
     internal class HeroCountController : PanelController, IHeroCountPanel
     {
         // at the hero limit, warn by giving it red color

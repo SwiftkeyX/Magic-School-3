@@ -1,9 +1,9 @@
-/* Match status - the hint line and the win banner, layered over the board.
+/* Match status - the hint line, the win banner and the fielded-hero counter.
    Palette matches Shop.uss and HeroPanel.uss so the three read as one UI. */
 
 /* Fills the StatusPanel overlay, which is itself absolutely positioned over the whole Top
    row - so percentages here resolve against the play area rather than against a box that
-   collapsed to its own content. */
+   collapsed to its own content. The counter is NOT one of these; see .hero-count-layer. */
 .status-layer {
     position: absolute;
     left: 0;
@@ -74,16 +74,18 @@
     margin-top: 4px;
 }
 
-
 /* ---------------- the fielded-hero counter ---------------- */
-/* Absolute for the same reason the hint is: the banner is the thing that gets centred, and
-   neither of these two may push it off centre. Bottom-LEFT rather than top-centre - the board
-   reaches the top edge of this layer, and a chip up there covers two placeable hexes. The
-   bottom-left corner is the one part of the play area no hex reaches. */
+/* Not a .status-layer, unlike the two above: the counter is no longer laid over the board, it
+   owns #HeroCountPanel, its own box in the Bottom row. So it fills that box in normal flow
+   instead of pinning itself, which is what leaves the slot's own padding free to space it. */
+.hero-count-layer {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+/* In flow, so where it sits is the layer's alignment and the slot's padding - not insets. */
 .hero-count {
-    position: absolute;
-    left: 12px;
-    bottom: 8px;
     align-items: center;
     background-color: rgba(18, 16, 28, 0.7);
     padding: 4px 14px;
@@ -96,10 +98,11 @@
 }
 
 .hero-count__value {
-    font-size: 20px;
+    font-size: 50px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     color: rgb(232, 230, 240);
+    display: flex;
 }
 
 .hero-count__label {

@@ -479,7 +479,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e3c748c11858a4418ae61fb7362cf42, type: 2}
   _templateActions: {fileID: 11400000, guid: 31d48e144b9be4e40b79fd94b16f49ed, type: 2}
   _isPlayerSeed: 0
-  _startingHeroLimit: 5
+  _startingHeroLimit: 3
 --- !u!4 &344829187
 Transform:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@
 
 .hero-panel__name {
     color: rgb(232, 230, 240);
-    font-size: 20px;
+    font-size: 40px;
     -unity-font-style: bold;
     white-space: normal;
     margin-bottom: 2px;
@@ -79,7 +79,7 @@
 
 .bar__label {
     color: rgb(240, 240, 248);
-    font-size: 11px;
+    font-size: 15px; 
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
@@ -103,12 +103,12 @@
 
 .stat__key {
     color: rgba(232, 230, 240, 0.55);
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .stat__value {
     color: rgb(232, 230, 240);
-    font-size: 12px;
+    font-size: 15px;
     -unity-font-style: bold;
 }
 
@@ -137,6 +137,6 @@
 
 .section__body {
     color: rgba(232, 230, 240, 0.8);
-    font-size: 12px;
+    font-size: 14px;
     white-space: normal;
 }

@@ -10,8 +10,8 @@
             <ui:VisualElement name="InnerTop" style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 100%; height: 85%;">
                 <ui:VisualElement name="TraitPanel" style="flex-grow: 1; min-width: 33%; min-height: 100%;"/>
                 <ui:VisualElement name="BoardArea" picking-mode="Ignore" style="flex-grow: 1; min-width: 33%; min-height: 100%;"/>
-                <ui:VisualElement name="HeroPanel" style="flex-grow: 1; top: auto; bottom: auto; flex-direction: column; flex-wrap: nowrap; min-width: 33%; min-height: 100%; max-height: none;">
-                    <ui:Instance template="HeroPanel" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
+                <ui:VisualElement name="HeroPanel" style="flex-grow: 1; top: auto; bottom: auto; flex-direction: column; flex-wrap: nowrap; min-width: 33%; min-height: 100%; max-height: none; flex-shrink: 1; align-items: stretch; align-content: flex-start; align-self: auto; justify-content: flex-start; padding-top: 1%; padding-right: 1%;">
+                    <ui:Instance template="HeroPanel" style="position: relative; left: auto; top: auto; right: auto; bottom: auto; display: flex; flex-grow: 1; align-items: stretch; justify-content: flex-start; align-self: auto; flex-shrink: 1; flex-direction: column; flex-basis: auto; align-content: flex-start; min-width: auto;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="ResultBannerPanel" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">

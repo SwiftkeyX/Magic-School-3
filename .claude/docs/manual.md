@@ -57,7 +57,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 === Interrupt ===
 For build version:
 - Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
-- the ghost from the shop, its sprite should use the same sprite to the hero slot it was drag from.
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.

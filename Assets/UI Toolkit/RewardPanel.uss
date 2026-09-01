@@ -67,7 +67,7 @@
 }
 
 .reward-card__title {
-    font-size: 30px;
+    font-size: 40px;
     letter-spacing: 5px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
@@ -76,7 +76,7 @@
 }
 
 .reward-card__hint {
-    font-size: 14px;
+    font-size: 20px;
     -unity-text-align: middle-center;
     color: rgba(232, 230, 240, 0.6);
     margin-bottom: 28px;
@@ -100,8 +100,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 12px;
-    margin-right: 12px;
+    margin-left: 20px;
+    margin-right: 20px;
     /* top padding rather than centring the block: centred, a two-line description and a
        four-line one put their item names at different heights, and the three names are what
        the eye compares first. */
@@ -115,6 +115,7 @@
     border-bottom-right-radius: 8px;
     transition-property: background-color, border-color;
     transition-duration: 0.12s;
+    
 }
 
 .item-slot:hover {
@@ -128,7 +129,7 @@
 
 .item-slot__name {
     color: rgb(232, 230, 240);
-    font-size: 17px;
+    font-size: 20px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     white-space: normal;
@@ -138,7 +139,7 @@
 /* The blue the winner banner and the HP bar already use, rather than a fourth accent. */
 .item-slot__description {
     color: rgba(180, 205, 245, 0.85);
-    font-size: 13px;
+    font-size: 18px;
     -unity-text-align: middle-center;
     white-space: normal;
 }

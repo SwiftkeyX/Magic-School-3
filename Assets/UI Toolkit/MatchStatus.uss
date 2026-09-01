@@ -21,7 +21,7 @@
     position: absolute;
     bottom: 10px;
     color: rgba(232, 230, 240, 0.75);
-    font-size: 13px;
+    font-size: 20px;
     -unity-font-style: bold;
     -unity-text-align: middle-center;
     white-space: normal;

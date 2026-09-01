@@ -30,10 +30,11 @@ nothing to install by hand.
 
 - **Movement and pathfinding.** hero move on a hex toward a nearest enemy using A\* algorithm on the hex grid, with hex reservation so two heroes
   cannot commit to the same tile in the same frame.
-- **Combat.** Auto-attack on an attack-speed cooldown, and a skill cast when mana caps.
+- **Combat.** Auto-attack on an attack-speed cooldown, passive skill when condition is true, and a skill cast when mana caps.
 - **Damage, healing, modifiers and statuses** they can be apply to a hero.
 - **Skills.** A skill is a list of steps, each playing a template action — projectile, AoE or
   hitbox — picked by condition. **24 heroes exist; 17 of them have skills built.**
+- **Item.** item wear to a hero, grant hero modifiers.
 
 **Not built yet:**
 

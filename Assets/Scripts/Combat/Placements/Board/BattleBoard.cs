@@ -20,7 +20,7 @@ namespace MagicSchool.Combat.Placements
         // ======================== Setter & Getter ========================
         public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
         public IReadOnlyList<ICombatant> HeroesOnBoard => _heroesOnBoard;
-        public CombatTracker Tracker { get; } = new CombatTracker();
+        public CombatRecorder Tracker { get; } = new CombatRecorder();
 
         public bool IsBattleOn { get; private set; }
         public void SetBattleOn(bool isOn) => IsBattleOn = isOn;

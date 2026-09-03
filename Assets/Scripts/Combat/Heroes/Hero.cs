@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MagicSchool.Combat.Heroes.States;
 using MagicSchool.Combat.Heroes.Stats;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
+using MagicSchool.Combat.Tracking;
 using MagicSchool.Skills;
 
 namespace MagicSchool.Combat.Heroes
@@ -96,6 +98,10 @@ namespace MagicSchool.Combat.Heroes
         public void SpendMana() => Stat.SpendMana();                   // called once a cast actually happened
         public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
 
+        // ======================================== combat event ========================================
+        public event Action<DamageEvent> OnDamaged;
+        public event Action<HealEvent> OnHealed;
+
         // ======================================== interface method ========================================
         // === IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
@@ -105,16 +111,20 @@ namespace MagicSchool.Combat.Heroes
         public int ActiveModifierCount => Stat.ActiveModifierCount;
         public float ModifierRemaining(int index) => Stat.ModifierRemaining(index);
 
-        public void Heal(float amount)
+        public void Heal(float amount, IEffectable source)
         {
-            int healed = CombatMath.Heal(amount, Stat.CurrentHP, Stat.IsWounded);
-            Stat.SetCurrentHP(healed);
+            HealOutcome outcome = CombatMath.ResolveHeal(amount, Stat.IsWounded, Stat.CurrentHP, Stat.MaxHP);
+            Stat.SetCurrentHP(outcome.NewHP);
+
+            OnHealed?.Invoke(new HealEvent(source, this, outcome));
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, IEffectable source, DamageKindEnum kind)
         {
-            int newHP = CombatMath.TakeDamage(damage, Stat.DF, Stat.DamageReductionPercent, Stat.CurrentHP);
-            Stat.SetCurrentHP(newHP);
+            DamageOutcome outcome = CombatMath.ResolveDamage(damage, Stat.DF, Stat.DamageReductionPercent, Stat.CurrentHP);
+            Stat.SetCurrentHP(outcome.NewHP);
+
+            OnDamaged?.Invoke(new DamageEvent(source, this, kind, outcome));
         }
 
         // === IHeroStats ===
@@ -174,6 +184,8 @@ namespace MagicSchool.Combat.Heroes
             _findEnemy = new FindTarget(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
+
+            if (_board != null) _board.Tracker.Listen(this);
         }
 
         void Start()

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
+using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.Combat.Tracking
 {
-    // FIXLATER: I prefered this listen to player's event instead. let player fire event when they take damage.
-    public class CombatTracker
+    // FIXNOW: CombatRecorder is like a plugin, both battleboard & hero shouldn't know about it.
+    // FIXLATER: tracker could also be decoupling from the combat module, let it have its own asmdef, "CombatRecorder" module
+    public class CombatRecorder
     {
         private readonly Dictionary<IEffectable, CombatRecord> _round = new Dictionary<IEffectable, CombatRecord>();
 
@@ -15,33 +17,28 @@ namespace MagicSchool.Combat.Tracking
         // A round starts from nothing
         public void BeginRound() => _round.Clear();
 
-        // record the damage dealt & damage taken
-        public void RecordDamage(IEffectable source, IEffectable target, DamageKindEnum kind,
-                                 int landed, int overkill, int mitigated)
+        public void Listen(Hero hero)
         {
-            if (source != null)
-            {
-                RecordFor(_round, source).AddDealt(kind, landed, overkill);
-            }
+            if (hero == null) return;
 
-            if (target != null)
-            {
-                RecordFor(_round, target).AddTaken(landed, mitigated);
-            }
+            hero.OnDamaged -= OnHeroDamaged;
+            hero.OnDamaged += OnHeroDamaged;
+
+            hero.OnHealed -= OnHeroHealed;
+            hero.OnHealed += OnHeroHealed;
         }
 
-        // record heal & heal reduction
-        public void RecordHeal(IEffectable source, IEffectable target, int healed, int overhealed, int lostToWound)
+        // ======================================== listener ========================================
+        private void OnHeroDamaged(DamageEvent e)
         {
-            if (source != null)
-            {
-                RecordFor(_round, source).AddHealingDone(healed, overhealed);
-            }
+            if (e.Source != null) RecordFor(_round, e.Source).AddDealt(e.Kind, e.Outcome.Landed, e.Outcome.Overkill);
+            if (e.Target != null) RecordFor(_round, e.Target).AddTaken(e.Outcome.Landed, e.Outcome.Mitigated);
+        }
 
-            if (target != null)
-            {
-                RecordFor(_round, target).AddHealingReceived(healed, lostToWound);
-            }
+        private void OnHeroHealed(HealEvent e)
+        {
+            if (e.Source != null) RecordFor(_round, e.Source).AddHealingDone(e.Outcome.Healed, e.Outcome.Overhealed);
+            if (e.Target != null) RecordFor(_round, e.Target).AddHealingReceived(e.Outcome.Healed, e.Outcome.LostToWound);
         }
 
         // ======================================== helper ========================================

@@ -1,14 +1,75 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <!-- The table itself is built in ScoreboardController, not here: the header and every row have
+    <!-- The real table is built in ScoreboardController, not here: the header and every row have
          to share one set of column widths, and eleven columns written out twice drift apart the
          first time a column is added. One column list in code drives both.
+
+         The rows below are a PLACEHOLDER so this is not an empty box in UI Builder. They never
+         reach the game: ShowScores() calls ScoreTable.Clear() before it renders, and the panel
+         starts hidden and is only shown by that same call - so there is no path where these are
+         on screen. Edit them freely; they are here to be looked at, not read.
+
+         Their classes mirror exactly what the controller generates, so what you style here is
+         what you get. If you add a column in code, add one here too or the preview will lie.
          NOTE: UI Builder deletes every comment in a file it saves - see CLAUDE.md. -->
     <Style src="Scoreboard.uss"/>
     <ui:VisualElement name="ScoreboardPanel" class="scoreboard-layer">
         <ui:VisualElement name="Scoreboard" class="scoreboard">
             <ui:Label name="Title" text="ROUND SCOREBOARD" class="scoreboard__title"/>
             <ui:Label name="Subtitle" text="damage dealt | damage taken | healing - this round only" class="scoreboard__subtitle"/>
-            <ui:VisualElement name="ScoreTable"/>
+            <ui:VisualElement name="ScoreTable">
+                <ui:VisualElement class="row row--header">
+                    <ui:Label text="HERO" class="cell cell--name cell--header"/>
+                    <ui:Label text="DEALT" class="cell cell--header"/>
+                    <ui:Label text="AUTO" class="cell cell--header"/>
+                    <ui:Label text="SKILL" class="cell cell--header"/>
+                    <ui:Label text="OVERKILL" class="cell cell--header"/>
+                    <ui:Label text="TAKEN" class="cell cell--header cell--group"/>
+                    <ui:Label text="BLOCKED" class="cell cell--header"/>
+                    <ui:Label text="HEALED" class="cell cell--header cell--group"/>
+                    <ui:Label text="OVERHEAL" class="cell cell--header"/>
+                    <ui:Label text="RECEIVED" class="cell cell--header"/>
+                    <ui:Label text="WOUND" class="cell cell--header"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="row">
+                    <ui:Label text="Vharn" class="cell cell--name name--blue"/>
+                    <ui:Label text="2480" class="cell cell--total"/>
+                    <ui:Label text="1210" class="cell cell--sub"/>
+                    <ui:Label text="1270" class="cell cell--sub"/>
+                    <ui:Label text="145" class="cell cell--sub"/>
+                    <ui:Label text="1890" class="cell cell--total cell--group"/>
+                    <ui:Label text="620" class="cell cell--sub"/>
+                    <ui:Label text="0" class="cell cell--total cell--zero cell--group"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="340" class="cell cell--sub"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="row row--stripe">
+                    <ui:Label text="Sithra" class="cell cell--name name--red name--dead"/>
+                    <ui:Label text="1975" class="cell cell--total"/>
+                    <ui:Label text="640" class="cell cell--sub"/>
+                    <ui:Label text="1335" class="cell cell--sub"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="2310" class="cell cell--total cell--group"/>
+                    <ui:Label text="410" class="cell cell--sub"/>
+                    <ui:Label text="0" class="cell cell--total cell--zero cell--group"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="row">
+                    <ui:Label text="Solace" class="cell cell--name name--blue"/>
+                    <ui:Label text="430" class="cell cell--total"/>
+                    <ui:Label text="430" class="cell cell--sub"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="0" class="cell cell--sub cell--zero"/>
+                    <ui:Label text="760" class="cell cell--total cell--group"/>
+                    <ui:Label text="240" class="cell cell--sub"/>
+                    <ui:Label text="1180" class="cell cell--total cell--group"/>
+                    <ui:Label text="295" class="cell cell--sub"/>
+                    <ui:Label text="120" class="cell cell--sub"/>
+                    <ui:Label text="60" class="cell cell--sub"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

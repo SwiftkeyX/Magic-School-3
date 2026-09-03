@@ -1,0 +1,139 @@
+/* The post-combat damage meter. Palette matches MatchStatus.uss and HeroPanel.uss so the
+   three read as one UI.
+
+   NOTE: UI Builder deletes every comment in a file it saves. If you open this there to nudge
+   one number, git diff afterwards and put the prose back. See CLAUDE.md. */
+
+/* Fills the whole screen and dims what is behind, so the numbers are read against a flat
+   ground rather than against the board. */
+.scoreboard-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(10, 9, 16, 0.72);
+}
+
+.scoreboard {
+    width: 90%;
+    max-width: 1100px;
+    background-color: rgba(18, 16, 28, 0.96);
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.18);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 14px 16px;
+}
+
+.scoreboard__title {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(240, 240, 248);
+    margin-bottom: 2px;
+}
+
+.scoreboard__subtitle {
+    font-size: 11px;
+    color: rgba(232, 230, 240, 0.5);
+    margin-bottom: 10px;
+}
+
+/* ---------------- rows ---------------- */
+.row {
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 0;
+}
+
+/* The header carries the only horizontal rule. Row separators at this density turn the table
+   into a grid of boxes and make the numbers harder to scan, not easier. */
+.row--header {
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(255, 255, 255, 0.18);
+    padding-bottom: 5px;
+    margin-bottom: 3px;
+}
+
+/* Every other row gets a faint wash. With eleven columns this is what keeps the eye on one
+   hero's line all the way across. */
+.row--stripe {
+    background-color: rgba(255, 255, 255, 0.035);
+}
+
+/* ---------------- cells ---------------- */
+/* Numbers are right-aligned so digits line up by place value and a big number is visible as a
+   long number. The name column is the only left-aligned one. */
+.cell {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 8.5%;
+    font-size: 12px;
+    -unity-text-align: middle-right;
+    color: rgb(232, 230, 240);
+    padding-right: 6px;
+}
+
+.cell--name {
+    width: 15%;
+    -unity-text-align: middle-left;
+    -unity-font-style: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cell--header {
+    font-size: 10px;
+    -unity-font-style: bold;
+    color: rgba(232, 230, 240, 0.5);
+    white-space: normal;
+}
+
+/* The headline number of each group, so the eye lands on totals before breakdowns. */
+.cell--total {
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+/* Breakdown columns sit back: they explain the total beside them rather than compete with it. */
+.cell--sub {
+    color: rgba(232, 230, 240, 0.6);
+}
+
+/* A vertical rule opens each group (damage dealt / damage taken / healing) instead of a group
+   header row, which would need every column pinned to a second set of widths to stay aligned. */
+.cell--group {
+    border-left-width: 1px;
+    border-left-color: rgba(255, 255, 255, 0.12);
+    padding-left: 6px;
+}
+
+/* A zero is real information here - "this hero did nothing" - but it should not draw the eye
+   the way a number does. */
+.cell--zero {
+    color: rgba(232, 230, 240, 0.25);
+}
+
+/* ---------------- team colours ---------------- */
+/* Same two colours as the win banner and the HP bars rather than new ones. */
+.name--blue {
+    color: rgb(120, 175, 245);
+}
+
+.name--red {
+    color: rgb(232, 120, 120);
+}
+
+/* A dead hero's row stays fully readable - its damage is the point - so death is marked on the
+   name alone. */
+.name--dead {
+    opacity: 0.55;
+}
+
+.is-hidden {
+    display: none;
+}

@@ -32,6 +32,7 @@ namespace MagicSchool.Core
         private IBannerPanel _banner;
         private IHintPanel _hint;
         private IRewardPanel _reward;
+        private IScoreboardPanel _scoreboard;
         private int _stageIndex;
         private int _heroLimit;
         private bool _startCombatRequested;
@@ -64,6 +65,7 @@ namespace MagicSchool.Core
         internal IBannerPanel Banner => _banner;
         internal IHintPanel Hint => _hint;
         internal IRewardPanel Reward => _reward;
+        internal IScoreboardPanel Scoreboard => _scoreboard;
         internal void ChangeState(GamePhaseEnum next) => _stateMachine.ChangeState(next);
         public void MoveHero(ICombatant hero, IPlacement placement) => _heroMover.MoveThisHeroTo(hero, placement);
         public void SellHero(ICombatant hero)
@@ -92,6 +94,7 @@ namespace MagicSchool.Core
             _banner = behaviours.OfType<IBannerPanel>().FirstOrDefault();
             _hint = behaviours.OfType<IHintPanel>().FirstOrDefault();
             _reward = behaviours.OfType<IRewardPanel>().FirstOrDefault();
+            _scoreboard = behaviours.OfType<IScoreboardPanel>().FirstOrDefault();
         }
 
         // start the game at preparation state

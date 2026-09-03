@@ -1,0 +1,14 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <!-- The table itself is built in ScoreboardController, not here: the header and every row have
+         to share one set of column widths, and eleven columns written out twice drift apart the
+         first time a column is added. One column list in code drives both.
+         NOTE: UI Builder deletes every comment in a file it saves - see CLAUDE.md. -->
+    <Style src="Scoreboard.uss"/>
+    <ui:VisualElement name="ScoreboardPanel" class="scoreboard-layer">
+        <ui:VisualElement name="Scoreboard" class="scoreboard">
+            <ui:Label name="Title" text="ROUND SCOREBOARD" class="scoreboard__title"/>
+            <ui:Label name="Subtitle" text="damage dealt | damage taken | healing - this round only" class="scoreboard__subtitle"/>
+            <ui:VisualElement name="ScoreTable"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

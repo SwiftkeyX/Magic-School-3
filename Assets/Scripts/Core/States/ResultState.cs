@@ -1,4 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using MagicSchool.Contracts;
+using MagicSchool.CombatRecording;
+using MagicSchool.Combat.Heroes;
+using UnityEngine.Profiling;
 
 namespace MagicSchool.Core.States
 {
@@ -17,6 +22,7 @@ namespace MagicSchool.Core.States
 
             _game.Hint?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
             _game.Banner?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+            _game.Scoreboard?.ShowScores(BuildScores());
 
             // if player win, show reward panel
             if (_game.Winner == TeamEnum.Blue) _game.Reward?.ShowReward();
@@ -26,6 +32,7 @@ namespace MagicSchool.Core.States
         {
             // close reward panel
             _game.Reward?.SetShown(false);
+            _game.Scoreboard?.SetShown(false);
         }
 
         // if continue is requested, go to preparation state.
@@ -56,7 +63,7 @@ namespace MagicSchool.Core.States
                 // FLAGGING: temporarily, this is to expand hero limit easily for demo version
                 // clearing the run loops back to stage 1, so the team it is fought with
                 // loops back too - otherwise the replay starts oversized against stage 1.
-                
+
                 // when player clear the game, reset team size
                 if (runCleared) _game.ResetHeroLimit();
                 // when player not clear the game, but pass the stage, increase team size 
@@ -65,6 +72,34 @@ namespace MagicSchool.Core.States
 
             // go preparation state
             _game.ChangeState(GamePhaseEnum.Preparation);
+        }
+
+        private IReadOnlyList<ScoreRow> BuildScores()
+        {
+            CombatRecorder recorder = _game.Recorder;
+
+            // guard
+            if (recorder == null) return new List<ScoreRow>();
+
+            // return a list of ScoreRow that was order by who do the most dmg.
+            return _game.Board.HeroesOnBoard
+                .Where(hero => hero != null)
+                // get data from this hero
+                .Select(hero => GetHeroScoreData(hero, recorder))
+                // order by who do the most dmg 
+                .OrderByDescending(row => row.Record.DamageDealt)
+                // order again by who do the most healing 
+                .ThenByDescending(row => row.Record.HealingDone)
+                .ToList();
+        }
+
+        private ScoreRow GetHeroScoreData(ICombatant hero, CombatRecorder recorder)
+        {
+            return new ScoreRow(
+                    name: (hero as IInspectable)?.DisplayName ?? hero.transform.name,
+                    team: hero.Team,
+                    isAlive: hero.StateType != HeroStateEnum.Dead,
+                    record: recorder.RoundOf(hero));
         }
     }
 }

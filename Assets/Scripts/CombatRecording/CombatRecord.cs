@@ -2,7 +2,7 @@ using MagicSchool.Contracts;
 
 namespace MagicSchool.CombatRecording
 {
-    public class CombatRecord
+    public class CombatRecord : ICombatRecord
     {
         // ===================== as the source: what this unit did to others =====================
         public int DamageDealt { get; private set; }        // AutoAttackDamage + SkillDamage

@@ -23,6 +23,7 @@ nothing to install by hand.
 | Right-click | Open the inspector on it |
 | `Space` | Start the fight, and continue to the next stage |
 | `R` | Quick restart the current stage |
+| `1` `2` `3` | Run the game at x1, x2 or x3 speed |
 
 ## What works today
 

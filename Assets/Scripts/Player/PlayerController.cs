@@ -46,6 +46,7 @@ namespace MagicSchool.Player
 
             TryStartCombat();
             TryRestart();
+            TrySetSpeed();
             TryInspect();
             _dragging?.Tick();
             _teamSize?.RefreshHeroCountPanel();
@@ -82,6 +83,15 @@ namespace MagicSchool.Player
 
             _reward.SetShown(true);
             return true;
+        }
+
+        // set the speed of the game
+        private void TrySetSpeed()
+        {
+            int speed = PlayerInputSystem.SpeedPressedThisFrame();
+            if (speed == 0) return;
+
+            GameManager.Instance.SetSpeed(speed);
         }
 
         // quick restart

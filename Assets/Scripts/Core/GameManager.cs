@@ -28,6 +28,7 @@ namespace MagicSchool.Core
         private HeroSeed _seed;
         private HeroSpawner _heroSpawner;
         private CombatRecorder _recorder;
+        private GameSpeed _speed;
         private GameStateMachine _stateMachine;
         private IBannerPanel _banner;
         private IHintPanel _hint;
@@ -48,6 +49,7 @@ namespace MagicSchool.Core
         internal int StageCount => HasStages ? _stages.Length : 1;
         internal int StageNumber => _stageIndex + 1;
         public int HeroLimit => _heroLimit;
+        public int SpeedMultiplier => _speed == null ? 1 : _speed.Multiplier;
         internal bool IsRunCleared => Winner == TeamEnum.Blue && _stageIndex + 1 >= StageCount;
 
         // ======================================== setter ========================================
@@ -84,6 +86,10 @@ namespace MagicSchool.Core
             _heroMover = new HeroMover();
             _seed = new HeroSeed(GetStage(_stageIndex), _board);
             _recorder = new CombatRecorder();
+
+            _speed = new GameSpeed();
+            _speed.Reset();
+
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions, _recorder);
             _heroSeller = new HeroSeller();
             _heroFormation = new HeroFormation(_heroMover);
@@ -106,6 +112,9 @@ namespace MagicSchool.Core
         void Update() => _stateMachine.Tick();
 
         // ========================================= request handler =========================================
+        // set game's speed to x1 / x2 / x3.
+        public void SetSpeed(int multiplier) => _speed?.Set(multiplier);
+
         public void StartCombat()
         {
             if (Phase != GamePhaseEnum.Preparation) return;

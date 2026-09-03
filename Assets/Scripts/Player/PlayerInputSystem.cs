@@ -19,6 +19,16 @@ namespace MagicSchool.Player
         public static bool InspectPressedThisFrame => Mouse.current.rightButton.wasPressedThisFrame;
         public static bool RestartPressedThisFrame => Keyboard.current.rKey.wasPressedThisFrame;
 
+        // adjust game's speed using numkey
+        public static int SpeedPressedThisFrame()
+        {
+            if (Keyboard.current.digit1Key.wasPressedThisFrame) return 1;
+            if (Keyboard.current.digit2Key.wasPressedThisFrame) return 2;
+            if (Keyboard.current.digit3Key.wasPressedThisFrame) return 3;
+
+            return 0;
+        }
+
         public static Vector2 PointerScreenPosition => Mouse.current.position.ReadValue();
 
         // Converts the current mouse position to a world point on the plane facing the given camera.

@@ -4,6 +4,7 @@
     <ui:Template name="PhaseHintPanel" src="project://database/Assets/UI%20Toolkit/PhaseHintPanel.uxml?fileID=9197481963319205126&amp;guid=fd90bfbc0d324c999ce26fead30dee40&amp;type=3#PhaseHintPanel"/>
     <ui:Template name="ResultBannerPanel" src="project://database/Assets/UI%20Toolkit/ResultBannerPanel.uxml?fileID=9197481963319205126&amp;guid=657f1d6520de442091bea06ca59336b6&amp;type=3#ResultBannerPanel"/>
     <ui:Template name="RewardPanel" src="project://database/Assets/UI%20Toolkit/RewardPanel.uxml?fileID=9197481963319205126&amp;guid=9ac73ab5fa3c40c2822192e5b94420eb&amp;type=3#RewardPanel"/>
+    <ui:Template name="Scoreboard" src="project://database/Assets/UI%20Toolkit/Scoreboard.uxml?fileID=9197481963319205126&amp;guid=4bb4fdfd62eed9d4abe0a48b6d6768a5&amp;type=3#Scoreboard"/>
     <ui:Template name="ShopPanel" src="project://database/Assets/UI%20Toolkit/Shop.uxml?fileID=9197481963319205126&amp;guid=a6ab2bc69608ec746938b3134742beb5&amp;type=3#Shop"/>
     <ui:VisualElement name="Root" picking-mode="Ignore" style="flex-grow: 1; flex-direction: column; height: 100%; width: 100%;">
         <ui:VisualElement name="Top" style="flex-grow: 1; height: 85%; flex-direction: column; align-items: stretch; justify-content: space-between; width: 100%;">
@@ -30,7 +31,9 @@
                 <ui:Instance template="ShopPanel" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ScoreboardPanel" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
+        <ui:VisualElement name="ScoreboardPanel" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
+            <ui:Instance template="Scoreboard" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;"/>
+        </ui:VisualElement>
         <ui:VisualElement name="RewardPanel" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; opacity: 1; display: flex;">
             <ui:Instance template="RewardPanel" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none; opacity: 1;"/>
         </ui:VisualElement>

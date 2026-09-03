@@ -3,22 +3,13 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Heroes;
+using MagicSchool.Combat.Tracking;
 
 namespace MagicSchool.Combat.Placements
 {
-
-    /// <summary>
-    /// FLAGGING: I have been skeptical about circular dependency between: BattleBoard & Hero.
-    /// Because I don't think Hero should know about BattleBoard, the sound of it doesn't make sense to me.
-    /// I try to fix it BUT I found that it's already good and don't need any fix. 
-    /// => if I move the part where hero need to ask Battleboard out, into somewhere else, 
-    /// that just doesn't fix anything, I'm just doing BattleBoard v2 but with different name.
-    /// => if we set both as same module, then that would justified its deep coupling.
-    /// Let's move them into same folder called "Combat Module"
-    /// </summary>
+    // FIXLATER: Could you tidy up the battleboard, there's too many public function, and some of it do similar thing.
     public class BattleBoard : MonoBehaviour
     {
-        // ======================== Runtime data ============================
         // track every hex
         private Dictionary<HexNumber, Hex> _hexs = new Dictionary<HexNumber, Hex>();
 
@@ -29,6 +20,7 @@ namespace MagicSchool.Combat.Placements
         // ======================== Setter & Getter ========================
         public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
         public IReadOnlyList<ICombatant> HeroesOnBoard => _heroesOnBoard;
+        public CombatTracker Tracker { get; } = new CombatTracker();
 
         public bool IsBattleOn { get; private set; }
         public void SetBattleOn(bool isOn) => IsBattleOn = isOn;
@@ -70,7 +62,8 @@ namespace MagicSchool.Combat.Placements
             }
         }
 
-        // Every hero need to be tracked on the board
+        // =================================== hero tracking ===================================
+        // when initialize, every hero need to be tracked on the board.
         // If they didn't get tracked, those heroes will be invisible to other hero.
         public void TrackThisHero(ICombatant hero)
         {
@@ -85,7 +78,7 @@ namespace MagicSchool.Combat.Placements
         }
 
         // =================================== Hex reservation ===================================
-        // Called by Hero.SetReservedHex, which is the only place a reservation changes.
+        // Called by Hero.SetReservedHex, which is the only place a hex reservation changes.
         public void UpdateReservation(ICombatant hero, Hex previous, Hex next)
         {
             // Only clear the old entry if this hero still owns it. Two heroes can't hold the same

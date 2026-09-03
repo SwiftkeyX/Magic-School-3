@@ -37,7 +37,11 @@ namespace MagicSchool.Skills
                 dmg *= AmplifierFor(recipient);
 
                 // apply damage
-                recipient.TakeDamage(Mathf.RoundToInt(dmg));
+                recipient.TakeDamage(
+                    damage: Mathf.RoundToInt(dmg),
+                    source: _caster,
+                    kind: DamageKindEnum.Skill
+                );
             }
         }
     }

@@ -19,8 +19,8 @@ nothing to install by hand.
 
 | Input | Does |
 | --- | --- |
-| Left-drag a hero | Pick it up and drop it on a hex or a bench slot |
-| Right-click a hero | Open the inspector on it |
+| Left-click | Pick item/hero up |
+| Right-click | Open the inspector on it |
 | `Space` | Start the fight, and continue to the next stage |
 | `R` | Quick restart the current stage |
 

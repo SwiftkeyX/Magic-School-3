@@ -92,7 +92,11 @@ namespace MagicSchool.Combat.Heroes.States
             {
                 // FLAGGING: attack animation got skip by skill which is not intended
                 // apply damage to target
-                _currentTarget.TakeDamage(_me.AttackDamage);
+                _currentTarget.TakeDamage(
+                    damage: _me.AttackDamage,
+                    source: _me,
+                    kind: DamageKindEnum.AutoAttack
+                );
 
                 // attack animation: dash toward the enemy, then back to where we started
                 AttackAnimation();

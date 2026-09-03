@@ -19,6 +19,9 @@ namespace MagicSchool.Core.States
             // remember the team's formation at the start
             _game.Formation.Remember(_game.Board.HeroesOnBoard, TeamEnum.Blue);
 
+            // this round's numbers start from nothing; the run's totals keep accumulating
+            _game.Board.Tracker.BeginRound();
+
             _game.Hint?.ShowCombat(_game.StageNumber, _game.StageCount);
         }
 

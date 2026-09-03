@@ -33,7 +33,10 @@ namespace MagicSchool.Skills
             {
                 if (recipient == null || !recipient.IsAlive) continue;
 
-                recipient.Heal(healPerTick * AmplifierFor(recipient));
+                recipient.Heal(
+                    amount: healPerTick * AmplifierFor(recipient),
+                    source: _caster
+                );
             }
         }
     }

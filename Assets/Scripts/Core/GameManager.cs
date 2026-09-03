@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
+using MagicSchool.Combat.Tracking;
 using MagicSchool.Core.States;
 using MagicSchool.Skills;
 
@@ -26,6 +27,7 @@ namespace MagicSchool.Core
         private HeroFormation _heroFormation;
         private HeroSeed _seed;
         private HeroSpawner _heroSpawner;
+        private CombatRecorder _recorder;
         private GameStateMachine _stateMachine;
         private IBannerPanel _banner;
         private IHintPanel _hint;
@@ -58,6 +60,7 @@ namespace MagicSchool.Core
         internal BattleBoard Board => _board;
         internal HeroSeed Seed => _seed;
         internal HeroFormation Formation => _heroFormation;
+        internal CombatRecorder Recorder => _recorder;
         internal IBannerPanel Banner => _banner;
         internal IHintPanel Hint => _hint;
         internal IRewardPanel Reward => _reward;
@@ -78,7 +81,8 @@ namespace MagicSchool.Core
 
             _heroMover = new HeroMover();
             _seed = new HeroSeed(GetStage(_stageIndex), _board);
-            _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions);
+            _recorder = new CombatRecorder();
+            _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions, _recorder);
             _heroSeller = new HeroSeller();
             _heroFormation = new HeroFormation(_heroMover);
             _heroLimit = _startingHeroLimit;

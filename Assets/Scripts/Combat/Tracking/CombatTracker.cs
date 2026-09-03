@@ -4,8 +4,8 @@ using MagicSchool.Combat.Heroes;
 
 namespace MagicSchool.Combat.Tracking
 {
-    // FIXNOW: CombatRecorder is like a plugin, both battleboard & hero shouldn't know about it.
     // FIXLATER: tracker could also be decoupling from the combat module, let it have its own asmdef, "CombatRecorder" module
+    // The last thing in the way is DamageEvent/HealEvent, which still live in Combat.Heroes.
     public class CombatRecorder
     {
         private readonly Dictionary<IEffectable, CombatRecord> _round = new Dictionary<IEffectable, CombatRecord>();
@@ -17,25 +17,14 @@ namespace MagicSchool.Combat.Tracking
         // A round starts from nothing
         public void BeginRound() => _round.Clear();
 
-        public void Listen(Hero hero)
-        {
-            if (hero == null) return;
-
-            hero.OnDamaged -= OnHeroDamaged;
-            hero.OnDamaged += OnHeroDamaged;
-
-            hero.OnHealed -= OnHeroHealed;
-            hero.OnHealed += OnHeroHealed;
-        }
-
         // ======================================== listener ========================================
-        private void OnHeroDamaged(DamageEvent e)
+        // Subscribed to a hero's OnDamaged/OnHealed
+        public void Record(DamageEvent e)
         {
             if (e.Source != null) RecordFor(_round, e.Source).AddDealt(e.Kind, e.Outcome.Landed, e.Outcome.Overkill);
             if (e.Target != null) RecordFor(_round, e.Target).AddTaken(e.Outcome.Landed, e.Outcome.Mitigated);
         }
-
-        private void OnHeroHealed(HealEvent e)
+        public void Record(HealEvent e)
         {
             if (e.Source != null) RecordFor(_round, e.Source).AddHealingDone(e.Outcome.Healed, e.Outcome.Overhealed);
             if (e.Target != null) RecordFor(_round, e.Target).AddHealingReceived(e.Outcome.Healed, e.Outcome.LostToWound);

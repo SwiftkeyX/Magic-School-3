@@ -5,7 +5,6 @@ using MagicSchool.Combat.Heroes.States;
 using MagicSchool.Combat.Heroes.Stats;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
-using MagicSchool.Combat.Tracking;
 using MagicSchool.Skills;
 
 namespace MagicSchool.Combat.Heroes
@@ -184,8 +183,6 @@ namespace MagicSchool.Combat.Heroes
             _findEnemy = new FindTarget(this, _board);
             _attackCooldown = new AttackCooldown();
             _stateMachine = new HeroStateMachine(this, new MovementConfig(_moveSpeed, _walkCurve, _attackCurve));
-
-            if (_board != null) _board.Tracker.Listen(this);
         }
 
         void Start()

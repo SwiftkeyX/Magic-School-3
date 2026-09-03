@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Heroes;
-using MagicSchool.Combat.Tracking;
 
 namespace MagicSchool.Combat.Placements
 {
@@ -20,7 +19,6 @@ namespace MagicSchool.Combat.Placements
         // ======================== Setter & Getter ========================
         public IReadOnlyDictionary<HexNumber, Hex> Hexs => _hexs;
         public IReadOnlyList<ICombatant> HeroesOnBoard => _heroesOnBoard;
-        public CombatRecorder Tracker { get; } = new CombatRecorder();
 
         public bool IsBattleOn { get; private set; }
         public void SetBattleOn(bool isOn) => IsBattleOn = isOn;

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.IO;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
@@ -20,6 +21,9 @@ namespace MagicSchool.Core
         [SerializeField] private BattlePlacementSO[] _stages;
         [SerializeField] private TemplateActionRegistrySO _templateActions;
         [SerializeField] private bool _isPlayerSeed;
+
+        [Tooltip("Write every round's numbers to a CSV for balancing. Off in a real build - it writes a file.")]
+        [SerializeField] private bool _test;
         [SerializeField] private int _startingHeroLimit = 3;   // how many heroes the player may field on stage 1
         private BattlePlacementSO _currentStage;
         private HeroMover _heroMover;
@@ -29,6 +33,7 @@ namespace MagicSchool.Core
         private HeroSpawner _heroSpawner;
         private CombatRecorder _recorder;
         private GameSpeed _speed;
+        private CombatCsvLog _balanceLog;
         private GameStateMachine _stateMachine;
         private IBannerPanel _banner;
         private IHintPanel _hint;
@@ -64,6 +69,7 @@ namespace MagicSchool.Core
         internal HeroSeed Seed => _seed;
         internal HeroFormation Formation => _heroFormation;
         internal CombatRecorder Recorder => _recorder;
+        internal CombatCsvLog BalanceLog => _balanceLog;
         internal IBannerPanel Banner => _banner;
         internal IHintPanel Hint => _hint;
         internal IRewardPanel Reward => _reward;
@@ -89,6 +95,8 @@ namespace MagicSchool.Core
 
             _speed = new GameSpeed();
             _speed.Reset();
+
+            if (_test) _balanceLog = new CombatCsvLog(Path.Combine(Application.dataPath, "..", "BalanceLogs"));
 
             _heroSpawner = new HeroSpawner(_heroMover, _bench, _seed, _templateActions, _recorder);
             _heroSeller = new HeroSeller();

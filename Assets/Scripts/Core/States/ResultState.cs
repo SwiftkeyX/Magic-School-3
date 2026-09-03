@@ -13,6 +13,7 @@ namespace MagicSchool.Core.States
     internal class ResultState : GameState
     {
         public override GamePhaseEnum StateType => GamePhaseEnum.Result;
+        private bool _scoreboardDismissed;
 
         public ResultState(GameManager game) : base(game) { }
 
@@ -20,12 +21,11 @@ namespace MagicSchool.Core.States
         {
             _game.Board.SetBattleOn(false);
 
-            _game.Hint?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+            _scoreboardDismissed = false;
+
+            _game.Hint?.ShowScoreboard(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
             _game.Banner?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
             _game.Scoreboard?.ShowScores(BuildScores());
-
-            // if player win, show reward panel
-            if (_game.Winner == TeamEnum.Blue) _game.Reward?.ShowReward();
         }
 
         public override void OnExit()
@@ -46,18 +46,29 @@ namespace MagicSchool.Core.States
             bool playerWon = _game.Winner == TeamEnum.Blue;
             bool runCleared = _game.IsRunCleared;
 
-            // if player won, give reward, and go to next stage.
-            // if player lose, repeat this stage.
-            if (playerWon)
+            // the scoreboard was shown now.
+            // so the first request, only takes the scoreboard down, then return
+            if (TakeScoreboardDown())
             {
-                // give player a reward 
-                // if player still choosing the reward, let player finish choosing first, before continue
-                if (_game.Reward != null && _game.Reward.IsChoosing)
+                // once the scoreboard taken down & player won, show reward
+                if (playerWon)
                 {
-                    _game.Reward.SetShown(true);
-                    return;
+                    _game.Hint?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, _game.IsRunCleared);
+                    _game.Reward?.ShowReward();
                 }
 
+                return;
+            }
+
+            // if player won, give player a reward.
+            // if reward doesn't choosed yet, return
+            if (playerWon)
+            {
+                // if player won, show the reward  
+                // if still choosing the reward, let player finish choosing first, before continue
+                if (IsStillChoosingReward()) return;
+
+                // set to next stage
                 _game.SetStageIndex(runCleared ? 0 : _game.StageIndex + 1);
 
                 // FLAGGING: temporarily, this is to expand hero limit easily for demo version
@@ -66,9 +77,11 @@ namespace MagicSchool.Core.States
 
                 // when player clear the game, reset team size
                 if (runCleared) _game.ResetHeroLimit();
-                // when player not clear the game, but pass the stage, increase team size 
+                // when player not clear the game, but won the stage, increase team size 
                 else _game.GrowHeroLimit();
             }
+
+            _game.Hint?.ShowResult(_game.Winner, _game.StageNumber, _game.StageCount, runCleared);
 
             // go preparation state
             _game.ChangeState(GamePhaseEnum.Preparation);
@@ -100,6 +113,24 @@ namespace MagicSchool.Core.States
                     team: hero.Team,
                     isAlive: hero.StateType != HeroStateEnum.Dead,
                     record: recorder.RoundOf(hero));
+        }
+
+        private bool TakeScoreboardDown()
+        {
+            if (_scoreboardDismissed) return false;
+
+            _scoreboardDismissed = true;
+            _game.Scoreboard?.SetShown(false);
+
+            return true;
+        }
+
+        private bool IsStillChoosingReward()
+        {
+            if (_game.Reward == null || !_game.Reward.IsChoosing) return false;
+
+            _game.Reward.SetShown(true);
+            return true;
         }
     }
 }

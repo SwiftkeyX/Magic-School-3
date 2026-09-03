@@ -16,6 +16,12 @@ namespace MagicSchool.UI
         public void ShowCombat(int stage, int stageCount)
             => SetHint($"{Stage(stage, stageCount)} - fighting. Right-click a hero to inspect it");
 
+        public void ShowScoreboard(TeamEnum? winner, int stage, int stageCount, bool runCleared)
+        {
+            if (winner == TeamEnum.Blue) SetHint("press SPACE for your reward");
+            else ShowResult(winner, stage, stageCount, runCleared);
+        }
+
         public void ShowResult(TeamEnum? winner, int stage, int stageCount, bool runCleared)
         {
             // one key does everything from here, so the hint only has to say what it leads to

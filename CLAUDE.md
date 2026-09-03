@@ -13,11 +13,12 @@ MagicSchool.Contracts  -> (nothing)          leaf: interfaces + enums everyone s
 MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper, CurveMotion
 MagicSchool.VFX        -> (nothing)          leaf: FloatingText
 MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
+MagicSchool.CombatRecording -> Contracts     leaf: the damage meter's books, see below
 MagicSchool.Modifiers  -> Contracts, StatScaling
 MagicSchool.Skills     -> Contracts, Engine, StatScaling, Modifiers
 MagicSchool.Combat     -> Contracts, Engine, Skills, VFX, Modifiers
 MagicSchool.UI         -> Contracts, Combat
-MagicSchool.Core       -> Contracts, Engine, Skills, Combat
+MagicSchool.Core       -> Contracts, Engine, Skills, Combat, CombatRecording
 MagicSchool.Player     -> Contracts, Combat, Core, Unity.InputSystem
 MagicSchool.Editor     -> Core                              (Editor-only)
 ```
@@ -39,6 +40,12 @@ Rules that aren't visible from any single file:
   still writes nothing but `ICustomModifier`/`IModifier` in its own code. The folder is
   `StatScaling/` rather than `Scaling/` because namespaces follow the folder, and a namespace
   `MagicSchool.Scaling` holding a class `Scaling` cannot be used unqualified.
+- **`CombatRecording` is a plugin, and nothing in `Combat` references it.** A hero raises
+  `DamageEvent`/`HealEvent` and carries on; `HeroSpawner` - the one place a hero is ever built -
+  subscribes the recorder to those events. So combat behaves identically whether or not anyone is
+  counting, which is what stops a reporting feature turning into a combat feature. The four event
+  and outcome structs live in `Contracts` for the same reason `IEffectable` does: they are what
+  both sides must agree on, so neither side has to reference the other.
 - **`Heroes/` and `Placements/` share one assembly on purpose.** A hero needs its hex and a hex
   tracks its occupant; that coupling is real, so `Combat` admits it rather than pretending otherwise.
   Splitting them was tried and doesn't work.

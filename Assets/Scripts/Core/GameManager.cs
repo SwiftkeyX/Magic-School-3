@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Placements;
-using MagicSchool.Combat.Tracking;
+using MagicSchool.CombatRecording;
 using MagicSchool.Core.States;
 using MagicSchool.Skills;
 

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using MagicSchool.Contracts;
-using MagicSchool.Combat.Heroes;
 
-namespace MagicSchool.Combat.Tracking
+namespace MagicSchool.CombatRecording
 {
-    // FIXLATER: tracker could also be decoupling from the combat module, let it have its own asmdef, "CombatRecorder" module
-    // The last thing in the way is DamageEvent/HealEvent, which still live in Combat.Heroes.
+    // CombatRecorder tell damage dealt, damage taken, heal, etc... for each hero.
+    // This data will be shown in a UI panel.
     public class CombatRecorder
     {
         private readonly Dictionary<IEffectable, CombatRecord> _round = new Dictionary<IEffectable, CombatRecord>();

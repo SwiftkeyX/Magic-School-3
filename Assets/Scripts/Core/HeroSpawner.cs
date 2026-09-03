@@ -3,7 +3,7 @@ using MagicSchool.Engine;
 using MagicSchool.Contracts;
 using MagicSchool.Combat.Heroes;
 using MagicSchool.Combat.Placements;
-using MagicSchool.Combat.Tracking;
+using MagicSchool.CombatRecording;
 using MagicSchool.Skills;
 
 namespace MagicSchool.Core

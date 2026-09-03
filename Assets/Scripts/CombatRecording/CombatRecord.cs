@@ -1,6 +1,6 @@
 using MagicSchool.Contracts;
 
-namespace MagicSchool.Combat.Tracking
+namespace MagicSchool.CombatRecording
 {
     public class CombatRecord
     {

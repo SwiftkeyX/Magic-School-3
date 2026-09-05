@@ -55,17 +55,7 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 
 # Plan
 === Interrupt ===
-add readme.md, how to install section
-
-
-That said, a UI test scene still has a real point — just not speed. Right now the only ways to see the scoreboard are to fight a whole round or to have me push fake rows in through reflection. Neither lets you look at it with controlled numbers.
-
-But the cheap version of that isn't a scene — it's a small MonoBehaviour that calls ShowScores with a handmade List<ScoreRow> on a keypress. Drop it in Board, press a key, the panel appears with whatever numbers you want to design against. No second scene to keep in sync as the UI grows, and it works in the real scene where the real panel mounting happens.
-
-
 I prefer the data to be chart, more than a pure number like this.
-- when hovering on each bar, add class to show that bar was hovering on.
-- when hovering on the segment, could we show the number of that segment using popup, the popup that appear on top of the hovering segment  
 - a hero's name: instead of just a name text, could we put hero's there instead? (in other game, they usually put hero's sprite there instead of name text)
 - adjust the chart position, I prefered the chart of damage dealt, damage taken to be stack on each other, not line up like now. 
 

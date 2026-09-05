@@ -58,8 +58,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 I prefer the data to be chart, more than a pure number like this.
 - adjust the chart position, I prefered the chart of damage dealt, damage taken to be stack on each other, not line up like now. 
 
-the healing part should be healing given section only, no need for healed receive section.
-
 when sell hero with item, that item is gone too. This is not intended, the items should stay in the scene.
 
 === implement new system ===

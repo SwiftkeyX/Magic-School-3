@@ -33,7 +33,7 @@ namespace MagicSchool.UI
             OnMounted(Panel);
         }
 
-        // The panel is in the tree: find what it holds, wire it up, and say whether it starts shown.
+        // The panel is still in the tree: find what panel this tree holds, wire that panel inside main panel.
         protected abstract void OnMounted(VisualElement panel);
 
         // show/hide this panel. 

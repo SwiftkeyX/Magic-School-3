@@ -100,10 +100,12 @@ namespace MagicSchool.UI
         }
 
         // =================================== chart width scale ===================================
-        // get the highest number of all the track e.g. Damage dealt, Damage taken, etc...
-        // e.g. longest = [damage_max, taken_max, etc...]
         // context: those longest value will be used to set chart width in their own track.
         // e.g. style.width = value * 100f / longest[damage_max] 
+        
+        // get the highest number of all the track 
+        // e.g. Damage dealt, Damage taken, etc...
+        // e.g. longest = [damage_max, taken_max, etc...]
         private static int[] LongestBarPerTrack(IReadOnlyList<ScoreRow> rows)
         {
             int[] longest = new int[Tracks.Length];

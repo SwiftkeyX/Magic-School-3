@@ -3,13 +3,12 @@ using UnityEngine.InputSystem;
 
 namespace MagicSchool.Player
 {
-    /// <summary>
-    /// Centralized input for world-space picking/dragging (Bench, Board, etc) and misc key
-    /// checks (e.g. GameManager's start-combat trigger).
-    /// This project has Active Input Handling set to the New Input System exclusively -
-    /// read input through here (Mouse.current/Keyboard.current), never UnityEngine.Input,
-    /// which compiles fine but throws InvalidOperationException at runtime under this setting.
-    /// </summary>
+    // Player can: 
+    // 1) left click to drag hero/items.
+    // 2) right click to inspect hero/items.
+    // 3) spacebar to interact with game's stage e.g. start combat, retry, continue to next stage
+    // 4) R to quick-retry
+    // FIXLATER: the shop panel doesn't use left click to drag, it use pointerdown instead, let it also use left click from PlayerInputSystem.
     internal static class PlayerInputSystem
     {
         public static bool IsPointerDown => Mouse.current.leftButton.isPressed;

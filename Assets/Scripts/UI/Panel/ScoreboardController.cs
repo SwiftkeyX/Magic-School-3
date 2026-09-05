@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using UnityEngine;
 using UnityEngine.UIElements;
 using MagicSchool.Contracts;
 
@@ -61,11 +62,14 @@ namespace MagicSchool.UI
                 new Segment("wound",    "seg--ghost",    r => r.HealingLostToWound,   isGhost: true)),
         };
 
-        // marks the one segment the pointer is on; see Scoreboard.uss
-        private const string HoverClass = "seg--hover";
-
         private VisualElement _table;
         private Label _readout;
+
+        // === tooltip ===
+        // the tooltip that appear when hovering on one of a chart. it show how much number that chart actually is.
+        private const float TooltipGap = 4f;
+        private Label _tooltip;
+        private VisualElement _tooltipOwner;
 
         // =================================== IScoreboardPanel ===================================
         public void ShowScores(IReadOnlyList<ScoreRow> rows)
@@ -75,6 +79,7 @@ namespace MagicSchool.UI
             int[] longest = LongestBarPerTrack(rows);
 
             ShowReadout(null);
+            HideSegmentTooltip(_tooltipOwner);
 
             _table.Clear();
             _table.Add(BuildHeader());
@@ -92,6 +97,7 @@ namespace MagicSchool.UI
         {
             _table = panel.Q<VisualElement>("ScoreTable");
             _readout = panel.Q<Label>("Readout");
+            _tooltip = NewTooltip(panel);
 
             // nothing to show until a round has actually been fought
             SetShown(false);
@@ -218,7 +224,7 @@ namespace MagicSchool.UI
 
         // add chart to the row
         // e.g. damage dealt chart, damage taken chart, etc... 
-        private static VisualElement BuildTrack(ICombatRecord record, Track track, int longest)
+        private VisualElement BuildTrack(ICombatRecord record, Track track, int longest)
         {
             // add rail - a chart 
             VisualElement rail = new VisualElement();
@@ -256,7 +262,7 @@ namespace MagicSchool.UI
 
         // a actual chart added here
         // a whole bar's width was scaling accordingly to the track's longest bar.
-        private static VisualElement NewSegment(Segment segment, int value, int longest)
+        private VisualElement NewSegment(Segment segment, int value, int longest)
         {
             VisualElement bar = new VisualElement();
             bar.AddToClassList("seg");
@@ -267,8 +273,16 @@ namespace MagicSchool.UI
 
             // add event: the segment could be hovering on
             bar.pickingMode = PickingMode.Position;
-            bar.RegisterCallback<PointerEnterEvent>(_ => bar.AddToClassList(HoverClass));
-            bar.RegisterCallback<PointerLeaveEvent>(_ => bar.RemoveFromClassList(HoverClass));
+            bar.RegisterCallback<PointerEnterEvent>(_ =>
+            {
+                bar.AddToClassList("seg--hover");
+                ShowSegmentTooltip(bar, segment, value);
+            });
+            bar.RegisterCallback<PointerLeaveEvent>(_ =>
+            {
+                bar.RemoveFromClassList("seg--hover");
+                HideSegmentTooltip(bar);
+            });
 
             return bar;
         }
@@ -282,6 +296,50 @@ namespace MagicSchool.UI
             if (total == 0) value.AddToClassList("track__value--zero");
 
             return value;
+        }
+
+        // =================================== tooltip ===================================
+        // this tooltip show how much this segment does in number
+        
+        // initialize a tooltip for segment
+        // e.g. auto-attack = 250 damage, skill = 400 damage
+        private static Label NewTooltip(VisualElement panel)
+        {
+            Label tooltip = new Label();
+            tooltip.AddToClassList("seg-tooltip");
+            tooltip.AddToClassList(HiddenClass);
+
+            tooltip.pickingMode = PickingMode.Ignore;
+            panel.Add(tooltip);
+
+            return tooltip;
+        }
+
+        // show tooltip on top of the segment
+        private void ShowSegmentTooltip(VisualElement bar, Segment segment, int value)
+        {
+            if (_tooltip == null) return;
+
+            _tooltipOwner = bar;
+            _tooltip.text = segment.Name + "  " + Format(value);
+
+            // move tooltip to on top of segment
+            Rect bounds = bar.worldBound;
+            Vector2 top = _tooltip.parent.WorldToLocal(new Vector2(bounds.center.x, bounds.yMin));
+            _tooltip.style.left = top.x;
+            _tooltip.style.top = top.y - TooltipGap;
+
+            // show tooltip
+            _tooltip.RemoveFromClassList(HiddenClass);
+        }
+
+        // hide tooltip
+        private void HideSegmentTooltip(VisualElement bar)
+        {
+            if (_tooltip == null || _tooltipOwner != bar) return;
+
+            _tooltipOwner = null;
+            _tooltip.AddToClassList(HiddenClass);
         }
 
         // =================================== readout ===================================

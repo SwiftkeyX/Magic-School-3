@@ -56,7 +56,6 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 # Plan
 === Interrupt ===
 I prefer the data to be chart, more than a pure number like this.
-- a hero's name: instead of just a name text, could we put hero's there instead? (in other game, they usually put hero's sprite there instead of name text)
 - adjust the chart position, I prefered the chart of damage dealt, damage taken to be stack on each other, not line up like now. 
 
 the healing part should be healing given section only, no need for healed receive section.
@@ -71,6 +70,7 @@ I could say I want almost everything that can show number.
 - implement how much shield is give, but shield is not built yet, so skip this one for now.
 - heal have a little problem: overheal. => fixed
 - why can't wound show a number?
+
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.

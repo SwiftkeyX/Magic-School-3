@@ -7,11 +7,6 @@ using MagicSchool.Combat.Placements;
 
 namespace MagicSchool.UI
 {
-    /// <summary>
-    /// Use a empty main screen panel, then add each panel later:
-    /// 1) Shop Panel
-    /// 2) ...
-    /// </summary>
     internal class ShopPanelController : PanelController, ISellZone
     {
         // the shop tints itself while a held hero hovers it (see Shop.uss)

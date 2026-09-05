@@ -93,7 +93,7 @@ namespace MagicSchool.Combat.Heroes
         }
 
         // get number of hop from me to specify enemy
-        // ASKING: what is _stepsIfBoardWereEmpty here for?
+        // FLAGGING: what is _stepsIfBoardWereEmpty here for?
         private int StepsToReach(ICombatant enemy)
         {
             Hex enemyHex = enemy.CurrentHex();

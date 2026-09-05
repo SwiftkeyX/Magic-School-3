@@ -61,6 +61,9 @@ namespace MagicSchool.UI
                 new Segment("wound",    "seg--ghost",    r => r.HealingLostToWound,   isGhost: true)),
         };
 
+        // marks the one segment the pointer is on; see Scoreboard.uss
+        private const string HoverClass = "seg--hover";
+
         private VisualElement _table;
         private Label _readout;
 
@@ -193,9 +196,8 @@ namespace MagicSchool.UI
             VisualElement line = NewRow();
             if (striped) line.AddToClassList("row--stripe");
 
-            line.pickingMode = PickingMode.Position;
-
             // add event: hovering on a chart, show the number of that chart
+            line.pickingMode = PickingMode.Position;
             line.RegisterCallback<PointerEnterEvent>(_ => ShowReadout(row));
             line.RegisterCallback<PointerLeaveEvent>(_ => ShowReadout(null));
 
@@ -262,6 +264,11 @@ namespace MagicSchool.UI
 
             // the whole bar is measured against the track's longest
             bar.style.width = Length.Percent(value * 100f / longest);
+
+            // add event: the segment could be hovering on
+            bar.pickingMode = PickingMode.Position;
+            bar.RegisterCallback<PointerEnterEvent>(_ => bar.AddToClassList(HoverClass));
+            bar.RegisterCallback<PointerLeaveEvent>(_ => bar.RemoveFromClassList(HoverClass));
 
             return bar;
         }

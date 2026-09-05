@@ -178,6 +178,15 @@
     margin-right: 2px;
 }
 
+/* The segment under the pointer. It grows rather than changing colour: every colour in this
+   panel already means something, so a hover tint would read as a sixth series, and at 10px a
+   border would eat most of the fill. Height is not the encoding here - width is - so growing
+   it cannot misstate the number. The rail centres it, and the row's own padding absorbs the
+   extra 2px above and below. */
+.seg--hover {
+    height: 14px;
+}
+
 /* Five series, ordered so no two neighbours collapse under red-green colour blindness
    (validated: worst adjacent pair ΔE 6.5 protan, and that pair - healed vs taken - never
    touches, since they live in different tracks). Auto is the physical hue, skill the arcane

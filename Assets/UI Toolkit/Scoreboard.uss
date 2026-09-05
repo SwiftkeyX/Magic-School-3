@@ -49,7 +49,7 @@
 .row {
     flex-direction: row;
     align-items: center;
-    padding: 3px 0;
+    padding: 6px 0; 
 }
 
 /* The header carries the only horizontal rule. Row separators at this density turn the table
@@ -74,7 +74,7 @@
 .cell {
     flex-grow: 0;
     flex-shrink: 0;
-    width: 22%;
+    width: 88%;
     font-size: 12px;
     color: rgb(232, 230, 240);
 }
@@ -141,8 +141,9 @@
 /* Each track carries its own legend rather than one shared legend above the table: the same
    grey means overkill here and blocked one column over, so the names have to sit next to the
    bars they describe. */
-.track-head {
-    padding-right: 10px;
+/* Each stacked bar gets its own title and legend, in the order the bars are drawn below. */
+.track-head__block {
+    margin-bottom: 4px;
 }
 
 .track-head__title {
@@ -181,11 +182,24 @@
 }
 
 /* ---------------- bars ---------------- */
+/* A column holds its tracks one above the other. Dealt over taken reads as one hero's fight;
+   the same two bars a column apart read as two unrelated facts. It also buys each bar twice the
+   width, and spends the row height that the 50px portrait opened up. */
+.column {
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 10px;
+}
+
+/* One chart: the rail and the number at its tip. The margins are what put air between two
+   stacked bars, so they read as two readings rather than one thick one. They are on every track
+   rather than on `.track + .track`, because USS has no sibling combinator - it supports only
+   descendant and child - and that rule would be dropped without a word. */
 .track {
     flex-direction: row;
     align-items: center;
-    padding-right: 10px;
-}
+    max-height: 15px; 
+}  
 
 /* The rail is the space a bar is drawn in, and it is deliberately invisible: a visible track
    behind every bar puts four grey blocks on every row, and - worse - an empty track then looks

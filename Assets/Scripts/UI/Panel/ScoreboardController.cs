@@ -9,72 +9,58 @@ namespace MagicSchool.UI
 {
     internal class ScoreboardController : PanelController, IScoreboardPanel
     {
-        /// One coloured piece of a bar.
-        private readonly struct Segment
+        // ================================= Track var =================================
+        // each track represent one of the hero performance 
+        // e.g. damage dealt, damage taken, etc...
+
+        // === damage dealt ===
+        private static readonly Track Dealt = new Track("DAMAGE DEALT",
+            new Segment("auto", "seg--auto", r => r.AutoAttackDamage),
+            new Segment("skill", "seg--skill", r => r.SkillDamage),
+            new Segment("overkill", "seg--ghost", r => r.Overkill, isGhost: true));
+
+        // === damage taken ===
+        private static readonly Track Taken = new Track("DAMAGE TAKEN",
+            new Segment("taken", "seg--taken", r => r.DamageTaken),
+            new Segment("blocked", "seg--ghost", r => r.DamageMitigated, isGhost: true));
+
+        // === healing given ===
+        private static readonly Track HealingGiven = new Track("HEALING GIVEN",
+            new Segment("healed", "seg--healed", r => r.HealingDone),
+            new Segment("overheal", "seg--ghost", r => r.Overhealing, isGhost: true));
+
+        // === healing taken ===
+        private static readonly Track HealingTaken = new Track("HEALING TAKEN",
+            new Segment("received", "seg--received", r => r.HealingReceived),
+            new Segment("wound", "seg--ghost", r => r.HealingLostToWound, isGhost: true));
+
+        // ================================= Chart var =================================
+        // Chart contain several track, 1 chart represent 1 hero
+        // e.g. Vharn's Chart = {do 100 dmg, take 300 dmg, etc...}
+
+        // charts contain all chart that'll be shown on the scoreboard.
+        private static readonly Chart[] Charts =
         {
-            public readonly string Name;                     // what the legend and the tooltip call it
-            public readonly string Class;                    // its colour, from Scoreboard.uss
-            public readonly Func<ICombatRecord, int> Value;
-            public readonly bool IsGhost;                    // the part that did not count, see Tracks
-
-            public Segment(string name, string cssClass, Func<ICombatRecord, int> value, bool isGhost = false)
-            {
-                Name = name;
-                Class = cssClass;
-                Value = value;
-                IsGhost = isGhost;
-            }
-        }
-
-        /// One column of bars e.g. damage dealt column, damage taken column
-        private readonly struct Track
-        {
-            public readonly string Header;
-            public readonly Segment[] Segments;
-
-            public Track(string header, params Segment[] segments)
-            {
-                Header = header;
-                Segments = segments;
-            }
-        }
-
-        // initialize each tracks
-        // e.g. damage dealt, damage taken, healing done, healing taken
-        private static readonly Track[] Tracks =
-        {
-            new Track("DAMAGE DEALT",
-                new Segment("auto",     "seg--auto",     r => r.AutoAttackDamage),
-                new Segment("skill",    "seg--skill",    r => r.SkillDamage),
-                new Segment("overkill", "seg--ghost",    r => r.Overkill,             isGhost: true)),
-
-            new Track("DAMAGE TAKEN",
-                new Segment("taken",    "seg--taken",    r => r.DamageTaken),
-                new Segment("blocked",  "seg--ghost",    r => r.DamageMitigated,      isGhost: true)),
-
-            new Track("HEALING DONE",
-                new Segment("healed",   "seg--healed",   r => r.HealingDone),
-                new Segment("overheal", "seg--ghost",    r => r.Overhealing,          isGhost: true)),
-
-            new Track("HEALING TAKEN",
-                new Segment("received", "seg--received", r => r.HealingReceived),
-                new Segment("wound",    "seg--ghost",    r => r.HealingLostToWound,   isGhost: true)),
+            new Chart(Dealt, Taken, HealingGiven, HealingTaken),
         };
 
-        private VisualElement _table;
-
-        // === tooltip ===
-        // the tooltip that appear when hovering on one of a chart. it show how much number that chart actually is.
+        // ================================= tooltip var =================================
         private const float TooltipGap = 4f;
         private Label _tooltip;
         private VisualElement _tooltipOwner;
+
+        // ================================= other var =================================
+        // the entire table that represent this scoreboard
+        private VisualElement _table;
+
+
 
         // =================================== IScoreboardPanel ===================================
         public void ShowScores(IReadOnlyList<ScoreRow> rows)
         {
             if (_table == null) return;
 
-            int[] longest = LongestBarPerTrack(rows);
+            int longest = LongestBar(rows);
 
             HideSegmentTooltip(_tooltipOwner);
 
@@ -99,28 +85,27 @@ namespace MagicSchool.UI
             SetShown(false);
         }
 
-        // =================================== chart width scale ===================================
-        // context: those longest value will be used to set chart width in their own track.
-        // e.g. style.width = value * 100f / longest[damage_max] 
-        
-        // get the highest number of all the track 
-        // e.g. Damage dealt, Damage taken, etc...
-        // e.g. longest = [damage_max, taken_max, etc...]
-        private static int[] LongestBarPerTrack(IReadOnlyList<ScoreRow> rows)
+        // =================================== track width scale ===================================
+        // context: the longest track in the whole table gets the full width. Other shorter track will adjust accordingly to the longest one.
+        // e.g. track's width = (value * 100f) / (longest track in the table)
+
+        // Find across all charts, how much width is the longest
+        private static int LongestBar(IReadOnlyList<ScoreRow> rows)
         {
-            int[] longest = new int[Tracks.Length];
+            int longest = 1;
 
-            for (int t = 0; t < Tracks.Length; t++)
+            foreach (Chart chart in Charts)
             {
-                // lowest value set to 1, so it's always drawn in UI
-                longest[t] = 1;
-
-                foreach (ScoreRow row in rows)
+                foreach (Track track in chart.Tracks)
                 {
-                    int total = 0;
-                    foreach (Segment segment in Tracks[t].Segments) total += ValueOf(row.Record, segment);
+                    foreach (ScoreRow row in rows)
+                    {
+                        // the ghost tail is drawn too, so it has to fit inside the same 100%
+                        int total = 0;
+                        foreach (Segment segment in track.Segments) total += ValueOf(row.Record, segment);
 
-                    if (total > longest[t]) longest[t] = total;
+                        if (total > longest) longest = total;
+                    }
                 }
             }
 
@@ -129,6 +114,10 @@ namespace MagicSchool.UI
 
         // =================================== building ===================================
         // ====== 1. header ======
+        // each header contain title and legend 
+        // e.g. header1 = DAMAGE DEALT | ■ auto  ■ skill  ■ overkill
+        // e.g. header2 = DAMAGE TAKEN | ■ taken  ■ blocked
+
         // add header to the scoreboard
         private static VisualElement BuildHeader()
         {
@@ -136,35 +125,43 @@ namespace MagicSchool.UI
             header.AddToClassList("row--header");
             header.Add(Cell("HERO", "cell--name", "cell--header"));
 
-            // each track have its own header
-            foreach (Track track in Tracks) header.Add(BuildTrackHead(track));
+            foreach (Chart chart in Charts) header.Add(BuildColumnHead(chart));
 
             return header;
         }
 
-        // build header for a track
-        // the header contain title and legend 
-        private static VisualElement BuildTrackHead(Track track)
+        private static VisualElement BuildColumnHead(Chart column)
         {
-            // head = contain title and legend
             VisualElement head = new VisualElement();
             head.AddToClassList("cell");
+            head.AddToClassList("column");
             head.AddToClassList("track-head");
             head.pickingMode = PickingMode.Ignore;
 
-            // title = DAMAMGE DEALT, DAMAGE TAKEN, etc...
+            foreach (Track track in column.Tracks) head.Add(BuildTrackHead(track));
+
+            return head;
+        }
+
+        // add title and legend
+        private static VisualElement BuildTrackHead(Track track)
+        {
+            VisualElement head = new VisualElement();
+            head.AddToClassList("track-head__block");
+            head.pickingMode = PickingMode.Ignore;
+
+            // title = DAMAGE DEALT, DAMAGE TAKEN, etc...
             Label title = new Label(track.Header);
             title.AddToClassList("track-head__title");
             title.pickingMode = PickingMode.Ignore;
             head.Add(title);
 
-            // legend = ■ auto  ■ skill  ■ overkill 
+            // legend = ■ auto  ■ skill  ■ overkill
             VisualElement legend = new VisualElement();
             legend.AddToClassList("track-head__legend");
             legend.pickingMode = PickingMode.Ignore;
 
-            // build a legend
-            foreach (Segment segment in track.Segments) legend.Add(BuildKey(segment));
+            foreach (Segment segment in track.Segments) legend.Add(BuildLegend(segment));
 
             head.Add(legend);
 
@@ -172,7 +169,7 @@ namespace MagicSchool.UI
         }
 
         // build a legend to look like this => ■ auto
-        private static VisualElement BuildKey(Segment segment)
+        private static VisualElement BuildLegend(Segment segment)
         {
             VisualElement key = new VisualElement();
             key.AddToClassList("key");
@@ -195,7 +192,9 @@ namespace MagicSchool.UI
         }
 
         // ====== 2. row ======
-        private VisualElement BuildRow(ScoreRow row, int[] longest, bool striped)
+        // each row consist of hero's sprite and its chart
+        // e.g. sprite | [damage dealt | damage taken | etc...]
+        private VisualElement BuildRow(ScoreRow row, int longest, bool striped)
         {
             VisualElement line = NewRow();
             if (striped) line.AddToClassList("row--stripe");
@@ -203,26 +202,47 @@ namespace MagicSchool.UI
             // add hero sprite to this line
             line.Add(HeroCell(row));
 
-            // add chart to this line
-            for (int t = 0; t < Tracks.Length; t++)
+            // add track to this line
+            for (int c = 0; c < Charts.Length; c++)
             {
-                line.Add(BuildTrack(row.Record, Tracks[t], longest[t]));
+                line.Add(BuildTracks(row.Record, Charts[c], longest));
             }
 
             return line;
         }
 
-        // add chart to the row
-        // e.g. damage dealt chart, damage taken chart, etc... 
+        // add all the tracks
+        private VisualElement BuildTracks(ICombatRecord record, Chart column, int longest)
+        {
+            VisualElement cell = new VisualElement();
+            cell.AddToClassList("cell");
+            cell.AddToClassList("column");
+            cell.pickingMode = PickingMode.Ignore;
+
+            for (int t = 0; t < column.Tracks.Length; t++)
+            {
+                cell.Add(BuildTrack(record, column.Tracks[t], longest));
+            }
+
+            return cell;
+        }
+
+        // add one track consist of segments, and the total
+        // e.g. dmg dealt = auto-attack segment | skill segment | total dmg
         private VisualElement BuildTrack(ICombatRecord record, Track track, int longest)
         {
-            // add rail - a chart 
+            VisualElement line = new VisualElement();
+            line.AddToClassList("track");
+            line.pickingMode = PickingMode.Ignore;
+
+            // add a visual element for track 
             VisualElement rail = new VisualElement();
             rail.AddToClassList("track__rail");
             rail.pickingMode = PickingMode.Ignore;
 
             int total = 0;
 
+            // a actual track added here
             for (int i = 0; i < track.Segments.Length; i++)
             {
                 Segment segment = track.Segments[i];
@@ -231,50 +251,41 @@ namespace MagicSchool.UI
                 if (!segment.IsGhost) total += value;
                 if (value <= 0) continue;
 
-                // a actual chart added here
-                rail.Add(NewSegment(segment, value, longest));  
+                // add each segment additively - combine into 1 track
+                rail.Add(NewSegment(segment, value, longest));
             }
 
-            // add cell - to occupy the rail
-            VisualElement cell = new VisualElement();
-            cell.AddToClassList("cell");
-            cell.AddToClassList("track");
-            cell.pickingMode = PickingMode.Ignore;
+            line.Add(rail);
+            line.Add(TrackValue(total));
 
-            // chart added
-            cell.Add(rail);
-
-            // total number added
-            cell.Add(TrackValue(total));
-
-            return cell;
+            return line;
         }
 
         // a actual chart added here
-        // a whole bar's width was scaling accordingly to the track's longest bar.
+        // a whole track's width was scaling accordingly to the longest track in the table.
         private VisualElement NewSegment(Segment segment, int value, int longest)
         {
-            VisualElement bar = new VisualElement();
-            bar.AddToClassList("seg");
-            bar.AddToClassList(segment.Class);
+            VisualElement track = new VisualElement();
+            track.AddToClassList("seg");
+            track.AddToClassList(segment.Class);
 
-            // the whole bar is measured against the track's longest
-            bar.style.width = Length.Percent(value * 100f / longest);
+            // the whole track is measured against the longest track in the table
+            track.style.width = Length.Percent(value * 100f / longest);
 
             // add event: the segment could be hovering on
-            bar.pickingMode = PickingMode.Position;
-            bar.RegisterCallback<PointerEnterEvent>(_ =>
+            track.pickingMode = PickingMode.Position;
+            track.RegisterCallback<PointerEnterEvent>(_ =>
             {
-                bar.AddToClassList("seg--hover");
-                ShowSegmentTooltip(bar, segment, value);
+                track.AddToClassList("seg--hover");
+                ShowSegmentTooltip(track, segment, value);
             });
-            bar.RegisterCallback<PointerLeaveEvent>(_ =>
+            track.RegisterCallback<PointerLeaveEvent>(_ =>
             {
-                bar.RemoveFromClassList("seg--hover");
-                HideSegmentTooltip(bar);
+                track.RemoveFromClassList("seg--hover");
+                HideSegmentTooltip(track);
             });
 
-            return bar;
+            return track;
         }
 
         private static Label TrackValue(int total)
@@ -320,7 +331,7 @@ namespace MagicSchool.UI
 
         // =================================== tooltip ===================================
         // this tooltip show how much this segment does in number
-        
+
         // initialize a tooltip for segment
         // e.g. auto-attack = 250 damage, skill = 400 damage
         private static Label NewTooltip(VisualElement panel)
@@ -336,15 +347,15 @@ namespace MagicSchool.UI
         }
 
         // show tooltip on top of the segment
-        private void ShowSegmentTooltip(VisualElement bar, Segment segment, int value)
+        private void ShowSegmentTooltip(VisualElement track, Segment segment, int value)
         {
             if (_tooltip == null) return;
 
-            _tooltipOwner = bar;
+            _tooltipOwner = track;
             _tooltip.text = segment.Name + "  " + Format(value);
 
             // move tooltip to on top of segment
-            Rect bounds = bar.worldBound;
+            Rect bounds = track.worldBound;
             Vector2 top = _tooltip.parent.WorldToLocal(new Vector2(bounds.center.x, bounds.yMin));
             _tooltip.style.left = top.x;
             _tooltip.style.top = top.y - TooltipGap;
@@ -354,9 +365,9 @@ namespace MagicSchool.UI
         }
 
         // hide tooltip
-        private void HideSegmentTooltip(VisualElement bar)
+        private void HideSegmentTooltip(VisualElement track)
         {
-            if (_tooltip == null || _tooltipOwner != bar) return;
+            if (_tooltip == null || _tooltipOwner != track) return;
 
             _tooltipOwner = null;
             _tooltip.AddToClassList(HiddenClass);
@@ -388,6 +399,50 @@ namespace MagicSchool.UI
             foreach (string extra in extraClasses) cell.AddToClassList(extra);
 
             return cell;
+        }
+
+        // One coloured piece inside a track, each segment represent different value of that track.
+        // e.g. damage dealt track can have 2 segment: 1) auto-attack, 2) skill
+        private readonly struct Segment
+        {
+            public readonly string Name;                     // what the legend and the tooltip call it
+            public readonly string Class;                    // its colour, from Scoreboard.uss
+            public readonly Func<ICombatRecord, int> Value;
+
+            // the segment part that did not count to total 
+            // e.g. dmg dealt => overkill doesn't count to total dmg.
+            // e.g. heal given => overhealed doesn't count to total heal. 
+            public readonly bool IsGhost;                    
+
+            public Segment(string name, string cssClass, Func<ICombatRecord, int> value, bool isGhost = false)
+            {
+                Name = name;
+                Class = cssClass;
+                Value = value;
+                IsGhost = isGhost;
+            }
+        }
+
+        // Track represent a number visually using UI bar 
+        // e.g. damage dealt bar, damage taken bar
+        private readonly struct Track
+        {
+            public readonly string Header;
+            public readonly Segment[] Segments;
+
+            public Track(string header, params Segment[] segments)
+            {
+                Header = header;
+                Segments = segments;
+            }
+        }
+
+        // each hero have 1 Chart
+        // Chart consist of all several track that represent hero performance
+        private readonly struct Chart
+        {
+            public readonly Track[] Tracks;
+            public Chart(params Track[] tracks) => Tracks = tracks;
         }
     }
 }

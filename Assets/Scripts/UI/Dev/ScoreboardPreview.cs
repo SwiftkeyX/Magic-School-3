@@ -23,19 +23,25 @@ namespace MagicSchool.UI
         private IScoreboardPanel _scoreboard;
         private bool _shown;
 
+        private void Start() => FindScoreboard();
+
         // find scoreboard 
-        private void Start()
+        private IScoreboardPanel FindScoreboard()
         {
+            if (_scoreboard as UnityEngine.Object != null) return _scoreboard;
+
             _scoreboard = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .OfType<IScoreboardPanel>()
                 .FirstOrDefault();
+
+            return _scoreboard;
         }
 
         // add context menu in inspector. For toggling the scoreboard.
         [ContextMenu("Toggle preview")]
         private void Toggle()
         {
-            if (_scoreboard == null) return;
+            if (FindScoreboard() == null) return;
 
             _shown = !_shown;
 

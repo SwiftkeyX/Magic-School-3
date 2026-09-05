@@ -12,15 +12,16 @@
          what you get. The inline widths on .seg are the one thing the controller sets in code
          instead of in USS. If you add a track or a segment in code, add one here too or the
          preview will lie.
-         NOTE: UI Builder deletes every comment in a file it saves - see CLAUDE.md. -->
-    <Style src="Scoreboard.uss"/>
+         NOTE: UI Builder deletes every comment in a file it saves - see CLAUDE.md. It has
+         already eaten this block once; these lines were restored from git. -->
+    <Style src="project://database/Assets/UI%20Toolkit/Scoreboard.uss?fileID=7433441132597879392&amp;guid=abcae9c2a13001c43aa3397740a39c8e&amp;type=3#Scoreboard"/>
     <ui:VisualElement name="ScoreboardPanel" class="scoreboard-layer">
-        <ui:VisualElement name="Scoreboard" class="scoreboard">
+        <ui:VisualElement name="Scoreboard" class="scoreboard" style="min-height: 60%; max-width: 60%; width: 100%;">
             <ui:Label name="Title" text="ROUND SCOREBOARD" class="scoreboard__title"/>
             <ui:Label name="Subtitle" text="bar length compares heroes down a column - this round only" class="scoreboard__subtitle"/>
             <!-- Filled in by the controller while a row is hovered, blank otherwise. It keeps its
                  height either way so the table below does not jump. -->
-            <ui:Label name="Readout" text="Vharn   |   auto 1,210 &#183; skill 1,270 &#183; overkill 145   |   taken 1,890 &#183; blocked 620   |   healed 0 &#183; overheal 0   |   received 340 &#183; wound 0" class="scoreboard__readout"/>
+            <ui:Label name="Readout" text="Vharn   |   auto 1,210 · skill 1,270 · overkill 145   |   taken 1,890 · blocked 620   |   healed 0 · overheal 0   |   received 340 · wound 0" class="scoreboard__readout"/>
             <ui:VisualElement name="ScoreTable">
                 <ui:VisualElement class="row row--header">
                     <ui:Label text="HERO" class="cell cell--name cell--header"/>

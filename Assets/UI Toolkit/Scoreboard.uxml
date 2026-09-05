@@ -80,7 +80,11 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement class="row">
-                    <ui:Label text="Vharn" class="cell cell--name name--blue"/>
+                    <ui:VisualElement class="cell cell--name">
+                        <ui:VisualElement class="hero hero--blue">
+                            <ui:Label text="Vharn" class="hero__name"/>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                     <ui:VisualElement class="cell track">
                         <ui:VisualElement class="track__rail">
                             <ui:VisualElement class="seg seg--auto" style="width: 48%;"/>
@@ -108,7 +112,11 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement class="row row--stripe">
-                    <ui:Label text="Sithra" class="cell cell--name name--red name--dead"/>
+                    <ui:VisualElement class="cell cell--name">
+                        <ui:VisualElement class="hero hero--red hero--dead">
+                            <ui:Label text="Sithra" class="hero__name"/>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                     <ui:VisualElement class="cell track">
                         <ui:VisualElement class="track__rail">
                             <ui:VisualElement class="seg seg--auto" style="width: 25%;"/>
@@ -133,7 +141,11 @@
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement class="row">
-                    <ui:Label text="Solace" class="cell cell--name name--blue"/>
+                    <ui:VisualElement class="cell cell--name">
+                        <ui:VisualElement class="hero hero--blue">
+                            <ui:Label text="Solace" class="hero__name"/>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                     <ui:VisualElement class="cell track">
                         <ui:VisualElement class="track__rail">
                             <ui:VisualElement class="seg seg--auto seg--end" style="width: 17%;"/>

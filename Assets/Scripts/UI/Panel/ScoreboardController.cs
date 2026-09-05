@@ -200,11 +200,8 @@ namespace MagicSchool.UI
             VisualElement line = NewRow();
             if (striped) line.AddToClassList("row--stripe");
 
-            // add hero name to this line 
-            Label name = Cell(row.Name, "cell--name");
-            name.AddToClassList(row.Team == TeamEnum.Blue ? "name--blue" : "name--red");
-            if (!row.IsAlive) name.AddToClassList("name--dead");
-            line.Add(name);
+            // add hero sprite to this line
+            line.Add(HeroCell(row));
 
             // add chart to this line
             for (int t = 0; t < Tracks.Length; t++)
@@ -289,6 +286,36 @@ namespace MagicSchool.UI
             if (total == 0) value.AddToClassList("track__value--zero");
 
             return value;
+        }
+
+        // add visual element that contain hero sprite
+        private static VisualElement HeroCell(ScoreRow row)
+        {
+            // create cell container
+            VisualElement cell = new VisualElement();
+            cell.AddToClassList("cell");
+            cell.AddToClassList("cell--name");
+            cell.pickingMode = PickingMode.Ignore;
+
+            // create hero's sprite (now sprite is the placeholder)
+            VisualElement sprite = new VisualElement();
+            sprite.AddToClassList("hero");
+            sprite.pickingMode = PickingMode.Ignore;
+
+            // put hero name into the sprite (placeholder)
+            Label name = new Label(row.Name);
+            name.AddToClassList("hero__name");
+            name.pickingMode = PickingMode.Ignore;
+            sprite.Add(name);
+
+            // separate team by colour
+            sprite.AddToClassList(row.Team == TeamEnum.Blue ? "hero--blue" : "hero--red");
+            if (!row.IsAlive) sprite.AddToClassList("hero--dead");
+
+            // add hero's sprite to a cell container
+            cell.Add(sprite);
+
+            return cell;
         }
 
         // =================================== tooltip ===================================

@@ -496,6 +496,111 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &420783682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 420783684}
+  - component: {fileID: 420783683}
+  m_Layer: 0
+  m_Name: DevTool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &420783683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420783682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1973e3df852479f45bbf41d37c52e180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MagicSchool.UI::MagicSchool.UI.ScoreboardPreview
+  _rows:
+  - Name: Vharn
+    Team: 0
+    IsAlive: 1
+    Auto: 1210
+    Skill: 1270
+    Overkill: 145
+    Taken: 1890
+    Blocked: 620
+    Healed: 0
+    Overheal: 0
+    Received: 340
+    Wound: 0
+  - Name: Sithra
+    Team: 1
+    IsAlive: 0
+    Auto: 640
+    Skill: 1335
+    Overkill: 0
+    Taken: 2310
+    Blocked: 410
+    Healed: 0
+    Overheal: 0
+    Received: 0
+    Wound: 0
+  - Name: Solace
+    Team: 0
+    IsAlive: 1
+    Auto: 430
+    Skill: 0
+    Overkill: 0
+    Taken: 760
+    Blocked: 240
+    Healed: 1180
+    Overheal: 295
+    Received: 120
+    Wound: 60
+  - Name: Pip
+    Team: 0
+    IsAlive: 1
+    Auto: 0
+    Skill: 0
+    Overkill: 0
+    Taken: 90
+    Blocked: 12
+    Healed: 0
+    Overheal: 0
+    Received: 0
+    Wound: 0
+  - Name: Bulwark
+    Team: 1
+    IsAlive: 1
+    Auto: 180
+    Skill: 90
+    Overkill: 20
+    Taken: 3120
+    Blocked: 2400
+    Healed: 0
+    Overheal: 0
+    Received: 900
+    Wound: 220
+--- !u!4 &420783684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420783682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &477776518 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -3424873907348500826, guid: 38b26e3300af184498d1cfedcf906f4e, type: 3}
@@ -1277,6 +1382,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 344829187}
+  - {fileID: 420783684}
   - {fileID: 1091040812}
   - {fileID: 318911244}
   - {fileID: 52110551}

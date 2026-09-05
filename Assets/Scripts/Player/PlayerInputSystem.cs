@@ -19,6 +19,9 @@ namespace MagicSchool.Player
         public static bool InspectPressedThisFrame => Mouse.current.rightButton.wasPressedThisFrame;
         public static bool RestartPressedThisFrame => Keyboard.current.rKey.wasPressedThisFrame;
 
+        // dev only: raise the scoreboard with made-up numbers, see ScoreboardPreview
+        public static bool PreviewScoreboardPressedThisFrame => Keyboard.current.f1Key.wasPressedThisFrame;
+
         // adjust game's speed using numkey
         public static int SpeedPressedThisFrame()
         {

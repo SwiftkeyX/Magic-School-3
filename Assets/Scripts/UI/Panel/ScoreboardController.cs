@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 using MagicSchool.Contracts;
@@ -13,7 +12,7 @@ namespace MagicSchool.UI
         /// One coloured piece of a bar.
         private readonly struct Segment
         {
-            public readonly string Name;                     // what the legend and the readout call it
+            public readonly string Name;                     // what the legend and the tooltip call it
             public readonly string Class;                    // its colour, from Scoreboard.uss
             public readonly Func<ICombatRecord, int> Value;
             public readonly bool IsGhost;                    // the part that did not count, see Tracks
@@ -63,7 +62,6 @@ namespace MagicSchool.UI
         };
 
         private VisualElement _table;
-        private Label _readout;
 
         // === tooltip ===
         // the tooltip that appear when hovering on one of a chart. it show how much number that chart actually is.
@@ -78,7 +76,6 @@ namespace MagicSchool.UI
 
             int[] longest = LongestBarPerTrack(rows);
 
-            ShowReadout(null);
             HideSegmentTooltip(_tooltipOwner);
 
             _table.Clear();
@@ -96,7 +93,6 @@ namespace MagicSchool.UI
         protected override void OnMounted(VisualElement panel)
         {
             _table = panel.Q<VisualElement>("ScoreTable");
-            _readout = panel.Q<Label>("Readout");
             _tooltip = NewTooltip(panel);
 
             // nothing to show until a round has actually been fought
@@ -201,11 +197,6 @@ namespace MagicSchool.UI
         {
             VisualElement line = NewRow();
             if (striped) line.AddToClassList("row--stripe");
-
-            // add event: hovering on a chart, show the number of that chart
-            line.pickingMode = PickingMode.Position;
-            line.RegisterCallback<PointerEnterEvent>(_ => ShowReadout(row));
-            line.RegisterCallback<PointerLeaveEvent>(_ => ShowReadout(null));
 
             // add hero name to this line 
             Label name = Cell(row.Name, "cell--name");
@@ -340,37 +331,6 @@ namespace MagicSchool.UI
 
             _tooltipOwner = null;
             _tooltip.AddToClassList(HiddenClass);
-        }
-
-        // =================================== readout ===================================
-        // hovering on a chart, show the number of that chart
-        private void ShowReadout(ScoreRow? hovered)
-        {
-            if (_readout == null) return;
-
-            if (hovered == null)
-            {
-                _readout.text = string.Empty;
-                return;
-            }
-
-            ScoreRow row = hovered.Value;
-            StringBuilder line = new StringBuilder(row.Name);
-
-            foreach (Track track in Tracks)
-            {
-                line.Append("   |   ");
-
-                for (int i = 0; i < track.Segments.Length; i++)
-                {
-                    if (i > 0) line.Append(" · ");
-
-                    Segment segment = track.Segments[i];
-                    line.Append(segment.Name).Append(' ').Append(Format(ValueOf(row.Record, segment)));
-                }
-            }
-
-            _readout.text = line.ToString();
         }
 
         // =================================== helper ===================================

@@ -19,9 +19,6 @@
         <ui:VisualElement name="Scoreboard" class="scoreboard" style="min-height: 60%; max-width: 60%; width: 100%;">
             <ui:Label name="Title" text="ROUND SCOREBOARD" class="scoreboard__title"/>
             <ui:Label name="Subtitle" text="bar length compares heroes down a column - this round only" class="scoreboard__subtitle"/>
-            <!-- Filled in by the controller while a row is hovered, blank otherwise. It keeps its
-                 height either way so the table below does not jump. -->
-            <ui:Label name="Readout" text="Vharn   |   auto 1,210 · skill 1,270 · overkill 145   |   taken 1,890 · blocked 620   |   healed 0 · overheal 0   |   received 340 · wound 0" class="scoreboard__readout"/>
             <ui:VisualElement name="ScoreTable">
                 <ui:VisualElement class="row row--header">
                     <ui:Label text="HERO" class="cell cell--name cell--header"/>

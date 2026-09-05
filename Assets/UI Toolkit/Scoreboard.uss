@@ -42,17 +42,7 @@
 .scoreboard__subtitle {
     font-size: 11px;
     color: rgba(232, 230, 240, 0.5);
-    margin-bottom: 1px;
-}
-
-/* Hover a row and its ten figures are spelled out here, exactly. The bars carry the shape of
-   the round; this is where a number gets read to the digit. It holds its height while empty so
-   the table underneath does not jump every time the pointer crosses a row. */
-.scoreboard__readout {
-    font-size: 11px;
-    min-height: 15px;
-    color: rgba(232, 230, 240, 0.8);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 /* ---------------- rows ---------------- */

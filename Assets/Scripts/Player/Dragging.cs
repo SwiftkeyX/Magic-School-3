@@ -5,6 +5,7 @@ using MagicSchool.Core;
 using MagicSchool.Combat.Heroes;
 using MagicSchool.Combat.Placements;
 using MagicSchool.Items;
+using MagicSchool.Input;
 
 namespace MagicSchool.Player
 {

@@ -3,6 +3,7 @@ using UnityEngine;
 using MagicSchool.Contracts;
 using MagicSchool.Core;
 using MagicSchool.Combat.Placements;
+using MagicSchool.Input;
 
 namespace MagicSchool.Player
 {

@@ -11,15 +11,16 @@ allowed to reference:
 ```
 MagicSchool.Contracts  -> (nothing)          leaf: interfaces + enums everyone shares
 MagicSchool.Engine     -> (nothing)          leaf: DebugTool, SceneHelper, CurveMotion
+MagicSchool.Input      -> Unity.InputSystem  leaf: PlayerInputSystem, the only place input is read
 MagicSchool.VFX        -> (nothing)          leaf: FloatingText
 MagicSchool.StatScaling-> Contracts          leaf-ish: StatRatio + Scaling, the amount math
 MagicSchool.CombatRecording -> Contracts     leaf: the damage meter's books, see below
 MagicSchool.Modifiers  -> Contracts, StatScaling
 MagicSchool.Skills     -> Contracts, Engine, StatScaling, Modifiers
 MagicSchool.Combat     -> Contracts, Engine, Skills, VFX, Modifiers
-MagicSchool.UI         -> Contracts, Combat
+MagicSchool.UI         -> Contracts, Combat, Items, Input
 MagicSchool.Core       -> Contracts, Engine, Skills, Combat, CombatRecording
-MagicSchool.Player     -> Contracts, Combat, Core, Unity.InputSystem
+MagicSchool.Player     -> Contracts, Combat, Core, Items, Input
 MagicSchool.Editor     -> Core                              (Editor-only)
 ```
 
@@ -46,6 +47,16 @@ Rules that aren't visible from any single file:
   counting, which is what stops a reporting feature turning into a combat feature. The four event
   and outcome structs live in `Contracts` for the same reason `IEffectable` does: they are what
   both sides must agree on, so neither side has to reference the other.
+- **`Input` is its own module so a keypress is not a reason to reference `Player`.** Reading a
+  key belongs to no one in particular - the board drag asks, the stage keys ask, a dev tool that
+  raises a panel asks - and before the split, asking cost you `Player`, and so `Combat`, `Core`
+  and `Items` behind it. `Player` no longer references `Unity.InputSystem` at all; only `Input`
+  does. The namespace is `MagicSchool.Input` while the class is `PlayerInputSystem`, so the two
+  never collide the way `MagicSchool.Scaling` holding a `Scaling` would - but be aware the
+  namespace shadows `UnityEngine.Input` for a bare `Input.` written inside `MagicSchool.*`.
+  Nothing should write one: this project is New-Input-System-only and `UnityEngine.Input`
+  compiles fine then throws at runtime.
+
 - **`Heroes/` and `Placements/` share one assembly on purpose.** A hero needs its hex and a hex
   tracks its occupant; that coupling is real, so `Combat` admits it rather than pretending otherwise.
   Splitting them was tried and doesn't work.

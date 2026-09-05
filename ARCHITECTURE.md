@@ -14,14 +14,15 @@ Arrows point at what a module is allowed to reference.
 ```
 MagicSchool.Contracts    -> (nothing)
 MagicSchool.Engine       -> (nothing)
+MagicSchool.Input        -> Unity.InputSystem
 MagicSchool.VFX          -> Unity.TextMeshPro
 MagicSchool.StatScaling  -> Contracts
 MagicSchool.Modifiers    -> Contracts
 MagicSchool.Skills       -> Contracts, Engine, StatScaling, Modifiers
 MagicSchool.Combat       -> Contracts, Engine, Skills, VFX, Modifiers
-MagicSchool.UI           -> Contracts, Combat, UnityEngine.UI
+MagicSchool.UI           -> Contracts, Combat, Items, Input, UnityEngine.UI
 MagicSchool.Core         -> Contracts, Engine, Skills, Combat
-MagicSchool.Player       -> Contracts, Combat, Core, Unity.InputSystem
+MagicSchool.Player       -> Contracts, Combat, Core, Items, Input
 MagicSchool.Editor       -> Core
 MagicSchool.Combat.Tests -> Combat, Contracts, Skills
 ```
@@ -48,6 +49,12 @@ a cyclic dependency.
 
 - controls the game state machine, e.g. preparation, combat, result.
 - controls stage progression between them, and wires the other modules together.
+
+**Input** — the only place a key or a mouse button is read. It is a leaf on Unity.InputSystem
+and nothing of ours, because "did F1 go down" is a question that belongs to no one in
+particular: the board drag asks it, the stage keys ask it, a dev tool that raises a panel asks
+it. It used to live inside Player, which meant wanting a keypress cost you a reference to
+Player, and so to Combat, Core and Items along with it.
 
 **Player** — processes player input: dragging heroes, right-click to inspect, and start or restart a fight.
 

@@ -1,15 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace MagicSchool.Player
+namespace MagicSchool.Input
 {
     // Player can: 
     // 1) left click to drag hero/items.
     // 2) right click to inspect hero/items.
     // 3) spacebar to interact with game's stage e.g. start combat, retry, continue to next stage
     // 4) R to quick-retry
-    // FIXLATER: the shop panel doesn't use left click to drag, it use pointerdown instead, let it also use left click from PlayerInputSystem.
-    internal static class PlayerInputSystem
+    public static class PlayerInputSystem
     {
         public static bool IsPointerDown => Mouse.current.leftButton.isPressed;
         public static bool DragPressedThisFrame => Mouse.current.leftButton.wasPressedThisFrame;
@@ -17,9 +16,6 @@ namespace MagicSchool.Player
         public static bool SpacePressedThisFrame => Keyboard.current.spaceKey.wasPressedThisFrame;
         public static bool InspectPressedThisFrame => Mouse.current.rightButton.wasPressedThisFrame;
         public static bool RestartPressedThisFrame => Keyboard.current.rKey.wasPressedThisFrame;
-
-        // dev only: raise the scoreboard with made-up numbers, see ScoreboardPreview
-        public static bool PreviewScoreboardPressedThisFrame => Keyboard.current.f1Key.wasPressedThisFrame;
 
         // adjust game's speed using numkey
         public static int SpeedPressedThisFrame()

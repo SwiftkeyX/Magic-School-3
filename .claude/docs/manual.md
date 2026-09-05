@@ -55,8 +55,29 @@ Mira - do damage by doing cone AOE at herself point to current enemy, repeat 3 t
 
 # Plan
 === Interrupt ===
-For build version:
-- Polishing all the UI panel to have the same style, prefered the same style to Hero panel. 
+That said, a UI test scene still has a real point — just not speed. Right now the only ways to see the scoreboard are to fight a whole round or to have me push fake rows in through reflection. Neither lets you look at it with controlled numbers.
+
+But the cheap version of that isn't a scene — it's a small MonoBehaviour that calls ShowScores with a handmade List<ScoreRow> on a keypress. Drop it in Board, press a key, the panel appears with whatever numbers you want to design against. No second scene to keep in sync as the UI grows, and it works in the real scene where the real panel mounting happens.
+
+
+I prefer the data to be chart, more than a pure number like this.
+- when hovering on each bar, add class to show that bar was hovering on.
+- when hovering on the segment, could we show the number of that segment using popup, the popup that appear on top of the hovering segment  
+- a hero's name: instead of just a name text, could we put hero's there instead? (in other game, they usually put hero's sprite there instead of name text)
+- adjust the chart position, I prefered the chart of damage dealt, damage taken to be stack on each other, not line up like now. 
+
+the healing part should be healing given section only, no need for healed receive section.
+
+when sell hero with item, that item is gone too. This is not intended, the items should stay in the scene.
+
+=== implement new system ===
+I want a UI that show how much damage each hero does, how much damage each hero receive, how much damage each hero heal/omnivamp/reduce healing/etc...
+I could say I want almost everything that can show number.
+- split the AD and AP properly to indicate which does ad or ap damage.
+- implement omnivamp properly through _lookup table.
+- implement how much shield is give, but shield is not built yet, so skip this one for now.
+- heal have a little problem: overheal. => fixed
+- why can't wound show a number?
 
 === implement new hero ===
 Verity - do direct damage (like auto attack does) 4 time in sequence. choose weakest enemy in 2 hex of current target.
@@ -78,6 +99,8 @@ The sprite order layer is so random, I want to have a code organize it later.
 e.g. order = {hero = 0, item = 1, skill = 2, etc...}
 
 when hero count was over the limit, the player can still start the battle which is not intented.
+
+trip .uxml and .uss comment.
 
 # Not implement yet
 ## hero
@@ -116,11 +139,4 @@ Modifer part are some of the most confusing, since the name don't explain itself
 
 
 # Note
-- _lookup missing AP and Omnivamp — an item granting either would equip cleanly and do nothing
 
-1. Pin the Game view to a fixed resolution and set the UI Builder canvas to the same numbers (the canvas inspector has a Match Game View option). Percentages then resolve identically in both. This alone removes the guessing.
-2. Decide whether the UI should scale, and I'd say yes: switch to Scale With Screen Size with the 1200×800 that's already in the asset, Match 0.5. That gives you one true authoring resolution, makes the Builder canvas meaningful, and stops the UI shrinking to nothing on a big monitor. It will change how things look at your current window size, so it's your call.
-3. Tune while it runs — both already work here: UXML/USS hot reload (save a .uss with the game playing and the panel re-applies; I hit this repeatedly this session), and the UI Toolkit Debugger (Window → UI Toolkit → Debugger) attached to the live panel, which shows the resolved styles and box model and lets you poke inline values to find a number before writing it into the USS.
-
-❯ okay, i will pin the game view, match the screen size of UI to the game.
-  Then, I will try edit it during play mode.

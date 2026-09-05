@@ -13,31 +13,24 @@ Built with **Unity 6000.4** (URP, 2D) and **UI Toolkit**.
 
 ## Installing
 
-Two things have to be in place before the project will open:
+### Getting the project
 
-| Needed | Why |
-| --- | --- |
-| **Unity 6000.4.9f1** | Install it through [Unity Hub](https://unity.com/download). The version is pinned in `ProjectSettings/ProjectVersion.txt`; a newer 6000.4.x will open the project and offer to upgrade it. |
-| **Git on your `PATH`** | Not only to clone. One package is pulled straight from a git URL, and Unity's Package Manager shells out to `git` to fetch it — without it the project opens with a missing dependency. |
+- **Git clone:** `git clone https://github.com/SwiftkeyX/Magic-School-3.git`
+- **GitHub download:** click the green `Code` button and select 'Download ZIP'
 
-Then clone and open it:
+The repository uses no Git LFS, so the ZIP is complete — there are no large files to miss.
 
-```bash
-git clone https://github.com/SwiftkeyX/Magic-School-3.git
-```
+### Requirements
 
-In Unity Hub, **Add → Add project from disk**, and pick the folder you just cloned.
+- **Unity 6000.4.9f1**, installed through [Unity Hub](https://unity.com/download).
 
-Nothing needs installing by hand after that. Every other dependency comes from the Unity
-registry, and `Packages/packages-lock.json` pins all of them — the git one by commit hash — so
-you get the versions this was built against rather than whatever is current.
+### Opening the project for the first time
 
-**The first open is slow, and that is expected.** Unity builds its `Library/` folder from
-nothing: importing every sprite, compiling every assembly, generating shader variants.
-Minutes, not seconds. It is cached afterwards, and `Library/` is gitignored, so you pay it
-once per clone.
-
-Then load `Assets/Scenes/Board.unity` and press Play.
+1. In Unity Hub, click **Add** and select the project's root folder.
+2. Open it. The first import takes minutes rather than seconds, while Unity builds `Library/`
+   from nothing. It is cached afterwards.
+3. Open `Assets/Scenes/Board.unity`.
+4. Press **Play**.
 
 ### If a package fails to resolve
 
@@ -47,11 +40,8 @@ One dependency does not come from the Unity registry:
 "com.coplaydev.coplay": "https://github.com/CoplayDev/unity-plugin.git#beta"
 ```
 
-It is an editor-side assistant plugin, and the game does not use it — nothing under
-`Assets/Scripts/` references it and no `.asmdef` lists it. If Package Manager cannot fetch it
-(no git on the `PATH`, no network, or the `beta` branch has moved), delete that line from
-`Packages/manifest.json` and reopen the project. Unity will rewrite the lock file, and the
-game builds and plays without it.
+It is an editor-side assistant plugin, and the game does not use it. If Package Manager cannot fetch it,
+delete that line from `Packages/manifest.json` and reopen the project.
 
 ## Running it
 

@@ -22,64 +22,6 @@
             <ui:VisualElement name="ScoreTable">
                 <ui:VisualElement class="row row--header">
                     <ui:Label text="HERO" class="cell cell--name cell--header"/>
-                    <ui:VisualElement class="cell column track-head">
-                            <ui:VisualElement class="track-head__block">
-                            <ui:Label text="DAMAGE DEALT" class="track-head__title"/>
-                            <ui:VisualElement class="track-head__legend">
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--auto"/>
-                                    <ui:Label text="auto" class="key__label"/>
-                                </ui:VisualElement>
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--skill"/>
-                                    <ui:Label text="skill" class="key__label"/>
-                                </ui:VisualElement>
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--ghost"/>
-                                    <ui:Label text="overkill" class="key__label"/>
-                                </ui:VisualElement>
-                            </ui:VisualElement>
-                            </ui:VisualElement>
-                            <ui:VisualElement class="track-head__block">
-                            <ui:Label text="DAMAGE TAKEN" class="track-head__title"/>
-                            <ui:VisualElement class="track-head__legend">
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--taken"/>
-                                    <ui:Label text="taken" class="key__label"/>
-                                </ui:VisualElement>
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--ghost"/>
-                                    <ui:Label text="blocked" class="key__label"/>
-                                </ui:VisualElement>
-                            </ui:VisualElement>
-                            </ui:VisualElement>
-                            <ui:VisualElement class="track-head__block">
-                            <ui:Label text="HEALING DONE" class="track-head__title"/>
-                            <ui:VisualElement class="track-head__legend">
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--healed"/>
-                                    <ui:Label text="healed" class="key__label"/>
-                                </ui:VisualElement>
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--ghost"/>
-                                    <ui:Label text="overheal" class="key__label"/>
-                                </ui:VisualElement>
-                            </ui:VisualElement>
-                            </ui:VisualElement>
-                            <ui:VisualElement class="track-head__block">
-                            <ui:Label text="HEALING TAKEN" class="track-head__title"/>
-                            <ui:VisualElement class="track-head__legend">
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--received"/>
-                                    <ui:Label text="received" class="key__label"/>
-                                </ui:VisualElement>
-                                <ui:VisualElement class="key">
-                                    <ui:VisualElement class="key__swatch seg--ghost"/>
-                                    <ui:Label text="wound" class="key__label"/>
-                                </ui:VisualElement>
-                            </ui:VisualElement>
-                            </ui:VisualElement>
-                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement class="row">
                     <ui:VisualElement class="cell cell--name">

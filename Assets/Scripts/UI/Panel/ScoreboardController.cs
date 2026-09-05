@@ -114,81 +114,13 @@ namespace MagicSchool.UI
 
         // =================================== building ===================================
         // ====== 1. header ======
-        // each header contain title and legend 
-        // e.g. header1 = DAMAGE DEALT | ■ auto  ■ skill  ■ overkill
-        // e.g. header2 = DAMAGE TAKEN | ■ taken  ■ blocked
-
-        // add header to the scoreboard
         private static VisualElement BuildHeader()
         {
             VisualElement header = NewRow();
             header.AddToClassList("row--header");
             header.Add(Cell("HERO", "cell--name", "cell--header"));
 
-            foreach (Chart chart in Charts) header.Add(BuildColumnHead(chart));
-
             return header;
-        }
-
-        private static VisualElement BuildColumnHead(Chart column)
-        {
-            VisualElement head = new VisualElement();
-            head.AddToClassList("cell");
-            head.AddToClassList("column");
-            head.AddToClassList("track-head");
-            head.pickingMode = PickingMode.Ignore;
-
-            foreach (Track track in column.Tracks) head.Add(BuildTrackHead(track));
-
-            return head;
-        }
-
-        // add title and legend
-        private static VisualElement BuildTrackHead(Track track)
-        {
-            VisualElement head = new VisualElement();
-            head.AddToClassList("track-head__block");
-            head.pickingMode = PickingMode.Ignore;
-
-            // title = DAMAGE DEALT, DAMAGE TAKEN, etc...
-            Label title = new Label(track.Header);
-            title.AddToClassList("track-head__title");
-            title.pickingMode = PickingMode.Ignore;
-            head.Add(title);
-
-            // legend = ■ auto  ■ skill  ■ overkill
-            VisualElement legend = new VisualElement();
-            legend.AddToClassList("track-head__legend");
-            legend.pickingMode = PickingMode.Ignore;
-
-            foreach (Segment segment in track.Segments) legend.Add(BuildLegend(segment));
-
-            head.Add(legend);
-
-            return head;
-        }
-
-        // build a legend to look like this => ■ auto
-        private static VisualElement BuildLegend(Segment segment)
-        {
-            VisualElement key = new VisualElement();
-            key.AddToClassList("key");
-            key.pickingMode = PickingMode.Ignore;
-
-            // add class for ■
-            VisualElement swatch = new VisualElement();
-            swatch.AddToClassList("key__swatch");
-            swatch.AddToClassList(segment.Class);
-            swatch.pickingMode = PickingMode.Ignore;
-            key.Add(swatch);
-
-            // add name e.g. auto, skill, overkill, etc...
-            Label name = new Label(segment.Name);
-            name.AddToClassList("key__label");
-            name.pickingMode = PickingMode.Ignore;
-            key.Add(name);
-
-            return key;
         }
 
         // ====== 2. row ======
@@ -252,7 +184,7 @@ namespace MagicSchool.UI
                 if (value <= 0) continue;
 
                 // add each segment additively - combine into 1 track
-                rail.Add(NewSegment(segment, value, longest));
+                rail.Add(NewSegment(track, segment, value, longest));
             }
 
             line.Add(rail);
@@ -263,29 +195,29 @@ namespace MagicSchool.UI
 
         // a actual chart added here
         // a whole track's width was scaling accordingly to the longest track in the table.
-        private VisualElement NewSegment(Segment segment, int value, int longest)
+        private VisualElement NewSegment(Track track, Segment segment, int value, int longest)
         {
-            VisualElement track = new VisualElement();
-            track.AddToClassList("seg");
-            track.AddToClassList(segment.Class);
+            VisualElement bar = new VisualElement();
+            bar.AddToClassList("seg");
+            bar.AddToClassList(segment.Class);
 
             // the whole track is measured against the longest track in the table
-            track.style.width = Length.Percent(value * 100f / longest);
+            bar.style.width = Length.Percent(value * 100f / longest);
 
             // add event: the segment could be hovering on
-            track.pickingMode = PickingMode.Position;
-            track.RegisterCallback<PointerEnterEvent>(_ =>
+            bar.pickingMode = PickingMode.Position;
+            bar.RegisterCallback<PointerEnterEvent>(_ =>
             {
-                track.AddToClassList("seg--hover");
-                ShowSegmentTooltip(track, segment, value);
+                bar.AddToClassList("seg--hover");
+                ShowSegmentTooltip(bar, track, segment, value);
             });
-            track.RegisterCallback<PointerLeaveEvent>(_ =>
+            bar.RegisterCallback<PointerLeaveEvent>(_ =>
             {
-                track.RemoveFromClassList("seg--hover");
-                HideSegmentTooltip(track);
+                bar.RemoveFromClassList("seg--hover");
+                HideSegmentTooltip(bar);
             });
 
-            return track;
+            return bar;
         }
 
         private static Label TrackValue(int total)
@@ -347,15 +279,16 @@ namespace MagicSchool.UI
         }
 
         // show tooltip on top of the segment
-        private void ShowSegmentTooltip(VisualElement track, Segment segment, int value)
+        private void ShowSegmentTooltip(VisualElement bar, Track track, Segment segment, int value)
         {
             if (_tooltip == null) return;
 
-            _tooltipOwner = track;
-            _tooltip.text = segment.Name + "  " + Format(value);
+            _tooltipOwner = bar;
+
+            _tooltip.text = track.Header + "  ·  " + segment.Name + "  " + Format(value);
 
             // move tooltip to on top of segment
-            Rect bounds = track.worldBound;
+            Rect bounds = bar.worldBound;
             Vector2 top = _tooltip.parent.WorldToLocal(new Vector2(bounds.center.x, bounds.yMin));
             _tooltip.style.left = top.x;
             _tooltip.style.top = top.y - TooltipGap;

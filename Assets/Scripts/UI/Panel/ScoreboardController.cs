@@ -1,62 +1,84 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
 using UnityEngine.UIElements;
 using MagicSchool.Contracts;
 
 namespace MagicSchool.UI
 {
-    /// Shown by ResultState once a round is decided, hidden when the next one starts.
-    /// a scoreboard show who done the most dmg, take most dmg
     internal class ScoreboardController : PanelController, IScoreboardPanel
     {
-        private readonly struct Column
+        /// One coloured piece of a bar.
+        private readonly struct Segment
         {
-            public readonly string Header;
+            public readonly string Name;                     // what the legend and the readout call it
+            public readonly string Class;                    // its colour, from Scoreboard.uss
             public readonly Func<ICombatRecord, int> Value;
-            public readonly bool IsTotal;       // the headline number of its group
-            public readonly bool StartsGroup;   // draw the vertical rule before it
+            public readonly bool IsGhost;                    // the part that did not count, see Tracks
 
-            public Column(string header, Func<ICombatRecord, int> value, bool isTotal = false, bool startsGroup = false)
+            public Segment(string name, string cssClass, Func<ICombatRecord, int> value, bool isGhost = false)
             {
-                Header = header;
+                Name = name;
+                Class = cssClass;
                 Value = value;
-                IsTotal = isTotal;
-                StartsGroup = startsGroup;
+                IsGhost = isGhost;
             }
         }
 
-        private static readonly Column[] Columns =
+        /// One column of bars e.g. damage dealt column, damage taken column
+        private readonly struct Track
         {
-            // what this hero did
-            new Column("DEALT",    r => r.DamageDealt,        isTotal: true),
-            new Column("AUTO",     r => r.AutoAttackDamage),
-            new Column("SKILL",    r => r.SkillDamage),
-            new Column("OVERKILL", r => r.Overkill),
+            public readonly string Header;
+            public readonly Segment[] Segments;
 
-            // what was done to it
-            new Column("TAKEN",    r => r.DamageTaken,        isTotal: true, startsGroup: true),
-            new Column("BLOCKED",  r => r.DamageMitigated),
+            public Track(string header, params Segment[] segments)
+            {
+                Header = header;
+                Segments = segments;
+            }
+        }
 
-            // healing, both directions
-            new Column("HEALED",   r => r.HealingDone,        isTotal: true, startsGroup: true),
-            new Column("OVERHEAL", r => r.Overhealing),
-            new Column("RECEIVED", r => r.HealingReceived),
-            new Column("WOUND",    r => r.HealingLostToWound),
+        // initialize each tracks
+        // e.g. damage dealt, damage taken, healing done, healing taken
+        private static readonly Track[] Tracks =
+        {
+            new Track("DAMAGE DEALT",
+                new Segment("auto",     "seg--auto",     r => r.AutoAttackDamage),
+                new Segment("skill",    "seg--skill",    r => r.SkillDamage),
+                new Segment("overkill", "seg--ghost",    r => r.Overkill,             isGhost: true)),
+
+            new Track("DAMAGE TAKEN",
+                new Segment("taken",    "seg--taken",    r => r.DamageTaken),
+                new Segment("blocked",  "seg--ghost",    r => r.DamageMitigated,      isGhost: true)),
+
+            new Track("HEALING DONE",
+                new Segment("healed",   "seg--healed",   r => r.HealingDone),
+                new Segment("overheal", "seg--ghost",    r => r.Overhealing,          isGhost: true)),
+
+            new Track("HEALING TAKEN",
+                new Segment("received", "seg--received", r => r.HealingReceived),
+                new Segment("wound",    "seg--ghost",    r => r.HealingLostToWound,   isGhost: true)),
         };
 
         private VisualElement _table;
+        private Label _readout;
 
         // =================================== IScoreboardPanel ===================================
         public void ShowScores(IReadOnlyList<ScoreRow> rows)
         {
             if (_table == null) return;
 
+            int[] longest = LongestBarPerTrack(rows);
+
+            ShowReadout(null);
+
             _table.Clear();
             _table.Add(BuildHeader());
 
             for (int i = 0; i < rows.Count; i++)
             {
-                _table.Add(BuildRow(rows[i], striped: i % 2 == 1));
+                _table.Add(BuildRow(rows[i], longest, striped: i % 2 == 1));
             }
 
             SetShown(true);
@@ -66,58 +88,233 @@ namespace MagicSchool.UI
         protected override void OnMounted(VisualElement panel)
         {
             _table = panel.Q<VisualElement>("ScoreTable");
+            _readout = panel.Q<Label>("Readout");
 
             // nothing to show until a round has actually been fought
             SetShown(false);
         }
 
+        // =================================== chart width scale ===================================
+        // get the highest number of all the track e.g. Damage dealt, Damage taken, etc...
+        // e.g. longest = [damage_max, taken_max, etc...]
+        // context: those longest value will be used to set chart width in their own track.
+        // e.g. style.width = value * 100f / longest[damage_max] 
+        private static int[] LongestBarPerTrack(IReadOnlyList<ScoreRow> rows)
+        {
+            int[] longest = new int[Tracks.Length];
+
+            for (int t = 0; t < Tracks.Length; t++)
+            {
+                // lowest value set to 1, so it's always drawn in UI
+                longest[t] = 1;
+
+                foreach (ScoreRow row in rows)
+                {
+                    int total = 0;
+                    foreach (Segment segment in Tracks[t].Segments) total += ValueOf(row.Record, segment);
+
+                    if (total > longest[t]) longest[t] = total;
+                }
+            }
+
+            return longest;
+        }
+
         // =================================== building ===================================
+        // ====== 1. header ======
+        // add header to the scoreboard
         private static VisualElement BuildHeader()
         {
             VisualElement header = NewRow();
             header.AddToClassList("row--header");
-
             header.Add(Cell("HERO", "cell--name", "cell--header"));
 
-            foreach (Column column in Columns)
-            {
-                Label cell = Cell(column.Header, "cell--header");
-                if (column.StartsGroup) cell.AddToClassList("cell--group");
-
-                header.Add(cell);
-            }
+            // each track have its own header
+            foreach (Track track in Tracks) header.Add(BuildTrackHead(track));
 
             return header;
         }
 
-        private static VisualElement BuildRow(ScoreRow row, bool striped)
+        // build header for a track
+        // the header contain title and legend 
+        private static VisualElement BuildTrackHead(Track track)
+        {
+            // head = contain title and legend
+            VisualElement head = new VisualElement();
+            head.AddToClassList("cell");
+            head.AddToClassList("track-head");
+            head.pickingMode = PickingMode.Ignore;
+
+            // title = DAMAMGE DEALT, DAMAGE TAKEN, etc...
+            Label title = new Label(track.Header);
+            title.AddToClassList("track-head__title");
+            title.pickingMode = PickingMode.Ignore;
+            head.Add(title);
+
+            // legend = ■ auto  ■ skill  ■ overkill 
+            VisualElement legend = new VisualElement();
+            legend.AddToClassList("track-head__legend");
+            legend.pickingMode = PickingMode.Ignore;
+
+            // build a legend
+            foreach (Segment segment in track.Segments) legend.Add(BuildKey(segment));
+
+            head.Add(legend);
+
+            return head;
+        }
+
+        // build a legend to look like this => ■ auto
+        private static VisualElement BuildKey(Segment segment)
+        {
+            VisualElement key = new VisualElement();
+            key.AddToClassList("key");
+            key.pickingMode = PickingMode.Ignore;
+
+            // add class for ■
+            VisualElement swatch = new VisualElement();
+            swatch.AddToClassList("key__swatch");
+            swatch.AddToClassList(segment.Class);
+            swatch.pickingMode = PickingMode.Ignore;
+            key.Add(swatch);
+
+            // add name e.g. auto, skill, overkill, etc...
+            Label name = new Label(segment.Name);
+            name.AddToClassList("key__label");
+            name.pickingMode = PickingMode.Ignore;
+            key.Add(name);
+
+            return key;
+        }
+
+        // ====== 2. row ======
+        private VisualElement BuildRow(ScoreRow row, int[] longest, bool striped)
         {
             VisualElement line = NewRow();
             if (striped) line.AddToClassList("row--stripe");
 
+            line.pickingMode = PickingMode.Position;
+
+            // add event: hovering on a chart, show the number of that chart
+            line.RegisterCallback<PointerEnterEvent>(_ => ShowReadout(row));
+            line.RegisterCallback<PointerLeaveEvent>(_ => ShowReadout(null));
+
+            // add hero name to this line 
             Label name = Cell(row.Name, "cell--name");
             name.AddToClassList(row.Team == TeamEnum.Blue ? "name--blue" : "name--red");
             if (!row.IsAlive) name.AddToClassList("name--dead");
             line.Add(name);
 
-            foreach (Column column in Columns)
+            // add chart to this line
+            for (int t = 0; t < Tracks.Length; t++)
             {
-                int value = row.Record == null ? 0 : column.Value(row.Record);
-
-                Label cell = Cell(value.ToString());
-                if (column.IsTotal) cell.AddToClassList("cell--total");
-                else cell.AddToClassList("cell--sub");
-
-                // a zero says "this hero did none of that", which is worth reading but not worth
-                // the same weight as a real number
-                if (value == 0) cell.AddToClassList("cell--zero");
-                if (column.StartsGroup) cell.AddToClassList("cell--group");
-
-                line.Add(cell);
+                line.Add(BuildTrack(row.Record, Tracks[t], longest[t]));
             }
 
             return line;
         }
+
+        // add chart to the row
+        // e.g. damage dealt chart, damage taken chart, etc... 
+        private static VisualElement BuildTrack(ICombatRecord record, Track track, int longest)
+        {
+            // add rail - a chart 
+            VisualElement rail = new VisualElement();
+            rail.AddToClassList("track__rail");
+            rail.pickingMode = PickingMode.Ignore;
+
+            int total = 0;
+
+            for (int i = 0; i < track.Segments.Length; i++)
+            {
+                Segment segment = track.Segments[i];
+                int value = ValueOf(record, segment);
+
+                if (!segment.IsGhost) total += value;
+                if (value <= 0) continue;
+
+                // a actual chart added here
+                rail.Add(NewSegment(segment, value, longest));  
+            }
+
+            // add cell - to occupy the rail
+            VisualElement cell = new VisualElement();
+            cell.AddToClassList("cell");
+            cell.AddToClassList("track");
+            cell.pickingMode = PickingMode.Ignore;
+
+            // chart added
+            cell.Add(rail);
+
+            // total number added
+            cell.Add(TrackValue(total));
+
+            return cell;
+        }
+
+        // a actual chart added here
+        // a whole bar's width was scaling accordingly to the track's longest bar.
+        private static VisualElement NewSegment(Segment segment, int value, int longest)
+        {
+            VisualElement bar = new VisualElement();
+            bar.AddToClassList("seg");
+            bar.AddToClassList(segment.Class);
+
+            // the whole bar is measured against the track's longest
+            bar.style.width = Length.Percent(value * 100f / longest);
+
+            return bar;
+        }
+
+        private static Label TrackValue(int total)
+        {
+            Label value = new Label(Format(total));
+            value.AddToClassList("track__value");
+            value.pickingMode = PickingMode.Ignore;
+
+            if (total == 0) value.AddToClassList("track__value--zero");
+
+            return value;
+        }
+
+        // =================================== readout ===================================
+        // hovering on a chart, show the number of that chart
+        private void ShowReadout(ScoreRow? hovered)
+        {
+            if (_readout == null) return;
+
+            if (hovered == null)
+            {
+                _readout.text = string.Empty;
+                return;
+            }
+
+            ScoreRow row = hovered.Value;
+            StringBuilder line = new StringBuilder(row.Name);
+
+            foreach (Track track in Tracks)
+            {
+                line.Append("   |   ");
+
+                for (int i = 0; i < track.Segments.Length; i++)
+                {
+                    if (i > 0) line.Append(" · ");
+
+                    Segment segment = track.Segments[i];
+                    line.Append(segment.Name).Append(' ').Append(Format(ValueOf(row.Record, segment)));
+                }
+            }
+
+            _readout.text = line.ToString();
+        }
+
+        // =================================== helper ===================================
+        private static int ValueOf(ICombatRecord record, Segment segment)
+        {
+            return record == null ? 0 : segment.Value(record);
+        }
+
+        private static string Format(int value) => value.ToString("N0", CultureInfo.InvariantCulture);
 
         private static VisualElement NewRow()
         {

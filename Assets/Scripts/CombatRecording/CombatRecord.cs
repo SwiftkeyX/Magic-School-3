@@ -9,7 +9,9 @@ namespace MagicSchool.CombatRecording
         public int AutoAttackDamage { get; private set; }
         public int SkillDamage { get; private set; }
         public int Overkill { get; private set; }           // landed on a corpse's last hit, past 0 HP
-        public int HealingDone { get; private set; }
+        public int HealingDone { get; private set; }        // SkillHealing + OmnivampHealing
+        public int SkillHealing { get; private set; }
+        public int OmnivampHealing { get; private set; }    // drained back out of its own damage
         public int Overhealing { get; private set; }        // healing past the target's MaxHP
 
         // ===================== as the target: what others did to this unit =====================
@@ -33,10 +35,13 @@ namespace MagicSchool.CombatRecording
             DamageMitigated += mitigated;
         }
 
-        internal void AddHealingDone(int healed, int overhealed)
+        internal void AddHealingDone(HealKindEnum kind, int healed, int overhealed)
         {
             HealingDone += healed;
             Overhealing += overhealed;
+
+            if (kind == HealKindEnum.Skill) SkillHealing += healed;
+            else if (kind == HealKindEnum.Omnivamp) OmnivampHealing += healed;
         }
 
         internal void AddHealingReceived(int healed, int lostToWound)

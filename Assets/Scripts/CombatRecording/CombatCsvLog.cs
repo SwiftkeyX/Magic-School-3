@@ -14,7 +14,8 @@ namespace MagicSchool.CombatRecording
             "timestamp,stage,stage_count,winner,hero,team,alive," +
             "damage_dealt,auto_attack_damage,skill_damage,overkill," +
             "damage_taken,damage_mitigated," +
-            "healing_done,overhealing,healing_received,healing_lost_to_wound";
+            "healing_done,skill_healing,omnivamp_healing,overhealing," +
+            "healing_received,healing_lost_to_wound";
         private readonly string _filePath;
 
         public CombatCsvLog(string folder)
@@ -60,6 +61,8 @@ namespace MagicSchool.CombatRecording
                     .Append(Num(r.DamageTaken)).Append(',')
                     .Append(Num(r.DamageMitigated)).Append(',')
                     .Append(Num(r.HealingDone)).Append(',')
+                    .Append(Num(r.SkillHealing)).Append(',')
+                    .Append(Num(r.OmnivampHealing)).Append(',')
                     .Append(Num(r.Overhealing)).Append(',')
                     .Append(Num(r.HealingReceived)).Append(',')
                     .Append(Num(r.HealingLostToWound))

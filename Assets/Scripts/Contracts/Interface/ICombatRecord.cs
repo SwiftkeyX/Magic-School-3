@@ -9,7 +9,9 @@ namespace MagicSchool.Contracts
         int AutoAttackDamage { get; }
         int SkillDamage { get; }
         int Overkill { get; }
-        int HealingDone { get; }
+        int HealingDone { get; }            // SkillHealing + OmnivampHealing
+        int SkillHealing { get; }           // healed by skill
+        int OmnivampHealing { get; }        // healed by damage done 
         int Overhealing { get; }
 
         // === what others did to this unit ===

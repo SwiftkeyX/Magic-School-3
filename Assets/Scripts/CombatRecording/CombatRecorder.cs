@@ -17,6 +17,8 @@ namespace MagicSchool.CombatRecording
         public void BeginRound() => _round.Clear();
 
         // ======================================== listener ========================================
+        // A only way how hero performance going to be record in number. Through event. 
+        
         // Subscribed to a hero's OnDamaged/OnHealed
         public void Record(DamageEvent e)
         {
@@ -25,7 +27,7 @@ namespace MagicSchool.CombatRecording
         }
         public void Record(HealEvent e)
         {
-            if (e.Source != null) RecordFor(_round, e.Source).AddHealingDone(e.Outcome.Healed, e.Outcome.Overhealed);
+            if (e.Source != null) RecordFor(_round, e.Source).AddHealingDone(e.Kind, e.Outcome.Healed, e.Outcome.Overhealed);
             if (e.Target != null) RecordFor(_round, e.Target).AddHealingReceived(e.Outcome.Healed, e.Outcome.LostToWound);
         }
 

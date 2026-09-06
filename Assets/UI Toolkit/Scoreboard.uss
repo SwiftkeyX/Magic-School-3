@@ -189,7 +189,7 @@
     height: 14px;
 }
 
-/* Five series, ordered so no two neighbours collapse under red-green colour blindness
+/* Six series, ordered so no two neighbours collapse under red-green colour blindness
    (validated: worst adjacent pair ΔE 6.5 protan, and that pair - healed vs taken - never
    touches, since they live in different tracks). Auto is the physical hue, skill the arcane
    one, and damage-taken red / healing green follow what the health bars already say. */
@@ -207,6 +207,13 @@
 
 .seg--healed {
     background-color: rgb(25, 158, 112);
+}
+
+/* Omnivamp sits directly beside skill healing, so it is separated from that green on
+   lightness and on blue - the two channels red-green colour blindness leaves intact - rather
+   than on hue. Healing's cooler cousin, which is what it is: health taken rather than given. */
+.seg--omnivamp {
+    background-color: rgb(92, 199, 219);
 }
 
 .seg--received {

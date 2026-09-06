@@ -26,7 +26,8 @@ namespace MagicSchool.UI
 
         // === healing given ===
         private static readonly Track HealingGiven = new Track("HEALING GIVEN",
-            new Segment("healed", "seg--healed", r => r.HealingDone),
+            new Segment("skill", "seg--healed", r => r.SkillHealing),
+            new Segment("omnivamp", "seg--omnivamp", r => r.OmnivampHealing),
             new Segment("overheal", "seg--ghost", r => r.Overhealing, isGhost: true));
 
         // === healing taken ===

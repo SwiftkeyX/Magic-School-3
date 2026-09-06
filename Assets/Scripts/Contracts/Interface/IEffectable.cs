@@ -8,7 +8,7 @@ namespace MagicSchool.Contracts
     {
         void TakeDamage(int damage, IEffectable source, DamageKindEnum kind);
         void Heal(float amount, IEffectable source, HealKindEnum kind);
-        void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats);
+        void AddModifier(IModifier modifier, float amplifier, IHeroStats casterStats);
         bool HasStatus(ModifierEnum status);    // "is this one transformed / wounded / stunned".
 
         bool IsAlive { get; }

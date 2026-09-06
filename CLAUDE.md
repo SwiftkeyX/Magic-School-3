@@ -38,7 +38,7 @@ Rules that aren't visible from any single file:
   `Stat` holds a `ModifierResolver`. The resolver lives in `Modifiers` rather than next to `Stat`
   because a module that holds modifiers but cannot resolve them is not reusable - a trait or item
   system would have had to take `Combat` along just to make "+20 armour" mean anything. `Combat`
-  still writes nothing but `ICustomModifier`/`IModifier` in its own code. The folder is
+  still writes nothing but `IModifier`/`IModifierPiece` in its own code. The folder is
   `StatScaling/` rather than `Scaling/` because namespaces follow the folder, and a namespace
   `MagicSchool.Scaling` holding a class `Scaling` cannot be used unqualified.
 - **`CombatRecording` is a plugin, and nothing in `Combat` references it.** A hero raises
@@ -69,7 +69,8 @@ Rules that aren't visible from any single file:
 
 - **`Contracts/`** — `ICombatant` (a unit fighting on the board), `IEffectable` (damage/heal/modifier
   — what a `SkillEffect` needs), `ITargeter`, `IPlaceable`, `IPlacement` (hex or bench slot),
-  `IHeroStats`, `IModifier`, plus `TeamEnum`/`HeroStateEnum`/`TriggerEnum`/`ModifierEnum`.
+  `IHeroStats`, `IModifier` (a bundle of `IModifierPiece`s sharing one duration), plus
+  `TeamEnum`/`HeroStateEnum`/`TriggerEnum`/`ModifierEnum`.
 - **`Combat/Placements/Hex/Hex.cs`** — one per tile. Computes its own neighbors by distance rather
   than axial math (flat-top grid: same-column neighbors ~1.0 apart, diagonal ~1.118; a 1.15x
   threshold on the nearest distance catches exactly the real neighbors, including at board edges

@@ -45,7 +45,7 @@ namespace MagicSchool.Skills
                     recipient: EffectRecipientEnum.EnemiesInArea,
                     modifier: Bundle(
                         duration: WoundDuration,
-                        modifiers: Status(ModifierEnum.Wound)),
+                        pieces: Status(ModifierEnum.Wound)),
                     amplifier: 0.3f),
 
                 // sheet: Pip is AP

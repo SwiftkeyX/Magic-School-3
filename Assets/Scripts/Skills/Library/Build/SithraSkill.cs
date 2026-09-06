@@ -35,7 +35,7 @@ namespace MagicSchool.Skills
                     recipient: EffectRecipientEnum.SameToAimTarget,
                     modifier: Bundle(
                         duration: WoundDuration,
-                        modifiers: Status(ModifierEnum.Wound)),
+                        pieces: Status(ModifierEnum.Wound)),
                     conditions: amplifierCondition,
                     amplifier: WoundedAmplifier)
             );

@@ -1,7 +1,7 @@
 namespace MagicSchool.UI
 {
     /// <summary>
-    /// worldbar that counting down the duration of CustomModifier.
+    /// worldbar that counting down the duration of a Modifier.
     /// e.g. the ten seconds Vharn spends transformed. 
     /// A hero can carry several SkillBar at once.
     /// </summary>

@@ -35,9 +35,9 @@ namespace MagicSchool.Skills
         {
             // increase as + 100%
             // +100% of his own attack speed - a self-referential ratio, resolved once when it lands
-            ICustomModifier modifiers = Bundle(
+            IModifier modifiers = Bundle(
                 duration: BuffDuration,
-                modifiers: Buff(ModifierEnum.AS, (StatEnum.AS, AttackSpeedBuff, ScaleFromEnum.Base))
+                pieces: Buff(ModifierEnum.AS, (StatEnum.AS, AttackSpeedBuff, ScaleFromEnum.Base))
             );
 
             // cast buff
@@ -53,7 +53,7 @@ namespace MagicSchool.Skills
         private static SkillStep OnCastExpired(TemplateActionRegistrySO registry)
         {
             // stun
-            ICustomModifier stun = Bundle(StunDuration, Status(ModifierEnum.Stun));
+            IModifier stun = Bundle(StunDuration, Status(ModifierEnum.Stun));
 
             // aoe on self 
             SkillActionGroup AOE = ActionGroup(registry,

@@ -9,11 +9,11 @@ namespace MagicSchool.Items
     {
         [SerializeField] private ItemDataSO _data;
         [SerializeField] private TextMeshPro _nameLabel;    // FLAGGING: name on the item, this is for prototype
-        private ICustomModifier _modifier;
+        private IModifier _modifier;
 
         // ================================= getter =================================
         public ItemDataSO Data => _data;
-        public ICustomModifier Modifier => _modifier;
+        public IModifier Modifier => _modifier;
         // === IInspectableItem ===
         public string DisplayName => _data != null ? _data.Name : name;
         public string Description => _data != null ? _data.Description : string.Empty;

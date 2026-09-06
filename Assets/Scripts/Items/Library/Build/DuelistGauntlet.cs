@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Duelist's Gauntlet: +10 Atk, +0.12 Attack Speed
     internal static class DuelistGauntlet
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.ATK, 10f),

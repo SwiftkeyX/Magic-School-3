@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Runed Edge: +8 Atk, +25 AP
     internal static class RunedEdge
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.ATK, 8f),

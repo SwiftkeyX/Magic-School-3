@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Farsight Lens: +1 Range, +20 AP
     internal static class FarsightLens
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.Range, 1f),

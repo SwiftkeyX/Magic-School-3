@@ -4,9 +4,9 @@ using MagicSchool.StatScaling;
 
 namespace MagicSchool.Modifiers
 {
-    // The actual modifier class
+    // One piece of a modifier that feeds a stat.
     // To contain modifier type and its amount in 1 place.
-    public class StatModifier : IModifier
+    public class StatModifier : IModifierPiece
     {
         private readonly ModifierEnum _modifier;
         private readonly IReadOnlyList<StatRatio> _ratios;
@@ -20,7 +20,7 @@ namespace MagicSchool.Modifiers
             _source = source;
         }
 
-        // === IModifier ===
+        // === IModifierPiece ===
         public ModifierEnum GetModifierEnum() => _modifier;
         public ScalingSourceEnum GetScalingSource() => _source;
         public float GetBonusAmount(IHeroStats stats) => Scaling.Total(_ratios, stats);

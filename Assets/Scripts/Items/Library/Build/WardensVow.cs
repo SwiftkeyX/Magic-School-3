@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Warden's Vow: +15 DF, +6% Damage Reduction
     internal static class WardensVow
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.DF, 15f),

@@ -53,7 +53,7 @@ namespace MagicSchool.Combat.Heroes
             if (item == null || !_worn.Remove(item)) return false;
 
             // remove item modifier from the wearer
-            ICustomModifier granted = item.Modifier;
+            IModifier granted = item.Modifier;
             if (granted != null) _wearer.RemoveModifier(granted);
 
             // take the item off visually
@@ -99,7 +99,7 @@ namespace MagicSchool.Combat.Heroes
         // Hand the hero what the item gives.
         private void Grant(IEquipment item)
         {
-            ICustomModifier granted = item.Modifier;
+            IModifier granted = item.Modifier;
 
             if (granted == null) return;
 

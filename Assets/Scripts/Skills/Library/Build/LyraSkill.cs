@@ -29,7 +29,7 @@ namespace MagicSchool.Skills
 
         private static SkillStep Wave(TemplateActionRegistrySO registry)
         {
-            ICustomModifier ASBuff = Bundle(
+            IModifier ASBuff = Bundle(
                 duration: -1f,
                 Buff(
                     modifier: ModifierEnum.AS,

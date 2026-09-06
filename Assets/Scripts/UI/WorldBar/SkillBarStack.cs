@@ -5,7 +5,7 @@ using MagicSchool.Combat.Heroes;
 namespace MagicSchool.UI
 {
     /// <summary>
-    /// Draws one SkillBar per CustomModifier running on the hero, 
+    /// Draws one SkillBar per Modifier running on the hero, 
     /// stacked upward above the health bar. 
     /// </summary>
     internal class SkillBarStack : MonoBehaviour

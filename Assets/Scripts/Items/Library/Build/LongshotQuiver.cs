@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Longshot Quiver: +1 Range, +0.12 Attack Speed
     internal static class LongshotQuiver
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.Range, 1f),

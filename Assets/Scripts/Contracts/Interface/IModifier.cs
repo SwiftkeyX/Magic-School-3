@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+
 namespace MagicSchool.Contracts
 {
-    // IModifier to answer: How much this modifier give stat (stat after calcuation)?
-    // e.g. Hero ask "hey, I have like 10 modifiers, give me how much stat, each modifier actualy give me"
+    // It is a list of pieces build together into 1 modifier.
+    // It is to answer: to make list of IModifierPiece shared the same duration.
+    // e.g. Vharn's "WorldEnder" contain like 5 pieces, but all of them have the same duration.
     public interface IModifier
     {
-        public float GetBonusAmount(IHeroStats stats);      // get bonus amount from this modifier (bonus amount is the final amount after modifier calculation)
-        public ModifierEnum GetModifierEnum();              // get modifier enum - to know what this modifier should behave
-        public ScalingSourceEnum GetScalingSource();        // get whose stats it should be scaling off
+        float GetDuration();                        // All piece in the list shared a same duration.
+        IReadOnlyList<IModifierPiece> GetPieces();  // Get all piece inside
     }
 }

@@ -6,7 +6,7 @@ namespace MagicSchool.Items
     // Reaver's Edge: +12 Atk, +150 HP
     internal static class ReaversEdge
     {
-        internal static ICustomModifier Build()
+        internal static IModifier Build()
         {
             return ItemFactory.Bundle(
                 ItemFactory.Buff(ModifierEnum.ATK, 12f),

@@ -7,6 +7,6 @@ namespace MagicSchool.Contracts
     {
         string DisplayName { get; }
         Transform transform { get; }
-        ICustomModifier Modifier { get; }
+        IModifier Modifier { get; }
     }
 }

@@ -51,7 +51,7 @@ namespace MagicSchool.Skills
         private static SkillStep Transform(TemplateActionRegistrySO registry)
         {
             // one group, one timer - the whole transform ends on the same tick
-            ICustomModifier WorldEnderBuff = Bundle(
+            IModifier WorldEnderBuff = Bundle(
                 duration: TransformDuration,
 
                 // sheet: 10% Ability Power Omnivamp

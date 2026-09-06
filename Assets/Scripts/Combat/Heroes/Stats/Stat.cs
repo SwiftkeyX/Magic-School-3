@@ -53,14 +53,14 @@ namespace MagicSchool.Combat.Heroes.Stats
         public int ActiveModifierCount => _statModifier.ActiveCount;
 
         // ===  modifier setter ===
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
+        public void AddModifier(IModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             int previousMaxHP = MaxHP;
             _statModifier.AddModifier(modifier, amplifier, casterStats, recipientStats);
             FollowMaxHP(previousMaxHP);
         }
 
-        public bool RemoveModifier(ICustomModifier modifier)
+        public bool RemoveModifier(IModifier modifier)
         {
             int previousMaxHP = MaxHP;
             bool removed = _statModifier.RemoveModifier(modifier);

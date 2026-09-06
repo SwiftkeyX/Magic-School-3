@@ -37,9 +37,9 @@ namespace MagicSchool.Skills
 
         private static SkillStep AOE(TemplateActionRegistrySO registry)
         {
-            ICustomModifier knockup = Bundle(
+            IModifier knockup = Bundle(
                 duration: KnockedUpDuration,
-                modifiers: (
+                pieces: (
                     Status(ModifierEnum.Stun)
                 )
             );

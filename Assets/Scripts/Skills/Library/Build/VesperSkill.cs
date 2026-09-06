@@ -26,7 +26,7 @@ namespace MagicSchool.Skills
                     recipient: EffectRecipientEnum.SameToAimTarget,
                     modifier: Bundle(
                         duration: ShredDuration,
-                        modifiers: Buff(
+                        pieces: Buff(
                             modifier: ModifierEnum.DefendShred,
                             // 20% of the total AP is the total that reduce the target's DF. 
                             ratios: (StatEnum.AP, -ShredFromAP, ScaleFromEnum.Total))))

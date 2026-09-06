@@ -9,8 +9,8 @@ namespace MagicSchool.Items
     public static class ItemLibrary
     {
         // a pair of ItemIdEnum & Modifiers
-        private static readonly Dictionary<ItemIdEnum, Func<ICustomModifier>> Builders =
-            new Dictionary<ItemIdEnum, Func<ICustomModifier>>
+        private static readonly Dictionary<ItemIdEnum, Func<IModifier>> Builders =
+            new Dictionary<ItemIdEnum, Func<IModifier>>
             {
                 // attack
                 { ItemIdEnum.Whetstone,       Whetstone.Build },
@@ -42,7 +42,7 @@ namespace MagicSchool.Items
             };
 
         /// Return a modifier that match itemID.
-        public static ICustomModifier Resolve(ItemIdEnum itemId)
+        public static IModifier Resolve(ItemIdEnum itemId)
         {
             if (itemId == ItemIdEnum.None) return null;
 

@@ -11,7 +11,7 @@ namespace MagicSchool.Modifiers
     public class ModifierResolver
     {
         // all current active modifier on this hero 
-        private readonly List<ActiveCustomModifier> _activeModifiers = new List<ActiveCustomModifier>();
+        private readonly List<ActiveModifier> _activeModifiers = new List<ActiveModifier>();
 
         // the amount of bonus stat give by all modifier
         private readonly float[] _bonus = new float[StatSlots];
@@ -66,7 +66,7 @@ namespace MagicSchool.Modifiers
 
         // =================================== setter ===================================
         // add new modifier
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
+        public void AddModifier(IModifier modifier, float amplifier, IHeroStats casterStats, IHeroStats recipientStats)
         {
             // FLAGGING: we shouldn't have to loop all the modifiers, but RefernceEqual is still need, 
             // we can use dict to help this.
@@ -74,7 +74,7 @@ namespace MagicSchool.Modifiers
             for (int i = 0; i < _activeModifiers.Count; i++)
             {
                 // is new added modifier the same to current active one?
-                if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
+                if (!ReferenceEquals(_activeModifiers[i].Modifier, modifier)) continue;
 
                 // FLAGGING: Depend on skill, some skill can be stacked, while some skill refresh cleanly.
                 // Now only refresh exist. We'll do this later when pattern is more clear.
@@ -84,19 +84,19 @@ namespace MagicSchool.Modifiers
             }
 
             // add modifier, and mark bonus as stale
-            _activeModifiers.Add(new ActiveCustomModifier(modifier, amplifier, casterStats, recipientStats));
+            _activeModifiers.Add(new ActiveModifier(modifier, amplifier, casterStats, recipientStats));
             _isBonusStale = true;
         }
 
         // force remove modifier before it expired
-        public bool RemoveModifier(ICustomModifier modifier)
+        public bool RemoveModifier(IModifier modifier)
         {
             if (modifier == null) return false;
 
             // FLAGGING: we shouldn't have to loop all the modifiers.
             for (int i = 0; i < _activeModifiers.Count; i++)
             {
-                if (!ReferenceEquals(_activeModifiers[i].CustomModifier, modifier)) continue;
+                if (!ReferenceEquals(_activeModifiers[i].Modifier, modifier)) continue;
 
                 _activeModifiers.RemoveAt(i);
                 _isBonusStale = true;
@@ -128,9 +128,9 @@ namespace MagicSchool.Modifiers
         // Return available status modifier
         public bool GetStatusModifier(ModifierEnum type)
         {
-            foreach (ActiveCustomModifier tracker in _activeModifiers)
-                foreach (IModifier modifier in tracker.CustomModifier.GetModifiers())
-                    if (modifier.GetModifierEnum() == type) return true;
+            foreach (ActiveModifier tracker in _activeModifiers)
+                foreach (IModifierPiece piece in tracker.Modifier.GetPieces())
+                    if (piece.GetModifierEnum() == type) return true;
 
             return false;
         }
@@ -143,18 +143,18 @@ namespace MagicSchool.Modifiers
         {
             if (index < 0 || index >= _activeModifiers.Count) return 0f;
 
-            ActiveCustomModifier tracker = _activeModifiers[index];
+            ActiveModifier tracker = _activeModifiers[index];
 
             if (float.IsPositiveInfinity(tracker.Remaining)) return 0f;
 
-            float duration = tracker.CustomModifier.GetDuration();
+            float duration = tracker.Modifier.GetDuration();
             if (duration <= 0f) return 0f;
 
             return tracker.Remaining / duration;
         }
 
         // =================================== private ===================================
-        // Add every active modifier up, once, into the slot of the stat it feeds.
+        // Add every active piece up, once, into the slot of the stat it feeds.
         private void RebuildBonus()
         {
             // clear bonus list
@@ -162,14 +162,14 @@ namespace MagicSchool.Modifiers
 
             // build the bonus list using enum value, to identify which bonus this belong to.
             // e.g. according to StatEnum, _bonus[0] is the bonus for MaxHP
-            foreach (ActiveCustomModifier active in _activeModifiers)
+            foreach (ActiveModifier active in _activeModifiers)
             {
-                IReadOnlyList<IModifier> modifiers = active.CustomModifier.GetModifiers();
+                IReadOnlyList<IModifierPiece> pieces = active.Modifier.GetPieces();
 
-                for (int i = 0; i < modifiers.Count; i++)
+                for (int i = 0; i < pieces.Count; i++)
                 {
                     // lookup modifier table - what stat is increase?
-                    if (!_lookup.TryGetValue(modifiers[i].GetModifierEnum(), out StatEnum target)) continue;
+                    if (!_lookup.TryGetValue(pieces[i].GetModifierEnum(), out StatEnum target)) continue;
 
                     _bonus[(int)target] += active.BonusStat[i];
                 }

@@ -7,11 +7,11 @@ namespace MagicSchool.Skills
     // e.g. apply wound, apply buff, apply stun, etc...
     internal class ModifierSkillEffect : SkillEffect
     {
-        private readonly ICustomModifier _modifier;
+        private readonly IModifier _modifier;
 
-        public ICustomModifier Modifier => _modifier;
- 
-        public ModifierSkillEffect(EffectRecipientEnum recipient, ICustomModifier modifier, Cadence cadence = null,
+        public IModifier Modifier => _modifier;
+
+        public ModifierSkillEffect(EffectRecipientEnum recipient, IModifier modifier, Cadence cadence = null,
                                    List<SkillCondition> conditions = null, float amplifier = 0f)
             : base(recipient, cadence, conditions, amplifier)
         {

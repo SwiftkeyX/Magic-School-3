@@ -27,36 +27,36 @@ namespace MagicSchool.Skills
 
         // ================================== modifiers ==================================
         // apply a group of modifiers on the recipient
-        public static ModifierSkillEffect Apply(EffectRecipientEnum recipient, ICustomModifier modifier, float amplifier = 0f)
+        public static ModifierSkillEffect Apply(EffectRecipientEnum recipient, IModifier modifier, float amplifier = 0f)
             => new ModifierSkillEffect(recipient, modifier, amplifier: amplifier);
 
         // the same, but amplified only when every condition holds - the effect still lands either
         // way, the conditions just scale it. Sithra's wound is applied harder while transformed.
-        public static ModifierSkillEffect ApplyWhen(EffectRecipientEnum recipient, ICustomModifier modifier,
+        public static ModifierSkillEffect ApplyWhen(EffectRecipientEnum recipient, IModifier modifier,
                                                     List<SkillCondition> conditions, float amplifier)
             => new ModifierSkillEffect(recipient, modifier, conditions: conditions, amplifier: amplifier);
 
-        // the group of modifiers - everything in it shares one duration. -1f is permanent.
-        public static ICustomModifier Bundle(float duration, params IModifier[] modifiers)
-            => new CustomModifier(duration, modifiers);
+        // the group of pieces - everything in it shares one duration. -1f is permanent.
+        public static IModifier Bundle(float duration, params IModifierPiece[] pieces)
+            => new Modifier(duration, pieces);
 
-        // a modifier that gives a stat bonus:
+        // a piece that gives a stat bonus:
         //   Buff(DamageReduction, 20f)                     -> "+20% DR"
         //   Buff(ATK, (StatEnum.AP, 50f))                  -> "Buff ATK = 50% of the caster's AP"
         //   Buff(DefendShred, 20f, (StatEnum.AP, 20f))     -> "Reduce DF = 20 flat, plus 20% AP on top"
-        public static IModifier Buff(ModifierEnum modifier, params StatRatio[] ratios)
+        public static IModifierPiece Buff(ModifierEnum modifier, params StatRatio[] ratios)
             => new StatModifier(modifier, ratios);
 
         // 3) the buff will derived from the caster itself unless it consume "source" parameter.
         // Lyra's skill buff ally base on their attack speed by +25% => This mean the skill is derived from ally, not the caster itself.
         // BUT it have another pattern, you should know:
         // Lyra's skill (alternative) buff ally base on Lyra's AP by +50%AP => This will get different result.
-        public static IModifier Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
+        public static IModifierPiece Buff(ModifierEnum modifier, ScalingSourceEnum source, params StatRatio[] ratios)
             => new StatModifier(modifier, ratios, source);
 
-        // a modifier that give status 
+        // a piece that give status 
         // e.g. Wound, Stun, Transformed
-        public static IModifier Status(ModifierEnum status)
+        public static IModifierPiece Status(ModifierEnum status)
             => new StatusModifier(status);
 
         // ================================== ActionGroup ==================================
@@ -92,7 +92,7 @@ namespace MagicSchool.Skills
         // step are working in order, each step will be played if it was trigger.
         public static SkillStep Step(TriggerEnum trigger, params SkillActionGroup[] groups)
             => new SkillStep(trigger, new List<SkillActionGroup>(groups));
-        
+
         // ================================== Tune ==================================
         // tuning a template action
         public static Tuning Tune(float? castTime = null)
@@ -100,8 +100,15 @@ namespace MagicSchool.Skills
 
         public static AOETuning TuneAOE(float? castTime = null, float? duration = null, float? size = null,
                                         bool? sticky = null, AOEOffsetEnum? offset = null, int? range = null)
-            => new AOETuning { CastTime = castTime, Duration = duration, Size = size, Sticky = sticky,
-                               Offset = offset, Range = range };
+            => new AOETuning
+            {
+                CastTime = castTime,
+                Duration = duration,
+                Size = size,
+                Sticky = sticky,
+                Offset = offset,
+                Range = range
+            };
 
         public static MoveTuning TuneMove(float? castTime = null, int? range = null,
                                           float? duration = null, float? spread = null)
@@ -114,19 +121,31 @@ namespace MagicSchool.Skills
         public static FireTimingRunnerTuning TuneFireTimingRunner(int count, FireTimingModeEnum mode,
                                                                    float interval = 0f, Tuning innerTuning = null,
                                                                    float? castTime = null)
-            => new FireTimingRunnerTuning { Count = count, Mode = mode, Interval = interval, InnerTuning = innerTuning,
-                                            CastTime = castTime };
+            => new FireTimingRunnerTuning
+            {
+                Count = count,
+                Mode = mode,
+                Interval = interval,
+                InnerTuning = innerTuning,
+                CastTime = castTime
+            };
 
         public static FireTimingRunnerProjectileTuning TuneFireTimingRunnerProjectile(int count, FireTimingModeEnum mode,
                                                                    float interval = 0f, Tuning innerTuning = null,
                                                                    int? randomPoolRadius = null, float? castTime = null)
-            => new FireTimingRunnerProjectileTuning { Count = count, Mode = mode, Interval = interval,
-                                                      InnerTuning = innerTuning, RandomPoolRadius = randomPoolRadius,
-                                                      CastTime = castTime };
+            => new FireTimingRunnerProjectileTuning
+            {
+                Count = count,
+                Mode = mode,
+                Interval = interval,
+                InnerTuning = innerTuning,
+                RandomPoolRadius = randomPoolRadius,
+                CastTime = castTime
+            };
 
         // How far a blast of this size actually reaches, in world units.
         private const float AuthoredRadius = 0.5f;
-        
+
         // size of the AOE, etc...
         public static float Reach(float size) => size * AuthoredRadius;
     }

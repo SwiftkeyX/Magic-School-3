@@ -38,9 +38,9 @@ namespace MagicSchool.Skills
 
         private static SkillStep Landing(TemplateActionRegistrySO registry)
         {
-            ICustomModifier stun = Bundle(
+            IModifier stun = Bundle(
                 duration: StunDuration,
-                modifiers: (
+                pieces: (
                     Status(ModifierEnum.Stun)
                 )
             );

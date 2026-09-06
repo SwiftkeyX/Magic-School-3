@@ -17,7 +17,7 @@ namespace MagicSchool.Modifiers
         private readonly float[] _bonus = new float[StatSlots];
 
         // FLAGGING: hardcode slot number, this is adjust as the maximum number in StatEnum.cs
-        private const int StatSlots = 10;
+        private const int StatSlots = 11;
 
         // tracking if the bonus stat from modifier is stale 
         private bool _isBonusStale = true;
@@ -34,6 +34,7 @@ namespace MagicSchool.Modifiers
             { ModifierEnum.AP             , StatEnum.AP }             ,
             { ModifierEnum.Range          , StatEnum.Range }          ,
             { ModifierEnum.StartMana      , StatEnum.StartMana }      ,
+            { ModifierEnum.Omnivamp       , StatEnum.Omnivamp }       ,
             // ...
 
             // debuff

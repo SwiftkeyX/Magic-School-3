@@ -32,6 +32,13 @@ namespace MagicSchool.Combat.Heroes
             return new HealOutcome(newHP, gained, healed - gained, incoming - healed);
         }
 
+        public static float ResolveOmnivamp(float percent, int landed)
+        {
+            if (percent <= 0f || landed <= 0) return 0f;
+
+            return landed * percent / 100f;
+        }
+
         // ======================================== private ========================================
         private static int DamageAfterMitigation(int rawDamage, int defense, float damageReductionPercent)
         {

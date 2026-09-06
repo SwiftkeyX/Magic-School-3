@@ -28,17 +28,14 @@ namespace MagicSchool.Combat.Heroes
         private Stat _stat;
         private TeamEnum _team;
         private bool _isDummy;                  // Temporary, tagged once at its source - see the FLAGGING on HeroDataSO._isDummy.
+        private IPlacement _currentPlacement;   // placement hero stand on e.g. hex, benchslot
+        private Hex _reservedHex;               // hex that hero reserved. use while battle
 
         // ======================================== Etc ========================================
         [SerializeField] private float _moveSpeed = 1f;
         [SerializeField] private AnimationCurve _walkCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         // Hump-shaped (0 -> 1 -> 0): drives the attack dash out toward the enemy and back, not a one-way ease like _walkCurve.
         [SerializeField] private AnimationCurve _attackCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
-
-        // ======================================== Runtime data ========================================
-        private Stat Stat => _stat;
-        private IPlacement _currentPlacement;   // placement hero stand on e.g. hex, benchslot
-        private Hex _reservedHex;               // hex that hero reserved. use while battle
 
         // ======================================== other getter ========================================
         public bool IsInitialized => _stat != null;
@@ -93,10 +90,10 @@ namespace MagicSchool.Combat.Heroes
         public void SpendAttack() => _attackCooldown.Spend();
 
         // ======================================== stat ========================================
-        public void GainMana(int amount) => Stat.AddMana(amount);      // return true if mana if capped
-        public bool IsManaCapped() => Stat.IsManaCapped();
-        public void SpendMana() => Stat.SpendMana();                   // called once a cast actually happened
-        public void TickModifiers(float deltaTime) => Stat.TickModifiers(deltaTime);
+        public void GainMana(int amount) => _stat.AddMana(amount);      // return true if mana if capped
+        public bool IsManaCapped() => _stat.IsManaCapped();
+        public void SpendMana() => _stat.SpendMana();                   // called once a cast actually happened
+        public void TickModifiers(float deltaTime) => _stat.TickModifiers(deltaTime);
 
         // ======================================== combat event ========================================
         public event Action<DamageEvent> OnDamaged;
@@ -105,43 +102,53 @@ namespace MagicSchool.Combat.Heroes
         // ======================================== interface method ========================================
         // === IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
-        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats) => Stat.AddModifier(modifier, amplifier, casterStats, this);
-        public bool RemoveModifier(ICustomModifier modifier) => Stat.RemoveModifier(modifier);
-        public bool HasStatus(ModifierEnum status) => Stat.HasStatus(status);
-        public int ActiveModifierCount => Stat.ActiveModifierCount;
-        public float ModifierRemaining(int index) => Stat.ModifierRemaining(index);
+        public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats) => _stat.AddModifier(modifier, amplifier, casterStats, this);
+        public bool RemoveModifier(ICustomModifier modifier) => _stat.RemoveModifier(modifier);
+        public bool HasStatus(ModifierEnum status) => _stat.HasStatus(status);
+        public int ActiveModifierCount => _stat.ActiveModifierCount;
+        public float ModifierRemaining(int index) => _stat.ModifierRemaining(index);
+
+        public void TakeDamage(int damage, IEffectable source, DamageKindEnum kind)
+        {
+            DamageOutcome outcome = CombatMath.ResolveDamage(damage, _stat.DF, _stat.DamageReductionPercent, _stat.CurrentHP);
+            _stat.SetCurrentHP(outcome.NewHP);
+
+            OnDamaged?.Invoke(new DamageEvent(source, this, kind, outcome));
+
+            OmnivampHeal(source, outcome.Landed);
+        }
 
         public void Heal(float amount, IEffectable source)
         {
-            HealOutcome outcome = CombatMath.ResolveHeal(amount, Stat.IsWounded, Stat.CurrentHP, Stat.MaxHP);
-            Stat.SetCurrentHP(outcome.NewHP);
+            HealOutcome outcome = CombatMath.ResolveHeal(amount, _stat.IsWounded, _stat.CurrentHP, _stat.MaxHP);
+            _stat.SetCurrentHP(outcome.NewHP);
 
             OnHealed?.Invoke(new HealEvent(source, this, outcome));
         }
 
-        public void TakeDamage(int damage, IEffectable source, DamageKindEnum kind)
+        private void OmnivampHeal(IEffectable source, int landed)
         {
-            DamageOutcome outcome = CombatMath.ResolveDamage(damage, Stat.DF, Stat.DamageReductionPercent, Stat.CurrentHP);
-            Stat.SetCurrentHP(outcome.NewHP);
+            float healed = CombatMath.ResolveOmnivamp(GetStat(StatEnum.Omnivamp), landed);
+            if (healed <= 0f) return;
 
-            OnDamaged?.Invoke(new DamageEvent(source, this, kind, outcome));
+            Heal(healed, source);
         }
 
         // === IHeroStats ===
-        public int CurrentHP => Stat.CurrentHP;
-        public int MaxHP => Stat.MaxHP;
-        public int CurrentMana => Stat.CurrentMana;
-        public int MaxMana => Stat.MaxMana;
-        public int AttackDamage => Stat.Atk;
-        public int Defence => Stat.DF;
-        public int Magic => Stat.MG;
-        public int MagicResist => Stat.MR;
-        public float AttackSpeed => Stat.AttackSpeed;
-        public int Range => Stat.Range;
-        public bool IsStunned => Stat.IsStunned;
-        public bool IsWounded => Stat.IsWounded;
-        public float GetStat(StatEnum type) => Stat.GetFinalStat(type);
-        public float GetBaseStat(StatEnum type) => Stat.GetBaseStat(type);
+        public int CurrentHP => _stat.CurrentHP;
+        public int MaxHP => _stat.MaxHP;
+        public int CurrentMana => _stat.CurrentMana;
+        public int MaxMana => _stat.MaxMana;
+        public int AttackDamage => _stat.Atk;
+        public int Defence => _stat.DF;
+        public int Magic => _stat.MG;
+        public int MagicResist => _stat.MR;
+        public float AttackSpeed => _stat.AttackSpeed;
+        public int Range => _stat.Range;
+        public bool IsStunned => _stat.IsStunned;
+        public bool IsWounded => _stat.IsWounded;
+        public float GetStat(StatEnum type) => _stat.GetFinalStat(type);
+        public float GetBaseStat(StatEnum type) => _stat.GetBaseStat(type);
 
         // === IPlaceable ===
         public Hex CurrentHex => _currentPlacement as Hex;

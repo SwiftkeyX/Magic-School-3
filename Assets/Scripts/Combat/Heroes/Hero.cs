@@ -37,42 +37,25 @@ namespace MagicSchool.Combat.Heroes
         // Hump-shaped (0 -> 1 -> 0): drives the attack dash out toward the enemy and back, not a one-way ease like _walkCurve.
         [SerializeField] private AnimationCurve _attackCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
 
-        // ======================================== other getter ========================================
-        public bool IsInitialized => _stat != null;
-        public TeamEnum Team => _team;
-        public HeroStateEnum StateType => _stateMachine.CurrentType;
-        public bool IsDummy => _isDummy;
+        // ======================================== getter ======================================== 
+        // ====== 1. stat ======
+        public void GainMana(int amount) => _stat.AddMana(amount);      // return true if mana if capped
+        public bool IsManaCapped() => _stat.IsManaCapped();
+        public void SpendMana() => _stat.SpendMana();                   // called once a cast actually happened
+        public void TickModifiers(float deltaTime) => _stat.TickModifiers(deltaTime);
 
-        // ======================================== state ========================================
+        // ====== 2. state ======
         public void ChangeState(HeroStateEnum next) => _stateMachine.ChangeState(next);
         public HeroStateEnum PreviousStateType => _stateMachine.PreviousType;
 
-        // ======================================== board ========================================
+        // ====== 3. board ======
         public ICombatant WhoReservedThisHex(Hex hex) => _board.WhoReservedThisHex(hex);
         public bool IsHexReservedByOther(Hex hex) => _board.IsReservedByOther(hex, this);
         public bool IsBattleOn => _board == null || _board.IsBattleOn;
-
-        // A hero knows which board it belongs to, so HeroMover doesn't need telling.
-        // Null-checked (not `?.`) because `?.` skips Unity's fake-null: a destroyed board would
-        // pass the check and then throw. Guarded at all because a hero can exist before a board,
-        // e.g. spawned onto the bench.
         public void TrackOnBoard() { if (_board != null) _board.TrackThisHero(this); }
         public void UntrackFromBoard() { if (_board != null) _board.UntrackThisHero(this); }
 
-        // ======================================== visuals ========================================
-        public void SetDeadVisual() => _visuals.SetDeadVisual();
-        public void SetAliveVisual() => _visuals.SetAliveVisual();
-        public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
-
-        // ======================================== items ========================================
-        public IReadOnlyList<IEquipment> WornItems => _items.Worn;
-        public int WornItemCount => _items.Count;
-        public bool HasItemRoom => _items != null && _items.HasRoom;
-        public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
-        public bool TryTakeOff(IEquipment item) => _items != null && _items.TryTakeOff(item);
-        public void TakeOffAllItems() { if (_items != null) _items.TakeOffAll(); }
-
-        // ======================================== skill ========================================
+        // ====== 4. skill ======
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);
         public bool TriggerPassiveSkill(TriggerEnum trigger) => _skill.TriggerPassiveSkill(trigger);
         public float GetCastTime() => _skill.GetCastTime();
@@ -85,22 +68,35 @@ namespace MagicSchool.Combat.Heroes
         public string PassiveDescription => _skill != null ? _skill.PassiveDescription : string.Empty;
         public string DisplayName => _SOData != null ? _SOData.Name : name;
 
-        // ======================================== attack ========================================
+        // ====== 5. attack ======
         public bool IsAttackReady => _attackCooldown.IsReady(AttackSpeed);
         public void SpendAttack() => _attackCooldown.Spend();
 
-        // ======================================== stat ========================================
-        public void GainMana(int amount) => _stat.AddMana(amount);      // return true if mana if capped
-        public bool IsManaCapped() => _stat.IsManaCapped();
-        public void SpendMana() => _stat.SpendMana();                   // called once a cast actually happened
-        public void TickModifiers(float deltaTime) => _stat.TickModifiers(deltaTime);
+        // ====== 6. items ======
+        public IReadOnlyList<IEquipment> WornItems => _items.Worn;
+        public int WornItemCount => _items.Count;
+        public bool HasItemRoom => _items != null && _items.HasRoom;
+        public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
+        public bool TryTakeOff(IEquipment item) => _items != null && _items.TryTakeOff(item);
+        public void TakeOffAllItems() { if (_items != null) _items.TakeOffAll(); }
+
+        // ====== 7. visuals ======
+        public void SetDeadVisual() => _visuals.SetDeadVisual();
+        public void SetAliveVisual() => _visuals.SetAliveVisual();
+        public void PlaySkillCastEffect(string skillName) => _visuals.PlaySkillCastEffect(skillName);
+
+        // ====== 8. other ======
+        public bool IsInitialized => _stat != null;
+        public TeamEnum Team => _team;
+        public HeroStateEnum StateType => _stateMachine.CurrentType;
+        public bool IsDummy => _isDummy;
 
         // ======================================== combat event ========================================
         public event Action<DamageEvent> OnDamaged;
         public event Action<HealEvent> OnHealed;
 
         // ======================================== interface method ========================================
-        // === IEffectable ===
+        // === 1. IEffectable ===
         public bool IsAlive => this != null && IsInitialized && StateType != HeroStateEnum.Dead;
         public void AddModifier(ICustomModifier modifier, float amplifier, IHeroStats casterStats) => _stat.AddModifier(modifier, amplifier, casterStats, this);
         public bool RemoveModifier(ICustomModifier modifier) => _stat.RemoveModifier(modifier);
@@ -108,6 +104,7 @@ namespace MagicSchool.Combat.Heroes
         public int ActiveModifierCount => _stat.ActiveModifierCount;
         public float ModifierRemaining(int index) => _stat.ModifierRemaining(index);
 
+        // source hit me, me take damage
         public void TakeDamage(int damage, IEffectable source, DamageKindEnum kind)
         {
             DamageOutcome outcome = CombatMath.ResolveDamage(damage, _stat.DF, _stat.DamageReductionPercent, _stat.CurrentHP);
@@ -118,6 +115,7 @@ namespace MagicSchool.Combat.Heroes
             OmnivampHeal(source, outcome.Landed);
         }
 
+        // source heal me, me healed
         public void Heal(float amount, IEffectable source)
         {
             HealOutcome outcome = CombatMath.ResolveHeal(amount, _stat.IsWounded, _stat.CurrentHP, _stat.MaxHP);
@@ -126,15 +124,18 @@ namespace MagicSchool.Combat.Heroes
             OnHealed?.Invoke(new HealEvent(source, this, outcome));
         }
 
-        private void OmnivampHeal(IEffectable source, int landed)
+        // source hit me, source heal with HIS omnivamp
+        private void OmnivampHeal(IEffectable source, int dmg)
         {
-            float healed = CombatMath.ResolveOmnivamp(GetStat(StatEnum.Omnivamp), landed);
+            if (source is not IHeroStats stat) return;
+
+            float healed = CombatMath.ResolveOmnivamp(stat.GetStat(StatEnum.Omnivamp), dmg);
             if (healed <= 0f) return;
 
-            Heal(healed, source);
+            source.Heal(healed, source);
         }
 
-        // === IHeroStats ===
+        // === 2. IHeroStats ===
         public int CurrentHP => _stat.CurrentHP;
         public int MaxHP => _stat.MaxHP;
         public int CurrentMana => _stat.CurrentMana;
@@ -150,7 +151,7 @@ namespace MagicSchool.Combat.Heroes
         public float GetStat(StatEnum type) => _stat.GetFinalStat(type);
         public float GetBaseStat(StatEnum type) => _stat.GetBaseStat(type);
 
-        // === IPlaceable ===
+        // === 3. IPlaceable ===
         public Hex CurrentHex => _currentPlacement as Hex;
         public Hex ReservedHex => _reservedHex;
         public IPlacement CurrentPlacement => _currentPlacement;
@@ -163,7 +164,7 @@ namespace MagicSchool.Combat.Heroes
         }
         public void SetCurrentPlacement(IPlacement placement) => _currentPlacement = placement;
 
-        // === ITargeter ===
+        // === 4. ITargeter ===
         public ICombatant FindCurrentTarget() => _findEnemy.FindCurrentTarget();
         public ICombatant FindNearestEnemy() => _findEnemy.FindNearestEnemy();
         public ICombatant FindFurthestEnemy(int reachRange) => _findEnemy.FindFurthestEnemy(reachRange);

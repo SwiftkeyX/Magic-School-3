@@ -73,6 +73,7 @@ namespace MagicSchool.Combat.Heroes
         public bool HasItemRoom => _items != null && _items.HasRoom;
         public bool TryWear(IEquipment item) => _items != null && _items.TryWear(item);
         public bool TryTakeOff(IEquipment item) => _items != null && _items.TryTakeOff(item);
+        public void TakeOffAllItems() { if (_items != null) _items.TakeOffAll(); }
 
         // ======================================== skill ========================================
         public bool TriggerActiveSkill(bool isManaCapped) => _skill.TriggerOnCastSkill(isManaCapped);

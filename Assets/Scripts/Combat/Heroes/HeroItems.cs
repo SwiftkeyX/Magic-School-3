@@ -65,6 +65,20 @@ namespace MagicSchool.Combat.Heroes
             return true;
         }
 
+        // take all item off the hero
+        // e.g. on hero sell, take all item off from that hero
+        public void TakeOffAll()
+        {
+            for (int slot = _worn.Count - 1; slot >= 0; slot--)
+            {
+                IEquipment item = _worn[slot];
+
+                // an item destroyed while worn - the same fake-null trap ReGrantAll guards against.
+                if (item as Object == null) { _worn.RemoveAt(slot); continue; }
+
+                TryTakeOff(item);
+            }
+        }
 
         /// Grant everything worn, again.
         /// e.g. when the stat is reset, modifier is reset too, so item have to re-grant the modifier

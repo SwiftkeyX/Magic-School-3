@@ -116,12 +116,12 @@ namespace MagicSchool.Combat.Heroes
         }
 
         // source heal me, me healed
-        public void Heal(float amount, IEffectable source)
+        public void Heal(float amount, IEffectable source, HealKindEnum kind)
         {
             HealOutcome outcome = CombatMath.ResolveHeal(amount, _stat.IsWounded, _stat.CurrentHP, _stat.MaxHP);
             _stat.SetCurrentHP(outcome.NewHP);
 
-            OnHealed?.Invoke(new HealEvent(source, this, outcome));
+            OnHealed?.Invoke(new HealEvent(source, this, kind, outcome));
         }
 
         // source hit me, source heal with HIS omnivamp
@@ -132,7 +132,7 @@ namespace MagicSchool.Combat.Heroes
             float healed = CombatMath.ResolveOmnivamp(stat.GetStat(StatEnum.Omnivamp), dmg);
             if (healed <= 0f) return;
 
-            source.Heal(healed, source);
+            source.Heal(healed, source, HealKindEnum.Omnivamp);
         }
 
         // === 2. IHeroStats ===

@@ -35,7 +35,8 @@ namespace MagicSchool.Skills
 
                 recipient.Heal(
                     amount: healPerTick * AmplifierFor(recipient),
-                    source: _caster
+                    source: _caster,
+                    kind: HealKindEnum.Skill
                 );
             }
         }

@@ -5,6 +5,12 @@
     "writable": true,
     "description": "This project's own skill design database - 'Hero Query' tab lays out per-hero skill data in the same Step/Trigger/Action/Effect shape the C# skill system mirrors. Source of truth for authoring/debugging any hero's SkillSO."
   },
+  "roster": {
+    "key": "1SufJzQ-7ccyCI_RbgRD5n8Siy2Ipd2epC1VA8TUBATI",
+    "role": "canonical",
+    "writable": true,
+    "description": "MagicSchool Roster - the 30-hero / 10-trait design grid built from the 32rogues art. Mirrors .claude/docs/hero-roster.csv and hero-traits.csv. Separate from tft-skill on purpose: tft-skill stays the per-hero SKILL/step data, this holds the roster shape (cost, class, origin, sprite) and trait breakpoints."
+  },
   "tft-set9": {
     "key": "1xj6em5XlvIN1gWHTKOPDsssmkgnS3jIsaLnAMjYyPUA",
     "role": "reference",

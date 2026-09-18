@@ -1,0 +1,31 @@
+Name,Cost,Class,Origin,Damage Type,Sprite,Sheet Cell,Source Label,Status,Kit
+Cinder,1,Mage,Ironhold,AP,rogues/rogues_r04_c04.png,r04_c04,5.e dwarf mage,New,
+Bulwark,2,Tank,Ironhold,AP,rogues/rogues_r01_c04.png,r01_c04,2.e shield knight,Built,Braces for bonus HP + heal-over-time + damage reduction; on expiry slams the ground for AOE
+Roland,3,Fighter,Ironhold,AD,rogues/rogues_r01_c00.png,r01_c00,2.a knight,Built,Spin attack; cannot auto-attack for its duration
+Umbra,1,Fighter,Schema,AP,rogues/rogues_r02_c05.png,r02_c05,3.f schema monk,New,
+Solace,2,Mage,Schema,AP,rogues/rogues_r02_c01.png,r02_c01,3.b priest,Built,Projectile that carries no effect; where it lands an AOE goes off
+Durn,1,Fighter,Wildheart,AD,rogues/rogues_r03_c00.png,r03_c00,4.a male barbarian,New,
+Tarrow,2,Tank,Wildheart,AD,monsters/monsters_r07_c07.png,r07_c07,8.h minotaur,New,
+Fang,3,Assassin,Wildheart,AD,monsters/monsters_r06_c10.png,r06_c10,7.k warg / dire wolf,Name reserved,
+Keen,2,Mage,Grave,AP,monsters/monsters_r05_c00.png,r05_c00,6.a banshee,New,
+Marrow,3,Tank,Grave,AD,monsters/monsters_r04_c03.png,r04_c03,5.d death knight,New,
+Quatre,1,Marksman,Warband,AD,monsters/monsters_r00_c05.png,r00_c05,1.f goblin archer,Built,Piercing shot for 744% AD to every enemy in its path
+Gorrun,2,Assassin,Warband,AD,monsters/monsters_r00_c02.png,r00_c02,1.c goblin,New,
+Vharn,3,Fighter,Warband,AD,monsters/monsters_r06_c05.png,r06_c05,7.f lycanthrope,Built,"Transforms on cast; auto-attack becomes a three-beat combo, each beat harder"
+Mortar,1,Tank,Arcanum,AP,monsters/monsters_r07_c02.png,r07_c02,8.c rock golem,New,
+Sparks,2,Mage,Arcanum,AD/AP,rogues/rogues_r04_c01.png,r04_c01,5.b male wizard,Name reserved,
+Verity,3,Marksman,Arcanum,AP,rogues/rogues_r04_c03.png,r04_c03,5.d desert sage,Name reserved,
+Nix,1,Assassin,Reviled,AP,monsters/monsters_r11_c01.png,r11_c01,12.b imp / devil,New,
+Cairn,3,Mage,Reviled,AP,monsters/monsters_r04_c02.png,r04_c02,5.c lich,New,
+Ograk,2,Fighter,Scale,AD,monsters/monsters_r08_c00.png,r08_c00,9.a lizardfolk / kobold,New,
+Mira,3,Marksman,Scale,AP,monsters/monsters_r07_c09.png,r07_c09,8.j gorgon / medusa,Name reserved,
+Reyn,1,Fighter,Freeblade,AD,rogues/rogues_r03_c03.png,r03_c03,4.d swordsman,Name reserved,
+Lyra,2,Marksman,Freeblade,AD,rogues/rogues_r00_c02.png,r00_c02,1.c ranger,Name reserved,
+Grimm,3,Assassin,Freeblade,AD,rogues/rogues_r03_c04.png,r03_c04,4.e fencer,Name reserved,
+Husk,1,Tank,Bloom,AP,monsters/monsters_r02_c01.png,r02_c01,3.b big slime,New,
+Lumen,2,Marksman,Bloom,AP,monsters/monsters_r07_c05.png,r07_c05,8.f forest spirit,Name reserved,
+Pip,3,Mage,Bloom,AP,monsters/monsters_r10_c00.png,r10_c00,11.a small myconid,Built,Lobs a spore at the furthest enemy; the patch wounds and poisons for 300% AP
+Sithra,1,Mage,Minimize,AP,monsters/monsters_r07_c04.png,r07_c04,8.e naga,Built,Spits a homing bolt at the current enemy for 160% AP
+Vesper,1,Marksman,Minimize,AD,monsters/monsters_r04_c01.png,r04_c01,5.b skeleton archer,Built,First-hit projectile for 200% AD; shreds the target's Armour
+Hollow,2,Fighter,Minimize,AP,monsters/monsters_r12_c02.png,r12_c02,13.c writhing humanoid,New,
+Aldric,3,Tank,Minimize,AP,rogues/rogues_r02_c06.png,r02_c06,3.g elder schema monk,Name reserved,

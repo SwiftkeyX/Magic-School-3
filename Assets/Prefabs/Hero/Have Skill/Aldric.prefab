@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5557713623014044713, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 259197248819313921, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.12500018
@@ -77,16 +81,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8683539419365400204, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0a93d041ddde748449a62cb4cee90dfc, type: 3}
+    - target: {fileID: 8683539419365400204, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
       propertyPath: m_Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8683539419365400204, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
       propertyPath: m_Color.g
-      value: 0.61032915
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8683539419365400204, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
       propertyPath: m_Color.r
-      value: 0.7509433
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8729075628341993162, guid: dfe3eea710701584dbffacec42803d0f, type: 3}
       propertyPath: m_Name

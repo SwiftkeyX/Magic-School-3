@@ -9,7 +9,7 @@ Sithra,1,Minimize,Comrade,Melee,AP,Built,r07_c04,Spits a homing bolt at the curr
 Vesper,1,Minimize,Vagabond,Ranged,AP,Built,r04_c01,First-hit projectile for 200% AD; shreds the target's Armour,was Marksman/Minimize; was AD,Mage / Tank  (choice)
 Coin,1,Cadence,Freeblade,Ranged,AD,NEW - unnamed art,TBD,"A mercenary crossbow who shoots harder the moment she has cast - cheap, and the entry point to both Freeblade and Cadence.",,Marksmen
 Rasp,1,Adrenaline,Scale,Melee,AD,NEW - unnamed art,TBD,A gutter-born snake-handler who fights faster the worse it goes for him - the cheapest way into both Scale and Adrenaline.,,Fighter
-Reyn,1,Adrenaline,Freeblade,Melee,AD,Name reserved,r03_c03,,was Fighter/Freeblade,Fighter
+Reyn,1,Adrenaline,Freeblade,Melee,AD,Name reserved,r03_c03,,was Fighter/Freeblade,Tank / Fighter  (choice)
 Bulwark,2,Protector,Comrade,Melee,AP,Built,r01_c04,Braces for bonus HP + heal-over-time + damage reduction; on expiry slams the ground for AOE,was Tank/Comrade,Tank
 Tarrow,2,Protector,Wildheart,Melee,AD,New,r07_c07,,was Tank/Wildheart,Tank
 Gorrun,2,Assassin,Warband,Melee,AP,New,r00_c02,,was AD,Fighter
@@ -25,34 +25,38 @@ Marrow,3,Protector,Grave,Melee,AD,New,r04_c03,,was Tank/Grave,Tank
 Fang,3,Assassin,Wildheart,Ranged,AD,Name reserved,r06_c10,,,Marksmen
 Mira,3,Marksman,Scale,Ranged,AD,Name reserved,r07_c09,,was AP,Marksmen
 Pip,3,Echo,Bloom,Ranged,AP,Built,r10_c00,Lobs a spore at the furthest enemy; the patch wounds and poisons for 300% AP,was Mage/Bloom,Mage / Tank  (choice)
-Howl,3,Schema,Wildheart,Melee,AP,NEW - unnamed art,TBD,"A feral chanter whose litany is a snarl - Schema's healing on a Wildheart body, and the only melee Schema.",,Support / Tank  (choice)
-Cairn,3,Reviled,Vagabond,Ranged,AD,New,r04_c02,,was Mage/Reviled; was AP,Tank
+Howl,3,Schema,Wildheart,Melee,AP,NEW - unnamed art,TBD,"A feral chanter whose litany is a snarl - Schema's healing on a Wildheart body, and the only melee Schema.",,Support
+Cairn,2,Marksman,Vagabond,Ranged,AD,New,r04_c02,,"was Reviled at cost 3; swapped with Lyra, moved to cost 2",Marksmen
 Aldric,3,Minimize,Arcanum,Ranged,AP,Name reserved,r02_c06,,was Tank/Minimize,Mage / Tank  (choice)
 Roland,3,Cadence,Comrade,Ranged,AD,Built,r01_c00,Spin attack; cannot auto-attack for its duration,was Fighter/Comrade,Marksmen
 Talon,3,Finisher,Skyreach,Ranged,AD,NEW - unnamed art,TBD,Picks the weakest target and stoops on it; Finisher's damage amp with Skyreach's spears overhead.,,Marksmen
-Brusk,3,Adrenaline,Warband,Melee,AD,NEW - unnamed art,TBD,A Warband bruiser who treats a wound as a starting gun - rampage and Adrenaline stack on the same idea.,,Fighter
-Vharn,3,Gambit,Warband,Melee,AD,Built,r06_c05,"Transforms on cast; auto-attack becomes a three-beat combo, each beat harder","was Fighter/Warband; was Ranged - corrected to Melee when Gambit was fixed to a melee/ranged trait. Vharn is one of the 8 BUILT heroes, so rule D1 was bent here on your call; its built kit (transform, three-beat auto-attack combo) already reads melee, so the sheet was most likely simply wrong. CHECK THE UNITY SIDE: Vharn's HeroDataSO attack range needs to match.",Fighter
+Brusk,3,Adrenaline,Warband,Melee,AD,NEW - unnamed art,TBD,A Warband bruiser who treats a wound as a starting gun - rampage and Adrenaline stack on the same idea.,,Tank / Fighter  (choice)
+Vharn,3,Gambit,Warband,Melee,AD,Built,r06_c05,"Transforms on cast; auto-attack becomes a three-beat combo, each beat harder",was Fighter/Warband; Ranged -> Melee (Unity data was already melee),Fighter
 Husk,4,Protector,Bloom,Melee,AD,New,r02_c01,,was Tank/Bloom; was cost 1; was AP,Tank
-Lyra,4,Marksman,Freeblade,Ranged,AD,Name reserved,r00_c02,,was cost 2,Marksmen
+Lyra,4,Reviled,Freeblade,Ranged,AD,Name reserved,r00_c02,,was Marksman; swapped with Cairn to give Freeblade a cost-4 Tank,Tank
 Verity,4,Marksman,Arcanum,Ranged,AD,Name reserved,r04_c03,,was cost 3; was AP,Marksmen
 Coil,4,Echo,Scale,Melee,AP,NEW - unnamed art,TBD,A serpent-caster who poisons with the spell and again with the echo of it.,,Mage
 Hollow,4,Minimize,Skyreach,Melee,AP,New,r12_c02,,was Fighter/Minimize; was cost 2,Mage
-Durn,4,Cadence,Wildheart,Ranged,AD,New,r03_c00,,was Fighter/Wildheart; was cost 1,Marksmen
+Durn,2,Cadence,Wildheart,Ranged,AD,New,r03_c00,,was Fighter/Wildheart; cost 4 -> 2,Marksmen
 Knell,4,Cadence,Grave,Ranged,AD,NEW - unnamed art,TBD,Rings the bell for the dead and fires on the beat - Cadence's rhythm over Grave's revival items.,,Marksmen
 Errant,4,Finisher,Vagabond,Ranged,AD,NEW - unnamed art,TBD,"A knight with no lord, hunting whoever is closest to falling; Finisher's execute carried by a wanderer.",,Marksmen
-Bramble,5,Adrenaline,Bloom,Melee,AP,NEW - unnamed art,TBD,Grows more dangerous as she is cut down; Bloom's own bonus stat riding on Adrenaline's low-health scaling.,"was cost 4 - repriced so Bloom's spread stops forcing a cost-5 on its sixth seat, which is what let Resolute be filled",Fighter
+Bramble,5,Adrenaline,Bloom,Melee,AP,NEW - unnamed art,TBD,Grows more dangerous as she is cut down; Bloom's own bonus stat riding on Adrenaline's low-health scaling.,cost 4 -> 5,Fighter
 Flint,4,Gambit,Comrade,Ranged,AP,NEW - unnamed art,TBD,Strikes a spark and hopes it catches - Ironhold's armour behind Gambit's crit gamble.,,Mage
 Bastion,5,Protector,Warband,Melee,AD,NEW - unnamed art,TBD,The wall the Warband rampages behind; Protector's shield on the roster's most aggressive origin.,,Tank
 Quarrel,5,Marksman,Comrade,Ranged,AD,NEW - unnamed art,TBD,An Ironhold siege-shot: the Marksman stacking attack speed from behind a wall of armour.,,Marksmen
 Sable,5,Echo,Freeblade,Ranged,AP,NEW - unnamed art,TBD,"A spell-for-hire whose contract grows with every stage she survives, and whose spells all land twice.",,Mage / Tank  (choice)
-Rend,5,Reviled,Wildheart,Melee,AD,NEW - unnamed art,TBD,A cursed thing off its chain - Reviled's curse spreading from a Wildheart kill engine.,,Tank / Fighter  (choice)
+Rend,5,Reviled,Wildheart,Melee,AD,NEW - unnamed art,TBD,A cursed thing off its chain - Reviled's curse spreading from a Wildheart kill engine.,,Fighter
 Quill,5,Cadence,Arcanum,Ranged,AD,NEW - unnamed art,TBD,The researcher who writes down every shot; Arcanum's points and Cadence's post-cast damage in one unit.,,Marksmen
 Reave,5,Finisher,Grave,Melee,AP,NEW - unnamed art,TBD,Comes back once and finishes what killed him - Grave's revival paying for Finisher's execute.,,Mage / Fighter  (choice)
 Vane,5,Gambit,Vagabond,Melee,AD,NEW - unnamed art,TBD,Turns with the wind and bets everything on the turn; Vagabond's flow state on a Gambit duellist.,,Fighter
 Thistle,1,Resolute,Bloom,Melee,AD,NEW - unnamed art,TBD,The cheap way into Resolute: cut her down and she only roots deeper.,,Tank / Fighter  (choice)
 Barrow,2,Resolute,Grave,Melee,AD,NEW - unnamed art,TBD,Fights standing in his own grave-mound - Grave's death-work read as refusing to finish.,,Tank / Fighter  (choice)
 Sigil,2,Resolute,Arcanum,Ranged,AP,NEW - unnamed art,TBD,A scholar who wards herself first and argues afterwards; Resolute's only ranged hero.,,Tank
-Pike,3,Resolute,Freeblade,Melee,AD,NEW - unnamed art,TBD,"A hired spear paid to hold one spot, who will not be moved off it.",,Tank
+Pike,3,Resolute,Freeblade,Melee,AD,NEW - unnamed art,TBD,"A hired spear paid to hold one spot, who will not be moved off it.",,Fighter
 Anvil,4,Resolute,Warband,Melee,AD,NEW - unnamed art,TBD,The thing the Warband hammers against: takes the whole charge and is still there.,,Tank / Fighter  (choice)
 Summit,5,Resolute,Skyreach,Melee,AP,NEW - unnamed art,TBD,"Holds the high ground alone - Skyreach's last stand, and Resolute's only cost-5.",,Tank
+Pyre,3,Echo,Wildheart,Ranged,AP,NEW - unnamed art,TBD,Wildheart's AP half: a beast-caller whose fire does the killing while Fang does the chasing.,added: Wildheart's AP duo carry,Mage
+Ransom,4,Marksman,Freeblade,Ranged,AD,NEW - unnamed art,TBD,A contract shooter who bills by the head; Freeblade's cost-4 carry beside Lyra's wall.,added: Freeblade's cost-4 Carry,Marksmen
+Sliver,4,Assassin,Scale,Melee,AD,NEW - unnamed art,TBD,Slips in under the poison and finishes what it started; Scale's second cost-4 carry.,added: Scale's second cost-4 Carry,Fighter
+Spire,3,Protector,Skyreach,Melee,AD,NEW - unnamed art,TBD,The stone the spears are thrown from; Skyreach's cost-3 tank under Talon's dive.,added: Skyreach's cost-3 Tank,Tank
 

@@ -137,12 +137,56 @@ fr = next(i for i, row in enumerate(cur) if row[13].strip() == "Cost curve")
 updates.append({"range": f"P{fr + 1}:Q{fr + 1}",
                 "values": [[" / ".join(str(curve[i]) for i in range(1, 6)),
                             f"costs 1-5 across all {len(heroes)} heroes (rule B1)"]]})
-updates.append({"range": f"Q{fr + 2}", "values": [[
+# --- hidden-role spread per cost, directly under the cost curve --------------
+# Three buckets, not five: Tank, Carry and Support. Carry is Fighter + Marksmen
+# + Mage together - your reading of Finisher, "basically a carry which mean it
+# could be either a Marksmen, Mage, or Fighter".
+BUCKET = {"Tank": "Tank", "Support": "Support",
+          "Fighter": "Carry", "Marksmen": "Carry", "Mage": "Carry"}
+
+
+def role_spread(bucket):
+    """counts per cost for one bucket, plus how many are still undecided."""
+    hit, undecided = [], []
+    for k in range(1, 6):
+        at = [h for h in heroes if int(h["Cost"]) == k]
+        pin = [h for h in at if "(choice)" not in str(h.get("Hidden role", ""))
+               and BUCKET.get(str(h.get("Hidden role", "")).strip()) == bucket]
+        opn = [h for h in at if "(choice)" in str(h.get("Hidden role", ""))
+               and any(BUCKET.get(r.strip()) == bucket
+                       for r in str(h["Hidden role"]).replace("(choice)", "").split("/"))]
+        hit.append(len(pin))
+        undecided.append(len(opn))
+    return hit, undecided
+
+
+role_rows = []
+for bucket, why in (("Tank", "rule C6 wants these spread almost equally across the costs"),
+                    ("Carry", "Fighter + Marksmen + Mage counted together"),
+                    ("Support", "Schema is the only class that produces one, so this caps at 3")):
+    hit, opn = role_spread(bucket)
+    role_rows.append([f"{bucket} spread", "", " / ".join(map(str, hit)),
+                      f"{sum(hit)} pinned; a further {sum(opn)} undecided hero(es) could still "
+                      f"become {bucket} ({' / '.join(map(str, opn))} by cost). {why}."])
+
+# the three rows live between "Cost curve" and "Rules enforced"; make room once
+have = [cur[fr + 1 + i][13].strip() if fr + 1 + i < len(cur) else "" for i in range(3)]
+if have != [r[0] for r in role_rows]:
+    sh.batch_update({"requests": [{"insertDimension": {"range": {
+        "sheetId": grid.id, "dimension": "ROWS",
+        "startIndex": fr + 1, "endIndex": fr + 1 + 3}, "inheritFromBefore": True}}]})
+    fr_shift = 3
+else:
+    fr_shift = 0
+updates.append({"range": f"N{fr + 2}:Q{fr + 4}", "values": role_rows})
+
+updates.append({"range": f"Q{fr + 2 + 3}", "values": [[
     "B2 every trait has a cost 1-2 hero; B4 at most one cost-5 per trait; B5 at most two of any "
-    "one cost; B6 at most one duplicated cost. B3 (small traits skew expensive) is a preference, "
-    "not enforced. All four hard rules hold at 56 heroes. Scale (4) and Wildheart (5) are the "
-    "only origins short of 6, and both are held there by open comments: Scale takes no tank, "
-    "Wildheart pairs only with Finisher/Gambit/Echo/Reviled/Adrenaline."]]})
+    "one cost; B6 at most TWO duplicated costs, which caps every trait at 7 members. B3 (small "
+    "traits skew expensive) is a preference, not enforced. All four hard rules hold at 56 "
+    "heroes. Scale (4), Grave (5) and Wildheart (5) are the origins below 6; Scale is held "
+    "there by the open comment that it takes no tank, and Wildheart by the one pairing it only "
+    "with Finisher/Gambit/Echo/Reviled/Adrenaline."]]})
 
 # clear the divider column and any stray table row a previous bad run left behind
 updates.append({"range": f"M2:M{seats_row + 1}",

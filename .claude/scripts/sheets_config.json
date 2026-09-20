@@ -3,13 +3,13 @@
     "key": "1X5glHjVcgv3yYG4Q2SyV9YJS3sv_wH5XAg3RLOHnUa4",
     "role": "canonical",
     "writable": true,
-    "description": "This project's own skill design database - 'Hero Query' tab lays out per-hero skill data in the same Step/Trigger/Action/Effect shape the C# skill system mirrors. Source of truth for authoring/debugging any hero's SkillSO."
+    "description": "This project's own skill design database - the 'Hero set 9' tab (and its Set 10 sibling) lays out per-hero skill data in the same Step/Trigger/Action/Effect shape the C# skill system mirrors. Source of truth for authoring/debugging any hero's SkillSO. This is the DEFAULT sheet, used when no --sheet is passed."
   },
   "roster": {
     "key": "1SufJzQ-7ccyCI_RbgRD5n8Siy2Ipd2epC1VA8TUBATI",
     "role": "canonical",
     "writable": true,
-    "description": "MagicSchool Roster - the 30-hero / 10-trait design grid built from the 32rogues art. Mirrors .claude/docs/hero-roster.csv and hero-traits.csv. Separate from tft-skill on purpose: tft-skill stays the per-hero SKILL/step data, this holds the roster shape (cost, class, origin, sprite) and trait breakpoints."
+    "description": "MagicSchool Roster - the hero/trait design grid built from the 32rogues art. Live tabs: Grid (the trait grid, Class rows x Origin columns), Class and Origin (one row per trait, mirrored by .claude/docs/hero-classes.csv and hero-origins.csv), Heroes (the 50 heroes, mirrored by hero-grid.csv), and Rules (the numbered constraints the grid is solved against). Hero Roster is the pre-rename archive and is deliberately stale. Separate from tft-skill on purpose: tft-skill stays the per-hero SKILL/step data, this holds the roster shape (cost, class, origin, sprite) and trait breakpoints. The design conversation lives in this sheet's COMMENTS, which sheet_sync.py cannot read - fetch them from the Drive v3 comments endpoint with the same service-account file. Never re-sort its rows: comment anchors are by cell position."
   },
   "tft-set9": {
     "key": "1xj6em5XlvIN1gWHTKOPDsssmkgnS3jIsaLnAMjYyPUA",

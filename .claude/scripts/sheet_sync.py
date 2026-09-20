@@ -8,7 +8,7 @@ import gspread
 
 CREDENTIALS_FILE = "google-service-credential.json"
 SHEETS_CONFIG_FILE = Path(__file__).parent / "sheets_config.json"
-DEFAULT_SHEET = "auto-battler"
+DEFAULT_SHEET = "tft-skill"   # must be a key in sheets_config.json
 
 
 def load_sheets_config():

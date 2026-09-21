@@ -1,0 +1,2678 @@
+{
+ "roster": 60,
+ "board": 9,
+ "sections": [
+  {
+   "origin": "Vagabond",
+   "tier": 1,
+   "bp": 4,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 10,
+     "live": [
+      [
+       "Freeblade",
+       5,
+       3
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Vagabond",
+       4,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Echo c5*, Freeblade/Minimize c3, Freeblade/Momentum c3, Freeblade/Protector c4*, Vagabond/Echo c5*, Vagabond/Minimize c2, Vagabond/Momentum c4, Vagabond/Protector c4"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Ambush",
+       3,
+       2
+      ],
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Vagabond",
+       4,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Cadence c2*, Comrade/Momentum c1, Comrade/Protector c1*, Skyreach/Ambush c4, Vagabond/Ambush c1, Vagabond/Cadence c3*, Vagabond/Momentum c4, Vagabond/Protector c4"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Ambush",
+       3,
+       2
+      ],
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Vagabond",
+       4,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Echo c3*, Comrade/Momentum c1, Comrade/Protector c1*, Skyreach/Ambush c4, Vagabond/Ambush c1, Vagabond/Echo c5*, Vagabond/Momentum c4, Vagabond/Protector c4"
+    }
+   ]
+  },
+  {
+   "origin": "Vagabond",
+   "tier": 2,
+   "bp": 6,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 9,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Vagabond",
+       6,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Minimize c4, Grave/Protector c3, Vagabond/Ambush c1, Vagabond/Cadence c3*, Vagabond/Minimize c2, Vagabond/Momentum c4, Vagabond/Protector c4, Vagabond/Resolute c2"
+    },
+    {
+     "score": 9,
+     "live": [
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Vagabond",
+       6,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Scale/Cadence c1, Scale/Echo c3, Scale/Resolute c2, Vagabond/Cadence c3*, Vagabond/Echo c5*, Vagabond/Minimize c2, Vagabond/Momentum c4, Vagabond/Protector c4, Vagabond/Resolute c2"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Vagabond",
+       6,
+       2
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Comrade/Ambush c5, Skyreach/Ambush c4, Vagabond/Ambush c1, Vagabond/Cadence c3*, Vagabond/Minimize c2, Vagabond/Momentum c4, Vagabond/Protector c4, Vagabond/Resolute c2"
+    }
+   ]
+  },
+  {
+   "origin": "Comrade",
+   "tier": 1,
+   "bp": 2,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Vagabond/Protector c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Freeblade/Minimize c3, Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Skyreach/Adrenaline c5"
+    }
+   ]
+  },
+  {
+   "origin": "Comrade",
+   "tier": 2,
+   "bp": 4,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Scale",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Grave",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Grave",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Echo c3*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Cadence c2*, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    }
+   ]
+  },
+  {
+   "origin": "Comrade",
+   "tier": 3,
+   "bp": 6,
+   "pts": 5,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Comrade",
+       6,
+       3
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Reviled",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Momentum c1, Comrade/Reviled c2, Comrade/Schema c4, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Comrade",
+       6,
+       3
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Reviled",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Cadence c2*, Comrade/Momentum c1, Comrade/Protector c1*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Comrade",
+       6,
+       3
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Reviled",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Echo c3*, Comrade/Momentum c1, Comrade/Protector c1*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Minimize c4, Grave/Protector c3, Grave/Reviled c1"
+    }
+   ]
+  },
+  {
+   "origin": "Wildheart",
+   "tier": 1,
+   "bp": 2,
+   "pts": 1,
+   "dead": null,
+   "members": 5,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Warband/Reviled c3, Wildheart/Protector c2, Wildheart/Resolute c3"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Warband/Reviled c3, Wildheart/Finisher c3, Wildheart/Resolute c3"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Minimize c4, Grave/Protector c3, Grave/Reviled c1, Scale/Echo c3, Scale/Resolute c2, Scale/Reviled c4, Warband/Reviled c3, Wildheart/Protector c2, Wildheart/Resolute c3"
+    }
+   ]
+  },
+  {
+   "origin": "Wildheart",
+   "tier": 2,
+   "bp": 5,
+   "pts": 3,
+   "dead": null,
+   "members": 5,
+   "comps": [
+    {
+     "score": 10,
+     "live": [
+      [
+       "Freeblade",
+       4,
+       2
+      ],
+      [
+       "Wildheart",
+       5,
+       2
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Finisher c2, Freeblade/Gambit c1*, Freeblade/Momentum c3, Freeblade/Protector c4*, Wildheart/Finisher c3, Wildheart/Gambit c1, Wildheart/Momentum c4*, Wildheart/Protector c2, Wildheart/Resolute c3"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Wildheart",
+       5,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Gambit c5, Comrade/Momentum c1, Comrade/Protector c1*, Warband/Resolute c4, Wildheart/Finisher c3, Wildheart/Gambit c1, Wildheart/Momentum c4*, Wildheart/Protector c2, Wildheart/Resolute c3"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Wildheart",
+       5,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Finisher c1, Comrade/Momentum c1, Comrade/Protector c1*, Warband/Resolute c4, Wildheart/Finisher c3, Wildheart/Gambit c1, Wildheart/Momentum c4*, Wildheart/Protector c2, Wildheart/Resolute c3"
+    }
+   ]
+  },
+  {
+   "origin": "Grave",
+   "tier": 1,
+   "bp": 2,
+   "pts": 1,
+   "dead": null,
+   "members": 5,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Grave",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Grave",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Protector c3, Grave/Reviled c1, Scale/Echo c3, Scale/Resolute c2, Scale/Reviled c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Grave",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Protector c1*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4"
+    }
+   ]
+  },
+  {
+   "origin": "Grave",
+   "tier": 2,
+   "bp": 3,
+   "pts": 3,
+   "dead": null,
+   "members": 5,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Vagabond/Protector c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Protector c1*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Wildheart/Resolute c3"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Warband/Reviled c3, Wildheart/Protector c2, Wildheart/Resolute c3"
+    }
+   ]
+  },
+  {
+   "origin": "Warband",
+   "tier": 1,
+   "bp": 3,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Warband",
+       3,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Warband/Minimize c1*, Warband/Resolute c4, Warband/Reviled c3"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Warband",
+       3,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Warband/Echo c1, Warband/Minimize c1*, Warband/Reviled c3"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ],
+      [
+       "Warband",
+       3,
+       1
+      ]
+     ],
+     "units": "Grave/Minimize c4, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Resolute c2, Scale/Reviled c4, Warband/Cadence c4, Warband/Resolute c4, Warband/Reviled c3"
+    }
+   ]
+  },
+  {
+   "origin": "Warband",
+   "tier": 2,
+   "bp": 5,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 12,
+     "live": [
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Warband",
+       5,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Warband/Cadence c4, Warband/Echo c1, Warband/Resolute c4, Warband/Resolute c5*, Warband/Reviled c3"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Warband",
+       5,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Reviled c4, Warband/Cadence c4, Warband/Minimize c1*, Warband/Resolute c4, Warband/Resolute c5*, Warband/Reviled c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Warband",
+       5,
+       2
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Resolute",
+       2,
+       1
+      ]
+     ],
+     "units": "Grave/Reviled c1, Scale/Echo c3, Scale/Resolute c2, Scale/Reviled c4, Warband/Cadence c4, Warband/Echo c1, Warband/Momentum c2*, Warband/Resolute c4, Warband/Reviled c3"
+    }
+   ]
+  },
+  {
+   "origin": "Arcanum",
+   "tier": 1,
+   "bp": 3,
+   "pts": 1,
+   "dead": null,
+   "members": 4,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Arcanum",
+       3,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Finisher c1, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Ambush c4, Skyreach/Schema c3, Vagabond/Ambush c1, Wildheart/Finisher c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Arcanum",
+       3,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Skyreach",
+       3,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Finisher c1, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Schema c3, Vagabond/Ambush c1"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Arcanum",
+       3,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Gambit c2, Arcanum/Schema c1, Bloom/Gambit c5, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Ambush c4, Skyreach/Schema c3, Vagabond/Ambush c1"
+    }
+   ]
+  },
+  {
+   "origin": "Arcanum",
+   "tier": 2,
+   "bp": 5,
+   "pts": 3,
+   "dead": 5,
+   "members": 4,
+   "comps": []
+  },
+  {
+   "origin": "Scale",
+   "tier": 1,
+   "bp": 2,
+   "pts": 1,
+   "dead": null,
+   "members": 4,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Scale",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Scale",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Protector c1*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Minimize c4, Grave/Protector c3, Grave/Reviled c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Comrade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Scale",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Cadence c2*, Comrade/Echo c3*, Comrade/Reviled c2, Comrade/Schema c4, Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Echo c3, Scale/Reviled c4"
+    }
+   ]
+  },
+  {
+   "origin": "Scale",
+   "tier": 2,
+   "bp": 3,
+   "pts": 3,
+   "dead": null,
+   "members": 4,
+   "comps": [
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Grave/Cadence c2*, Grave/Protector c3, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Vagabond/Protector c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Freeblade/Minimize c3, Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    },
+    {
+     "score": 13,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Echo c3*, Comrade/Reviled c2, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4, Skyreach/Adrenaline c5"
+    }
+   ]
+  },
+  {
+   "origin": "Freeblade",
+   "tier": 1,
+   "bp": 3,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Freeblade",
+       3,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Momentum c1, Comrade/Reviled c2, Freeblade/Adrenaline c1, Freeblade/Minimize c3, Freeblade/Momentum c3, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Reviled c1, Warband/Reviled c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Freeblade",
+       3,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Momentum c1, Comrade/Reviled c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Freeblade/Protector c4*, Grave/Minimize c4, Grave/Protector c3, Grave/Reviled c1, Warband/Reviled c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Freeblade",
+       3,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Reviled",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Echo c5*, Freeblade/Minimize c3, Freeblade/Momentum c3, Grave/Cadence c2*, Grave/Minimize c4, Grave/Reviled c1, Scale/Cadence c1, Scale/Echo c3, Scale/Reviled c4"
+    }
+   ]
+  },
+  {
+   "origin": "Freeblade",
+   "tier": 2,
+   "bp": 4,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Freeblade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Finisher c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Wildheart/Finisher c3, Wildheart/Protector c2"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Freeblade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Finisher c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Wildheart/Finisher c3, Wildheart/Momentum c4*"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Freeblade",
+       4,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Finisher c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Wildheart/Momentum c4*, Wildheart/Protector c2"
+    }
+   ]
+  },
+  {
+   "origin": "Freeblade",
+   "tier": 3,
+   "bp": 5,
+   "pts": 5,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 12,
+     "live": [
+      [
+       "Freeblade",
+       5,
+       3
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Finisher c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Freeblade/Protector c4*, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Vagabond/Momentum c4"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Freeblade",
+       5,
+       3
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Finisher c2, Freeblade/Minimize c3, Freeblade/Momentum c3, Freeblade/Protector c4*, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Wildheart/Finisher c3"
+    },
+    {
+     "score": 12,
+     "live": [
+      [
+       "Freeblade",
+       5,
+       3
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Minimize",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Freeblade/Adrenaline c1, Freeblade/Echo c5*, Freeblade/Minimize c3, Freeblade/Momentum c3, Freeblade/Protector c4*, Grave/Adrenaline c4, Grave/Minimize c4, Grave/Protector c3, Scale/Echo c3"
+    }
+   ]
+  },
+  {
+   "origin": "Bloom",
+   "tier": 1,
+   "bp": 3,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Bloom",
+       3,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Scale",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Reviled c1, Scale/Echo c3, Scale/Reviled c4, Warband/Reviled c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Reviled",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Bloom",
+       3,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Comrade/Echo c3*, Comrade/Reviled c2, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Reviled c1, Warband/Reviled c3"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Scale",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Bloom",
+       3,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Reviled",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Reviled c1, Scale/Echo c3, Scale/Resolute c2, Scale/Reviled c4"
+    }
+   ]
+  },
+  {
+   "origin": "Bloom",
+   "tier": 2,
+   "bp": 5,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 10,
+     "live": [
+      [
+       "Bloom",
+       5,
+       2
+      ],
+      [
+       "Freeblade",
+       4,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Gambit c5, Bloom/Momentum c1*, Freeblade/Adrenaline c1, Freeblade/Echo c5*, Freeblade/Gambit c1*, Freeblade/Momentum c3"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Bloom",
+       5,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Gambit c5, Bloom/Protector c1*, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Protector c3, Scale/Echo c3"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Bloom",
+       5,
+       2
+      ],
+      [
+       "Grave",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Cadence",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Gambit c5, Bloom/Protector c1*, Grave/Adrenaline c4, Grave/Cadence c2*, Grave/Protector c3, Wildheart/Gambit c1"
+    }
+   ]
+  },
+  {
+   "origin": "Bloom",
+   "tier": 3,
+   "bp": 7,
+   "pts": 5,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 8,
+     "live": [
+      [
+       "Bloom",
+       7,
+       3
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Finisher c2*, Bloom/Gambit c5, Bloom/Momentum c1*, Bloom/Protector c1*, Wildheart/Finisher c3, Wildheart/Protector c2"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Bloom",
+       7,
+       3
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Gambit",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Finisher c2*, Bloom/Gambit c5, Bloom/Momentum c1*, Bloom/Protector c1*, Wildheart/Finisher c3, Wildheart/Gambit c1"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Bloom",
+       7,
+       3
+      ],
+      [
+       "Finisher",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Wildheart",
+       2,
+       1
+      ]
+     ],
+     "units": "Bloom/Adrenaline c2, Bloom/Cadence c3, Bloom/Echo c4, Bloom/Finisher c2*, Bloom/Gambit c5, Bloom/Momentum c1*, Bloom/Protector c1*, Wildheart/Finisher c3, Wildheart/Momentum c4*"
+    }
+   ]
+  },
+  {
+   "origin": "Skyreach",
+   "tier": 1,
+   "bp": 3,
+   "pts": 1,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Adrenaline",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Skyreach",
+       3,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Grave/Adrenaline c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Schema c3, Vagabond/Ambush c1"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Arcanum",
+       3,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Skyreach",
+       3,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Finisher c1, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Schema c3, Vagabond/Ambush c1"
+    },
+    {
+     "score": 11,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Protector",
+       2,
+       1
+      ],
+      [
+       "Skyreach",
+       3,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Ambush c4, Skyreach/Protector c1, Skyreach/Schema c3, Vagabond/Ambush c1, Vagabond/Protector c4"
+    }
+   ]
+  },
+  {
+   "origin": "Skyreach",
+   "tier": 2,
+   "bp": 5,
+   "pts": 3,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 10,
+     "live": [
+      [
+       "Ambush",
+       3,
+       2
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ],
+      [
+       "Skyreach",
+       5,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Arcanum/Schema c1, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Protector c1, Skyreach/Schema c3"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Skyreach",
+       5,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Schema",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Protector c1, Skyreach/Schema c3, Vagabond/Ambush c1"
+    },
+    {
+     "score": 10,
+     "live": [
+      [
+       "Ambush",
+       4,
+       3
+      ],
+      [
+       "Skyreach",
+       5,
+       2
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Echo",
+       2,
+       1
+      ]
+     ],
+     "units": "Arcanum/Ambush c2, Comrade/Ambush c5, Comrade/Echo c3*, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Protector c1, Skyreach/Schema c3, Vagabond/Ambush c1"
+    }
+   ]
+  },
+  {
+   "origin": "Skyreach",
+   "tier": 3,
+   "bp": 7,
+   "pts": 5,
+   "dead": null,
+   "members": 7,
+   "comps": [
+    {
+     "score": 8,
+     "live": [
+      [
+       "Skyreach",
+       7,
+       3
+      ],
+      [
+       "Ambush",
+       2,
+       1
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Schema",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Ambush c5, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Momentum c1*, Skyreach/Protector c1, Skyreach/Resolute c2*, Skyreach/Schema c3"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Skyreach",
+       7,
+       3
+      ],
+      [
+       "Schema",
+       3,
+       2
+      ]
+     ],
+     "units": "Arcanum/Schema c1, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Momentum c1*, Skyreach/Protector c1, Skyreach/Resolute c2*, Skyreach/Schema c3"
+    },
+    {
+     "score": 8,
+     "live": [
+      [
+       "Skyreach",
+       7,
+       3
+      ],
+      [
+       "Comrade",
+       2,
+       1
+      ],
+      [
+       "Momentum",
+       2,
+       1
+      ],
+      [
+       "Schema",
+       2,
+       1
+      ]
+     ],
+     "units": "Comrade/Momentum c1, Comrade/Schema c4, Skyreach/Adrenaline c5, Skyreach/Ambush c4, Skyreach/Echo c2*, Skyreach/Momentum c1*, Skyreach/Protector c1, Skyreach/Resolute c2*, Skyreach/Schema c3"
+    }
+   ]
+  },
+  {
+   "origin": "Skyreach",
+   "tier": 4,
+   "bp": 9,
+   "pts": 7,
+   "dead": 9,
+   "members": 7,
+   "comps": []
+  }
+ ]
+}

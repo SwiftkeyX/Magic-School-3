@@ -479,7 +479,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e3c748c11858a4418ae61fb7362cf42, type: 2}
   _templateActions: {fileID: 11400000, guid: 31d48e144b9be4e40b79fd94b16f49ed, type: 2}
   _isPlayerSeed: 0
-  _test: 1
+  _test: 0
   _startingHeroLimit: 3
 --- !u!4 &344829187
 Transform:
@@ -535,6 +535,7 @@ MonoBehaviour:
     Taken: 1890
     Blocked: 620
     Healed: 0
+    Omnivamp: 340
     Overheal: 0
     Received: 340
     Wound: 0
@@ -547,6 +548,7 @@ MonoBehaviour:
     Taken: 2310
     Blocked: 410
     Healed: 0
+    Omnivamp: 0
     Overheal: 0
     Received: 0
     Wound: 0
@@ -559,6 +561,7 @@ MonoBehaviour:
     Taken: 760
     Blocked: 240
     Healed: 1180
+    Omnivamp: 0
     Overheal: 295
     Received: 120
     Wound: 60
@@ -571,6 +574,7 @@ MonoBehaviour:
     Taken: 90
     Blocked: 12
     Healed: 0
+    Omnivamp: 0
     Overheal: 0
     Received: 0
     Wound: 0
@@ -583,6 +587,7 @@ MonoBehaviour:
     Taken: 3120
     Blocked: 2400
     Healed: 0
+    Omnivamp: 0
     Overheal: 0
     Received: 900
     Wound: 220

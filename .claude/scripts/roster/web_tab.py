@@ -27,8 +27,11 @@ def add(cells):
 bars.append(add(["SPIDERWEB - best boards per origin, per breakpoint tier"]))
 notes.append(add(["", "Board size %d, roster %d. One origin at a time; a section holds the boards "
                       "where that origin sits at EXACTLY that tier, so sections never overlap. "
-                      "SCORE: every active trait pays by the tier it reaches - tier 1 = 1, tier 2 = "
-                      "3, tier 3 = 5, tier 4 = 7 - counting classes as well as origins.  "
+                      "SCORE: every active trait pays by how many UNITS its live breakpoint eats - "
+                      "C(b,2), one point per PAIR of members, so b = 2..7 pays 1/3/6/10/15/21 - "
+                      "counting classes as well as origins. It is priced by SIZE and not by tier "
+                      "index because tier 3 costs 5 units in Freeblade and 7 in Bloom, and one "
+                      "number cannot pay for both.  "
                       "HOW IT WAS COMPUTED, honestly: C(60,9) is 14.6 billion boards, so this is NOT "
                       "exhaustive. Each section enumerates every way to pick the focus origin's "
                       "required members, fills the rest by beam search (width 400), then hill-climbs "
@@ -71,9 +74,13 @@ notes.append(add(["", "HIGHEST-SCORING SECTIONS: " +
                   ("; ".join("%s %d (needs %d, has %d)"
                              % (s["origin"], s["bp"], s["dead"], s["members"]) for s in dead)
                    or "none") +
-                  ".  Note the pattern: a deep tier of one origin usually scores LESS than a "
-                  "shallow tier, because spending 5-7 of 9 slots on one origin leaves no room to "
-                  "light anything else. That is the trade the point system is meant to expose."]))
+                  ".  THE TRADE THIS EXPOSES: spending 5-7 of 9 slots on one origin leaves little "
+                  "room to light anything else, and rule A2 sharpens that - no two members of an "
+                  "origin share a class, so taking a whole origin lights NO class at all (Warband, "
+                  "with its A3 Resolute double, is the one exception). A deep board is therefore paid "
+                  "once per unit where a wide board is paid twice. C(b,2) is the curve that pays for "
+                  "that handicap; under the old flat 1/3/5/7 the 7-wide tiers were the weakest boards "
+                  "in the game."]))
 
 s = AuthorizedSession(Credentials.from_service_account_file(
     "google-service-credential.json",

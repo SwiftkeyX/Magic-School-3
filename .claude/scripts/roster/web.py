@@ -5,8 +5,16 @@ One origin at a time, split by breakpoint tier. A board is 9 units. A section fo
 "Comrade 2" holds boards where Comrade is active at tier 1 exactly - at least its
 tier-1 breakpoint and below its tier-2 one - so the sections never overlap.
 
-SCORE: every active trait, origin or class, pays by the tier it reaches.
-  tier 1 = 1,  tier 2 = 3,  tier 3 = 5,  tier 4 = 7.
+SCORE: every active trait, origin or class, pays by how many UNITS its live
+breakpoint eats - C(b,2), one point per PAIR of members. b = 2..7 pays 1/3/6/10/15/21.
+
+WHY NOT A TIER-INDEXED CURVE (1/3/5/7 and every steepening of it): a tier index is
+not what a board spends. Tier 3 costs 5 units in Freeblade and 7 in Bloom, so one
+number cannot price both - and under 1/3/5/7 that showed up exactly there, as
+Freeblade 5 being the only deep tier in the game that paid for itself. Every board
+here trades at roughly 2-3 points per unit, so what a breakpoint must be priced
+against is its SIZE. C(b,2) does that and is convex, so each extra member is worth
+more than the last, which is the thing "going deeper" is supposed to mean.
 
 METHOD, stated plainly: C(60,9) is 14.6 billion boards, so this is NOT exhaustive.
 For each section it enumerates every way to pick the required members of the focus
@@ -21,7 +29,8 @@ import roster25 as R
 UNITS = S.ALL
 ORI_BP, CLA_BP = S.ORI_BP, S.CLA_BP
 BP = dict(ORI_BP); BP.update(CLA_BP)
-POINTS = [1, 3, 5, 7]
+# b =         0  1  2  3  4   5   6   7   8   9
+PAIRS   =    [0, 0, 1, 3, 6, 10, 15, 21, 28, 36]      # C(b,2)
 BOARD = 9
 BEAM = 400
 
@@ -47,7 +56,7 @@ def score(idx):
     for trait, n in c.items():
         t = tier_of(trait, n)
         if t:
-            s += POINTS[t - 1]
+            s += PAIRS[BP[trait][t - 1]]          # priced by the breakpoint's SIZE
             live.append((trait, n, t))
     return s, live
 
@@ -140,12 +149,13 @@ if __name__ == "__main__":
               % (o, len(by_origin[o]), "/".join(map(str, ORI_BP[o]))))
         for t in range(1, len(ORI_BP[o]) + 1):
             res, dead = section(o, t)
-            head = "  %s %d  (tier %d, %d pt)" % (o, ORI_BP[o][t - 1], t, POINTS[t - 1])
+            head = "  %s %d  (tier %d, %d pt)" % (o, ORI_BP[o][t - 1], t,
+                                     PAIRS[ORI_BP[o][t - 1]])
             if dead:
                 print(head + "   UNREACHABLE - needs %d members, origin has %d"
                       % (dead, len(by_origin[o])))
                 DUMP["sections"].append(dict(origin=o, tier=t, bp=ORI_BP[o][t - 1],
-                                             pts=POINTS[t - 1], dead=dead,
+                                             pts=PAIRS[ORI_BP[o][t - 1]], dead=dead,
                                              members=len(by_origin[o]), comps=[]))
                 continue
             print(head)
@@ -156,7 +166,7 @@ if __name__ == "__main__":
                     rank, sc, ", ".join("%s %d(t%d)" % (t_, n, ti) for t_, n, ti in live)))
                 comps.append(dict(score=sc, live=live, units=units_of(b)))
             DUMP["sections"].append(dict(origin=o, tier=t, bp=ORI_BP[o][t - 1],
-                                         pts=POINTS[t - 1], dead=None,
+                                         pts=PAIRS[ORI_BP[o][t - 1]], dead=None,
                                          members=len(by_origin[o]), comps=comps))
 
     json.dump(DUMP, open("web.json", "w"), indent=1)

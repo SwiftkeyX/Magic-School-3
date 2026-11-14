@@ -17,7 +17,7 @@ MonoBehaviour:
   _hp: 500
   _attack: 40
   _defend: 20
-  _magic: 40
+  _magic: 100
   _magicResist: 20
   _attackSpeed: 1
   _range: 1
